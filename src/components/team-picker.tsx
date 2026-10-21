@@ -40,8 +40,8 @@ export function TeamPicker({ label, teams, value, disabledId, onChange }: TeamPi
             <label
               key={team.roster_id}
               className={cn(
-                "group press flex min-h-touch cursor-pointer items-center gap-sp-3 rounded-card bg-gry px-sp-3 py-sp-1 has-checked:bg-blk has-checked:text-on-dark has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-red",
-                disabled && "cursor-not-allowed opacity-40",
+                "group flex min-h-touch cursor-pointer items-center gap-sp-3 rounded-card bg-gry px-sp-3 py-sp-1 has-checked:bg-blk has-checked:text-on-dark has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-red",
+                disabled ? "cursor-not-allowed opacity-40" : "press",
               )}
             >
               {/* The input is visually hidden, and the row shows the choice. The input stays in the page for the keyboard and for screen readers. */}

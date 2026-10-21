@@ -9,4 +9,7 @@ export const apiUrl =
 export const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
 // The league season the teams and analyze routes read. One constant until the page needs a picker.
-export const season = Number(process.env.NEXT_PUBLIC_SEASON ?? "2026");
+// An empty or non-numeric value falls back to 2026, because Number("") is 0.
+const DEFAULT_SEASON = 2026;
+const parsedSeason = Number(process.env.NEXT_PUBLIC_SEASON);
+export const season = Number.isFinite(parsedSeason) && parsedSeason > 0 ? parsedSeason : DEFAULT_SEASON;

@@ -2,7 +2,7 @@
  * Tests for the API client. fetch is a test stub that returns real Response objects.
  */
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { ApiError, fetchTeams } from "./api";
+import { ApiError, fetchTeams, toApiError } from "./api";
 
 afterEach(() => {
   vi.unstubAllGlobals();
@@ -23,5 +23,19 @@ describe("fetchTeams", () => {
     vi.stubGlobal("fetch", vi.fn().mockResolvedValue(response));
     await expect(fetchTeams("pw")).rejects.toMatchObject({ status: 429, message: "slow down", retryAfter: 12 });
     await expect(fetchTeams("pw")).rejects.toBeInstanceOf(ApiError);
+  });
+});
+
+describe("toApiError", () => {
+  it("reads Retry-After from a 429", async () => {
+    const response = new Response("{}", { status: 429, headers: { "Retry-After": "7" } });
+    expect(await toApiError(response)).toMatchObject({ status: 429, retryAfter: 7 });
+  });
+
+  it("reads the message from a 422 object detail", async () => {
+    const response = new Response(JSON.stringify({ detail: { message: "bad trade" } }), { status: 422 });
+    const error = await toApiError(response);
+    expect(error).toMatchObject({ status: 422, message: "bad trade" });
+    expect(error.retryAfter).toBeUndefined();
   });
 });

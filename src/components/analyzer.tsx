@@ -5,6 +5,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { ErrorLine } from "@/components/error-line";
 import { PassphraseDialog } from "@/components/passphrase-dialog";
 import { TeamPicker } from "@/components/team-picker";
 import { Button } from "@/components/ui/button";
@@ -70,17 +71,15 @@ export function Analyzer() {
       <PassphraseDialog open={passphrase === null} error={authError} onSubmit={handleSubmit} />
       {teams.status === "loading" && <p className="m-0 text-body text-mute">Loading teams</p>}
       {teams.status === "rate-limited" && (
-        <p role="alert" className="m-0 text-body font-bold text-red">
+        <ErrorLine>
           {teams.retryAfter
             ? `Too many requests. Try again in ${teams.retryAfter} seconds.`
             : "Too many requests. Try again soon."}
-        </p>
+        </ErrorLine>
       )}
       {teams.status === "failed" && (
         <div className="flex flex-col items-start gap-sp-3">
-          <p role="alert" className="m-0 text-body font-bold text-red">
-            The API did not answer. Try again.
-          </p>
+          <ErrorLine>The API did not answer. Try again.</ErrorLine>
           <Button className="press h-touch rounded-card px-sp-4 text-lead font-bold" onClick={() => setAttempt((n) => n + 1)}>
             Try again
           </Button>

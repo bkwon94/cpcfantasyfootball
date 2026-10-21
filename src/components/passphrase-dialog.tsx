@@ -5,6 +5,7 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
+import { ErrorLine } from "@/components/error-line";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
@@ -37,11 +38,7 @@ export function PassphraseDialog({ open, error, onSubmit }: PassphraseDialogProp
           <DialogDescription className="text-body text-mute">The league passphrase. Ask the commissioner.</DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="flex flex-col gap-sp-3">
-          {error && (
-            <p role="alert" className="m-0 text-body font-bold text-red">
-              {error}
-            </p>
-          )}
+          {error && <ErrorLine>{error}</ErrorLine>}
           <Label htmlFor="passphrase" className="text-label font-bold tracking-wide uppercase">
             Passphrase
           </Label>

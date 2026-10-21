@@ -26,4 +26,12 @@ describe("config", () => {
     expect(basePath).toBe("/site");
     expect(season).toBe(2027);
   });
+
+  it("falls back to 2026 when the season is empty or not a number", async () => {
+    vi.stubEnv("NEXT_PUBLIC_SEASON", "");
+    expect((await import("./config")).season).toBe(2026);
+    vi.resetModules();
+    vi.stubEnv("NEXT_PUBLIC_SEASON", "abc");
+    expect((await import("./config")).season).toBe(2026);
+  });
 });

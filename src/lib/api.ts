@@ -47,18 +47,21 @@ async function errorMessage(response: Response): Promise<string> {
   return response.statusText || `Request failed with status ${response.status}`;
 }
 
+/* Builds the ApiError for a failed response. Every call of the client uses it. */
+export async function toApiError(response: Response): Promise<ApiError> {
+  const retryAfter = Number(response.headers.get("Retry-After"));
+  return new ApiError(
+    response.status,
+    await errorMessage(response),
+    Number.isFinite(retryAfter) && retryAfter > 0 ? retryAfter : undefined,
+  );
+}
+
 export async function fetchTeams(passphrase: string): Promise<Team[]> {
   const response = await fetch(`${apiUrl}/teams?season=${season}`, {
     headers: { "X-League-Passphrase": passphrase },
   });
-  if (!response.ok) {
-    const retryAfter = Number(response.headers.get("Retry-After"));
-    throw new ApiError(
-      response.status,
-      await errorMessage(response),
-      Number.isFinite(retryAfter) && retryAfter > 0 ? retryAfter : undefined,
-    );
-  }
+  if (!response.ok) throw await toApiError(response);
   const body = (await response.json()) as { teams: (Omit<Team, "avatar"> & { avatar?: string | null })[] };
   return body.teams.map((team) => ({ ...team, avatar: team.avatar ?? null }));
 }
