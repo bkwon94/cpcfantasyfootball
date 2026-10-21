@@ -264,6 +264,15 @@
     }
 }
 
+/* The static HTML holds the start state of every reveal: no opacity and a small rise.
+   With reduced motion or with no script, the content shows at rest from the first paint. */
+@media (prefers-reduced-motion: reduce), (scripting: none) {
+    [data-reveal] {
+        opacity: 1 !important;
+        transform: none !important;
+    }
+}
+
 /* Framer Motion reads the setting through useMotionOff. This rule covers every CSS transition, including shadcn's transition-all. */
 @media (prefers-reduced-motion: reduce) {
     * {

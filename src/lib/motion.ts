@@ -1,5 +1,5 @@
 /**
- * The one reduced-motion switch for the analyzer, and the shared motion timings.
+ * The one reduced-motion switch for the site, and the shared motion timings.
  * Every animated component reads useMotionOff, so the reduced-motion media query turns every animation off.
  */
 import { useReducedMotion, type TargetAndTransition, type Transition } from "framer-motion";
@@ -31,10 +31,28 @@ export const DURATION = {
   grade: 0.36,
   // One pass of the loading sweep. It repeats while the grade runs.
   sweep: 1.4,
+  // A section or a card enters the viewport. It is a little slower than the page enter, because the reader watches it arrive.
+  reveal: 0.4,
+  // A part of the game changer hero lands. The hero is the one place on the week page that gets a beat of drama.
+  hero: 0.5,
 } as const;
 
 /* The gap between the asker's letter and the other letter, in seconds. The asker reads the own grade first. */
 export const GRADE_STAGGER = 0.2;
+
+/* The gap between two cards that enter together, in seconds. It is short, so a fast scroll never waits on motion. */
+export const REVEAL_STAGGER = 0.05;
+
+/* The last step of a stagger. Card ten waits no longer than card four, so a long list never trails behind the scroll. */
+const STAGGER_CAP = 4;
+
+/* The delay of the card at a position in a list. */
+export function stagger(index: number): number {
+  return Math.min(index, STAGGER_CAP) * REVEAL_STAGGER;
+}
+
+/* The delays of the three hero parts, in seconds. The glow comes first, the cutout next, and the points land last. */
+export const HERO_DELAY = { glow: 0, cutout: 0.08, points: 0.24 } as const;
 
 /* The props of content that fades and rises in once. With motion off, the content shows at rest and the transition is instant. */
 export function rise(off: boolean, { duration, delay = 0 }: { duration: number; delay?: number }) {

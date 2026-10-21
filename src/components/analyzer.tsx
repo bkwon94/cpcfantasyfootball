@@ -4,14 +4,14 @@
  */
 "use client";
 
-import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { ErrorLine } from "@/components/error-line";
 import { PassphraseDialog } from "@/components/passphrase-dialog";
+import { Reveal } from "@/components/reveal";
 import { TradeForm } from "@/components/trade-form";
 import { Button } from "@/components/ui/button";
 import { ApiError, fetchTeams, retryText, type Team } from "@/lib/api";
-import { DURATION, rise, useMotionOff } from "@/lib/motion";
+import { DURATION } from "@/lib/motion";
 import { clearPassphrase, getPassphrase, setPassphrase } from "@/lib/passphrase";
 
 type TeamsState =
@@ -30,7 +30,6 @@ export function Analyzer() {
   const [teams, setTeams] = useState<TeamsState>({ status: "idle" });
   // A new value starts the fetch again, for the retry button.
   const [attempt, setAttempt] = useState(0);
-  const off = useMotionOff();
 
   useEffect(() => {
     setPassphraseState(getPassphrase());
@@ -86,9 +85,9 @@ export function Analyzer() {
       )}
       {teams.status === "ready" && passphrase && (
         // The form is the content of the route, so it fades and rises in once when it first shows. With motion off it shows at rest.
-        <motion.div {...rise(off, { duration: DURATION.page })}>
+        <Reveal trigger="mount" duration={DURATION.page}>
           <TradeForm teams={teams.teams} passphrase={passphrase} onUnauthorized={handleUnauthorized} />
-        </motion.div>
+        </Reveal>
       )}
     </div>
   );
