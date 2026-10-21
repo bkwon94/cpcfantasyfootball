@@ -4,12 +4,14 @@
  */
 "use client";
 
+import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { ErrorLine } from "@/components/error-line";
 import { PassphraseDialog } from "@/components/passphrase-dialog";
 import { TradeForm } from "@/components/trade-form";
 import { Button } from "@/components/ui/button";
 import { ApiError, fetchTeams, retryText, type Team } from "@/lib/api";
+import { DURATION, EASE_OUT, INSTANT, RISE, useMotionOff } from "@/lib/motion";
 import { clearPassphrase, getPassphrase, setPassphrase } from "@/lib/passphrase";
 
 type TeamsState =
@@ -28,6 +30,7 @@ export function Analyzer() {
   const [teams, setTeams] = useState<TeamsState>({ status: "idle" });
   // A new value starts the fetch again, for the retry button.
   const [attempt, setAttempt] = useState(0);
+  const off = useMotionOff();
 
   useEffect(() => {
     setPassphraseState(getPassphrase());
@@ -74,15 +77,22 @@ export function Analyzer() {
       {teams.status === "loading" && <p className="m-0 text-body text-mute">Loading teams</p>}
       {teams.status === "rate-limited" && <ErrorLine>{retryText(teams.retryAfter)}</ErrorLine>}
       {teams.status === "failed" && (
-        <div className="flex flex-col items-start gap-sp-3">
+        <div className="flex flex-col gap-sp-3">
           <ErrorLine>The API did not answer. Try again.</ErrorLine>
-          <Button className="press h-touch rounded-card px-sp-4 text-lead font-bold" onClick={() => setAttempt((n) => n + 1)}>
+          <Button className="press h-touch w-full rounded-card px-sp-4 text-lead font-bold" onClick={() => setAttempt((n) => n + 1)}>
             Try again
           </Button>
         </div>
       )}
       {teams.status === "ready" && passphrase && (
-        <TradeForm teams={teams.teams} passphrase={passphrase} onUnauthorized={handleUnauthorized} />
+        // The form is the content of the route, so it fades and rises in once when it first shows. With motion off it shows at rest.
+        <motion.div
+          initial={off ? false : { opacity: 0, y: RISE }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={off ? INSTANT : { duration: DURATION.page, ease: EASE_OUT }}
+        >
+          <TradeForm teams={teams.teams} passphrase={passphrase} onUnauthorized={handleUnauthorized} />
+        </motion.div>
       )}
     </div>
   );

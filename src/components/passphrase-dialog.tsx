@@ -10,6 +10,8 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useMotionOff } from "@/lib/motion";
+import { cn } from "@/lib/utils";
 
 type PassphraseDialogProps = {
   open: boolean;
@@ -20,6 +22,8 @@ type PassphraseDialogProps = {
 
 export function PassphraseDialog({ open, error, onSubmit }: PassphraseDialogProps) {
   const [value, setValue] = useState("");
+  // The shadcn dialog fades and zooms with CSS. The one motion switch turns that off too.
+  const still = useMotionOff() && "data-open:animate-none data-closed:animate-none";
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -32,7 +36,11 @@ export function PassphraseDialog({ open, error, onSubmit }: PassphraseDialogProp
   /* No onOpenChange: the page has nothing to show without a passphrase, so Escape and a tap outside must not close it. */
   return (
     <Dialog open={open}>
-      <DialogContent showCloseButton={false} className="gap-sp-4 rounded-card p-gutter">
+      <DialogContent
+        showCloseButton={false}
+        overlayClassName={cn(still)}
+        className={cn("gap-sp-4 rounded-card p-gutter", still)}
+      >
         <DialogHeader>
           <DialogTitle className="text-stat leading-stat font-black uppercase">League passphrase</DialogTitle>
           <DialogDescription className="text-body text-mute">The league passphrase. Ask the commissioner.</DialogDescription>
