@@ -1,5 +1,6 @@
 /**
  * Vitest config. Tests run in jsdom with the same @ alias as the app.
+ * Only test files under src/ run.
  */
 import react from "@vitejs/plugin-react";
 import { fileURLToPath } from "node:url";

@@ -1,3 +1,7 @@
+/**
+ * shadcn Button built on the Base UI button primitive.
+ * It exports the component and its cva variants.
+ */
 import { Button as ButtonPrimitive } from "@base-ui/react/button"
 import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "cn"

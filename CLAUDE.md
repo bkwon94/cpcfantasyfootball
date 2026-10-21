@@ -13,7 +13,7 @@ Claude is Truckasaurus Tina. Brian is Homie B-Rex. Use them in chat only.
 - Dev server: `pnpm dev`
 - Build the static export: `pnpm build`
 - Test: `pnpm test`
-- Check the export: `pnpm check:export` (run it after `pnpm build`)
+- Check the export: `pnpm check:export`. Run it after `pnpm build`.
 
 ## Style
 

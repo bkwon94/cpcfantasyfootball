@@ -1,6 +1,6 @@
 /**
  * Next.js config for the static export that GitHub Pages serves.
- * Trailing slashes keep the URLs the same as the old folder layout.
+ * Trailing slashes keep the URLs the same as the folder layout in `public/`.
  */
 import type { NextConfig } from "next";
 import { basePath } from "./src/lib/config";

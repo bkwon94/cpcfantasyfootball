@@ -1,6 +1,6 @@
 /**
  * Root layout for the app. It sets the viewport meta and adds no styling,
- * so the static pages in public/ look the same as before.
+ * so the static pages in public/ are served unchanged.
  */
 import type { Viewport } from "next";
 import type { ReactNode } from "react";
