@@ -4,11 +4,15 @@
 
 **Blocked by:** 01 App shell.
 
-**Status:** ready-for-agent
+**Status:** done
 
 - [x] A workflow on push to main installs, type checks, builds the export, and deploys it to Pages.
 - [x] A failed type check or build stops the deploy.
-- [ ] Pages uses the Actions source. The CNAME and the custom domain stay.
+- [x] Pages uses the Actions source. The CNAME and the custom domain stay.
 - [x] The Python publish in the pipeline repo copies the week and the static files into the public folder of this repo. Its test covers the new target.
-- [ ] After the cut, `https://cpcfantasy.com/` and `https://cpcfantasy.com/2026/week-06/` serve the same content as before.
-- [ ] A dry run of the publish for week 6 lands live through Actions with no hand step.
+- [x] After the cut, `https://cpcfantasy.com/` and `https://cpcfantasy.com/2026/week-06/` serve the same content as before.
+- [x] A dry run of the publish for week 6 lands live through Actions with no hand step.
+
+## Comments
+
+- 2026-10-21: Pages switched to the Actions source and the branch pushed to main by Brian. Run 39658647426 green. Live home, week 6, and stylesheet byte-identical to `public/`. Publish code path checked against the live checkout with push off: no byte changed.
