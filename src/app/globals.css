@@ -56,6 +56,8 @@
     --spacing-touch: 44px;
     /* The player cutout on a trade chip. 64px keeps a column of chips short at 390. */
     --spacing-headshot: 64px;
+    /* The headshot on an award tile: two steps of sp-5, as the stylesheet sets it. */
+    --spacing-award: calc(var(--spacing-sp-5) * 2);
 
     /* The page is one centered column, so the same layout serves a phone and a desktop. */
     --container-page: 480px;
@@ -70,17 +72,23 @@
     --text-stat: 20px;
     --text-score: 24px;
     --text-headline: 40px;
+    /* The game changer's points: the biggest number on the page, 1.8 times the headline. */
+    --text-hero: calc(var(--text-headline) * 1.8);
 
     /* Line heights: body copy, tight labels and names, and big stat numbers. */
     --leading-body: 1.4;
     --leading-tight: 1.15;
     --leading-stat: 1.1;
+    /* The hero points sit tighter than a stat, so the giant digits do not push the projection line down. */
+    --leading-hero: 0.9;
 
     /* Letter spacing for uppercase labels. Wide is for titles, caps is for small subtitles and tags. */
     --tracking-wide: 0.16em;
     --tracking-caps: 0.1em;
-    /* Negative spacing for bold text: snug for a player name on a chip, grade for a big grade letter. */
+    /* Negative spacing for bold text: snug for a player name on a chip, tight for the big week number,
+       grade for a big grade letter and the game changer's points. */
     --tracking-snug: -0.01em;
+    --tracking-tight: -0.02em;
     --tracking-grade: -0.03em;
 
     /* Radii: small for tags and bars, card for every grey card. */
@@ -214,6 +222,33 @@
   :focus-visible {
     outline: 2px solid var(--color-red);
     outline-offset: 2px;
+    }
+}
+
+/* The game changer stage. Two layered gradients cannot be Tailwind classes cleanly, so they live here.
+   The image and the text share one grid cell; the image sets the stage height. */
+@layer components {
+    /* The red glow sits behind the head, so the cutout lifts off the black card. */
+    .stage::before {
+        content: "";
+        position: absolute;
+        z-index: 0;
+        right: -10%;
+        top: 0;
+        width: 90%;
+        height: 90%;
+        background: radial-gradient(closest-side, var(--color-red-glow), transparent);
+    }
+    /* The left-to-right gradient darkens the face under the text, so the name and points stay legible.
+       The bottom fade melts the chest crop into the card. */
+    .stage::after {
+        content: "";
+        position: absolute;
+        z-index: 2;
+        inset: 0;
+        background:
+            linear-gradient(to right, var(--color-blk) 0%, color-mix(in srgb, var(--color-blk) 85%, transparent) 30%, transparent 62%),
+            linear-gradient(to top, var(--color-blk) 0%, transparent 30%);
     }
 }
 

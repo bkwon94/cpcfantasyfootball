@@ -29,6 +29,13 @@ describe("Masthead", () => {
     expect(screen.getByText("League Weekly")).toBeTruthy();
   });
 
+  it("shows a custom title in place of the default brand", () => {
+    render(<Masthead title="Cornerstone" subtitle="League Weekly" />);
+    const home = screen.getByRole("link");
+    expect(home.textContent).toContain("Cornerstone");
+    expect(home.textContent).not.toContain("CPC Fantasy");
+  });
+
   it("shows no week line when there are no children", () => {
     render(<Masthead subtitle="Trade Analyzer" />);
     expect(screen.queryByText("Week 6")).toBeNull();
