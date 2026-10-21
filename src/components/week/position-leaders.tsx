@@ -26,7 +26,7 @@ function Row({ row, headshots, wide }: { row: LeaderRow; headshots: HeadshotMap;
         )}
       >
         {/* The row headshot stays near the text height, so the row keeps about the height of a plain text row. */}
-        <Headshot src={headshotSrc(headshots, row.player_id)} lazy className="mr-sp-2 inline-block size-sp-5 align-middle" />
+        <Headshot src={headshotSrc(headshots, row.player_id)} lazy className="mr-sp-2 inline-block size-sp-5 rounded-full align-middle" />
         <b>{row.player}</b>
         {row.nfl_team && (
           <>
@@ -55,7 +55,7 @@ function Row({ row, headshots, wide }: { row: LeaderRow; headshots: HeadshotMap;
 function Board({ board, headshots, spans }: { board: LeaderBoard; headshots: HeadshotMap; spans: boolean }) {
   return (
     <div className={cn("rounded-card bg-gry p-sp-3", spans && "md:col-span-full")}>
-      <Label className="mb-sp-1">{board.position}</Label>
+      <Label tight>{board.position}</Label>
       {board.rows.length > 0 ? (
         <ol className="m-0 list-none p-0 text-row leading-tight">
           {board.rows.map((row) => (

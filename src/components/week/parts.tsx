@@ -31,13 +31,25 @@ export function Chapter({ dark, id, children }: { dark?: boolean; id?: string; c
   );
 }
 
-/* The red uppercase label that opens a chapter or a card. A className changes its bottom gap. */
-export function Label({ children, dark, className }: { children: ReactNode; dark?: boolean; className?: string }) {
+/* The red uppercase label that opens a chapter or a card. A label inside a card sits tight on its content.
+   The tight flag sets the gap, not a className, because cn does not merge the custom spacing names. */
+export function Label({
+  children,
+  dark,
+  tight,
+  className,
+}: {
+  children: ReactNode;
+  dark?: boolean;
+  tight?: boolean;
+  className?: string;
+}) {
   return (
     <div
       className={cn(
-        "mb-sp-3 text-label leading-tight font-bold tracking-wide text-red uppercase",
-        dark && "text-red-lt",
+        "text-label leading-tight font-bold tracking-wide uppercase",
+        tight ? "mb-sp-1" : "mb-sp-3",
+        dark ? "text-red-lt" : "text-red",
         className,
       )}
     >
@@ -56,7 +68,7 @@ export function Tag({ children }: { children: ReactNode }) {
 
 /* The gap variant adds the top space a blurb needs under a grid of cards. */
 export function Blurb({ children, dark, gap }: { children: ReactNode; dark?: boolean; gap?: boolean }) {
-  return <p className={cn("m-0 text-body text-ink-2", dark && "text-on-dark-2", gap && "mt-sp-3")}>{children}</p>;
+  return <p className={cn("m-0 text-body", dark ? "text-on-dark-2" : "text-ink-2", gap && "mt-sp-3")}>{children}</p>;
 }
 
 /* The team name sits next to the avatar, so the image is decorative. */
@@ -64,14 +76,14 @@ export function Avatar({ src }: { src: string }) {
   return <img src={src} alt="" className="size-avatar flex-none rounded-full bg-gry object-cover" />;
 }
 
-/* The player name sits next to the headshot, so the image is decorative. A className sets the size and the layout. */
+/* The player name sits next to the headshot, so the image is decorative. A className sets the size, the shape, and the layout. */
 export function Headshot({ src, lazy, className }: { src: string; lazy?: boolean; className?: string }) {
   return (
     <img
       src={src}
       alt=""
       loading={lazy ? "lazy" : undefined}
-      className={cn("flex-none rounded-full object-cover", className)}
+      className={cn("flex-none object-cover", className)}
     />
   );
 }

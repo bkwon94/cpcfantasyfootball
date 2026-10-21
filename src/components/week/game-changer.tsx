@@ -27,8 +27,8 @@ export function GameChanger({
           <div className="m-0 text-score leading-stat font-black tabular-nums">
             {line.name}
             <small className="mt-sp-1 mb-sp-2 block text-meta font-semibold text-on-dark-muted">
-              {line.position}
-              {line.nfl_team && ` · ${line.nfl_team}`} · {gameChanger.team}
+              {/* One string, so React writes one text node and the browser kerns the line as one run. */}
+              {[line.position, line.nfl_team, gameChanger.team].filter(Boolean).join(" · ")}
             </small>
           </div>
           <div className="m-0 text-hero leading-hero font-black tracking-grade text-red-lt tabular-nums">
@@ -40,7 +40,7 @@ export function GameChanger({
         </div>
         <Headshot
           src={headshotSrc(headshots, line.player_id)}
-          className="relative z-1 -mr-[28%] block h-auto w-full self-end justify-self-end rounded-none [grid-area:1/1]"
+          className="relative z-1 -mr-[28%] block h-auto w-full self-end justify-self-end [grid-area:1/1]"
         />
       </div>
       {blurb && <Blurb dark>{blurb}</Blurb>}

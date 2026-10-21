@@ -40,7 +40,8 @@ export default async function WeekPage({ params }: Props) {
           WEEK <span className="text-red">{page.week}</span>
         </div>
         <div className="mt-sp-1 text-meta text-on-dark-2 tabular-nums">
-          {page.dates} · Published {page.publish_date}
+          {/* One string, so React writes one text node and the browser kerns the line as one run. */}
+          {`${page.dates} · Published ${page.publish_date}`}
         </div>
       </Masthead>
       <MatchupOfTheWeek pick={page.pick} avatars={page.avatars} blurb={page.blurbs.motw} />
