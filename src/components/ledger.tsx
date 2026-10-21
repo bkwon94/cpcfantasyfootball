@@ -105,7 +105,7 @@ function SwapCard({ sides }: { sides: Side[] }) {
       <div className="grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] gap-x-sp-2 gap-y-sp-4">
         <SwapColumn side={left} />
         {/* The divider runs the full card height. The tag sits on it, level with the team names. */}
-        <div className="relative row-span-3 flex flex-col items-center before:absolute before:inset-y-0 before:left-1/2 before:w-px before:bg-bar-off before:content-['']">
+        <div className="relative row-span-3 flex flex-col items-center before:absolute before:inset-y-0 before:left-1/2 before:w-px before:bg-divider before:content-['']">
           <span className="relative mt-sp-5 rounded-sm bg-red p-sp-1 text-label font-extrabold tracking-caps text-on-dark uppercase">
             For
           </span>
