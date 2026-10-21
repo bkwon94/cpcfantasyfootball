@@ -26,9 +26,8 @@ pnpm build
 pnpm check:export
 ```
 
-`pnpm check:export` runs after the build. It checks that `out/index.html`, `out/CNAME`, and every
-file under `out/2026/` and `out/static/` match their sources in `public/` byte for byte. It exits
-1 and names the first mismatch.
+`pnpm check:export` runs after the build. It checks that every file under `public/` exists in
+`out/` with the same bytes. It exits 1 and names the first mismatch.
 
 To look at the export, serve `out/`:
 

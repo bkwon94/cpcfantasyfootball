@@ -1,7 +1,8 @@
 /**
- * Root layout for the app. It sets the viewport meta and adds no styling,
- * so the static pages in public/ are served unchanged.
+ * Root layout for the app. It sets the viewport meta and loads globals.css.
+ * The static pages in public/ do not use this layout.
  */
+import "./globals.css";
 import type { Viewport } from "next";
 import type { ReactNode } from "react";
 
