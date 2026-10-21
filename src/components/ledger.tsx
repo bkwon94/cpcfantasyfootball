@@ -4,15 +4,13 @@
  */
 "use client";
 
-import type { ReactNode, SyntheticEvent } from "react";
+import type { ReactNode } from "react";
 import type { Adjuster, AnalyzeResponse, GradedSide, Player, TradeSide } from "@/lib/analyze-types";
-import { basePath } from "@/lib/config";
+import { swapToDefault } from "@/lib/headshot";
 import { cn } from "@/lib/utils";
 
 /* A trade side joined to its grade, so each column reads from one object. */
 type Side = TradeSide & GradedSide & { mine: boolean };
-
-const HEADSHOT_FALLBACK = `${basePath}/images/headshot-default.svg`;
 
 const CHOICE_WORD = { accept: "Accept", counter: "Counter", decline: "Decline" } as const;
 
@@ -55,14 +53,6 @@ function GradeLetter({ letter }: { letter: string }) {
       {letter}
     </span>
   );
-}
-
-/* A headshot the CDN does not have swaps to the default silhouette once. The guard stops a loop if that file fails too. */
-function swapToDefault(event: SyntheticEvent<HTMLImageElement>) {
-  const img = event.currentTarget;
-  if (img.dataset.fallback) return;
-  img.dataset.fallback = "1";
-  img.src = HEADSHOT_FALLBACK;
 }
 
 function PlayerChip({ player }: { player: Player }) {

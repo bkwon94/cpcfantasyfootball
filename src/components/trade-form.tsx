@@ -4,14 +4,14 @@
  */
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Ledger from "@/components/ledger";
 import { ErrorLine } from "@/components/error-line";
 import { PlayerList } from "@/components/player-list";
 import { TeamPicker } from "@/components/team-picker";
 import { Button } from "@/components/ui/button";
 import type { AnalyzeResponse } from "@/lib/analyze-types";
-import { ApiError, postAnalyze, type Team } from "@/lib/api";
+import { ApiError, postAnalyze, retryText, type Team } from "@/lib/api";
 import { season } from "@/lib/config";
 
 // A cold chart week takes 20 seconds or more, so 30 seconds leaves room before the page gives up.
@@ -35,10 +35,7 @@ function toGradeError(error: unknown, timedOut: boolean): GradeState & { status:
   if (timedOut) return { status: "error", message: "The grade took too long.", retry: true };
   if (error instanceof ApiError) {
     if (error.status === 422) return { status: "error", message: error.message, retry: false };
-    if (error.status === 429) {
-      const wait = error.retryAfter ? `Try again in ${error.retryAfter} seconds.` : "Try again soon.";
-      return { status: "error", message: `Too many requests. ${wait}`, retry: false };
-    }
+    if (error.status === 429) return { status: "error", message: retryText(error.retryAfter), retry: false };
     if (error.status === 503) {
       return { status: "error", message: "No grade this week yet. The chart is not on the server.", retry: false };
     }
@@ -46,41 +43,57 @@ function toGradeError(error: unknown, timedOut: boolean): GradeState & { status:
   return { status: "error", message: "The API did not answer. Try again.", retry: true };
 }
 
+/* One side of the trade: the picked roster and the player ids it gives. */
+type Side = { rosterId: number | null; picks: string[] };
+type SideName = "mine" | "other";
+
 export function TradeForm({ teams, passphrase, onUnauthorized }: TradeFormProps) {
-  const [mine, setMine] = useState<number | null>(null);
-  const [other, setOther] = useState<number | null>(null);
-  const [minePicks, setMinePicks] = useState<string[]>([]);
-  const [otherPicks, setOtherPicks] = useState<string[]>([]);
+  const [sides, setSides] = useState<{ mine: Side; other: Side }>({
+    mine: { rosterId: null, picks: [] },
+    other: { rosterId: null, picks: [] },
+  });
   const [grade, setGrade] = useState<GradeState>({ status: "idle" });
   // A late answer from an old trade must not overwrite the state of a new one.
   const runId = useRef(0);
+  // The unmount effect aborts the call in flight, so a closed page does not wait on the API.
+  const controllerRef = useRef<AbortController | null>(null);
+  const unmounted = useRef(false);
 
-  const myTeam = teams.find((t) => t.roster_id === mine);
-  const otherTeam = teams.find((t) => t.roster_id === other);
-  const ready = minePicks.length > 0 && otherPicks.length > 0;
+  useEffect(() => {
+    // React strict mode runs the cleanup and the effect again on mount, so the effect resets the flag.
+    unmounted.current = false;
+    return () => {
+      unmounted.current = true;
+      controllerRef.current?.abort();
+    };
+  }, []);
+
+  const { mine, other } = sides;
+  const myTeam = teams.find((t) => t.roster_id === mine.rosterId);
+  const otherTeam = teams.find((t) => t.roster_id === other.rosterId);
+  const ready = mine.picks.length > 0 && other.picks.length > 0;
   const grading = grade.status === "grading";
 
   // A new team makes the old picks and the old result stale, so a change clears them.
-  function pickMine(id: number) {
+  function pickTeam(side: SideName, rosterId: number) {
     runId.current += 1;
-    setMine(id);
-    setMinePicks([]);
+    setSides((current) => ({ ...current, [side]: { rosterId, picks: [] } }));
     setGrade({ status: "idle" });
   }
 
-  function pickOther(id: number) {
-    runId.current += 1;
-    setOther(id);
-    setOtherPicks([]);
-    setGrade({ status: "idle" });
+  function togglePick(side: SideName, playerId: string) {
+    setSides((current) => {
+      const { picks } = current[side];
+      const next = picks.includes(playerId) ? picks.filter((p) => p !== playerId) : [...picks, playerId];
+      return { ...current, [side]: { ...current[side], picks: next } };
+    });
   }
-
-  const toggle = (picks: string[], id: string) => (picks.includes(id) ? picks.filter((p) => p !== id) : [...picks, id]);
 
   async function submit() {
-    if (mine === null || other === null || !ready) return;
+    if (mine.rosterId === null || other.rosterId === null || !ready) return;
     const id = ++runId.current;
     const controller = new AbortController();
+    controllerRef.current = controller;
     let timedOut = false;
     const timer = setTimeout(() => {
       timedOut = true;
@@ -93,16 +106,17 @@ export function TradeForm({ teams, passphrase, onUnauthorized }: TradeFormProps)
         {
           season,
           sides: [
-            { roster_id: mine, gives: minePicks },
-            { roster_id: other, gives: otherPicks },
+            { roster_id: mine.rosterId, gives: mine.picks },
+            { roster_id: other.rosterId, gives: other.picks },
           ],
-          asker: mine,
+          asker: mine.rosterId,
         },
         controller.signal,
       );
-      if (id === runId.current) setGrade({ status: "done", doc });
+      if (id === runId.current && !unmounted.current) setGrade({ status: "done", doc });
     } catch (error) {
-      if (id !== runId.current) return;
+      // An abort from unmount must not set state on a gone component.
+      if (id !== runId.current || unmounted.current) return;
       if (error instanceof ApiError && error.status === 401) onUnauthorized();
       else setGrade(toGradeError(error, timedOut));
     } finally {
@@ -116,12 +130,10 @@ export function TradeForm({ teams, passphrase, onUnauthorized }: TradeFormProps)
         <h2 id="pick-teams" className="m-0 text-stat leading-stat font-black uppercase">
           Pick the teams
         </h2>
-        <TeamPicker label="My team" teams={teams} value={mine} disabledId={other} onChange={pickMine} />
-        <TeamPicker label="The other team" teams={teams} value={other} disabledId={mine} onChange={pickOther} />
-        {myTeam && <PlayerList team={myTeam} picked={minePicks} onToggle={(p) => setMinePicks(toggle(minePicks, p))} />}
-        {otherTeam && (
-          <PlayerList team={otherTeam} picked={otherPicks} onToggle={(p) => setOtherPicks(toggle(otherPicks, p))} />
-        )}
+        <TeamPicker label="My team" teams={teams} value={mine.rosterId} disabledId={other.rosterId} onChange={(id) => pickTeam("mine", id)} />
+        <TeamPicker label="The other team" teams={teams} value={other.rosterId} disabledId={mine.rosterId} onChange={(id) => pickTeam("other", id)} />
+        {myTeam && <PlayerList team={myTeam} picked={mine.picks} onToggle={(p) => togglePick("mine", p)} />}
+        {otherTeam && <PlayerList team={otherTeam} picked={other.picks} onToggle={(p) => togglePick("other", p)} />}
         <Button
           className="press h-touch w-full rounded-card px-sp-4 text-lead font-bold"
           disabled={!ready || grading}

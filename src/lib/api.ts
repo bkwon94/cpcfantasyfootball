@@ -58,6 +58,11 @@ export async function toApiError(response: Response): Promise<ApiError> {
   );
 }
 
+/* The text of a 429. The wait is optional, because the Retry-After header may be missing. */
+export function retryText(seconds?: number): string {
+  return `Too many requests. ${seconds ? `Try again in ${seconds} seconds.` : "Try again soon."}`;
+}
+
 export async function fetchTeams(passphrase: string): Promise<Team[]> {
   const response = await fetch(`${apiUrl}/teams?season=${season}`, {
     headers: { "X-League-Passphrase": passphrase },

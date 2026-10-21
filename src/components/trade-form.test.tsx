@@ -188,5 +188,28 @@ describe("TradeForm", () => {
     fetchStub.mockReturnValueOnce(new Promise(() => {}));
     fireEvent.click(screen.getByRole("button", { name: "Try again" }));
     expect(fetchStub).toHaveBeenCalledTimes(2);
+    expect(fetchStub.mock.calls[1][1].body).toBe(fetchStub.mock.calls[0][1].body);
+  });
+
+  it("aborts a pending grade on unmount without an error or a state update", async () => {
+    const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+    let signal: AbortSignal | undefined;
+    fetchStub.mockImplementationOnce(
+      (_url: string, init: RequestInit) =>
+        new Promise((_resolve, reject) => {
+          signal = init.signal!;
+          signal.addEventListener("abort", () => reject(new DOMException("aborted", "AbortError")));
+        }),
+    );
+    pickTrade();
+    fireEvent.click(submit());
+    await screen.findByText("Grading the trade");
+
+    cleanup();
+    await new Promise((resolve) => setTimeout(resolve, 0));
+
+    expect(signal!.aborted).toBe(true);
+    expect(errorSpy).not.toHaveBeenCalled();
+    errorSpy.mockRestore();
   });
 });

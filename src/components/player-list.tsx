@@ -4,19 +4,8 @@
  */
 "use client";
 
-import type { SyntheticEvent } from "react";
 import type { Team } from "@/lib/api";
-import { basePath } from "@/lib/config";
-
-const HEADSHOT_FALLBACK = `${basePath}/images/headshot-default.svg`;
-
-/* A headshot the CDN does not have swaps to the default once. The guard stops a loop if that file fails too. */
-function swapToDefault(event: SyntheticEvent<HTMLImageElement>) {
-  const img = event.currentTarget;
-  if (img.dataset.fallback) return;
-  img.dataset.fallback = "1";
-  img.src = HEADSHOT_FALLBACK;
-}
+import { HEADSHOT_FALLBACK, swapToDefault } from "@/lib/headshot";
 
 type PlayerListProps = {
   team: Team;

@@ -9,7 +9,7 @@ import { ErrorLine } from "@/components/error-line";
 import { PassphraseDialog } from "@/components/passphrase-dialog";
 import { TradeForm } from "@/components/trade-form";
 import { Button } from "@/components/ui/button";
-import { ApiError, fetchTeams, type Team } from "@/lib/api";
+import { ApiError, fetchTeams, retryText, type Team } from "@/lib/api";
 import { clearPassphrase, getPassphrase, setPassphrase } from "@/lib/passphrase";
 
 type TeamsState =
@@ -72,13 +72,7 @@ export function Analyzer() {
     <div className="px-gutter py-sp-5">
       <PassphraseDialog open={passphrase === null} error={authError} onSubmit={handleSubmit} />
       {teams.status === "loading" && <p className="m-0 text-body text-mute">Loading teams</p>}
-      {teams.status === "rate-limited" && (
-        <ErrorLine>
-          {teams.retryAfter
-            ? `Too many requests. Try again in ${teams.retryAfter} seconds.`
-            : "Too many requests. Try again soon."}
-        </ErrorLine>
-      )}
+      {teams.status === "rate-limited" && <ErrorLine>{retryText(teams.retryAfter)}</ErrorLine>}
       {teams.status === "failed" && (
         <div className="flex flex-col items-start gap-sp-3">
           <ErrorLine>The API did not answer. Try again.</ErrorLine>
