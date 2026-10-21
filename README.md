@@ -50,3 +50,14 @@ Both values are build-time. Only `src/lib/config.ts` reads them.
 | --- | --- | --- |
 | `NEXT_PUBLIC_API_URL` | `https://api.cpcfantasy.com` | Base URL of the site API. |
 | `NEXT_PUBLIC_BASE_PATH` | empty string | Pages base path. Empty because the site lives at the domain root. |
+
+## Deploy
+
+A push to `main` builds the site and deploys it. The workflow is `.github/workflows/deploy.yml`.
+It installs, checks types, runs the tests, builds the export, and checks the export. A failed
+step stops the deploy.
+
+The Pages source is GitHub Actions. The `CNAME` file in `public/` keeps the custom domain.
+
+The Python publish in the pipeline repo writes the built week into `public/` and pushes to
+`main`. That push starts the deploy.

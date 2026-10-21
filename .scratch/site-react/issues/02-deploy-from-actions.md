@@ -6,9 +6,9 @@
 
 **Status:** ready-for-agent
 
-- [ ] A workflow on push to main installs, type checks, builds the export, and deploys it to Pages.
-- [ ] A failed type check or build stops the deploy.
+- [x] A workflow on push to main installs, type checks, builds the export, and deploys it to Pages.
+- [x] A failed type check or build stops the deploy.
 - [ ] Pages uses the Actions source. The CNAME and the custom domain stay.
-- [ ] The Python publish in the pipeline repo copies the week and the static files into the public folder of this repo. Its test covers the new target.
+- [x] The Python publish in the pipeline repo copies the week and the static files into the public folder of this repo. Its test covers the new target.
 - [ ] After the cut, `https://cpcfantasy.com/` and `https://cpcfantasy.com/2026/week-06/` serve the same content as before.
 - [ ] A dry run of the publish for week 6 lands live through Actions with no hand step.
