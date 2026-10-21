@@ -119,6 +119,8 @@ describe("Analyzer", () => {
     expect(radio(other, "Blitz Bakers").disabled).toBe(false);
 
     fireEvent.click(radio(other, "Blitz Bakers"));
+    // A pick collapses my picker to one row, so the test opens it again to see the other rows.
+    fireEvent.click(screen.getByRole("button", { name: "Change my team" }));
     await waitFor(() => expect(radio(mine, "Blitz Bakers").disabled).toBe(true));
     expect(radio(mine, "Gridiron Ghosts").disabled).toBe(false);
   });

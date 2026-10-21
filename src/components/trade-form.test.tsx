@@ -83,8 +83,27 @@ describe("TradeForm", () => {
     expect(submit().disabled).toBe(false);
   });
 
+  it("collapses a picked team to its row with a Change control", async () => {
+    fireEvent.click(radio("My team", "Pukancun on 3"));
+    await waitFor(() => expect(within(group("My team")).getAllByRole("radio")).toHaveLength(1));
+    expect((radio("My team", "Pukancun on 3") as HTMLInputElement).checked).toBe(true);
+    expect(within(group("My team")).getByRole("button", { name: "Change my team" })).toBeTruthy();
+    // The other picker stays open until it has a pick.
+    expect(within(group("The other team")).getAllByRole("radio")).toHaveLength(3);
+  });
+
+  it("shows the full list again after Change, with the pick kept", async () => {
+    fireEvent.click(radio("My team", "Pukancun on 3"));
+    await waitFor(() => expect(within(group("My team")).getAllByRole("radio")).toHaveLength(1));
+    fireEvent.click(screen.getByRole("button", { name: "Change my team" }));
+    expect(within(group("My team")).getAllByRole("radio")).toHaveLength(3);
+    expect((radio("My team", "Pukancun on 3") as HTMLInputElement).checked).toBe(true);
+    expect(within(group("My team")).queryByRole("button", { name: "Change my team" })).toBeNull();
+  });
+
   it("clears the picks of a side when its team changes", () => {
     pickTrade();
+    fireEvent.click(screen.getByRole("button", { name: "Change the other team" }));
     fireEvent.click(radio("The other team", "Punt Punks"));
     expect(submit().disabled).toBe(true);
     expect((screen.getByLabelText(/Ana One/) as HTMLInputElement).checked).toBe(true);

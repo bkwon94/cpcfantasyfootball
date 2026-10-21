@@ -1,12 +1,14 @@
 /**
  * A labelled list of teams as a radio group. Each row shows the avatar, the team name, and the manager.
- * The parent owns the choice, so two pickers can disable each other's pick.
+ * The parent owns the choice, so two pickers can disable each other's pick. A pick collapses the list to that row.
  */
 "use client";
 
-import type { SyntheticEvent } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { useEffect, useRef, useState, type SyntheticEvent } from "react";
 import type { Team } from "@/lib/api";
 import { basePath } from "@/lib/config";
+import { DURATION, EASE_OUT, INSTANT, useMotionOff } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
 const AVATAR_FALLBACK = `${basePath}/images/avatar-default.svg`;
@@ -30,18 +32,54 @@ type TeamPickerProps = {
 };
 
 export function TeamPicker({ label, teams, value, disabledId, onChange }: TeamPickerProps) {
-  return (
-    <fieldset className="m-0 min-w-0 border-0 p-0">
-      <legend className="mb-sp-2 p-0 text-label font-bold tracking-wide text-red uppercase">{label}</legend>
-      <div className="flex flex-col gap-sp-1">
-        {teams.map((team) => {
-          const disabled = team.roster_id === disabledId;
-          return (
+  // The list opens until a pick, then it collapses to the chosen row, so the form fits on a phone screen.
+  const [open, setOpen] = useState(true);
+  const off = useMotionOff();
+  const fieldset = useRef<HTMLFieldSetElement>(null);
+  // The Change button leaves the page when the list opens, so focus moves to the chosen radio instead of the body.
+  const focusAfterOpen = useRef(false);
+  const collapsed = value !== null && !open;
+  const shown = collapsed ? teams.filter((team) => team.roster_id === value) : teams;
+
+  useEffect(() => {
+    if (!open || !focusAfterOpen.current) return;
+    focusAfterOpen.current = false;
+    fieldset.current?.querySelector<HTMLInputElement>("input:checked")?.focus();
+  }, [open]);
+
+  function pick(rosterId: number) {
+    setOpen(false);
+    onChange(rosterId);
+  }
+
+  function reopen() {
+    focusAfterOpen.current = true;
+    setOpen(true);
+  }
+
+  const rows = shown.map((team) => {
+    const disabled = team.roster_id === disabledId;
+    return (
+      <motion.div
+        key={team.roster_id}
+        initial={off ? false : { height: 0, opacity: 0 }}
+        animate={{ height: "auto", opacity: 1 }}
+        exit={{ height: 0, opacity: 0 }}
+        transition={off ? INSTANT : { duration: DURATION.collapse, ease: EASE_OUT }}
+        className="overflow-hidden"
+      >
+        {/* The gap lives inside the animated box, so a closing row takes its gap with it and nothing jumps at the end. */}
+        <div className="pb-sp-1">
+          <div
+            className={cn(
+              "group flex min-h-touch items-center rounded-card bg-gry has-checked:bg-blk has-checked:text-on-dark has-[input:focus-visible]:outline-2 has-[input:focus-visible]:outline-offset-2 has-[input:focus-visible]:outline-red",
+              disabled && "opacity-40",
+            )}
+          >
             <label
-              key={team.roster_id}
               className={cn(
-                "group flex min-h-touch cursor-pointer items-center gap-sp-3 rounded-card bg-gry px-sp-3 py-sp-1 has-checked:bg-blk has-checked:text-on-dark has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-red",
-                disabled ? "cursor-not-allowed opacity-40" : "press",
+                "flex min-h-touch min-w-0 flex-1 cursor-pointer items-center gap-sp-3 px-sp-3 py-sp-1",
+                disabled ? "cursor-not-allowed" : "press",
               )}
             >
               {/* The input is visually hidden, and the row shows the choice. The input stays in the page for the keyboard and for screen readers. */}
@@ -51,7 +89,7 @@ export function TeamPicker({ label, teams, value, disabledId, onChange }: TeamPi
                 value={team.roster_id}
                 checked={value === team.roster_id}
                 disabled={disabled}
-                onChange={() => onChange(team.roster_id)}
+                onChange={() => pick(team.roster_id)}
                 className="sr-only"
               />
               <img
@@ -65,8 +103,28 @@ export function TeamPicker({ label, teams, value, disabledId, onChange }: TeamPi
                 <span className="text-meta text-mute group-has-checked:text-on-dark-muted">{team.manager}</span>
               </span>
             </label>
-          );
-        })}
+            {collapsed && (
+              <button
+                type="button"
+                onClick={reopen}
+                aria-label={`Change ${label.toLowerCase()}`}
+                className="press min-h-touch flex-none cursor-pointer rounded-card px-sp-4 text-label font-bold tracking-wide text-on-dark uppercase underline underline-offset-4"
+              >
+                Change
+              </button>
+            )}
+          </div>
+        </div>
+      </motion.div>
+    );
+  });
+
+  return (
+    <fieldset ref={fieldset} className="m-0 min-w-0 border-0 p-0">
+      <legend className="mb-sp-2 p-0 text-label font-bold tracking-wide text-red uppercase">{label}</legend>
+      <div className="flex flex-col">
+        {/* With motion off, the rows switch at once, with no exit to wait for. initial={false}: the full list shows at once on load. */}
+        {off ? rows : <AnimatePresence initial={false}>{rows}</AnimatePresence>}
       </div>
     </fieldset>
   );
