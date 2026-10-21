@@ -2,6 +2,7 @@
  * The client for the site API. Each call sends the league passphrase in the X-League-Passphrase header.
  * A failed call throws an ApiError, and the caller decides what the reader sees.
  */
+import type { AnalyzeResponse } from "@/lib/analyze-types";
 import { apiUrl, season } from "@/lib/config";
 
 export type TeamPlayer = {
@@ -64,4 +65,31 @@ export async function fetchTeams(passphrase: string): Promise<Team[]> {
   if (!response.ok) throw await toApiError(response);
   const body = (await response.json()) as { teams: (Omit<Team, "avatar"> & { avatar?: string | null })[] };
   return body.teams.map((team) => ({ ...team, avatar: team.avatar ?? null }));
+}
+
+/* One side of the trade: a roster and the player ids it gives. */
+export type AnalyzeSide = { roster_id: number; gives: string[] };
+
+export type AnalyzeRequest = {
+  season: number;
+  // The asker's side comes first.
+  sides: [AnalyzeSide, AnalyzeSide];
+  // The roster id of the team that asks for the grade.
+  asker: number;
+};
+
+/* The caller owns the AbortSignal, because a cold week can take 20 seconds and the caller sets the timeout. */
+export async function postAnalyze(
+  passphrase: string,
+  body: AnalyzeRequest,
+  signal: AbortSignal,
+): Promise<AnalyzeResponse> {
+  const response = await fetch(`${apiUrl}/analyze`, {
+    method: "POST",
+    headers: { "X-League-Passphrase": passphrase, "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+    signal,
+  });
+  if (!response.ok) throw await toApiError(response);
+  return (await response.json()) as AnalyzeResponse;
 }

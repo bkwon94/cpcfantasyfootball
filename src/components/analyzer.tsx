@@ -1,13 +1,13 @@
 /**
- * The analyzer page body: the passphrase dialog, the teams fetch, and the two team pickers.
- * It keeps the chosen roster ids in state, and the trade form reads them.
+ * The analyzer page body: the passphrase dialog, the teams fetch, and the trade form.
+ * It owns the passphrase, so a 401 from any call asks again.
  */
 "use client";
 
 import { useEffect, useState } from "react";
 import { ErrorLine } from "@/components/error-line";
 import { PassphraseDialog } from "@/components/passphrase-dialog";
-import { TeamPicker } from "@/components/team-picker";
+import { TradeForm } from "@/components/trade-form";
 import { Button } from "@/components/ui/button";
 import { ApiError, fetchTeams, type Team } from "@/lib/api";
 import { clearPassphrase, getPassphrase, setPassphrase } from "@/lib/passphrase";
@@ -28,8 +28,6 @@ export function Analyzer() {
   const [teams, setTeams] = useState<TeamsState>({ status: "idle" });
   // A new value starts the fetch again, for the retry button.
   const [attempt, setAttempt] = useState(0);
-  const [mine, setMine] = useState<number | null>(null);
-  const [other, setOther] = useState<number | null>(null);
 
   useEffect(() => {
     setPassphraseState(getPassphrase());
@@ -45,10 +43,7 @@ export function Analyzer() {
       .catch((error: unknown) => {
         if (!current) return;
         if (error instanceof ApiError && error.status === 401) {
-          clearPassphrase();
-          setPassphraseState(null);
-          setAuthError(WRONG_PASSPHRASE);
-          setTeams({ status: "idle" });
+          handleUnauthorized();
         } else if (error instanceof ApiError && error.status === 429) {
           setTeams({ status: "rate-limited", retryAfter: error.retryAfter });
         } else {
@@ -59,6 +54,13 @@ export function Analyzer() {
       current = false;
     };
   }, [passphrase, attempt]);
+
+  function handleUnauthorized() {
+    clearPassphrase();
+    setPassphraseState(null);
+    setAuthError(WRONG_PASSPHRASE);
+    setTeams({ status: "idle" });
+  }
 
   function handleSubmit(value: string) {
     setPassphrase(value);
@@ -85,14 +87,8 @@ export function Analyzer() {
           </Button>
         </div>
       )}
-      {teams.status === "ready" && (
-        <section aria-labelledby="pick-teams" className="flex flex-col gap-sp-5">
-          <h2 id="pick-teams" className="m-0 text-stat leading-stat font-black uppercase">
-            Pick the teams
-          </h2>
-          <TeamPicker label="My team" teams={teams.teams} value={mine} disabledId={other} onChange={setMine} />
-          <TeamPicker label="The other team" teams={teams.teams} value={other} disabledId={mine} onChange={setOther} />
-        </section>
+      {teams.status === "ready" && passphrase && (
+        <TradeForm teams={teams.teams} passphrase={passphrase} onUnauthorized={handleUnauthorized} />
       )}
     </div>
   );
