@@ -1,6 +1,6 @@
 /**
  * The small parts every week section shares: the chapter, the label, the tag, the blurb, the avatar, and the headshot.
- * They port the .chap, .lbl, .tag, .blurb, .avatar, and .headshot rules of public/static/style.css.
+ * They port the .chap, .lbl, .tag, .blurb, .avatar, and .headshot rules of the old stylesheet.
  */
 import type { ReactNode } from "react";
 import { basePath } from "@/lib/config";

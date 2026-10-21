@@ -1,6 +1,6 @@
 /**
  * The game changer hero: a black chapter with the player cutout on a red glow, the name, and the points.
- * It ports the .stage rules of public/static/style.css; the two gradients live in globals.css.
+ * It ports the .stage rules of the old stylesheet; the two gradients live in globals.css.
  */
 import { num } from "@/lib/format";
 import type { GameChanger as GameChangerData, HeadshotMap } from "@/lib/week-types";

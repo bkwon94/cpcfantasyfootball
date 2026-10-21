@@ -1,7 +1,7 @@
 # Cornerstone League Weekly
 
 The Cornerstone League Weekly site, at cpcfantasy.com. This repo holds the Next.js source. The
-Python pipeline repo publishes the built week pages into `public/`.
+Python pipeline repo publishes each week's `page.json` and images into `public/`. The site renders every page, the home page included, from that JSON.
 
 ## Install
 
@@ -60,5 +60,5 @@ step stops the deploy.
 
 The Pages source is GitHub Actions. The `CNAME` file in `public/` keeps the custom domain.
 
-The Python publish in the pipeline repo writes the built week into `public/` and pushes to
+The Python publish in the pipeline repo writes the week folder, with `page.json` and the images, into `public/` and pushes to
 `main`. That push starts the deploy.

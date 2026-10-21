@@ -16,7 +16,7 @@ type MastheadProps = {
 export function Masthead({ title = "CPC Fantasy", subtitle, children }: MastheadProps) {
   return (
     <header className="bg-blk px-gutter pt-sp-5 pb-sp-4 text-on-dark">
-      {/* A plain link, not next/link: the home page is a static file, not an app route. */}
+      {/* A plain link, not next/link: the brand link is a full-page load, and it needs no router. */}
       <a href={`${basePath}/`} className="flex items-center gap-sp-3 text-inherit no-underline">
         {/* The title next to the logo names the link, so the logo is decorative. */}
         <img src={`${basePath}/images/logo.png`} alt="" className="size-logo flex-none rounded-full" />

@@ -1,6 +1,6 @@
 /**
  * Root layout for the app. It sets the viewport meta and loads globals.css.
- * The static pages in public/ do not use this layout.
+ * Every page of the site uses it.
  */
 import "./globals.css";
 import type { Viewport } from "next";

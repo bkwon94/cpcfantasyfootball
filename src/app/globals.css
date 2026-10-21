@@ -10,7 +10,7 @@
 @custom-variant dark (&:is(.dark *));
 /*---break---
  */
-/* The brand tokens, ported from public/static/style.css. Static keeps every token on :root,
+/* The brand tokens, ported from the stylesheet of the old Jinja pages. Static keeps every token on :root,
    so the shadcn variables below can point at any token, even one without a utility. */
 @theme static {
     /* Brand colors. */
