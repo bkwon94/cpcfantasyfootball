@@ -54,6 +54,8 @@
     --spacing-divider: 28px;
     --spacing-avatar: 28px;
     --spacing-touch: 44px;
+    /* The player cutout on a trade chip. 64px keeps a column of chips short at 390. */
+    --spacing-headshot: 64px;
 
     /* The page is one centered column, so the same layout serves a phone and a desktop. */
     --container-page: 480px;
@@ -77,6 +79,9 @@
     /* Letter spacing for uppercase labels. Wide is for titles, caps is for small subtitles and tags. */
     --tracking-wide: 0.16em;
     --tracking-caps: 0.1em;
+    /* Negative spacing for bold text: snug for a player name on a chip, grade for a big grade letter. */
+    --tracking-snug: -0.01em;
+    --tracking-grade: -0.03em;
 
     /* Radii: small for tags and bars, card for every grey card. */
     --radius-sm: 3px;
