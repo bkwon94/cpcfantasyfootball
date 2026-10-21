@@ -8,6 +8,11 @@ import { createCn } from "cn/config"
 // Without them cn reads text-label as a color and drops it next to text-red.
 export const cn = createCn({
   extend: {
+    // The spacing scale in globals.css adds names that cn does not know.
+    // Without them cn keeps both mb-sp-3 and mb-sp-1 instead of the last one.
+    theme: {
+      spacing: ["sp-0", "sp-1", "sp-2", "sp-3", "sp-4", "sp-5", "sp-6", "gutter", "award", "logo", "divider", "avatar", "touch", "headshot"],
+    },
     classGroups: {
       "font-size": [{ text: ["label", "meta", "row", "body", "lead", "stat", "score", "headline", "hero"] }],
     },

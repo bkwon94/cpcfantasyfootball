@@ -4,7 +4,7 @@
  */
 import { num } from "@/lib/format";
 import type { GameChanger as GameChangerData, HeadshotMap } from "@/lib/week-types";
-import { Blurb, Chapter, Headshot, headshotSrc, Label } from "./parts";
+import { Blurb, Chapter, Headshot, Label } from "./parts";
 
 export function GameChanger({
   gameChanger,
@@ -19,7 +19,7 @@ export function GameChanger({
   return (
     <Chapter dark>
       {/* The stage spans the card edge to edge. The cutout bleeds off the right and bottom edges,
-          so the player reads as part of the card, not a sticker on it. */}
+          so the player reads as part of the card and not as a separate image on top. */}
       <div className="stage relative -mx-gutter -mt-sp-5 mb-sp-4 grid overflow-hidden">
         {/* The name wraps inside 60 percent of the card, so a long name never runs under the face. */}
         <div className="relative z-3 max-w-[60%] px-gutter pt-sp-5 pb-sp-4 [grid-area:1/1]">
@@ -39,7 +39,8 @@ export function GameChanger({
           )}
         </div>
         <Headshot
-          src={headshotSrc(headshots, line.player_id)}
+          playerId={line.player_id}
+          headshots={headshots}
           className="relative z-1 -mr-[28%] block h-auto w-full self-end justify-self-end [grid-area:1/1]"
         />
       </div>

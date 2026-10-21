@@ -5,7 +5,7 @@
 import { num } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import type { HeadshotMap, LeaderBoard, LeaderRow } from "@/lib/week-types";
-import { Blurb, Chapter, Headshot, headshotSrc, Label } from "./parts";
+import { Blurb, Chapter, Headshot, Label } from "./parts";
 
 /* One line per row: rank, player, fantasy team, points. The player keeps its width first; the team takes what is left
    and truncates, so the points never leave the row. On a wide screen a half-width card drops the team under the player,
@@ -26,7 +26,7 @@ function Row({ row, headshots, wide }: { row: LeaderRow; headshots: HeadshotMap;
         )}
       >
         {/* The row headshot stays near the text height, so the row keeps about the height of a plain text row. */}
-        <Headshot src={headshotSrc(headshots, row.player_id)} lazy className="mr-sp-2 inline-block size-sp-5 rounded-full align-middle" />
+        <Headshot playerId={row.player_id} headshots={headshots} lazy className="mr-sp-2 inline-block size-sp-5 rounded-full align-middle" />
         <b>{row.player}</b>
         {row.nfl_team && (
           <>
@@ -51,11 +51,11 @@ function Row({ row, headshots, wide }: { row: LeaderRow; headshots: HeadshotMap;
   );
 }
 
-/* A lone last card on a wide screen spans the row, so it does not look lost. */
+/* A lone last card on a wide screen spans the row, so the row has no empty half. */
 function Board({ board, headshots, spans }: { board: LeaderBoard; headshots: HeadshotMap; spans: boolean }) {
   return (
     <div className={cn("rounded-card bg-gry p-sp-3", spans && "md:col-span-full")}>
-      <Label tight>{board.position}</Label>
+      <Label className="mb-sp-1">{board.position}</Label>
       {board.rows.length > 0 ? (
         <ol className="m-0 list-none p-0 text-row leading-tight">
           {board.rows.map((row) => (
@@ -93,7 +93,7 @@ export function PositionLeaders({
           />
         ))}
       </div>
-      {blurb && <Blurb gap>{blurb}</Blurb>}
+      {blurb && <Blurb className="mt-sp-3">{blurb}</Blurb>}
     </Chapter>
   );
 }

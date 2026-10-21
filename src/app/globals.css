@@ -240,7 +240,7 @@
         background: radial-gradient(closest-side, var(--color-red-glow), transparent);
     }
     /* The left-to-right gradient darkens the face under the text, so the name and points stay legible.
-       The bottom fade melts the chest crop into the card. */
+       The bottom fade turns the cut edge of the chest crop into the card color. */
     .stage::after {
         content: "";
         position: absolute;
