@@ -1,3 +1,7 @@
+/**
+ * shadcn Dialog primitive built on the Base UI dialog.
+ * It renders the modal overlay and its content, header, and footer parts.
+ */
 "use client"
 
 import * as React from "react"

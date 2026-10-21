@@ -1,3 +1,7 @@
+/**
+ * shadcn Input primitive built on the Base UI input.
+ * It renders a styled text field.
+ */
 import * as React from "react"
 import { Input as InputPrimitive } from "@base-ui/react/input"
 import { cn } from "@/lib/utils"

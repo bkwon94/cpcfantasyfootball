@@ -1,3 +1,7 @@
+/**
+ * shadcn Label primitive.
+ * It renders a styled form label element.
+ */
 "use client"
 
 import * as React from "react"
