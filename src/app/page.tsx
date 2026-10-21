@@ -3,6 +3,7 @@
  * It is a server component, so the list is part of the static export.
  */
 import type { Metadata } from "next";
+import type { ReactNode } from "react";
 import { Masthead, WeekLine } from "@/components/masthead";
 import { Reveal } from "@/components/reveal";
 import { Blurb, Chapter, Label } from "@/components/week/parts";
@@ -14,6 +15,22 @@ import { listWeekSummaries } from "@/lib/week-data";
 export const metadata: Metadata = {
   title: "Cornerstone League Weekly",
 };
+
+/* A plain anchor, like the masthead link. An anchor skips the router, so the caller adds the base path by hand. */
+function HomeRow({ href, first, children }: { href: string; first?: boolean; children: ReactNode }) {
+  return (
+    <a
+      href={href}
+      className={cn(
+        "press group block border-b border-rule py-sp-3 text-inherit no-underline",
+        // The label already gives the first row its top space.
+        first && "pt-0",
+      )}
+    >
+      {children}
+    </a>
+  );
+}
 
 export default function HomePage() {
   const weeks = listWeekSummaries();
@@ -29,21 +46,24 @@ export default function HomePage() {
         {weeks.map((week, index) => (
           // Each row reveals once with a short, capped stagger, so a row in a long season list never shows late.
           <Reveal key={week.href} delay={stagger(index)}>
-            {/* A plain anchor, like the masthead link. An anchor skips the router, so the code adds the base path by hand. */}
-            <a
-              href={`${basePath}${week.href}`}
-              className={cn(
-                "press group block border-b border-rule py-sp-3 text-inherit no-underline",
-                // The label already gives the first row its top space.
-                index === 0 && "pt-0",
-              )}
-            >
+            <HomeRow href={`${basePath}${week.href}`} first={index === 0}>
               <b className="mb-sp-1 block text-lead leading-tight group-hover:text-red">Week {week.number}</b>
               <span className="block text-meta text-mute tabular-nums">{week.dates}</span>
               <span className="block text-meta text-mute">{week.teams}</span>
-            </a>
+            </HomeRow>
           </Reveal>
         ))}
+      </Chapter>
+      <Chapter>
+        <Label>Tools</Label>
+        {/* The row reveals after the last week row, with the same capped stagger. */}
+        <Reveal delay={stagger(weeks.length)}>
+          <HomeRow href={`${basePath}/analyze/`} first>
+            <b className="mb-sp-1 block text-lead leading-tight group-hover:text-red">Trade Analyzer</b>
+            <span className="block text-meta text-mute">Grade a trade offer before you send it.</span>
+            <span className="block text-meta text-mute">League passphrase needed.</span>
+          </HomeRow>
+        </Reveal>
       </Chapter>
     </main>
   );

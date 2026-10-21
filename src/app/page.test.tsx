@@ -31,4 +31,10 @@ describe("HomePage", () => {
     render(<HomePage />);
     expect(screen.queryByText("No weeks are published yet.")).toBeNull();
   });
+
+  it("links the trade analyzer", () => {
+    render(<HomePage />);
+    const link = screen.getByRole("link", { name: /Trade Analyzer/ });
+    expect(link.getAttribute("href")).toMatch(/\/analyze\/$/);
+  });
 });
