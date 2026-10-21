@@ -1,14 +1,17 @@
 /**
- * Tests for the analyzer with the reduced-motion media query on. The content must show at rest at once.
+ * Tests for the analyzer, the week page, and the home page with the reduced-motion media query on. The content must show at rest at once.
  * matchMedia is a stub, and it must exist before Framer Motion first reads it, so the stub runs at the top of the file.
  */
 import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
 import { afterAll, afterEach, describe, expect, it, vi } from "vitest";
 import fixtureJson from "../../.scratch/site-react/fixtures/analyze-response.json";
+import HomePage from "@/app/page";
+import WeekPage from "@/app/[season]/[week]/page";
 import type { AnalyzeResponse } from "@/lib/analyze-types";
 import type { Team } from "@/lib/api";
 import Ledger from "./ledger";
 import { TradeForm } from "./trade-form";
+import { week6 } from "./week/fixture";
 
 vi.stubGlobal(
   "matchMedia",
@@ -71,5 +74,28 @@ describe("Reduced motion", () => {
     expect(status.getAttribute("aria-busy")).toBe("true");
     // The track is aria-hidden, so the query must include hidden elements to find the sweep if it existed.
     expect(within(status).queryByRole("presentation", { hidden: true })).toBeNull();
+  });
+});
+
+describe("Reduced motion on the static pages", () => {
+  it("shows every week page chapter at once", async () => {
+    render(await WeekPage({ params: Promise.resolve({ season: "2026", week: "week-06" }) }));
+    // One line from each chapter, from the top story to next week. The text must be there on the first render.
+    expect(screen.getByText("Matchup of the Week")).toBeTruthy();
+    expect(screen.getByText("Game Changer")).toBeTruthy();
+    expect(screen.getByText("WR · PIT · behold the lamb")).toBeTruthy();
+    expect(screen.getAllByText(week6.awards[0].title).length).toBeGreaterThan(0);
+    expect(screen.getByText("Position Leaders")).toBeTruthy();
+    expect(screen.getAllByText(week6.trades[0].sides[0].players[0].name).length).toBeGreaterThan(0);
+    expect(screen.getAllByRole("button", { name: /Read recap/ })).toHaveLength(week6.matchups.length);
+    expect(screen.getByText("The Median Game")).toBeTruthy();
+    expect(screen.getByText("Standings")).toBeTruthy();
+    expect(screen.getByText(`Next Week · Week ${week6.week + 1}`)).toBeTruthy();
+  });
+
+  it("shows every home page row at once", () => {
+    render(<HomePage />);
+    expect(screen.getByRole("link", { name: /Week 6/ })).toBeTruthy();
+    expect(screen.getByText("behold the lamb vs Bo Girds")).toBeTruthy();
   });
 });
