@@ -35,8 +35,8 @@ export default function HomePage() {
             )}
           >
             <b className="mb-sp-1 block text-lead leading-tight group-hover:text-red">Week {week.number}</b>
-            <span className="block text-meta text-muted tabular-nums">{week.dates}</span>
-            <span className="block text-meta text-muted">{week.teams}</span>
+            <span className="block text-meta text-mute tabular-nums">{week.dates}</span>
+            <span className="block text-meta text-mute">{week.teams}</span>
           </a>
         ))}
       </Chapter>
