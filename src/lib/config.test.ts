@@ -11,16 +11,19 @@ afterEach(() => {
 
 describe("config", () => {
   it("uses the defaults when the env is empty", async () => {
-    const { apiUrl, basePath } = await import("./config");
+    const { apiUrl, basePath, season } = await import("./config");
     expect(apiUrl).toBe("https://api.cpcfantasy.com");
     expect(basePath).toBe("");
+    expect(season).toBe(2026);
   });
 
   it("reads the env when it is set", async () => {
     vi.stubEnv("NEXT_PUBLIC_API_URL", "http://localhost:8080");
     vi.stubEnv("NEXT_PUBLIC_BASE_PATH", "/site");
-    const { apiUrl, basePath } = await import("./config");
+    vi.stubEnv("NEXT_PUBLIC_SEASON", "2027");
+    const { apiUrl, basePath, season } = await import("./config");
     expect(apiUrl).toBe("http://localhost:8080");
     expect(basePath).toBe("/site");
+    expect(season).toBe(2027);
   });
 });

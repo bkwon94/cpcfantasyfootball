@@ -44,12 +44,13 @@ pnpm typecheck
 
 ## Config
 
-Both values are build-time. Only `src/lib/config.ts` reads them.
+All values are build-time. Only `src/lib/config.ts` reads them.
 
 | Variable | Default | Meaning |
 | --- | --- | --- |
 | `NEXT_PUBLIC_API_URL` | `https://api.cpcfantasy.com` | Base URL of the site API. |
 | `NEXT_PUBLIC_BASE_PATH` | empty string | Pages base path. Empty because the site lives at the domain root. |
+| `NEXT_PUBLIC_SEASON` | `2026` | League season that the teams and analyze routes read. |
 
 ## Deploy
 
