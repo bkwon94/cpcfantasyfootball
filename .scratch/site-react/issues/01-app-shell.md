@@ -4,11 +4,11 @@
 
 **Blocked by:** None (can start immediately).
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] Next.js with the App Router, TypeScript, static export, trailing slashes on. Tailwind, shadcn, pnpm, Node 22.
-- [ ] The current home page, the week folders, and the static folder move into the public folder. A local export serves `/` and `/2026/week-06/` byte-identical to today.
-- [ ] The CNAME file survives the export.
-- [ ] The API URL and the Pages base are build-time config with a documented default.
-- [ ] The PRD, the fixtures, the prototype, and the tracker doc are committed. A `CLAUDE.md` names Claude Truckasaurus Tina and Brian Homie B-Rex.
-- [ ] A README section says how to install, run, build, and export.
+- [x] Next.js with the App Router, TypeScript, static export, trailing slashes on. Tailwind, shadcn, pnpm, Node 22.
+- [x] The current home page, the week folders, and the static folder move into the public folder. A local export serves `/` and `/2026/week-06/` byte-identical to today.
+- [x] The CNAME file survives the export.
+- [x] The API URL and the Pages base are build-time config with a documented default.
+- [x] The PRD, the fixtures, the prototype, and the tracker doc are committed. A `CLAUDE.md` names Claude Truckasaurus Tina and Brian Homie B-Rex.
+- [x] A README section says how to install, run, build, and export.
