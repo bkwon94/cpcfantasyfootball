@@ -38,6 +38,15 @@ describe("Standings", () => {
     expect(screen.getByText("698.30")).toBeTruthy();
   });
 
+  it("puts the cut line after the sixth row", () => {
+    renderStandings();
+    const cut = screen.getByRole("separator");
+    const before = week6.table.filter(
+      (row) => screen.getByText(row.team.name).compareDocumentPosition(cut) & Node.DOCUMENT_POSITION_FOLLOWING,
+    );
+    expect(before.map((row) => row.team.name)).toEqual(week6.table.slice(0, 6).map((row) => row.team.name));
+  });
+
   it("shows the note about the median game", () => {
     renderStandings();
     expect(screen.getByText(/Records include the weekly median game/)).toBeTruthy();

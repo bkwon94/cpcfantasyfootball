@@ -2,6 +2,7 @@
  * Next week: one grey card per game with both teams and their records, the Must Watch tag, and the blurb.
  * The week number comes from the page, so the label reads the week after the one on the page.
  */
+import { cn } from "@/lib/utils";
 import type { AvatarMap, NextGame, Team } from "@/lib/week-types";
 import { avatarSrc, Blurb, Chapter, Label, Tag, Who } from "./parts";
 
@@ -18,7 +19,7 @@ function Side({ team, avatars }: { team: Team; avatars: AvatarMap }) {
 
 function Game({ game, avatars, first }: { game: NextGame; avatars: AvatarMap; first: boolean }) {
   return (
-    <div className={first ? "rounded-card bg-gry p-sp-3" : "mt-sp-2 rounded-card bg-gry p-sp-3"}>
+    <div className={cn("rounded-card bg-gry p-sp-3", !first && "mt-sp-2")}>
       <div className="text-body leading-body font-extrabold">
         <Side team={game.a} avatars={avatars} />
         {/* The "vs" lines up under the names, past the avatar column. */}

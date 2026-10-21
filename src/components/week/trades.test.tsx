@@ -40,6 +40,17 @@ describe("Trades", () => {
     expect(screen.queryByText("For")).toBeNull();
   });
 
+  it("gives a four-side trade no For tag and shows all four teams", () => {
+    const [a, b] = week6.trades[0].sides;
+    const c = { ...a, team: { ...a.team, roster_id: 901, name: "Third Team" }, players: [], picks: ["2027 2nd round"] };
+    const d = { ...b, team: { ...b.team, roster_id: 902, name: "Fourth Team" }, players: [], picks: ["2028 1st round"] };
+    render(<Trades trades={[{ sides: [a, b, c, d] }]} avatars={week6.avatars} />);
+    expect(screen.queryByText("For")).toBeNull();
+    for (const name of [a.team.name, b.team.name, "Third Team", "Fourth Team"]) {
+      expect(screen.getAllByText(name).length).toBeGreaterThan(0);
+    }
+  });
+
   it("leaves the chapter out when the week has no trades", () => {
     const copy = { ...week6, trades: [] };
     const { container } = render(<Trades trades={copy.trades} avatars={copy.avatars} />);

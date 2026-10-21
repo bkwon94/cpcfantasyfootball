@@ -50,7 +50,7 @@ function Side({ side, avatars }: { side: TradeSide; avatars: AvatarMap }) {
 /* The divider runs the full card height between the two columns. The tag sits on it, level with the team names. */
 function For() {
   return (
-    <div className="relative row-span-3 flex flex-col items-center before:absolute before:inset-y-0 before:left-1/2 before:w-px before:bg-bar-off">
+    <div className="relative row-span-3 flex flex-col items-center before:absolute before:inset-y-0 before:left-1/2 before:w-px before:bg-divider">
       <span className="relative mt-sp-5 rounded-sm bg-red p-sp-1 text-label font-extrabold tracking-caps text-on-dark uppercase">
         For
       </span>

@@ -29,13 +29,23 @@ describe("AllMatchups", () => {
     const buttons = screen.getAllByRole("button", { name: "Read recap" });
     expect(buttons.length).toBe(6);
     expect(buttons[0].getAttribute("aria-expanded")).toBe("false");
-    expect(screen.queryByText(/with recent add Denver Broncos/)).toBeNull();
+    expect(buttons[0].getAttribute("aria-controls")).toBeTruthy();
+  });
+
+  it("keeps the recap text in the document, so find-in-page finds it", () => {
+    renderMatchups();
+    expect(screen.getByText(/with recent add Denver Broncos/)).toBeTruthy();
   });
 
   it("opens the recap with the top scorers, then closes it", () => {
     renderMatchups();
     const button = screen.getAllByRole("button", { name: "Read recap" })[0];
+    const panel = document.getElementById(button.getAttribute("aria-controls") ?? "");
+    expect(screen.getByText(/with recent add Denver Broncos/)).toBeTruthy();
+    expect(button.getAttribute("aria-expanded")).toBe("false");
+    expect(panel?.getAttribute("aria-hidden")).toBe("true");
     fireEvent.click(button);
+    expect(panel?.getAttribute("aria-hidden")).toBe("false");
     expect(button.textContent).toBe("Hide recap");
     expect(button.getAttribute("aria-expanded")).toBe("true");
     expect(screen.getByText("Top · Lil Fridge")).toBeTruthy();
@@ -45,6 +55,7 @@ describe("AllMatchups", () => {
     fireEvent.click(button);
     expect(button.textContent).toBe("Read recap");
     expect(button.getAttribute("aria-expanded")).toBe("false");
+    expect(panel?.getAttribute("aria-hidden")).toBe("true");
   });
 
   it("points the matchup of the week to the top story", () => {
@@ -55,8 +66,8 @@ describe("AllMatchups", () => {
   });
 
   it("shows a dash for a side with no top scorer", () => {
-    const [w, l] = week6.matchups[0].sides;
-    const matchup = { ...week6.matchups[0], sides: [w, { ...l, top: null }] as typeof week6.matchups[0]["sides"] };
+    const [winner, loser] = week6.matchups[0].sides;
+    const matchup = { ...week6.matchups[0], sides: [winner, { ...loser, top: null }] as typeof week6.matchups[0]["sides"] };
     render(<AllMatchups matchups={[matchup]} avatars={week6.avatars} />);
     fireEvent.click(screen.getByRole("button", { name: "Read recap" }));
     expect(screen.getByText("—")).toBeTruthy();

@@ -44,11 +44,11 @@ export function MedianGame({ median, blurb }: { median: Median | null; blurb?: s
             <div>
               <div className="mb-sp-0 text-meta leading-tight text-ink-2">{bar.team.name}</div>
               <div
-                className={cn("h-bar rounded-sm", bar.above ? "bg-red" : "bg-bar-off")}
+                className={cn("h-median-bar rounded-sm", bar.above ? "bg-red" : "bg-bar-off")}
                 style={{ width: `${bar.pct}%` }}
               />
             </div>
-            <b className="text-right leading-(--spacing-bar)">{num(bar.score)}</b>
+            <b className="text-right leading-(--spacing-median-bar)">{num(bar.score)}</b>
           </div>
         ))}
       </div>

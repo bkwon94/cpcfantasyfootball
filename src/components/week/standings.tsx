@@ -11,7 +11,7 @@ import { avatarSrc, Blurb, Chapter, Label, Who } from "./parts";
 const PLAYOFF_SPOTS = 6;
 
 const GRID =
-  "grid grid-cols-[var(--spacing-st-rank)_1fr_var(--spacing-st-wl)_var(--spacing-st-pts)] items-center gap-sp-2 border-b border-rule-dark text-row leading-tight tabular-nums";
+  "grid grid-cols-[var(--spacing-standings-rank)_1fr_var(--spacing-standings-record)_var(--spacing-standings-points)] items-center gap-sp-2 border-b border-rule-dark text-row leading-tight tabular-nums";
 
 /* The W-L and points columns align right, so the numbers line up on the last digit. */
 function Line({ cells, className }: { cells: [ReactNode, ReactNode, ReactNode, ReactNode]; className?: string }) {
@@ -46,7 +46,7 @@ export function Standings({ table, avatars }: { table: TableRow[]; avatars: Avat
               row.standing.points_for.toFixed(2),
             ]}
           />
-          {i + 1 === PLAYOFF_SPOTS && <div className={cn(GRID, "border-b-2 border-dashed border-red p-0")} />}
+          {i + 1 === PLAYOFF_SPOTS && <div role="separator" className={cn(GRID, "border-b-2 border-dashed border-red p-0")} />}
         </Fragment>
       ))}
       <Blurb dark className="mt-sp-3 text-meta">

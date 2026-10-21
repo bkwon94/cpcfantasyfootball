@@ -4,7 +4,7 @@
  */
 "use client";
 
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import { useId, useState } from "react";
 import { num, shortName } from "@/lib/format";
 import { DURATION, EASE_OUT, INSTANT, useMotionOff } from "@/lib/motion";
@@ -52,17 +52,19 @@ function Row({ matchup, avatars, first }: { matchup: Matchup; avatars: AvatarMap
   const off = useMotionOff();
   const panelId = useId();
   // The JSON puts the winner first. A tie has no winner, so neither side is bold.
-  const [w, l] = matchup.sides;
-  const bold = cn(w.winner && "font-extrabold text-red");
-  const panel = open && (
+  const [winner, loser] = matchup.sides;
+  const bold = cn(winner.winner && "font-extrabold text-red");
+  // The panel stays in the DOM when closed, so find-in-page still finds the recap text.
+  // Height 0 hides it from sight. aria-hidden and inert hide it from assistive tech and the tab order.
+  const panel = (
     // The panel animates height, an exception to the transform and opacity rule. The panel is short and opens
     // on a tap only, and a FLIP of the rows below would move every other matchup.
     <motion.div
-      key="panel"
       id={panelId}
-      initial={off ? false : { height: 0, opacity: 0 }}
-      animate={{ height: "auto", opacity: 1 }}
-      exit={{ height: 0, opacity: 0 }}
+      aria-hidden={!open}
+      inert={!open}
+      initial={false}
+      animate={open ? { height: "auto", opacity: 1 } : { height: 0, opacity: 0 }}
       transition={off ? INSTANT : { duration: DURATION.collapse, ease: EASE_OUT }}
       className="overflow-hidden"
     >
@@ -80,22 +82,22 @@ function Row({ matchup, avatars, first }: { matchup: Matchup; avatars: AvatarMap
         )}
       >
         <div className="flex min-w-0 items-center gap-sp-2 text-row leading-tight font-semibold hyphens-auto">
-          <Avatar src={avatarSrc(avatars, w.team.roster_id)} />
+          <Avatar src={avatarSrc(avatars, winner.team.roster_id)} />
           <span>
-            <span className={bold}>{w.team.name}</span> <span className={bold}>{num(w.score)}</span>
+            <span className={bold}>{winner.team.name}</span> <span className={bold}>{num(winner.score)}</span>
           </span>
         </div>
         <div className="flex min-w-0 items-center justify-end gap-sp-2 text-right text-row leading-tight font-semibold hyphens-auto">
           {/* One string, so React writes one text node, as the old page did. */}
-          <span>{`${num(l.score)} ${l.team.name}`}</span>
-          <Avatar src={avatarSrc(avatars, l.team.roster_id)} />
+          <span>{`${num(loser.score)} ${loser.team.name}`}</span>
+          <Avatar src={avatarSrc(avatars, loser.team.roster_id)} />
         </div>
       </div>
       {/* 44px is the smallest comfortable touch target. The color change on open is instant, so only the press animates. */}
       <button
         type="button"
         aria-expanded={open}
-        aria-controls={open ? panelId : undefined}
+        aria-controls={panelId}
         onClick={() => setOpen(!open)}
         className={cn(
           "press mb-sp-3 flex min-h-touch w-full cursor-pointer items-center justify-center gap-sp-2 rounded-card border-0 px-sp-3",
@@ -108,13 +110,12 @@ function Row({ matchup, avatars, first }: { matchup: Matchup; avatars: AvatarMap
         <span
           aria-hidden
           className={cn(
-            "inline-block size-chev border-r-2 border-b-2 border-current transition-[translate,rotate] duration-200 ease-out",
+            "inline-block size-chevron border-r-2 border-b-2 border-current transition-[translate,rotate] duration-200 ease-out",
             open ? "translate-y-px -rotate-135" : "-translate-y-sp-0 rotate-45",
           )}
         />
       </button>
-      {/* With motion off, the panel switches at once, with no exit to wait for. */}
-      {off ? panel : <AnimatePresence initial={false}>{panel}</AnimatePresence>}
+      {panel}
     </div>
   );
 }

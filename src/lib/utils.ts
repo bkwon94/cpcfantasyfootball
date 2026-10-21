@@ -11,7 +11,7 @@ export const cn = createCn({
     // The spacing scale in globals.css adds names that cn does not know.
     // Without them cn keeps both mb-sp-3 and mb-sp-1 instead of the last one.
     theme: {
-      spacing: ["sp-0", "sp-1", "sp-2", "sp-3", "sp-4", "sp-5", "sp-6", "gutter", "award", "logo", "divider", "avatar", "touch", "headshot", "chev", "bar", "val-col", "st-rank", "st-wl", "st-pts"],
+      spacing: ["sp-0", "sp-1", "sp-2", "sp-3", "sp-4", "sp-5", "sp-6", "gutter", "award", "logo", "divider", "avatar", "touch", "headshot", "chevron", "median-bar", "val-col", "standings-rank", "standings-record", "standings-points"],
     },
     classGroups: {
       "font-size": [{ text: ["label", "meta", "row", "body", "lead", "stat", "score", "headline", "hero"] }],
