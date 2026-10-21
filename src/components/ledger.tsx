@@ -34,12 +34,9 @@ function Chapter({ children }: { children: ReactNode }) {
   return <section className="border-b-(length:--chap-rule) border-gry px-gutter py-sp-5">{children}</section>;
 }
 
-function Label({ children, className }: { children: ReactNode; className?: string }) {
-  return (
-    <div className={cn("mb-sp-3 text-label leading-tight font-bold tracking-wide text-red uppercase", className)}>
-      {children}
-    </div>
-  );
+/* No cn call here: cn reads text-label as a color and drops it next to text-red. */
+function Label({ children }: { children: ReactNode }) {
+  return <div className="mb-sp-3 text-label leading-tight font-bold tracking-wide text-red uppercase">{children}</div>;
 }
 
 function Blurb({ children }: { children: ReactNode }) {
@@ -241,8 +238,8 @@ export default function Ledger({ doc }: { doc: AnalyzeResponse }) {
 
       <Chapter>
         {sides.map((side, i) => (
-          <div key={side.roster_id}>
-            <Label className={cn(i > 0 && "mt-sp-4")}>
+          <div key={side.roster_id} className={i > 0 ? "mt-sp-4" : undefined}>
+            <Label>
               {side.team}
               {side.mine && " · your side"}
             </Label>
