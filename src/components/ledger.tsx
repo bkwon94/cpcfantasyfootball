@@ -4,9 +4,11 @@
  */
 "use client";
 
+import { motion } from "framer-motion";
 import type { ReactNode } from "react";
 import type { Adjuster, AnalyzeResponse, GradedSide, Player, TradeSide } from "@/lib/analyze-types";
 import { swapToDefault } from "@/lib/headshot";
+import { DURATION, EASE_OUT, GRADE_STAGGER, INSTANT, RISE, useMotionOff } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
 /* A trade side joined to its grade, so each column reads from one object. */
@@ -46,12 +48,19 @@ function Blurb({ children }: { children: ReactNode }) {
   return <p className="m-0 text-body text-ink-2">{children}</p>;
 }
 
-/* The grade letter rises in once, so the grade lands with a beat. Reduced motion shows it at rest. */
-function GradeLetter({ letter }: { letter: string }) {
+/* The grade letter rises in once, so the grade lands with a beat. The order sets the delay, so the asker's letter lands first.
+   With motion off, both letters show at rest at once. */
+function GradeLetter({ letter, order }: { letter: string; order: number }) {
+  const off = useMotionOff();
   return (
-    <span className="inline-block text-headline leading-none font-black tracking-grade motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-2 motion-safe:duration-(--duration-grade) motion-safe:ease-(--ease-out)">
+    <motion.span
+      className="inline-block text-headline leading-none font-black tracking-grade"
+      initial={off ? false : { opacity: 0, y: RISE }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={off ? INSTANT : { duration: DURATION.grade, ease: EASE_OUT, delay: order * GRADE_STAGGER }}
+    >
       {letter}
-    </span>
+    </motion.span>
   );
 }
 
@@ -155,7 +164,7 @@ function LedgerTable({ sides }: { sides: Side[] }) {
           <th scope="col" className="border-b border-blk px-sp-1 py-sp-2 text-left align-top">
             <Caps>Adjuster</Caps>
           </th>
-          {sides.map((side) => (
+          {sides.map((side, order) => (
             <th
               key={side.roster_id}
               scope="col"
@@ -166,7 +175,7 @@ function LedgerTable({ sides }: { sides: Side[] }) {
                 {side.mine && (
                   <Caps className="text-red">Your side</Caps>
                 )}
-                <GradeLetter letter={side.final_letter} />
+                <GradeLetter letter={side.final_letter} order={order} />
               </div>
             </th>
           ))}

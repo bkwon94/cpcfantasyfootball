@@ -181,8 +181,7 @@
     /* Press feedback for every pressable element. Only transform animates, so it stays on the GPU. */
     --press: transform 140ms var(--ease-out);
 
-    /* The grade letter reveal. */
-    --duration-grade: 360ms;
+    /* The motion timings of the analyzer live in src/lib/motion.ts, because Framer Motion takes them as numbers. */
 }
 /*---break---
  */

@@ -4,6 +4,7 @@
  */
 "use client";
 
+import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import Ledger from "@/components/ledger";
 import { ErrorLine } from "@/components/error-line";
@@ -13,6 +14,7 @@ import { Button } from "@/components/ui/button";
 import type { AnalyzeResponse } from "@/lib/analyze-types";
 import { ApiError, postAnalyze, retryText, type Team } from "@/lib/api";
 import { season } from "@/lib/config";
+import { DURATION, useMotionOff } from "@/lib/motion";
 
 // A cold chart week takes 20 seconds or more, so 30 seconds leaves room before the page gives up.
 const TIMEOUT_MS = 30_000;
@@ -46,6 +48,28 @@ function toGradeError(error: unknown, timedOut: boolean): GradeState & { status:
 /* One side of the trade: the picked roster and the player ids it gives. */
 type Side = { rosterId: number | null; picks: string[] };
 type SideName = "mine" | "other";
+
+/* The grading status. A red bar sweeps along a grey track, so a 20-second wait reads as work in progress.
+   Only transform animates. With motion off, the track stays as a still grey line. */
+function GradingStatus() {
+  const off = useMotionOff();
+  return (
+    <div role="status" className="flex flex-col gap-sp-2">
+      <p className="m-0 text-body font-bold">Grading the trade</p>
+      <div aria-hidden="true" className="relative h-sp-1 overflow-hidden rounded-sm bg-gry">
+        {!off && (
+          <motion.div
+            className="absolute inset-y-0 left-0 w-1/3 bg-red"
+            initial={{ x: "-100%" }}
+            animate={{ x: "300%" }}
+            transition={{ duration: DURATION.sweep, ease: "easeInOut", repeat: Infinity }}
+          />
+        )}
+      </div>
+      <p className="m-0 text-meta text-mute">This can take about 20 seconds.</p>
+    </div>
+  );
+}
 
 export function TradeForm({ teams, passphrase, onUnauthorized }: TradeFormProps) {
   const [sides, setSides] = useState<{ mine: Side; other: Side }>({
@@ -141,17 +165,12 @@ export function TradeForm({ teams, passphrase, onUnauthorized }: TradeFormProps)
         >
           Grade the trade
         </Button>
-        {grading && (
-          <div role="status" className="flex flex-col gap-sp-1">
-            <p className="m-0 text-body font-bold">Grading the trade</p>
-            <p className="m-0 text-meta text-mute">This can take about 20 seconds.</p>
-          </div>
-        )}
+        {grading && <GradingStatus />}
         {grade.status === "error" && (
-          <div className="flex flex-col items-start gap-sp-3">
+          <div className="flex flex-col gap-sp-3">
             <ErrorLine>{grade.message}</ErrorLine>
             {grade.retry && (
-              <Button className="press h-touch rounded-card px-sp-4 text-lead font-bold" onClick={submit}>
+              <Button className="press h-touch w-full rounded-card px-sp-4 text-lead font-bold" onClick={submit}>
                 Try again
               </Button>
             )}
