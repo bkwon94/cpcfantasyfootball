@@ -75,7 +75,8 @@ function Row({ matchup, avatars, index }: { matchup: Matchup; avatars: AvatarMap
   );
   return (
     // The row is the reveal box, so last:border-b-0 still finds the last row.
-    <Reveal className="border-b border-rule last:border-b-0" delay={stagger(index)}>
+    // The label is the first step of the stagger, so the first row is the second.
+    <Reveal className="border-b border-rule last:border-b-0" delay={stagger(index + 1)}>
       {/* minmax(0,1fr) keeps both columns equal, even when one name has a long word.
           The chapter label already gives the first row its top space. */}
       <div
@@ -123,10 +124,13 @@ function Row({ matchup, avatars, index }: { matchup: Matchup; avatars: AvatarMap
   );
 }
 
+/* The label and the rows stagger in one by one, so the chapter itself has no reveal. */
 export function AllMatchups({ matchups, avatars }: { matchups: Matchup[]; avatars: AvatarMap }) {
   return (
     <Chapter>
-      <Label>All Matchups</Label>
+      <Reveal delay={stagger(0)}>
+        <Label>All Matchups</Label>
+      </Reveal>
       {matchups.map((matchup, i) => (
         <Row key={matchup.id} matchup={matchup} avatars={avatars} index={i} />
       ))}

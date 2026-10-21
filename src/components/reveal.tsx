@@ -13,11 +13,16 @@ const VIEW_MARGIN = "0% 0% -8% 0%";
 
 const HIDDEN = { opacity: 0, y: RISE };
 const SHOWN = { opacity: 1, y: 0 };
+// A box with no rise only fades in, for a backdrop such as the hero glow.
+const FADE_HIDDEN = { opacity: 0 };
+const FADE_SHOWN = { opacity: 1 };
 
 type RevealProps = {
   children?: ReactNode;
   // "view" waits for the viewport. "mount" plays at once, for the content of a route.
   trigger?: "view" | "mount";
+  // False fades the box in with no rise.
+  rise?: boolean;
   // The stagger of a card in a list, in seconds.
   delay?: number;
   duration?: number;
@@ -25,7 +30,14 @@ type RevealProps = {
   className?: string;
 };
 
-export function Reveal({ children, trigger = "view", delay = 0, duration = DURATION.reveal, className }: RevealProps) {
+export function Reveal({
+  children,
+  trigger = "view",
+  rise = true,
+  delay = 0,
+  duration = DURATION.reveal,
+  className,
+}: RevealProps) {
   const off = useMotionOff();
   // The attribute turns off the CSS safety rule in globals.css, so Framer Motion owns the reveal after hydration.
   // Every Reveal runs this effect, and the set is the same each time, so the first one to mount is enough.
@@ -37,12 +49,13 @@ export function Reveal({ children, trigger = "view", delay = 0, duration = DURAT
   // The data-reveal rule in globals.css shows the content at rest before the script loads, for reduced motion and no script.
   // A browser with no IntersectionObserver never reports the viewport, so the content plays on mount and never stays hidden.
   const watch = trigger === "view" && typeof IntersectionObserver !== "undefined";
-  const play = off || !watch ? { animate: SHOWN } : { whileInView: SHOWN, viewport: { once: true, margin: VIEW_MARGIN } };
+  const shown = rise ? SHOWN : FADE_SHOWN;
+  const play = off || !watch ? { animate: shown } : { whileInView: shown, viewport: { once: true, margin: VIEW_MARGIN } };
   return (
     <motion.div
       data-reveal
       className={className}
-      initial={HIDDEN}
+      initial={rise ? HIDDEN : FADE_HIDDEN}
       {...play}
       transition={off ? INSTANT : { duration, ease: EASE_OUT, delay }}
     >

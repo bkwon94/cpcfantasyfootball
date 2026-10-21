@@ -1,6 +1,7 @@
 /**
  * Tests for the analyzer, the week page, and the home page with the reduced-motion media query on. The content must show at rest at once.
  * matchMedia is a stub, and it must exist before Framer Motion first reads it, so the stub runs at the top of the file.
+ * jsdom ignores opacity, so this test proves the text is present. The browser capture 12-week-off-390.png proves no motion.
  */
 import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
 import { afterAll, afterEach, describe, expect, it, vi } from "vitest";

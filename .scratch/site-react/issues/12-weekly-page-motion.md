@@ -16,3 +16,6 @@
 ## Comments
 
 - Done: one `Reveal` client leaf in `src/components/reveal.tsx` animates the hero, the chapters, the cards, the rows, and the route enter of both pages. With reduced motion, a 390 wide check in the browser shows every section at rest at once, and the rest state matches `10-week-full-today-390.png` pixel for pixel.
+- Fix pass: each element sits inside one reveal only. The route enter is gone. The masthead and the top story show at once. The hero plays on mount, and the glow fades with no rise. Awards, Trades, and All Matchups stagger the label and the cards. Every other chapter below the hero reveals as a unit through `Chapter reveal`. The home rows stagger with no outer wrap.
+- No-script result: a `noscript` style shows every reveal box at rest when scripts are off. A CSS safety rule shows every reveal box after `--delay-safety` (1.5s) if the script never hydrates. A copy of `out/` with every `_next/static` JS file removed shows all 26 `[data-reveal]` boxes at opacity 1 after 3 seconds, with `data-hydrated` absent. With the whole `_next/static` folder removed, the stylesheet goes too, so no CSS rule can apply and the boxes stay at opacity 0.
+- The rest capture `12-week-rest-390.png` and the reduced-motion capture `12-week-off-390.png` both match `10-week-full-today-390.png` pixel for pixel.

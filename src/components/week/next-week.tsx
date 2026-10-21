@@ -50,7 +50,7 @@ export function NextWeek({
   blurb?: string;
 }) {
   return (
-    <Chapter>
+    <Chapter reveal>
       <Label>{`Next Week · Week ${week + 1}`}</Label>
       {games.map((game, i) => (
         <Game key={game.a.roster_id} game={game} avatars={avatars} first={i === 0} />

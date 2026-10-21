@@ -3,6 +3,7 @@
  * They port the .chap, .lbl, .tag, .blurb, .avatar, and .headshot rules of the source stylesheet.
  */
 import type { ReactNode } from "react";
+import { Reveal } from "@/components/reveal";
 import { basePath } from "@/lib/config";
 import { HEADSHOT_FALLBACK } from "@/lib/headshot";
 import type { AvatarMap, HeadshotMap } from "@/lib/week-types";
@@ -15,9 +16,21 @@ export function avatarSrc(avatars: AvatarMap, rosterId: number): string {
   return avatars[String(rosterId)] ?? AVATAR_FALLBACK;
 }
 
-/* A dark chapter is the black card. Its label and blurb take the dark prop for their on-dark colors. */
-export function Chapter({ dark, id, children }: { dark?: boolean; id?: string; children: ReactNode }) {
-  return (
+/* A dark chapter is the black card. Its label and blurb take the dark prop for their on-dark colors.
+   A chapter with reveal fades and rises in once as a unit, when it enters the view. A chapter with its own
+   card stagger or hero motion leaves reveal off, so no element sits inside two reveals. */
+export function Chapter({
+  dark,
+  id,
+  reveal,
+  children,
+}: {
+  dark?: boolean;
+  id?: string;
+  reveal?: boolean;
+  children: ReactNode;
+}) {
+  const section = (
     <section
       id={id}
       className={cn("border-b-(length:--chap-rule) border-gry px-gutter py-sp-5", dark && "bg-blk text-on-dark")}
@@ -25,6 +38,7 @@ export function Chapter({ dark, id, children }: { dark?: boolean; id?: string; c
       {children}
     </section>
   );
+  return reveal ? <Reveal>{section}</Reveal> : section;
 }
 
 /* The red uppercase label that opens a chapter or a card. A label inside a card passes mb-sp-1 to sit close to its content. */

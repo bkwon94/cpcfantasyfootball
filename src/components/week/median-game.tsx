@@ -20,7 +20,7 @@ function Kpi({ value, label }: { value: string; label: string }) {
 export function MedianGame({ median, blurb }: { median: Median | null; blurb?: string }) {
   if (median === null) return null;
   return (
-    <Chapter>
+    <Chapter reveal>
       <Label>The Median Game</Label>
       <div className="grid grid-cols-[1fr_1fr_1fr] gap-sp-2">
         <Kpi value={num(median.value)} label="Median" />

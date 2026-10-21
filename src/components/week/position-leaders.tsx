@@ -80,7 +80,7 @@ export function PositionLeaders({
 }) {
   const lastSpans = leaders.length % 2 === 1;
   return (
-    <Chapter id="leaders">
+    <Chapter id="leaders" reveal>
       <Label>Position Leaders</Label>
       {/* minmax(0,1fr) caps the column at the section width, so a one-line row cannot grow past the gutter. */}
       <div className="grid grid-cols-[minmax(0,1fr)] gap-sp-2 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">

@@ -64,7 +64,8 @@ function TradeCard({ trade, avatars, index }: { trade: Trade; avatars: AvatarMap
   // Three or four sides have no single other side, so only a pair gets the For tag.
   const pair = trade.sides.length === 2;
   return (
-    <Reveal className={cn("rounded-card bg-gry p-sp-3", index > 0 && "mt-sp-2")} delay={stagger(index)}>
+    // The label is the first step of the stagger, so the first card is the second.
+    <Reveal className={cn("rounded-card bg-gry p-sp-3", index > 0 && "mt-sp-2")} delay={stagger(index + 1)}>
       <div
         className={cn(
           "grid gap-x-sp-2 gap-y-sp-4",
@@ -82,12 +83,15 @@ function TradeCard({ trade, avatars, index }: { trade: Trade; avatars: AvatarMap
   );
 }
 
-/* A week with no trades has no trades chapter, as the old page did. */
+/* A week with no trades has no trades chapter, as the old page did.
+   The label and the cards stagger in one by one, so the chapter itself has no reveal. */
 export function Trades({ trades, avatars }: { trades: Trade[]; avatars: AvatarMap }) {
   if (trades.length === 0) return null;
   return (
     <Chapter id="trades">
-      <Label>Trades</Label>
+      <Reveal delay={stagger(0)}>
+        <Label>Trades</Label>
+      </Reveal>
       {trades.map((trade, i) => (
         <TradeCard key={i} trade={trade} avatars={avatars} index={i} />
       ))}

@@ -28,7 +28,7 @@ function Line({ cells, className }: { cells: [ReactNode, ReactNode, ReactNode, R
 
 export function Standings({ table, avatars }: { table: TableRow[]; avatars: AvatarMap }) {
   return (
-    <Chapter dark>
+    <Chapter dark reveal>
       <Label dark>Standings</Label>
       <Line
         cells={["#", "Team", "W-L", "Pts"]}

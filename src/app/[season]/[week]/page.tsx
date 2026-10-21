@@ -4,7 +4,6 @@
  */
 import type { Metadata } from "next";
 import { Masthead, WeekLine } from "@/components/masthead";
-import { Reveal } from "@/components/reveal";
 import { AllMatchups } from "@/components/week/all-matchups";
 import { Awards } from "@/components/week/awards";
 import { GameChanger } from "@/components/week/game-changer";
@@ -14,7 +13,6 @@ import { NextWeek } from "@/components/week/next-week";
 import { PositionLeaders } from "@/components/week/position-leaders";
 import { Standings } from "@/components/week/standings";
 import { Trades } from "@/components/week/trades";
-import { DURATION } from "@/lib/motion";
 import { listWeeks, loadWeek, type WeekRef } from "@/lib/week-data";
 
 type Props = { params: Promise<WeekRef> };
@@ -49,42 +47,21 @@ export default async function WeekPage({ params }: Props) {
           {`${page.dates} · Published ${page.publish_date}`}
         </div>
       </Masthead>
-      {/* The content of the route fades and rises in once, as the analyzer does. The masthead stays still. */}
-      <Reveal trigger="mount" duration={DURATION.page}>
-        {/* The first chapter is above the fold, so the route enter is its reveal. The hero has its own three beats. */}
-        <MatchupOfTheWeek pick={page.pick} avatars={page.avatars} blurb={page.blurbs.motw} />
-        {page.game_changer && (
-          <GameChanger gameChanger={page.game_changer} headshots={page.headshots} blurb={page.blurbs.game_changer} />
-        )}
-        {/* Each chapter below the hero reveals once, when the reader scrolls to it. */}
-        <Reveal>
-          <Awards awards={page.awards} headshots={page.headshots} blurb={page.blurbs.awards} />
-        </Reveal>
-        {page.leaders.length > 0 && (
-          <Reveal>
-            <PositionLeaders leaders={page.leaders} headshots={page.headshots} blurb={page.blurbs.position_leaders} />
-          </Reveal>
-        )}
-        {page.trades.length > 0 && (
-          <Reveal>
-            <Trades trades={page.trades} avatars={page.avatars} />
-          </Reveal>
-        )}
-        <Reveal>
-          <AllMatchups matchups={page.matchups} avatars={page.avatars} />
-        </Reveal>
-        {page.median && (
-          <Reveal>
-            <MedianGame median={page.median} blurb={page.blurbs.median} />
-          </Reveal>
-        )}
-        <Reveal>
-          <Standings table={page.table} avatars={page.avatars} />
-        </Reveal>
-        <Reveal>
-          <NextWeek week={page.week} games={page.next} avatars={page.avatars} blurb={page.blurbs.next_week} />
-        </Reveal>
-      </Reveal>
+      {/* The masthead and the top story show at once. The hero plays its own motion on load.
+          Each chapter below reveals once as it enters the view, as a unit or card by card. */}
+      <MatchupOfTheWeek pick={page.pick} avatars={page.avatars} blurb={page.blurbs.motw} />
+      {page.game_changer && (
+        <GameChanger gameChanger={page.game_changer} headshots={page.headshots} blurb={page.blurbs.game_changer} />
+      )}
+      <Awards awards={page.awards} headshots={page.headshots} blurb={page.blurbs.awards} />
+      {page.leaders.length > 0 && (
+        <PositionLeaders leaders={page.leaders} headshots={page.headshots} blurb={page.blurbs.position_leaders} />
+      )}
+      <Trades trades={page.trades} avatars={page.avatars} />
+      <AllMatchups matchups={page.matchups} avatars={page.avatars} />
+      <MedianGame median={page.median} blurb={page.blurbs.median} />
+      <Standings table={page.table} avatars={page.avatars} />
+      <NextWeek week={page.week} games={page.next} avatars={page.avatars} blurb={page.blurbs.next_week} />
     </main>
   );
 }

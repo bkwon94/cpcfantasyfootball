@@ -23,9 +23,10 @@ export function GameChanger({
       {/* The stage spans the card edge to edge. The cutout bleeds off the right and bottom edges,
           so the player reads as part of the card and not as a separate image on top. */}
       <div className="stage relative -mx-gutter -mt-sp-5 mb-sp-4 grid overflow-hidden">
-        {/* The hero lands in three beats: the glow, then the cutout, then the points. The name and the label do not move,
-            so the reader can start to read at once. */}
-        <Reveal className="stage-glow" delay={HERO_DELAY.glow} duration={DURATION.hero} />
+        {/* The hero shows in three steps on load: the glow, then the cutout, then the points. The name and the label
+            do not move, so the reader can start to read at once. The glow is a backdrop, so it fades in with no rise.
+            The chapter has no reveal of its own, so no hero part sits inside two reveals. */}
+        <Reveal className="stage-glow" trigger="mount" rise={false} delay={HERO_DELAY.glow} duration={DURATION.hero} />
         {/* The name wraps inside 60 percent of the card, so a long name never runs under the face. */}
         <div className="relative z-3 max-w-[60%] px-gutter pt-sp-5 pb-sp-4 [grid-area:1/1]">
           <Label dark>Game Changer</Label>
@@ -38,6 +39,7 @@ export function GameChanger({
           </div>
           <Reveal
             className="m-0 text-hero leading-hero font-black tracking-grade text-red-lt tabular-nums"
+            trigger="mount"
             delay={HERO_DELAY.points}
             duration={DURATION.hero}
           >
@@ -50,6 +52,7 @@ export function GameChanger({
         {/* The reveal box takes the grid place of the cutout, so the cutout keeps its size and its bleed. */}
         <Reveal
           className="relative z-1 -mr-[28%] w-full self-end justify-self-end [grid-area:1/1]"
+          trigger="mount"
           delay={HERO_DELAY.cutout}
           duration={DURATION.hero}
         >
