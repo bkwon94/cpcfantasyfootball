@@ -12,3 +12,5 @@
 - [ ] Every animation is off under the reduced-motion media query. A test or a manual check with reduced motion on shows the same content with no motion.
 - [ ] Only transform and opacity animate.
 - [ ] Every state of the page is checked at 390 wide: dialog, pickers, form, loading, ledger, each error. No horizontal scroll in any state.
+- [ ] After a team is picked, its picker collapses to the chosen row with a Change control, so the form fits in about half the height.
+- [ ] A walk-through against the local API with an Anthropic key shows the live ledger at 390 wide and the grade time under 30 seconds.
