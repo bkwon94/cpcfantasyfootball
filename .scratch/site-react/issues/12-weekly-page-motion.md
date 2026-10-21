@@ -4,11 +4,15 @@
 
 **Blocked by:** 10 Week route, bottom half.
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] The game changer hero animates in on load.
-- [ ] Sections and cards reveal on scroll, once, with no layout shift.
-- [ ] The week route and the home page transition in.
-- [ ] Every animation is off under the reduced-motion media query. A check with reduced motion on shows the same content with no motion.
-- [ ] Only transform and opacity animate.
-- [ ] Every section is checked at 390 wide with motion on and off. No horizontal scroll.
+- [x] The game changer hero animates in on load.
+- [x] Sections and cards reveal on scroll, once, with no layout shift.
+- [x] The week route and the home page transition in.
+- [x] Every animation is off under the reduced-motion media query. A check with reduced motion on shows the same content with no motion.
+- [x] Only transform and opacity animate.
+- [x] Every section is checked at 390 wide with motion on and off. No horizontal scroll.
+
+## Comments
+
+- Done: one `Reveal` client leaf in `src/components/reveal.tsx` animates the hero, the chapters, the cards, the rows, and the route enter of both pages. With reduced motion, a 390 wide check in the browser shows every section at rest at once, and the rest state matches `10-week-full-today-390.png` pixel for pixel.
