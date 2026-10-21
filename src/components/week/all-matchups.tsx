@@ -6,8 +6,9 @@
 
 import { motion } from "framer-motion";
 import { useId, useState } from "react";
+import { Reveal } from "@/components/reveal";
 import { num, shortName } from "@/lib/format";
-import { DURATION, EASE_OUT, INSTANT, useMotionOff } from "@/lib/motion";
+import { DURATION, EASE_OUT, INSTANT, stagger, useMotionOff } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 import type { AvatarMap, Matchup, MatchupSide } from "@/lib/week-types";
 import { Avatar, avatarSrc, Blurb, Chapter, Label } from "./parts";
@@ -47,7 +48,8 @@ function Panel({ matchup }: { matchup: Matchup }) {
   );
 }
 
-function Row({ matchup, avatars, first }: { matchup: Matchup; avatars: AvatarMap; first: boolean }) {
+function Row({ matchup, avatars, index }: { matchup: Matchup; avatars: AvatarMap; index: number }) {
+  const first = index === 0;
   const [open, setOpen] = useState(false);
   const off = useMotionOff();
   const panelId = useId();
@@ -72,7 +74,8 @@ function Row({ matchup, avatars, first }: { matchup: Matchup; avatars: AvatarMap
     </motion.div>
   );
   return (
-    <div className="border-b border-rule last:border-b-0">
+    // The row is the reveal box, so last:border-b-0 still finds the last row.
+    <Reveal className="border-b border-rule last:border-b-0" delay={stagger(index)}>
       {/* minmax(0,1fr) keeps both columns equal, even when one name has a long word.
           The chapter label already gives the first row its top space. */}
       <div
@@ -116,7 +119,7 @@ function Row({ matchup, avatars, first }: { matchup: Matchup; avatars: AvatarMap
         />
       </button>
       {panel}
-    </div>
+    </Reveal>
   );
 }
 
@@ -125,7 +128,7 @@ export function AllMatchups({ matchups, avatars }: { matchups: Matchup[]; avatar
     <Chapter>
       <Label>All Matchups</Label>
       {matchups.map((matchup, i) => (
-        <Row key={matchup.id} matchup={matchup} avatars={avatars} first={i === 0} />
+        <Row key={matchup.id} matchup={matchup} avatars={avatars} index={i} />
       ))}
     </Chapter>
   );

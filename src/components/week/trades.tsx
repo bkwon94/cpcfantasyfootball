@@ -3,6 +3,8 @@
  * Two sides face each other across a red For tag; three or four sides wrap two per row with no tag.
  */
 import { Fragment } from "react";
+import { Reveal } from "@/components/reveal";
+import { stagger } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 import type { AvatarMap, Trade, TradeSide } from "@/lib/week-types";
 import { Avatar, avatarSrc, Chapter, Label } from "./parts";
@@ -58,11 +60,11 @@ function For() {
   );
 }
 
-function TradeCard({ trade, avatars, first }: { trade: Trade; avatars: AvatarMap; first: boolean }) {
+function TradeCard({ trade, avatars, index }: { trade: Trade; avatars: AvatarMap; index: number }) {
   // Three or four sides have no single other side, so only a pair gets the For tag.
   const pair = trade.sides.length === 2;
   return (
-    <div className={cn("rounded-card bg-gry p-sp-3", !first && "mt-sp-2")}>
+    <Reveal className={cn("rounded-card bg-gry p-sp-3", index > 0 && "mt-sp-2")} delay={stagger(index)}>
       <div
         className={cn(
           "grid gap-x-sp-2 gap-y-sp-4",
@@ -76,7 +78,7 @@ function TradeCard({ trade, avatars, first }: { trade: Trade; avatars: AvatarMap
           </Fragment>
         ))}
       </div>
-    </div>
+    </Reveal>
   );
 }
 
@@ -87,7 +89,7 @@ export function Trades({ trades, avatars }: { trades: Trade[]; avatars: AvatarMa
     <Chapter id="trades">
       <Label>Trades</Label>
       {trades.map((trade, i) => (
-        <TradeCard key={i} trade={trade} avatars={avatars} first={i === 0} />
+        <TradeCard key={i} trade={trade} avatars={avatars} index={i} />
       ))}
     </Chapter>
   );

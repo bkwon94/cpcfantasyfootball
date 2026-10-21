@@ -240,9 +240,9 @@
 /* The game changer stage. Two layered gradients cannot be Tailwind classes cleanly, so they live here.
    The image and the text share one grid cell; the image sets the stage height. */
 @layer components {
-    /* The red glow sits behind the head, so the cutout lifts off the black card. */
-    .stage::before {
-        content: "";
+    /* The red glow sits behind the head, so the cutout lifts off the black card.
+       The glow is an element and not a pseudo-element, so the hero can fade it in on its own. */
+    .stage-glow {
         position: absolute;
         z-index: 0;
         right: -10%;

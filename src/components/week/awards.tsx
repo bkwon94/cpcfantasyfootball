@@ -2,13 +2,16 @@
  * The awards chapter: a two-column grid of tiles, one per award, then the blurb.
  * A tile with no projections this week shows a note in place of the player.
  */
+import { Reveal } from "@/components/reveal";
 import { num } from "@/lib/format";
+import { stagger } from "@/lib/motion";
 import type { Award, HeadshotMap } from "@/lib/week-types";
 import { Blurb, Chapter, Headshot, Label } from "./parts";
 
-function Tile({ award, headshots }: { award: Award; headshots: HeadshotMap }) {
+/* The tile is the reveal box, so the grid still stretches every tile in a row to one height. */
+function Tile({ award, headshots, index }: { award: Award; headshots: HeadshotMap; index: number }) {
   return (
-    <div className="rounded-card bg-gry p-sp-3">
+    <Reveal className="rounded-card bg-gry p-sp-3" delay={stagger(index)}>
       {/* The MVB title takes two lines at phone width. Every title keeps two lines, so names and numbers align across a row. */}
       <Label className="mb-sp-1 min-h-[calc(2em*var(--leading-tight))]">{award.title}</Label>
       {award.missing ? (
@@ -24,7 +27,7 @@ function Tile({ award, headshots }: { award: Award; headshots: HeadshotMap }) {
           </div>
         </>
       )}
-    </div>
+    </Reveal>
   );
 }
 
@@ -33,8 +36,8 @@ export function Awards({ awards, headshots, blurb }: { awards: Award[]; headshot
     <Chapter>
       <Label>Awards</Label>
       <div className="grid grid-cols-[1fr_1fr] gap-sp-2">
-        {awards.map((award) => (
-          <Tile key={award.title} award={award} headshots={headshots} />
+        {awards.map((award, i) => (
+          <Tile key={award.title} award={award} headshots={headshots} index={i} />
         ))}
       </div>
       <Blurb className="mt-sp-3">{blurb}</Blurb>

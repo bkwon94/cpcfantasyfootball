@@ -15,7 +15,7 @@ const HIDDEN = { opacity: 0, y: RISE };
 const SHOWN = { opacity: 1, y: 0 };
 
 type RevealProps = {
-  children: ReactNode;
+  children?: ReactNode;
   // "view" waits for the viewport. "mount" plays at once, for the content of a route.
   trigger?: "view" | "mount";
   // The stagger of a card in a list, in seconds.
@@ -30,7 +30,9 @@ export function Reveal({ children, trigger = "view", delay = 0, duration = DURAT
   // The static HTML holds the start state, and the first client render must match it, so the start state is the same
   // with motion off. With motion off the content then goes to rest at once on mount and never waits for the viewport.
   // The data-reveal rule in globals.css shows the content at rest before the script loads, for reduced motion and no script.
-  const play = off || trigger === "mount" ? { animate: SHOWN } : { whileInView: SHOWN, viewport: { once: true, margin: VIEW_MARGIN } };
+  // A browser with no IntersectionObserver never reports the viewport, so the content plays on mount and never stays hidden.
+  const watch = trigger === "view" && typeof IntersectionObserver !== "undefined";
+  const play = off || !watch ? { animate: SHOWN } : { whileInView: SHOWN, viewport: { once: true, margin: VIEW_MARGIN } };
   return (
     <motion.div
       data-reveal
