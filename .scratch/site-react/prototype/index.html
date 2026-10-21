@@ -1,0 +1,27 @@
+<!--
+  PROTOTYPE, throwaway. Three variants of the analyzer result page, switchable via `?variant=`. Delete after Brian picks one.
+  Run from the repo root: python3 -m http.server 8787, then open http://localhost:8787/.scratch/site-react/prototype/?variant=a
+-->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Trade Grade Prototype</title>
+  <link rel="stylesheet" href="../../../static/style.css">
+  <link rel="stylesheet" href="prototype.css">
+</head>
+<body>
+  <div class="page">
+    <header class="mast">
+      <a class="brand" href="#">
+        <img class="logo" src="../../../static/logo.png" alt="">
+        <span class="bar"></span>
+        <span><span class="t">CPC Fantasy</span><br><span class="s">Trade analyzer</span></span>
+      </a>
+    </header>
+    <main id="app"></main>
+  </div>
+  <script src="prototype.js"></script>
+</body>
+</html>

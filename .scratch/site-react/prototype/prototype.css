@@ -1,0 +1,89 @@
+/* PROTOTYPE, throwaway. Extra rules for the three analyzer result variants.
+   Each block is scoped to a .variant-a, .variant-b, or .variant-c root, and every value comes from the style.css tokens. */
+
+/* Shared bits. */
+.mark { display:inline-block; flex:none; width:var(--sp-4); text-align:center; font-weight:900; }
+.mark.up { color:var(--red); }
+.mark.down { color:var(--ink); }
+.mark.flat { color:var(--muted); }
+.lean { color:var(--muted); font-size:var(--fs-label); font-weight:700; text-transform:uppercase; letter-spacing:var(--track); }
+.asof { font-size:var(--fs-meta); color:var(--muted); margin:0; font-variant-numeric:tabular-nums; }
+.you { color:var(--red); font-size:var(--fs-label); font-weight:700; text-transform:uppercase; letter-spacing:var(--track); }
+.grade-letter { display:inline-block; font-weight:900; line-height:1; letter-spacing:-.03em; }
+.grade-letter.was { color:var(--muted); text-decoration:line-through; text-decoration-thickness:2px; }
+.team-name { min-width:0; hyphens:auto; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .grade-letter { animation:fade-up 360ms var(--ease-out) both; }
+  .grade-letter + .grade-letter { animation-delay:120ms; }
+  @keyframes fade-up { from { opacity:0; transform:translateY(var(--sp-2)); } to { opacity:1; transform:none; } }
+}
+
+/* A: Scorecard. Two grade cards side by side, the why list folds under each card. */
+.variant-a .grades { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:var(--sp-2); }
+.variant-a .gcard { background:var(--gry); border-radius:var(--r-card); padding:var(--sp-3); min-width:0; display:flex; flex-direction:column; }
+.variant-a .gcard.mine { box-shadow:inset 0 0 0 2px var(--red); }
+.variant-a .gcard .letters { display:flex; align-items:baseline; gap:var(--sp-2); margin:var(--sp-1) 0 var(--sp-2); }
+.variant-a .gcard .grade-letter { font-size:var(--fs-headline); }
+.variant-a .gcard .grade-letter.was { font-size:var(--fs-score); }
+.variant-a .gcard .tn { font-weight:800; font-size:var(--fs-row); line-height:var(--lh-tight); }
+.variant-a .gcard .fr { font-size:var(--fs-meta); color:var(--muted); margin:0 0 var(--sp-2); }
+.variant-a .gcard details { margin-top:auto; }
+.variant-a .gcard summary { cursor:pointer; color:var(--red); font-size:var(--fs-label); font-weight:700; text-transform:uppercase; letter-spacing:var(--track-wide); min-height:44px; display:flex; align-items:center; }
+.variant-a .adj { list-style:none; margin:0; padding:0; font-size:var(--fs-meta); line-height:var(--lh-tight); }
+.variant-a .adj li { padding:var(--sp-2) 0; border-top:1px solid var(--rule); }
+.variant-a .adj .nm { display:flex; align-items:center; gap:var(--sp-1); font-weight:700; flex-wrap:wrap; }
+.variant-a .adj p { margin:var(--sp-1) 0 0; color:var(--ink-2); }
+.variant-a .analysis { margin-top:var(--sp-3); }
+.variant-a .verdict .call { font-size:var(--fs-score); font-weight:900; text-transform:uppercase; line-height:var(--lh-stat); margin:0 0 var(--sp-2); }
+
+/* B: Verdict first. A dark hero leads with the asker's letter and the call. */
+.variant-b .hero { position:relative; overflow:hidden; }
+.variant-b .hero::before { content:""; position:absolute; z-index:0; right:-20%; top:-20%; width:90%; height:120%; background:radial-gradient(closest-side, color-mix(in srgb, var(--red) 45%, transparent), transparent); }
+.variant-b .hero > * { position:relative; z-index:1; }
+.variant-b .hero .row { display:flex; align-items:flex-end; gap:var(--sp-3); margin-bottom:var(--sp-3); }
+.variant-b .hero .grade-letter { font-size:calc(var(--fs-headline) * 2.4); color:var(--red-lt); }
+.variant-b .hero .grade-letter.was { font-size:var(--fs-headline); color:var(--on-dark-muted); }
+.variant-b .hero .tag { margin-left:0; font-size:var(--fs-meta); }
+.variant-b .hero .who-line { font-size:var(--fs-meta); color:var(--on-dark-2); margin-bottom:var(--sp-2); }
+.variant-b .hero .lead { font-size:var(--fs-lead); line-height:var(--lh-body); color:var(--on-dark); margin:0; }
+.variant-b .side { border:1px solid var(--rule); border-radius:var(--r-card); padding:var(--sp-4); }
+.variant-b .side + .side { margin-top:var(--sp-3); }
+.variant-b .side.mine { border-left:var(--chap-rule) solid var(--red); }
+.variant-b .side .top { display:flex; align-items:center; justify-content:space-between; gap:var(--sp-3); }
+.variant-b .side .top > div { min-width:0; }
+.variant-b .side .tn { font-weight:800; font-size:var(--fs-lead); line-height:var(--lh-tight); }
+.variant-b .side .letters { display:flex; align-items:baseline; gap:var(--sp-2); flex:none; }
+.variant-b .side .grade-letter { font-size:var(--fs-headline); }
+.variant-b .side .grade-letter.was { font-size:var(--fs-stat); }
+.variant-b .side .fr { font-size:var(--fs-meta); color:var(--muted); margin:var(--sp-1) 0 0; }
+.variant-b .rows { margin:var(--sp-3) 0; }
+.variant-b .rows .r { display:grid; grid-template-columns:var(--sp-4) minmax(0,1fr); column-gap:var(--sp-2); padding:var(--sp-2) 0; border-top:1px solid var(--rule); font-size:var(--fs-row); line-height:var(--lh-tight); }
+.variant-b .rows .r b { font-weight:700; }
+.variant-b .rows .r p { grid-column:2; margin:var(--sp-1) 0 0; color:var(--ink-2); font-size:var(--fs-meta); }
+
+/* C: Ledger. One table, adjusters down, sides across. */
+.variant-c .ledger { display:grid; grid-template-columns:minmax(0,.7fr) minmax(0,1fr) minmax(0,1fr); border-top:2px solid var(--blk); border-bottom:2px solid var(--blk); font-size:var(--fs-meta); line-height:var(--lh-tight); }
+.variant-c .ledger > div { padding:var(--sp-2) var(--sp-1); border-bottom:1px solid var(--rule); min-width:0; }
+.variant-c .ledger .h { display:flex; flex-direction:column; gap:var(--sp-1); font-weight:800; font-size:var(--fs-row); hyphens:auto; border-bottom:1px solid var(--blk); }
+.variant-c .ledger .h .grade-letter { font-size:var(--fs-headline); line-height:1; }
+.variant-c .ledger .h.mine { background:var(--gry); }
+.variant-c .ledger .k { font-weight:700; text-transform:uppercase; letter-spacing:var(--track); font-size:var(--fs-label); color:var(--muted); }
+.variant-c .ledger .c { display:grid; grid-template-columns:var(--sp-4) minmax(0,1fr); column-gap:var(--sp-1); color:var(--ink-2); }
+.variant-c .ledger .c.mine { background:var(--gry); }
+.variant-c .ledger .c .lean { grid-column:2; }
+.variant-c .ledger .f { border-bottom:0; display:flex; flex-direction:column; gap:var(--sp-1); }
+.variant-c .ledger .f.mine { background:var(--gry); }
+.variant-c .ledger .f .letters { display:flex; align-items:baseline; gap:var(--sp-2); }
+.variant-c .ledger .f .grade-letter { font-size:var(--fs-headline); }
+.variant-c .ledger .f .grade-letter.was { font-size:var(--fs-stat); }
+.variant-c .ledger .f small { color:var(--muted); font-size:var(--fs-label); }
+.variant-c .callout { border-left:var(--chap-rule) solid var(--red); padding:var(--sp-1) 0 var(--sp-1) var(--sp-4); }
+.variant-c .callout .call { font-size:var(--fs-stat); font-weight:900; color:var(--red); text-transform:uppercase; line-height:var(--lh-stat); margin:0 0 var(--sp-2); }
+
+/* The switcher is a dev tool, not part of the design. The dashed rule and mono font keep it apart from the page. */
+.proto-switch { position:fixed; z-index:99; left:50%; bottom:var(--sp-4); transform:translateX(-50%); display:flex; align-items:center; gap:var(--sp-1); background:var(--blk); color:var(--on-dark); border:2px dashed var(--red-lt); border-radius:999px; padding:var(--sp-1); font-family:ui-monospace,Menlo,monospace; font-size:var(--fs-meta); white-space:nowrap; }
+.proto-switch button { width:36px; height:36px; border:0; border-radius:50%; background:var(--ink-2); color:var(--on-dark); font:inherit; font-size:var(--fs-lead); cursor:pointer; }
+.proto-switch span { padding:0 var(--sp-2); }
+/* Room under the last chapter so the switcher never covers the as-of line. */
+#app { padding-bottom:calc(var(--sp-6) * 3); }
