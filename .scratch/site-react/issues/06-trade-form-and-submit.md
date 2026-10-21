@@ -14,9 +14,10 @@
 <!-- Reason: a cold grade takes about 30 seconds and the server caches the result, so a long wait beats a retry. -->
 - [x] A headshot that fails to load falls back to the default image.
 - [x] Tests cover the disabled submit, the post body, and each error state against a stubbed fetch.
-- [ ] A walk-through against the local API at 390 wide, without an Anthropic key.
+- [x] A walk-through against the local API at 390 wide, without an Anthropic key.
 
 ## Comments
 
 - Walk-through at 390 wide against the local API with no Anthropic key: teams loaded, I picked two teams and one player each, and analyze answered 503. The page showed "No grade this week yet. The chart is not on the server." scrollWidth was 390. I did not see a real grade or the code-only grade. The run with a key is not done.
 - The run with an Anthropic key moves to ticket 07.
+- 2026-10-21, late: Brian deployed Phase 1, the API avatar, Phase 2, and the JSON-only publish in order. Deploy runs green. The week 6 dry run made no commit and the live `page.json` matches the pipeline. Everything live.

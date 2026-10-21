@@ -16,3 +16,4 @@
 ## Comments
 
 - 2026-10-21: Pages switched to the Actions source and the branch pushed to main by Brian. Run 39658647426 green. Live home, week 6, and stylesheet byte-identical to `public/`. Publish code path checked against the live checkout with push off: no byte changed.
+- 2026-10-21, late: Brian deployed Phase 1, the API avatar, Phase 2, and the JSON-only publish in order. Deploy runs green. The week 6 dry run made no commit and the live `page.json` matches the pipeline. Everything live.
