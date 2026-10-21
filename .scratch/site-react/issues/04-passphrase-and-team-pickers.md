@@ -6,10 +6,14 @@
 
 **Status:** ready-for-agent
 
-- [ ] The passphrase dialog shows on first load and never again while local storage holds a value.
-- [ ] Every API call sends the passphrase in the `X-League-Passphrase` header.
-- [ ] The page fetches the teams route for the season on load and fills both pickers with name and avatar.
-- [ ] A 401 clears the stored passphrase, shows a plain message, and opens the dialog again.
-- [ ] The pickers refuse the same team on both sides.
-- [ ] A test covers the dialog on first load, the stored passphrase on a second load, and the 401 path.
+- [x] The passphrase dialog shows on first load and never again while local storage holds a value.
+- [x] Every API call sends the passphrase in the `X-League-Passphrase` header.
+- [x] The page fetches the teams route for the season on load and fills both pickers with name and avatar.
+- [x] A 401 clears the stored passphrase, shows a plain message, and opens the dialog again.
+- [x] The pickers refuse the same team on both sides.
+- [x] A test covers the dialog on first load, the stored passphrase on a second load, and the 401 path.
 - [ ] Works against the local API with the laptop passphrase, checked at 390 wide.
+
+## Comments
+
+The walk-through box stays open. The API ran on port 8080 and `curl` with the passphrase `localtest` returned 12 teams with avatars and the CORS header for `http://localhost:3000`. The built site showed the dialog at 390 wide, see `screenshots/04-dialog-390.png`. A headless screenshot cannot type the passphrase or set `localStorage` across origins, so there is no pickers screenshot. The vitest tests cover the pickers. Check the pickers at 390 wide by hand.
