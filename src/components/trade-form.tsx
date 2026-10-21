@@ -16,8 +16,8 @@ import { ApiError, postAnalyze, retryText, type Team } from "@/lib/api";
 import { season } from "@/lib/config";
 import { DURATION, useMotionOff } from "@/lib/motion";
 
-// A cold chart week takes 20 seconds or more, so 30 seconds leaves room before the page gives up.
-const TIMEOUT_MS = 30_000;
+// A cold grade takes about 30 seconds and the server caches the result, so a long wait beats a retry.
+const TIMEOUT_MS = 60_000;
 
 type GradeState =
   | { status: "idle" }
@@ -66,7 +66,7 @@ function GradingStatus() {
           />
         )}
       </div>
-      <p className="m-0 text-meta text-mute">This can take about 20 seconds.</p>
+      <p className="m-0 text-meta text-mute">This can take up to a minute on a new chart week.</p>
     </div>
   );
 }

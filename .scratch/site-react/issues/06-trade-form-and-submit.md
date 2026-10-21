@@ -10,7 +10,8 @@
 - [x] Submit is disabled until both sides give at least one player.
 - [x] Submit posts the analyze body with the season, the two sides, and the asker. The asker is my team.
 - [x] A loading state shows while the grade runs. The result mounts the ledger from ticket 05.
-- [x] 422 shows the API's message. 429 shows the retry time from `Retry-After`. 503 shows "no grade this week yet". A timeout past 30 seconds shows a retry button.
+- [x] 422 shows the API's message. 429 shows the retry time from `Retry-After`. 503 shows "no grade this week yet". A timeout past 60 seconds shows a retry button.
+<!-- Reason: a cold grade takes about 30 seconds and the server caches the result, so a long wait beats a retry. -->
 - [x] A headshot that fails to load falls back to the default image.
 - [x] Tests cover the disabled submit, the post body, and each error state against a stubbed fetch.
 - [ ] A walk-through against the local API at 390 wide, without an Anthropic key.

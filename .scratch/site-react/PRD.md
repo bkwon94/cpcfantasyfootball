@@ -107,7 +107,7 @@ The Jinja templates then retire.
   analysis paragraph per side, then the verdict callout for the asker with a red left rule, then
   the as-of line. The page shows the final letter only. It does not show `start_letter` or
   `final_reason`. A "suggested counters" slot sits under the verdict until the API returns
-  counters. A 429 shows the retry time. A timeout past 30 seconds shows a retry button.
+  counters. A 429 shows the retry time. A timeout past 60 seconds shows a retry button.
 - The API's fixture response document is copied into this repo and is the one input of the
   result component's tests.
 

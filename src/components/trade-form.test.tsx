@@ -135,7 +135,7 @@ describe("TradeForm", () => {
     pickTrade();
     fireEvent.click(submit());
     expect(await screen.findByText("Grading the trade")).toBeTruthy();
-    expect(screen.getByText("This can take about 20 seconds.")).toBeTruthy();
+    expect(screen.getByText("This can take up to a minute on a new chart week.")).toBeTruthy();
     expect(submit().disabled).toBe(true);
   });
 
@@ -191,7 +191,7 @@ describe("TradeForm", () => {
     expect(fetchStub).toHaveBeenCalledTimes(2);
   });
 
-  it("aborts after 30 seconds, shows the timeout line, and the retry posts again", async () => {
+  it("aborts after 60 seconds, shows the timeout line, and the retry posts again", async () => {
     vi.useFakeTimers();
     fetchStub.mockImplementationOnce(
       (_url: string, init: RequestInit) =>
@@ -201,7 +201,7 @@ describe("TradeForm", () => {
     );
     pickTrade();
     fireEvent.click(submit());
-    await act(() => vi.advanceTimersByTimeAsync(30_000));
+    await act(() => vi.advanceTimersByTimeAsync(60_000));
 
     expect(screen.getByText("The grade took too long.")).toBeTruthy();
     fetchStub.mockReturnValueOnce(new Promise(() => {}));
