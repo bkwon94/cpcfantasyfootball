@@ -8,7 +8,7 @@ import { motion } from "framer-motion";
 import type { ReactNode } from "react";
 import type { Adjuster, AnalyzeResponse, GradedSide, Player, TradeSide } from "@/lib/analyze-types";
 import { swapToDefault } from "@/lib/headshot";
-import { DURATION, EASE_OUT, GRADE_STAGGER, INSTANT, RISE, useMotionOff } from "@/lib/motion";
+import { DURATION, GRADE_STAGGER, rise, useMotionOff } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
 /* A trade side joined to its grade, so each column reads from one object. */
@@ -55,9 +55,7 @@ function GradeLetter({ letter, order }: { letter: string; order: number }) {
   return (
     <motion.span
       className="inline-block text-headline leading-none font-black tracking-grade"
-      initial={off ? false : { opacity: 0, y: RISE }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={off ? INSTANT : { duration: DURATION.grade, ease: EASE_OUT, delay: order * GRADE_STAGGER }}
+      {...rise(off, { duration: DURATION.grade, delay: order * GRADE_STAGGER })}
     >
       {letter}
     </motion.span>

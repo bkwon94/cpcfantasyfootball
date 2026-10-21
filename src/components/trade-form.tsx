@@ -14,7 +14,7 @@ import { Button } from "@/components/ui/button";
 import type { AnalyzeResponse } from "@/lib/analyze-types";
 import { ApiError, postAnalyze, retryText, type Team } from "@/lib/api";
 import { season } from "@/lib/config";
-import { DURATION, useMotionOff } from "@/lib/motion";
+import { DURATION, SWEEP_EASE, useMotionOff } from "@/lib/motion";
 
 // A cold grade takes about 30 seconds and the server caches the result, so a long wait beats a retry.
 const TIMEOUT_MS = 60_000;
@@ -54,15 +54,16 @@ type SideName = "mine" | "other";
 function GradingStatus() {
   const off = useMotionOff();
   return (
-    <div role="status" className="flex flex-col gap-sp-2">
+    <div role="status" aria-busy="true" className="flex flex-col gap-sp-2">
       <p className="m-0 text-body font-bold">Grading the trade</p>
       <div aria-hidden="true" className="relative h-sp-1 overflow-hidden rounded-sm bg-gry">
         {!off && (
           <motion.div
+            role="presentation"
             className="absolute inset-y-0 left-0 w-1/3 bg-red"
             initial={{ x: "-100%" }}
             animate={{ x: "300%" }}
-            transition={{ duration: DURATION.sweep, ease: "easeInOut", repeat: Infinity }}
+            transition={{ duration: DURATION.sweep, ease: SWEEP_EASE, repeat: Infinity }}
           />
         )}
       </div>

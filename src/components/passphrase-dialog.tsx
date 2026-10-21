@@ -23,7 +23,7 @@ type PassphraseDialogProps = {
 export function PassphraseDialog({ open, error, onSubmit }: PassphraseDialogProps) {
   const [value, setValue] = useState("");
   // The shadcn dialog fades and zooms with CSS. The one motion switch turns that off too.
-  const still = useMotionOff() && "data-open:animate-none data-closed:animate-none";
+  const stillClass = useMotionOff() && "data-open:animate-none data-closed:animate-none";
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -38,8 +38,8 @@ export function PassphraseDialog({ open, error, onSubmit }: PassphraseDialogProp
     <Dialog open={open}>
       <DialogContent
         showCloseButton={false}
-        overlayClassName={cn(still)}
-        className={cn("gap-sp-4 rounded-card p-gutter", still)}
+        overlayClassName={cn(stillClass)}
+        className={cn("gap-sp-4 rounded-card p-gutter", stillClass)}
       >
         <DialogHeader>
           <DialogTitle className="text-stat leading-stat font-black uppercase">League passphrase</DialogTitle>

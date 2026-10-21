@@ -27,6 +27,13 @@ describe("Ledger", () => {
     expect(within(headers[2]).getByText("C")).toBeTruthy();
   });
 
+  it("puts the asker's letter before the other side's letter in document order", () => {
+    render(<Ledger doc={fixture} />);
+    const [asker] = screen.getAllByText("B");
+    const [other] = screen.getAllByText("C");
+    expect(asker.compareDocumentPosition(other) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  });
+
   it("shows a row for every adjuster with its reason per side", () => {
     render(<Ledger doc={fixture} />);
     for (const name of ["roster fit", "standing", "trend and usage", "injury", "handcuff", "schedule"]) {

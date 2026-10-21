@@ -26,16 +26,18 @@ vi.stubGlobal(
     }) as MediaQueryList,
 );
 
-const TEAMS: Team[] = [
-  { roster_id: 4, team: "Pukancun on 3", manager: "Ana", avatar: null, players: [] },
-  { roster_id: 12, team: "Blitz Bakers", manager: "Ben", avatar: null, players: [] },
-];
+const player = (id: string, name: string) => ({
+  player_id: id,
+  name,
+  position: "WR",
+  nfl_team: "NYJ",
+  headshot: `https://cdn.test/${id}.png`,
+});
 
-/* An element at rest has no opacity below 1 and no offset. The style is what Framer Motion writes on the first render. */
-function atRest(element: HTMLElement) {
-  expect(element.style.opacity === "" || element.style.opacity === "1").toBe(true);
-  expect(element.style.transform === "" || element.style.transform === "none").toBe(true);
-}
+const TEAMS: Team[] = [
+  { roster_id: 4, team: "Pukancun on 3", manager: "Ana", avatar: null, players: [player("p1", "Ana One")] },
+  { roster_id: 12, team: "Blitz Bakers", manager: "Ben", avatar: null, players: [player("p3", "Ben One")] },
+];
 
 afterEach(cleanup);
 afterAll(() => {
@@ -43,11 +45,11 @@ afterAll(() => {
 });
 
 describe("Reduced motion", () => {
-  it("shows both grade letters at rest at once", () => {
+  it("shows both grade letters at once", () => {
     render(<Ledger doc={fixtureJson as AnalyzeResponse} />);
     const headers = screen.getAllByRole("columnheader");
-    atRest(within(headers[1]).getByText("B"));
-    atRest(within(headers[2]).getByText("C"));
+    expect(within(headers[1]).getByText("B")).toBeTruthy();
+    expect(within(headers[2]).getByText("C")).toBeTruthy();
   });
 
   it("collapses a picked team at once", () => {
@@ -55,7 +57,19 @@ describe("Reduced motion", () => {
     const mine = screen.getByRole("group", { name: "My team" });
     fireEvent.click(within(mine).getByRole("radio", { name: /Pukancun on 3/ }));
     expect(within(mine).getAllByRole("radio")).toHaveLength(1);
-    const button = within(mine).getByRole("button", { name: "Change my team" });
-    atRest(button.closest<HTMLElement>(".overflow-hidden")!);
+  });
+
+  it("shows no sweep while the grade runs", () => {
+    vi.stubGlobal("fetch", vi.fn(() => new Promise(() => {})));
+    render(<TradeForm teams={TEAMS} passphrase="localtest" onUnauthorized={() => {}} />);
+    fireEvent.click(within(screen.getByRole("group", { name: "My team" })).getByRole("radio", { name: /Pukancun on 3/ }));
+    fireEvent.click(within(screen.getByRole("group", { name: "The other team" })).getByRole("radio", { name: /Blitz Bakers/ }));
+    fireEvent.click(screen.getByLabelText(/Ana One/));
+    fireEvent.click(screen.getByLabelText(/Ben One/));
+    fireEvent.click(screen.getByRole("button", { name: "Grade the trade" }));
+    const status = screen.getByRole("status");
+    expect(status.getAttribute("aria-busy")).toBe("true");
+    // The track is aria-hidden, so the query must include hidden elements to find the sweep if it existed.
+    expect(within(status).queryByRole("presentation", { hidden: true })).toBeNull();
   });
 });

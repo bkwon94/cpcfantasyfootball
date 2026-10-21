@@ -11,7 +11,7 @@ import { PassphraseDialog } from "@/components/passphrase-dialog";
 import { TradeForm } from "@/components/trade-form";
 import { Button } from "@/components/ui/button";
 import { ApiError, fetchTeams, retryText, type Team } from "@/lib/api";
-import { DURATION, EASE_OUT, INSTANT, RISE, useMotionOff } from "@/lib/motion";
+import { DURATION, rise, useMotionOff } from "@/lib/motion";
 import { clearPassphrase, getPassphrase, setPassphrase } from "@/lib/passphrase";
 
 type TeamsState =
@@ -86,11 +86,7 @@ export function Analyzer() {
       )}
       {teams.status === "ready" && passphrase && (
         // The form is the content of the route, so it fades and rises in once when it first shows. With motion off it shows at rest.
-        <motion.div
-          initial={off ? false : { opacity: 0, y: RISE }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={off ? INSTANT : { duration: DURATION.page, ease: EASE_OUT }}
-        >
+        <motion.div {...rise(off, { duration: DURATION.page })}>
           <TradeForm teams={teams.teams} passphrase={passphrase} onUnauthorized={handleUnauthorized} />
         </motion.div>
       )}

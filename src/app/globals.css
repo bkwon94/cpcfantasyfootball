@@ -87,7 +87,7 @@
     --radius-sm: 3px;
     --radius-card: 8px;
 
-    /* The press easing. A strong ease-out gives instant feedback on a tap. */
+    /* The press easing. A strong ease-out gives instant feedback on a tap. src/lib/motion.ts holds the same curve as numbers. */
     --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
 }
 /*---break---
@@ -214,5 +214,14 @@
   :focus-visible {
     outline: 2px solid var(--color-red);
     outline-offset: 2px;
+    }
+}
+
+/* Framer Motion reads the setting through useMotionOff. This rule covers every CSS transition, including shadcn's transition-all. */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        transition-duration: 0ms !important;
+        animation-duration: 0ms !important;
+        scroll-behavior: auto !important;
     }
 }
