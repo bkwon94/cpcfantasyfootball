@@ -11,7 +11,7 @@
 /*---break---
  */
 /* The brand tokens, ported from public/static/style.css. Static keeps every token on :root,
-   so the shadcn variables below can point at a token that no utility uses yet. */
+   so the shadcn variables below can point at any token, even one without a utility. */
 @theme static {
     /* Brand colors. */
     --color-blk: #141414;
@@ -51,7 +51,7 @@
     /* Fixed element sizes from the stylesheet rules. They live here, so no component holds a pixel size.
        44px is the smallest comfortable touch target. */
     --spacing-logo: 30px;
-    --spacing-bar: 28px;
+    --spacing-divider: 28px;
     --spacing-avatar: 28px;
     --spacing-touch: 44px;
 
@@ -165,14 +165,16 @@
     --sidebar-border: var(--color-rule);
     --sidebar-ring: var(--color-red);
 
+    /* The brand is black, red, and white in both themes, so the page stays in the light scheme. */
+    color-scheme: light;
+}
+/* Component values: the chapter rule width and the press transition. */
+:root {
     /* The chapter rule under each section, as a border width. */
     --chap-rule: 6px;
 
     /* Press feedback for every pressable element. Only transform animates, so it stays on the GPU. */
     --press: transform 140ms var(--ease-out);
-
-    /* The brand is black, red, and white in both themes, so the page stays in the light scheme. */
-    color-scheme: light;
 }
 /*---break---
  */

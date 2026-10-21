@@ -18,7 +18,7 @@ export function Masthead({ subtitle, children }: MastheadProps) {
       <a href={`${basePath}/`} className="flex items-center gap-sp-3 text-inherit no-underline">
         {/* The title next to the logo names the link, so the logo is decorative. */}
         <img src={`${basePath}/images/logo.png`} alt="" className="size-logo flex-none rounded-full" />
-        <div className="h-bar w-px bg-mute" />
+        <div className="h-divider w-px bg-mute" />
         <div>
           <div className="text-meta leading-tight font-bold tracking-wide uppercase">CPC Fantasy</div>
           <div className="text-label tracking-caps text-on-dark-muted uppercase">{subtitle}</div>
