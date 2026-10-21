@@ -5,7 +5,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import type { ReactNode } from "react";
+import { useEffect, type ReactNode } from "react";
 import { DURATION, EASE_OUT, INSTANT, RISE, useMotionOff } from "@/lib/motion";
 
 /* The content reveals a little after its top edge enters the screen, so the reader sees the motion and not only its end. */
@@ -27,6 +27,11 @@ type RevealProps = {
 
 export function Reveal({ children, trigger = "view", delay = 0, duration = DURATION.reveal, className }: RevealProps) {
   const off = useMotionOff();
+  // The attribute turns off the CSS safety rule in globals.css, so Framer Motion owns the reveal after hydration.
+  // Every Reveal runs this effect, and the set is the same each time, so the first one to mount is enough.
+  useEffect(() => {
+    document.documentElement.setAttribute("data-hydrated", "");
+  }, []);
   // The static HTML holds the start state, and the first client render must match it, so the start state is the same
   // with motion off. With motion off the content then goes to rest at once on mount and never waits for the viewport.
   // The data-reveal rule in globals.css shows the content at rest before the script loads, for reduced motion and no script.

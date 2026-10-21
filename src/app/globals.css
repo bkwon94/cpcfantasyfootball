@@ -202,6 +202,10 @@
     --press: transform 140ms var(--ease-out);
 
     /* The motion timings of the analyzer live in src/lib/motion.ts, because Framer Motion takes them as numbers. */
+
+    /* If the script never hydrates, the reveal content shows after this delay.
+       After hydration, the data-hydrated attribute turns the safety rule off and Framer Motion owns the reveal. */
+    --delay-safety: 1.5s;
 }
 /*---break---
  */
@@ -270,6 +274,18 @@
     [data-reveal] {
         opacity: 1 !important;
         transform: none !important;
+    }
+}
+
+/* The safety net for a script that fails to load: the static HTML holds every reveal box at no opacity,
+   so without this rule the page under the masthead stays blank. Reveal sets data-hydrated on mount. */
+html:not([data-hydrated]) [data-reveal] {
+    animation: reveal-safety 1ms var(--delay-safety) forwards;
+}
+@keyframes reveal-safety {
+    to {
+        opacity: 1;
+        transform: none;
     }
 }
 
