@@ -2,8 +2,11 @@
  * Tests for the week data loader against the real public/ folder.
  * The week 6 JSON is the fixture, so these tests break if the publish layout changes.
  */
-import { describe, expect, it } from "vitest";
-import { listWeeks, loadWeek } from "./week-data";
+import { mkdtempSync, mkdirSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+import { afterEach, describe, expect, it, vi } from "vitest";
+import { listWeeks, listWeekSummaries, loadWeek } from "./week-data";
 
 describe("listWeeks", () => {
   it("lists week 6 of 2026 by its folder names", () => {
@@ -18,5 +21,41 @@ describe("loadWeek", () => {
     expect(page.season).toBe(2026);
     expect(page.pick.sides[0].team.name).toBe("behold the lamb");
     expect(page.avatars["10"]).toBe("avatars/10.jpg");
+  });
+});
+
+describe("loadWeek schema check", () => {
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  it("throws when the schema version is not 2", async () => {
+    // A temp public/ folder holds a page at the old version.
+    const root = mkdtempSync(join(tmpdir(), "week-data-"));
+    mkdirSync(join(root, "public", "2026", "week-01"), { recursive: true });
+    writeFileSync(join(root, "public", "2026", "week-01", "page.json"), JSON.stringify({ schema_version: 1 }));
+    vi.spyOn(process, "cwd").mockReturnValue(root);
+    // The module reads the working folder when it loads, so reset it to pick up the temp folder.
+    vi.resetModules();
+    const { loadWeek: load } = await import("./week-data");
+    expect(() => load("2026", "week-01")).toThrow(/schema_version 1/);
+  });
+});
+
+describe("listWeekSummaries", () => {
+  it("summarizes week 6 with its dates, teams, and link", () => {
+    expect(listWeekSummaries()).toContainEqual({
+      season: "2026",
+      week: "week-06",
+      number: 6,
+      dates: "Oct 15 – Oct 19, 2026",
+      teams: "behold the lamb vs Bo Girds",
+      href: "/2026/week-06/",
+    });
+  });
+
+  it("sorts the newest week first", () => {
+    const numbers = listWeekSummaries().map((summary) => summary.number);
+    expect(numbers).toEqual([...numbers].sort((a, b) => b - a));
   });
 });

@@ -30,7 +30,49 @@ export function listWeeks(): WeekRef[] {
   );
 }
 
+/* The page JSON layout version this site reads. */
+const SCHEMA_VERSION = 2;
+
+/* A schema change must fail the build loud, so a page never renders from keys it misreads. */
 export function loadWeek(season: string, week: string): WeekPage {
   const file = join(PUBLIC_DIR, season, week, "page.json");
-  return JSON.parse(readFileSync(file, "utf8")) as WeekPage;
+  const page = JSON.parse(readFileSync(file, "utf8")) as { schema_version?: unknown };
+  if (page.schema_version !== SCHEMA_VERSION) {
+    throw new Error(
+      `${file} has schema_version ${String(page.schema_version)}, but this site reads schema_version ${SCHEMA_VERSION}.`,
+    );
+  }
+  return page as WeekPage;
+}
+
+/* One row of the home page list. */
+export type WeekSummary = {
+  season: string;
+  week: string;
+  number: number;
+  dates: string;
+  teams: string;
+  href: string;
+};
+
+/* The summary is "Week N · dates · teams", so the teams are everything after the second separator. */
+function teamsOf(summary: string): string {
+  return summary.split(" · ").slice(2).join(" · ");
+}
+
+/* Every published week, newest first. The folder names sort by season, then by week number. */
+export function listWeekSummaries(): WeekSummary[] {
+  return listWeeks()
+    .map(({ season, week }) => {
+      const page = loadWeek(season, week);
+      return {
+        season,
+        week,
+        number: page.week,
+        dates: page.dates,
+        teams: teamsOf(page.summary),
+        href: `/${season}/${week}/`,
+      };
+    })
+    .sort((a, b) => b.season.localeCompare(a.season) || b.week.localeCompare(a.week));
 }

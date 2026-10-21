@@ -125,7 +125,7 @@ export type AvatarMap = Record<string, string>;
 export type HeadshotMap = Record<string, string>;
 
 export type WeekPage = {
-  schema_version: number;
+  schema_version: 2;
   season: number;
   week: number;
   dates: string;
