@@ -6,6 +6,7 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { Masthead, WeekLine } from "@/components/masthead";
 import { Reveal } from "@/components/reveal";
+import { TeamsPrefetch } from "@/components/teams-prefetch";
 import { Blurb, Chapter, Label } from "@/components/week/parts";
 import { basePath } from "@/lib/config";
 import { stagger } from "@/lib/motion";
@@ -36,6 +37,8 @@ export default function HomePage() {
   const weeks = listWeekSummaries();
   return (
     <main className="mx-auto max-w-page bg-wht">
+      {/* A reader who opens the analyzer next sees the pickers at once, because the teams are already in session storage. */}
+      <TeamsPrefetch />
       <Masthead title="Cornerstone" subtitle="League Weekly">
         <WeekLine label="ALL WEEKS" />
       </Masthead>

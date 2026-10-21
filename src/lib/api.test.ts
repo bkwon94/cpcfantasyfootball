@@ -2,7 +2,7 @@
  * Tests for the API client. fetch is a test stub that returns real Response objects.
  */
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { ApiError, fetchTeams, toApiError } from "./api";
+import { ApiError, fetchTeams, retryText, toApiError } from "./api";
 
 afterEach(() => {
   vi.unstubAllGlobals();
@@ -37,5 +37,21 @@ describe("toApiError", () => {
     const error = await toApiError(response);
     expect(error).toMatchObject({ status: 422, message: "bad trade" });
     expect(error.retryAfter).toBeUndefined();
+  });
+});
+
+describe("retryText", () => {
+  it("reads seconds for a wait of an hour or less", () => {
+    expect(retryText(30)).toBe("Too many requests. Try again in 30 seconds.");
+    expect(retryText(3600)).toBe("Too many requests. Try again in 3600 seconds.");
+  });
+
+  it("reads hours, rounded up, for a wait over an hour", () => {
+    expect(retryText(50000)).toBe("Too many requests. Try again in 14 hours.");
+    expect(retryText(3601)).toBe("Too many requests. Try again in 2 hours.");
+  });
+
+  it("reads soon when the wait is missing", () => {
+    expect(retryText()).toBe("Too many requests. Try again soon.");
   });
 });

@@ -2,12 +2,15 @@
  * Tests for the home page. They render the page with the real public/ data and read what a reader sees.
  * The week 6 JSON is the fixture, so these tests break if the publish layout changes.
  */
-import { cleanup, render, screen } from "@testing-library/react";
-import { afterEach, describe, expect, it } from "vitest";
+import { cleanup, render, screen, waitFor } from "@testing-library/react";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import HomePage from "./page";
 
 afterEach(() => {
   cleanup();
+  vi.unstubAllGlobals();
+  localStorage.clear();
+  sessionStorage.clear();
 });
 
 describe("HomePage", () => {
@@ -36,5 +39,26 @@ describe("HomePage", () => {
     render(<HomePage />);
     const link = screen.getByRole("link", { name: /Trade Analyzer/ });
     expect(link.getAttribute("href")).toMatch(/\/analyze\/$/);
+  });
+
+  it("fetches the teams in the background and stores them when a passphrase is stored", async () => {
+    localStorage.setItem("cpc.passphrase", "localtest");
+    const teams = [{ roster_id: 1, team: "Gridiron Ghosts", manager: "Ana", avatar: null, players: [] }];
+    const fetchStub = vi.fn().mockResolvedValue(new Response(JSON.stringify({ teams })));
+    vi.stubGlobal("fetch", fetchStub);
+    render(<HomePage />);
+
+    // The list renders without a wait on the fetch.
+    expect(screen.getByText("Week 6")).toBeTruthy();
+    await waitFor(() => expect(sessionStorage.getItem("cpc.teams.2026")).not.toBeNull());
+    expect(fetchStub.mock.calls[0][1].headers["X-League-Passphrase"]).toBe("localtest");
+    expect(JSON.parse(sessionStorage.getItem("cpc.teams.2026")!).teams[0].team).toBe("Gridiron Ghosts");
+  });
+
+  it("skips the fetch with no passphrase", () => {
+    const fetchStub = vi.fn();
+    vi.stubGlobal("fetch", fetchStub);
+    render(<HomePage />);
+    expect(fetchStub).not.toHaveBeenCalled();
   });
 });

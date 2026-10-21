@@ -30,6 +30,8 @@ type TradeFormProps = {
   passphrase: string;
   // The passphrase is wrong, so the page clears it and asks again.
   onUnauthorized: () => void;
+  // Analyze answered 422, so the page fetches the current rosters.
+  onRostersStale?: () => void;
 };
 
 /* Maps a failed call to what the reader sees. A timeout and an unknown failure offer a retry. */
@@ -48,6 +50,17 @@ function toGradeError(error: unknown, timedOut: boolean): GradeState & { status:
 /* One side of the trade: the picked roster and the player ids it gives. */
 type Side = { rosterId: number | null; picks: string[] };
 type SideName = "mine" | "other";
+
+/* Drops each pick that is not on the current roster of the side's team. A fresh roster can lose a player after a trade.
+   It returns the same object when nothing drops, so React skips the render. */
+function dropStalePicks(side: Side, teams: Team[]): Side {
+  if (side.rosterId === null) return side;
+  const team = teams.find((t) => t.roster_id === side.rosterId);
+  if (!team) return { rosterId: null, picks: [] };
+  const onRoster = new Set(team.players.map((p) => p.player_id));
+  const picks = side.picks.filter((id) => onRoster.has(id));
+  return picks.length === side.picks.length ? side : { ...side, picks };
+}
 
 /* The grading status. A red bar sweeps along a grey track, so a 20-second wait reads as work in progress.
    Only transform animates. With motion off, the track stays as a still grey line. */
@@ -72,7 +85,7 @@ function GradingStatus() {
   );
 }
 
-export function TradeForm({ teams, passphrase, onUnauthorized }: TradeFormProps) {
+export function TradeForm({ teams, passphrase, onUnauthorized, onRostersStale }: TradeFormProps) {
   const [sides, setSides] = useState<{ mine: Side; other: Side }>({
     mine: { rosterId: null, picks: [] },
     other: { rosterId: null, picks: [] },
@@ -92,6 +105,16 @@ export function TradeForm({ teams, passphrase, onUnauthorized }: TradeFormProps)
       controllerRef.current?.abort();
     };
   }, []);
+
+  // The page can swap a stored list for the fresh one while the form shows, so a pick of a traded player drops.
+  // The check runs in the render, not in an effect, so no render ever shows a stale pick with the submit button on.
+  const [seenTeams, setSeenTeams] = useState(teams);
+  if (teams !== seenTeams) {
+    setSeenTeams(teams);
+    const mine = dropStalePicks(sides.mine, teams);
+    const other = dropStalePicks(sides.other, teams);
+    if (mine !== sides.mine || other !== sides.other) setSides({ mine, other });
+  }
 
   const { mine, other } = sides;
   const myTeam = teams.find((t) => t.roster_id === mine.rosterId);
@@ -144,6 +167,7 @@ export function TradeForm({ teams, passphrase, onUnauthorized }: TradeFormProps)
       if (id !== runId.current || unmounted.current) return;
       if (error instanceof ApiError && error.status === 401) onUnauthorized();
       else setGrade(toGradeError(error, timedOut));
+      if (error instanceof ApiError && error.status === 422) onRostersStale?.();
     } finally {
       clearTimeout(timer);
     }
