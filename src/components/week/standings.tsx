@@ -32,7 +32,8 @@ export function Standings({ table, avatars }: { table: TableRow[]; avatars: Avat
       <Label dark>Standings</Label>
       <Line
         cells={["#", "Team", "W-L", "Pts"]}
-        className="pt-0 pb-sp-2 text-label tracking-caps text-on-dark-muted uppercase"
+        // cn drops the leading of the grid when a new text size follows, so the header sets it again.
+        className="pt-0 pb-sp-2 text-label leading-tight tracking-caps text-on-dark-muted uppercase"
       />
       {table.map((row, i) => (
         <Fragment key={row.team.roster_id}>
