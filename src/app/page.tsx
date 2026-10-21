@@ -3,7 +3,7 @@
  * It is a server component, so the list is part of the static export.
  */
 import type { Metadata } from "next";
-import { Masthead } from "@/components/masthead";
+import { Masthead, WeekLine } from "@/components/masthead";
 import { Blurb, Chapter, Label } from "@/components/week/parts";
 import { basePath } from "@/lib/config";
 import { cn } from "@/lib/utils";
@@ -18,13 +18,13 @@ export default function HomePage() {
   return (
     <main className="mx-auto max-w-page bg-wht">
       <Masthead title="Cornerstone" subtitle="League Weekly">
-        <div className="text-headline leading-none font-black tracking-tight">ALL WEEKS</div>
+        <WeekLine label="ALL WEEKS" />
       </Masthead>
       <Chapter>
         <Label>Published weeks</Label>
         {weeks.length === 0 && <Blurb>No weeks are published yet.</Blurb>}
         {weeks.map((week, index) => (
-          // A plain link, like the masthead link: an anchor keeps the base path and needs no router.
+          // A plain anchor, like the masthead link. An anchor skips the router, so the code adds the base path by hand.
           <a
             key={week.href}
             href={`${basePath}${week.href}`}

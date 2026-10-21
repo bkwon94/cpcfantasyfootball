@@ -45,8 +45,6 @@ describe("loadWeek schema check", () => {
 describe("listWeekSummaries", () => {
   it("summarizes week 6 with its dates, teams, and link", () => {
     expect(listWeekSummaries()).toContainEqual({
-      season: "2026",
-      week: "week-06",
       number: 6,
       dates: "Oct 15 – Oct 19, 2026",
       teams: "behold the lamb vs Bo Girds",
@@ -57,5 +55,26 @@ describe("listWeekSummaries", () => {
   it("sorts the newest week first", () => {
     const numbers = listWeekSummaries().map((summary) => summary.number);
     expect(numbers).toEqual([...numbers].sort((a, b) => b - a));
+  });
+
+  it("sorts by season, then by week, as numbers", async () => {
+    // A temp public/ folder holds weeks 2 and 10 of 2026 and week 1 of 2027.
+    const root = mkdtempSync(join(tmpdir(), "week-data-"));
+    for (const [season, week, number] of [
+      ["2026", "week-02", 2],
+      ["2026", "week-10", 10],
+      ["2027", "week-01", 1],
+    ] as const) {
+      mkdirSync(join(root, "public", season, week), { recursive: true });
+      const side = (name: string) => ({ team: { name } });
+      writeFileSync(
+        join(root, "public", season, week, "page.json"),
+        JSON.stringify({ schema_version: 2, week: number, dates: "d", pick: { sides: [side("A"), side("B")] } }),
+      );
+    }
+    vi.spyOn(process, "cwd").mockReturnValue(root);
+    vi.resetModules();
+    const { listWeekSummaries: list } = await import("./week-data");
+    expect(list().map((summary) => summary.href)).toEqual(["/2027/week-01/", "/2026/week-10/", "/2026/week-02/"]);
   });
 });

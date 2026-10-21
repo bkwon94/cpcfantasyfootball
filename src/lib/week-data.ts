@@ -47,32 +47,28 @@ export function loadWeek(season: string, week: string): WeekPage {
 
 /* One row of the home page list. */
 export type WeekSummary = {
-  season: string;
-  week: string;
   number: number;
   dates: string;
   teams: string;
   href: string;
 };
 
-/* The summary is "Week N · dates · teams", so the teams are everything after the second separator. */
-function teamsOf(summary: string): string {
-  return summary.split(" · ").slice(2).join(" · ");
-}
-
-/* Every published week, newest first. The folder names sort by season, then by week number. */
+/* Every published week, newest first. The sort reads the folder names as numbers, so week-10 follows week-09. */
 export function listWeekSummaries(): WeekSummary[] {
   return listWeeks()
+    .sort((a, b) => Number(b.season) - Number(a.season) || weekNumberOf(b.week) - weekNumberOf(a.week))
     .map(({ season, week }) => {
       const page = loadWeek(season, week);
       return {
-        season,
-        week,
         number: page.week,
         dates: page.dates,
-        teams: teamsOf(page.summary),
+        teams: page.pick.sides.map((side) => side.team.name).join(" vs "),
         href: `/${season}/${week}/`,
       };
-    })
-    .sort((a, b) => b.season.localeCompare(a.season) || b.week.localeCompare(a.week));
+    });
+}
+
+/* The number in a folder name such as week-06. */
+function weekNumberOf(week: string): number {
+  return Number(week.slice("week-".length));
 }

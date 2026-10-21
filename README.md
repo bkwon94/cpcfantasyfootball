@@ -42,6 +42,11 @@ pnpm test
 pnpm typecheck
 ```
 
+## Schema version
+
+The week pages read `page.json` at schema version 2. The build fails loud on any other version.
+Ship the reader of the site for a new version before the pipeline bumps the version.
+
 ## Config
 
 All values are build-time. Only `src/lib/config.ts` reads them.

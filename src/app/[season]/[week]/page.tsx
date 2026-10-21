@@ -3,7 +3,7 @@
  * It renders the masthead with the week line and the week sections from that JSON.
  */
 import type { Metadata } from "next";
-import { Masthead } from "@/components/masthead";
+import { Masthead, WeekLine } from "@/components/masthead";
 import { AllMatchups } from "@/components/week/all-matchups";
 import { Awards } from "@/components/week/awards";
 import { GameChanger } from "@/components/week/game-changer";
@@ -41,9 +41,7 @@ export default async function WeekPage({ params }: Props) {
   return (
     <main className="mx-auto max-w-page bg-wht">
       <Masthead title="Cornerstone" subtitle="League Weekly">
-        <div className="text-headline leading-none font-black tracking-tight">
-          WEEK <span className="text-red">{page.week}</span>
-        </div>
+        <WeekLine label="WEEK" number={page.week} />
         <div className="mt-sp-1 text-meta text-on-dark-2 tabular-nums">
           {/* One string, so React writes one text node and the browser kerns the line as one run. */}
           {`${page.dates} · Published ${page.publish_date}`}
