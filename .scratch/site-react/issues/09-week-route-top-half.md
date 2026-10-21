@@ -12,3 +12,7 @@
 - [ ] Each section is a component that takes its slice of the JSON.
 - [ ] Tests render each section from the week 6 JSON and read what is on the screen.
 - [ ] A screenshot of each section at 390 wide matches today's section. No horizontal scroll.
+
+## Comments
+
+- 2026-10-21: the week folder is the data folder. Read `public/<season>/week-NN/page.json`. Image paths in the JSON are relative to the week folder. The JSON turns int keys into strings, so look up `teams["4"]` and `avatars["4"]`. Numbers are raw; port the `num` filter (shortest two-decimal form: 106.8, 21), the `gap` filter (`+` or `−` prefix), and `short_name` (first initial, dot, rest). The route and the old HTML share one path, so this branch removes `public/2026/week-06/index.html`; the publish change that stops the HTML copy is ticket 11.

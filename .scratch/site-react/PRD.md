@@ -114,15 +114,17 @@ The Jinja templates then retire.
 ### Phase 2: the weekly page and the index
 
 - The Python build writes one page JSON per week: the render context the templates read today,
-  with a schema version. Publish copies it into the public data folder with the headshots, and
-  stops copying HTML.
+  with a schema version. The week folder is the data folder: the JSON sits beside the avatars
+  and the headshots at `public/<season>/week-NN/page.json`. Publish copies the week folder as
+  today and stops copying the week HTML, the home HTML, and the static folder.
 - The week page is a static route per season and week, generated at build from the data folder.
   Every section of today's page ports: the masthead, the matchup of the week, the game changer
   hero, the awards, the position leaders, the trades with the recap cards, and the rest of the
   sections in their order. The season index ports the same way.
-- The old static week folders leave the public folder once every week renders from JSON. Week 6
-  and earlier re-render from their saved data, so the Python build gains a way to write page JSON
-  for a past week with no writer call.
+- The old week HTML leaves the public folder once every week renders from JSON; the folder stays
+  as the data folder. The route and the folder share one path, so a week's HTML leaves in the
+  same change that adds its route. Week 6 and earlier re-render from their saved data, so the
+  Python build gains a way to write page JSON for a past week with no writer call.
 - The Jinja templates, the stylesheet, and the script leave the pipeline repo once phase 2 is
   live.
 

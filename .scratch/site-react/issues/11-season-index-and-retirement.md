@@ -7,8 +7,8 @@
 **Status:** ready-for-agent
 
 - [ ] The home page lists every week in the data folder, newest first, with the same look as today.
-- [ ] The old week folders and the old home page leave the public folder. Every URL still serves.
-- [ ] Publish stops copying HTML and the static folder. Its test covers the new behavior.
+- [ ] The old home page HTML leaves the public folder. The week folders stay as the data folder. Every URL still serves.
+- [ ] Publish stops copying the week HTML, the home HTML, and the static folder, and no longer renders the index. It still copies the week folder with the JSON and the images. The home page reads `summary` from each `page.json`. Its test covers the new behavior. This pipeline change and the site change deploy together.
 - [ ] The Jinja templates, the stylesheet, the script, and the render of HTML leave the pipeline repo. The pipeline tests pass.
 - [ ] A dry run of the publish for the newest week lands live through Actions with no hand step.
 - [ ] The runbook in the pipeline repo describes the new publish.
