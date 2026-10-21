@@ -43,9 +43,15 @@ export function Label({ children, dark, className }: { children: ReactNode; dark
   );
 }
 
-export function Tag({ children }: { children: ReactNode }) {
+/* A tag after a label sits to its right. A tag on its own line passes ml-0 and its own top margin. */
+export function Tag({ children, className }: { children: ReactNode; className?: string }) {
   return (
-    <span className="ml-sp-2 inline-block rounded-sm bg-red px-sp-2 py-sp-0 align-middle text-label font-bold tracking-caps text-on-dark uppercase">
+    <span
+      className={cn(
+        "ml-sp-2 inline-block rounded-sm bg-red px-sp-2 py-sp-0 align-middle text-label font-bold tracking-caps text-on-dark uppercase",
+        className,
+      )}
+    >
       {children}
     </span>
   );
@@ -59,6 +65,17 @@ export function Blurb({ children, dark, className }: { children: ReactNode; dark
 /* The team name sits next to the avatar, so the image is decorative. */
 export function Avatar({ src }: { src: string }) {
   return <img src={src} alt="" className="size-avatar flex-none rounded-full bg-gry object-cover" />;
+}
+
+/* The avatar and the team name as one group, as the .who rule of the stylesheet sets it.
+   Fill makes the group take the free width of a row and lets a long name wrap inside it. */
+export function Who({ src, name, fill }: { src: string; name: string; fill?: boolean }) {
+  return (
+    <span className={cn("items-center gap-sp-2 align-middle", fill ? "flex min-w-0 flex-1" : "inline-flex")}>
+      <Avatar src={src} />
+      <span className={cn(fill && "min-w-0")}>{name}</span>
+    </span>
+  );
 }
 
 /* The player name sits next to the headshot, so the image is decorative. A className sets the size, the shape, and the layout.

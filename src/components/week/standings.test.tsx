@@ -1,0 +1,45 @@
+/**
+ * Tests for the standings. They render the week 6 JSON and read the rows, the records, and the points.
+ * They check what a reader sees, not the class names.
+ */
+import { cleanup, render, screen } from "@testing-library/react";
+import { afterEach, describe, expect, it } from "vitest";
+import { week6 } from "./fixture";
+import { Standings } from "./standings";
+
+afterEach(() => {
+  cleanup();
+});
+
+function renderStandings() {
+  return render(<Standings table={week6.table} avatars={week6.avatars} />);
+}
+
+describe("Standings", () => {
+  it("shows the header row", () => {
+    renderStandings();
+    for (const head of ["#", "Team", "W-L", "Pts"]) {
+      expect(screen.getByText(head)).toBeTruthy();
+    }
+  });
+
+  it("shows one row per team with the rank, the name, and the record", () => {
+    renderStandings();
+    expect(screen.getByText("Lil Fridge")).toBeTruthy();
+    expect(screen.getByText("10-2")).toBeTruthy();
+    expect(screen.getByText("Pukancun on 3")).toBeTruthy();
+    expect(screen.getByText("1-11")).toBeTruthy();
+    expect(screen.getByText("12")).toBeTruthy();
+  });
+
+  it("always shows the points with two decimals", () => {
+    renderStandings();
+    expect(screen.getByText("739.67")).toBeTruthy();
+    expect(screen.getByText("698.30")).toBeTruthy();
+  });
+
+  it("shows the note about the median game", () => {
+    renderStandings();
+    expect(screen.getByText(/Records include the weekly median game/)).toBeTruthy();
+  });
+});

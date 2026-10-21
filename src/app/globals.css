@@ -58,6 +58,16 @@
     --spacing-headshot: 64px;
     /* The headshot on an award tile: two steps of sp-5, as the stylesheet sets it. */
     --spacing-award: calc(var(--spacing-sp-5) * 2);
+    /* The chevron on a recap button: a small square turned 45 degrees, so it reads as an arrow. */
+    --spacing-chev: 6px;
+    /* The median chart: the bar height, and the score column on the right. The plot box ends where the
+       score column starts, so the median line and the bars share one percent scale. */
+    --spacing-bar: 14px;
+    --spacing-val-col: 52px;
+    /* The standings columns: rank, W-L, and points. The points column fits 000.00 at the row size. */
+    --spacing-st-rank: 24px;
+    --spacing-st-wl: 44px;
+    --spacing-st-pts: 56px;
 
     /* The page is one centered column, so the same layout serves a phone and a desktop. */
     --container-page: 480px;

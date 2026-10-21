@@ -4,10 +4,15 @@
  */
 import type { Metadata } from "next";
 import { Masthead } from "@/components/masthead";
+import { AllMatchups } from "@/components/week/all-matchups";
 import { Awards } from "@/components/week/awards";
 import { GameChanger } from "@/components/week/game-changer";
 import { MatchupOfTheWeek } from "@/components/week/matchup-of-the-week";
+import { MedianGame } from "@/components/week/median-game";
+import { NextWeek } from "@/components/week/next-week";
 import { PositionLeaders } from "@/components/week/position-leaders";
+import { Standings } from "@/components/week/standings";
+import { Trades } from "@/components/week/trades";
 import { listWeeks, loadWeek, type WeekRef } from "@/lib/week-data";
 
 type Props = { params: Promise<WeekRef> };
@@ -52,6 +57,11 @@ export default async function WeekPage({ params }: Props) {
       {page.leaders.length > 0 && (
         <PositionLeaders leaders={page.leaders} headshots={page.headshots} blurb={page.blurbs.position_leaders} />
       )}
+      <Trades trades={page.trades} avatars={page.avatars} />
+      <AllMatchups matchups={page.matchups} avatars={page.avatars} />
+      <MedianGame median={page.median} blurb={page.blurbs.median} />
+      <Standings table={page.table} avatars={page.avatars} />
+      <NextWeek week={page.week} games={page.next} avatars={page.avatars} blurb={page.blurbs.next_week} />
     </main>
   );
 }
