@@ -92,6 +92,17 @@ describe("Ledger", () => {
     expect(screen.queryByText("Nico Collins leads the trade in points per game.")).toBeNull();
   });
 
+  it("reads a down step and an even lean", () => {
+    const sides = fixture.sides.map((side, i) =>
+      i === 1
+        ? { ...side, adjusters: side.adjusters.map((a, j) => (j === 0 ? { ...a, step: -1 as const, lean: "even" as const } : a)) }
+        : side,
+    );
+    render(<Ledger doc={{ ...fixture, sides }} />);
+    expect(screen.getByText("down one step")).toBeTruthy();
+    expect(screen.getByText("leans even")).toBeTruthy();
+  });
+
   it("shows no trade value, no start reason, and no final reason", () => {
     const { container } = render(<Ledger doc={fixture} />);
     const text = container.textContent ?? "";

@@ -34,9 +34,14 @@ function Chapter({ children }: { children: ReactNode }) {
   return <section className="border-b-(length:--chap-rule) border-gry px-gutter py-sp-5">{children}</section>;
 }
 
-/* No cn call here: cn reads text-label as a color and drops it next to text-red. */
+/* The classes are fixed, so this needs no cn. */
 function Label({ children }: { children: ReactNode }) {
   return <div className="mb-sp-3 text-label leading-tight font-bold tracking-wide text-red uppercase">{children}</div>;
+}
+
+/* The small caps style of the table and the swap card. A className adds a color or a layout class. */
+function Caps({ children, className }: { children: ReactNode; className?: string }) {
+  return <span className={cn("text-label font-bold tracking-caps text-mute uppercase", className)}>{children}</span>;
 }
 
 function Blurb({ children }: { children: ReactNode }) {
@@ -46,7 +51,7 @@ function Blurb({ children }: { children: ReactNode }) {
 /* The grade letter rises in once, so the grade lands with a beat. Reduced motion shows it at rest. */
 function GradeLetter({ letter }: { letter: string }) {
   return (
-    <span className="inline-block text-headline leading-none font-black tracking-grade motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-2 motion-safe:duration-[360ms] motion-safe:ease-(--ease-out)">
+    <span className="inline-block text-headline leading-none font-black tracking-grade motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-2 motion-safe:duration-(--duration-grade) motion-safe:ease-(--ease-out)">
       {letter}
     </span>
   );
@@ -138,9 +143,7 @@ function LedgerCell({ side, name }: { side: Side; name: string }) {
         <Mark step={adjuster?.step ?? 0} />
         <span>{adjuster ? adjuster.reason : "n/a"}</span>
         {adjuster?.lean && (
-          <span className="col-start-2 text-label font-bold tracking-caps text-mute uppercase">
-            leans {adjuster.lean}
-          </span>
+          <Caps className="col-start-2">leans {adjuster.lean}</Caps>
         )}
       </div>
     </td>
@@ -159,11 +162,8 @@ function LedgerTable({ sides }: { sides: Side[] }) {
       </colgroup>
       <thead>
         <tr>
-          <th
-            scope="col"
-            className="border-b border-blk px-sp-1 py-sp-2 text-left align-top text-label font-bold tracking-caps text-mute uppercase"
-          >
-            Adjuster
+          <th scope="col" className="border-b border-blk px-sp-1 py-sp-2 text-left align-top">
+            <Caps>Adjuster</Caps>
           </th>
           {sides.map((side) => (
             <th
@@ -174,7 +174,7 @@ function LedgerTable({ sides }: { sides: Side[] }) {
               <div className="flex flex-col gap-sp-1 text-row font-extrabold hyphens-auto">
                 <span className="min-w-0">{side.team}</span>
                 {side.mine && (
-                  <span className="text-label font-bold tracking-caps text-red uppercase">Your side</span>
+                  <Caps className="text-red">Your side</Caps>
                 )}
                 <GradeLetter letter={side.final_letter} />
               </div>
@@ -185,11 +185,8 @@ function LedgerTable({ sides }: { sides: Side[] }) {
       <tbody>
         {adjusterNames(sides).map((name) => (
           <tr key={name}>
-            <th
-              scope="row"
-              className="border-b border-rule px-sp-1 py-sp-2 text-left align-top text-label font-bold tracking-caps text-mute uppercase"
-            >
-              {name}
+            <th scope="row" className="border-b border-rule px-sp-1 py-sp-2 text-left align-top">
+              <Caps>{name}</Caps>
             </th>
             {sides.map((side) => (
               <LedgerCell key={side.roster_id} side={side} name={name} />

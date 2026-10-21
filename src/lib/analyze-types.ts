@@ -3,6 +3,9 @@
  * They follow the fixture at .scratch/site-react/fixtures/analyze-response.json.
  */
 
+/* The letters the API grades with. They match LETTERS in the pipeline rubric. */
+export type Letter = "A" | "B" | "C" | "D" | "F";
+
 export type Player = {
   player_id: string;
   name: string;
@@ -31,10 +34,10 @@ export type Adjuster = {
 /* The grade of one side. The page shows final_letter only. The API keeps the other fields. */
 export type GradedSide = {
   roster_id: number;
-  start_letter: string;
+  start_letter: Letter;
   reason: string;
   adjusters: Adjuster[];
-  final_letter: string;
+  final_letter: Letter;
   final_reason: string;
   analysis: string;
 };
