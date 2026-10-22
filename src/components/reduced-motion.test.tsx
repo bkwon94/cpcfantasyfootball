@@ -56,6 +56,13 @@ describe("Reduced motion", () => {
     expect(screen.getByText("Not as is")).toBeTruthy();
   });
 
+  it("shows the fairness line at once", () => {
+    // The state is set here, so the test does not depend on the fixture state.
+    const doc = fixtureJson as AnalyzeResponse;
+    render(<AnalyzeResult doc={{ ...doc, fairness: { ...doc.fairness!, state: "fair", gives_more: null } }} />);
+    expect(screen.getByText("Fair")).toBeTruthy();
+  });
+
   it("collapses a picked team at once", () => {
     render(<TradeForm teams={TEAMS} passphrase="localtest" onUnauthorized={() => {}} />);
     const mine = screen.getByRole("group", { name: "My team" });

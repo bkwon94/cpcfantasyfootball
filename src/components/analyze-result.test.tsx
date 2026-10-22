@@ -5,7 +5,7 @@
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it } from "vitest";
 import fixtureJson from "../../.scratch/site-react/fixtures/analyze-response.json";
-import type { AnalyzeResponse, Decision } from "@/lib/analyze-types";
+import type { AnalyzeResponse, Decision, Fairness } from "@/lib/analyze-types";
 import AnalyzeResult from "./analyze-result";
 
 const fixture = fixtureJson as AnalyzeResponse;
@@ -14,6 +14,22 @@ const ANALYSIS = "Nico Collins leads the trade in points per game.";
 /* A single letter on its own is a grade. A letter in an initial such as "A.J." is a name, so the scan skips it. */
 const LETTER = /(?<![\w.])[A-F](?![\w.])/;
 const FALLBACK_LINE = "The analysis is unavailable, so the data stands alone.";
+/* The fixture fairness reasons reuse the chart sentence, so a test that counts the chart sentence reads a document without the block. */
+const { fairness: _fixtureFairness, ...noFairness } = fixture;
+/* The fixture reasons repeat breakdown text, so the fairness tests use reasons that show only once on the page. */
+const MY_REASON = "My side gets the better lineup.";
+const THEIR_REASON = "Their side moves up in the standings.";
+const withFairness = (state: Fairness["state"], gives_more: number | null = null): AnalyzeResponse => ({
+  ...fixture,
+  fairness: {
+    state,
+    gives_more,
+    sides: [
+      { roster_id: 4, reason: MY_REASON },
+      { roster_id: 12, reason: THEIR_REASON },
+    ],
+  } as Fairness,
+});
 
 afterEach(() => {
   cleanup();
@@ -58,7 +74,7 @@ describe("AnalyzeResult", () => {
   });
 
   it("shows the chart sentence under The data per side", () => {
-    render(<AnalyzeResult doc={fixture} />);
+    render(<AnalyzeResult doc={noFairness} />);
     expect(screen.getAllByText("The data")).toHaveLength(2);
     expect(screen.getAllByText(fixture.sides[0].chart.reason)).toHaveLength(2);
   });
@@ -138,10 +154,57 @@ describe("AnalyzeResult", () => {
 
   it("shows the decision, the data, and the fallback line when the analysis is null", () => {
     const sides = fixture.sides.map((side) => ({ ...side, analysis: null }));
-    render(<AnalyzeResult doc={{ ...fixture, sides, fallback: true }} />);
+    render(<AnalyzeResult doc={{ ...noFairness, sides, fallback: true }} />);
     expect(screen.getByText("Not as is")).toBeTruthy();
     expect(screen.getAllByText(FALLBACK_LINE)).toHaveLength(2);
     expect(screen.getAllByText(fixture.sides[0].chart.reason)).toHaveLength(2);
     expect(screen.queryByText(ANALYSIS)).toBeNull();
+  });
+
+  it.each([
+    ["win_win", "Good for both"],
+    ["fair", "Fair"],
+  ] as const)("shows the fairness state %s as the line %s", (state, line) => {
+    render(<AnalyzeResult doc={withFairness(state)} />);
+    expect(screen.getByText(line)).toBeTruthy();
+  });
+
+  it("names the team that gives more on a lopsided line", () => {
+    render(<AnalyzeResult doc={withFairness("lopsided", 12)} />);
+    expect(screen.getByText("Lopsided: Amon-Ra Dawg Your Team gives more.")).toBeTruthy();
+  });
+
+  it("puts the fairness line under the decision and above the swap card", () => {
+    render(<AnalyzeResult doc={withFairness("fair")} />);
+    const decision = screen.getByText("Not as is");
+    const line = screen.getByText("Fair");
+    const trade = screen.getByText("The trade");
+    expect(decision.compareDocumentPosition(line) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(line.compareDocumentPosition(trade) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  });
+
+  it("shows the two fairness reasons under the line, the asker's side first", () => {
+    // The asker here is roster 12, the second side of the trade, so the order must flip.
+    const doc = withFairness("win_win");
+    render(<AnalyzeResult doc={{ ...doc, decision: { ...doc.decision, for_roster: 12 } }} />);
+    const line = screen.getByText("Good for both");
+    const theirs = screen.getByText(THEIR_REASON);
+    const mine = screen.getByText(MY_REASON);
+    expect(line.compareDocumentPosition(theirs) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(theirs.compareDocumentPosition(mine) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  });
+
+  it("repeats the chart sentence as the fairness reason of a side with no step up", () => {
+    // The fairness reason reuses breakdown text by design, and the repeat is accepted: two data lines plus one reason.
+    render(<AnalyzeResult doc={fixture} />);
+    expect(screen.getAllByText(fixture.sides[0].chart.reason)).toHaveLength(3);
+  });
+
+  it("shows no fairness line and no reasons when the document has no fairness block", () => {
+    const { fairness: _fairness, ...doc } = withFairness("fair");
+    render(<AnalyzeResult doc={doc} />);
+    expect(screen.queryByText("Fair")).toBeNull();
+    expect(screen.queryByText(MY_REASON)).toBeNull();
+    expect(screen.queryByText(THEIR_REASON)).toBeNull();
   });
 });

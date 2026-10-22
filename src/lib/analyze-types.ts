@@ -48,6 +48,18 @@ export type DecidedSide = {
   factors: Factor[];
 };
 
+/* One side of the fairness read: the roster id and the one reason for that side. */
+export type FairnessSide = {
+  roster_id: number;
+  reason: string;
+};
+
+/* Whether the trade is good for both sides, fair, or lopsided. A lopsided trade always names gives_more, the roster id of the side that gives more. The other states have none. */
+export type Fairness = {
+  // One entry per side, in the order of the trade's sides.
+  sides: FairnessSide[];
+} & ({ state: "win_win" | "fair"; gives_more: null } | { state: "lopsided"; gives_more: number });
+
 export type AsOf = {
   chart_week: number;
   stats_through: number;
@@ -62,6 +74,8 @@ export type AnalyzeResponse = {
     sides: TradeSide[];
   };
   decision: Decision;
+  // Optional, because the ticket asks the page to render a document with no block, as a guard. The page then shows no fairness line.
+  fairness?: Fairness;
   sides: DecidedSide[];
   as_of: AsOf;
   // True when the writer call failed, so the analysis text is not real.
