@@ -5,6 +5,7 @@
 import { act, cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import fixtureJson from "../../.scratch/site-react/fixtures/analyze-response.json";
+import findJson from "../../.scratch/site-react/fixtures/find-response.json";
 import type { Team } from "@/lib/api";
 import { TradeForm } from "./trade-form";
 
@@ -281,5 +282,98 @@ describe("TradeForm", () => {
     expect(signal!.aborted).toBe(true);
     expect(errorSpy).not.toHaveBeenCalled();
     errorSpy.mockRestore();
+  });
+});
+
+/* The finder cards hand their trade to the form. The fixture finder pair is roster 2 and roster 3, so these tests render those teams. */
+describe("TradeForm with the finder", () => {
+  const [first] = findJson.trades;
+  const pairTeams: Team[] = first.sides.map((side) => ({
+    roster_id: side.roster_id,
+    team: side.team,
+    manager: `Manager ${side.roster_id}`,
+    avatar: null,
+    // Every player of the fixture trades is on the roster of the side that gives him.
+    players: findJson.trades.flatMap((t) => t.sides.find((s) => s.roster_id === side.roster_id)!.gives),
+  }));
+
+  beforeEach(() => {
+    cleanup();
+    render(<TradeForm teams={pairTeams} passphrase="localtest" onUnauthorized={onUnauthorized} />);
+  });
+
+  it("shows no finder until my team is picked", () => {
+    expect(screen.queryByRole("group", { name: "Trade partner" })).toBeNull();
+    fireEvent.click(radio("My team", "All You Need Is Love"));
+    expect(screen.getByRole("group", { name: "Trade partner" })).toBeTruthy();
+  });
+
+  /* Finds with the fixture partner and taps "See the full result" on a card. */
+  async function openCard(finderDoc: unknown, index: number) {
+    fireEvent.click(radio("My team", "All You Need Is Love"));
+    answer(200, finderDoc);
+    fireEvent.click(within(group("Trade partner")).getByRole("radio", { name: /Lil Fridge/ }));
+    fireEvent.click(screen.getByRole("button", { name: "Find a trade" }));
+    const cards = await screen.findAllByRole("article");
+    answer(200, fixtureJson);
+    fireEvent.click(within(cards[index]).getByRole("button", { name: "See the full result" }));
+    await screen.findByText("Not as is");
+  }
+
+  it("resets the partner and the cards when my team changes", async () => {
+    fireEvent.click(radio("My team", "All You Need Is Love"));
+    answer(200, findJson);
+    fireEvent.click(within(group("Trade partner")).getByRole("radio", { name: /Lil Fridge/ }));
+    fireEvent.click(screen.getByRole("button", { name: "Find a trade" }));
+    await screen.findAllByRole("article");
+
+    fireEvent.click(screen.getByRole("button", { name: "Change my team" }));
+    fireEvent.click(radio("My team", "Lil Fridge"));
+    expect(screen.queryAllByRole("article")).toHaveLength(0);
+    const partners = within(group("Trade partner")).getAllByRole("radio") as HTMLInputElement[];
+    expect(partners.every((p) => !p.checked)).toBe(true);
+    expect((screen.getByRole("button", { name: "Find a trade" }) as HTMLButtonElement).disabled).toBe(true);
+  });
+
+  it("scrolls the result into view after a card opens its full result", async () => {
+    // jsdom has no scrollIntoView, so the test supplies one.
+    const scrollIntoView = vi.fn();
+    Element.prototype.scrollIntoView = scrollIntoView;
+    await openCard(findJson, 1);
+    await waitFor(() => expect(scrollIntoView).toHaveBeenCalledTimes(1));
+    expect(scrollIntoView).toHaveBeenCalledWith({ behavior: "smooth", block: "start" });
+  });
+
+  it("grades the trade of a card with the season of the finder document", async () => {
+    Element.prototype.scrollIntoView = vi.fn();
+    await openCard({ ...findJson, season: 2025 }, 1);
+    expect(JSON.parse(fetchStub.mock.calls[1][1].body).season).toBe(2025);
+  });
+
+  it("grades the trade of a card through the analyze route and shows the full result", async () => {
+    Element.prototype.scrollIntoView = vi.fn();
+    fireEvent.click(radio("My team", "All You Need Is Love"));
+    answer(200, findJson);
+    fireEvent.click(within(group("Trade partner")).getByRole("radio", { name: /Lil Fridge/ }));
+    fireEvent.click(screen.getByRole("button", { name: "Find a trade" }));
+    const cards = await screen.findAllByRole("article");
+    expect(cards).toHaveLength(3);
+
+    answer(200, fixtureJson);
+    fireEvent.click(within(cards[1]).getByRole("button", { name: "See the full result" }));
+    await screen.findByText("Not as is");
+
+    const [url, init] = fetchStub.mock.calls[1];
+    expect(url).toContain("/analyze");
+    expect(JSON.parse(init.body)).toEqual({
+      season: 2026,
+      sides: [
+        { roster_id: 2, gives: ["12527"] },
+        { roster_id: 3, gives: ["11560", "5947"] },
+      ],
+      asker: 2,
+    });
+    // The form shows the trade of the card, so the picks match the result.
+    expect((screen.getByLabelText(/Ashton Jeanty/) as HTMLInputElement).checked).toBe(true);
   });
 });

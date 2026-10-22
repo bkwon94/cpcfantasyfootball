@@ -83,3 +83,29 @@ export type AnalyzeResponse = {
   missing: string[];
   stale: string[];
 };
+
+/* One trade of the finder. The sides share the analyze document's side shape, so the site renders a side one way.
+   reason is null when the Claude call failed twice. The fairness line then stands alone. */
+export type FinderTrade = {
+  sides: TradeSide[];
+  fairness: Fairness;
+  reason: string | null;
+};
+
+/* The finder document that the site API returns from POST /find. It follows the fixture at .scratch/site-react/fixtures/find-response.json. */
+export type FindResponse = {
+  season: number;
+  trade_pair: {
+    asker: { roster_id: number; team: string };
+    partner: { roster_id: number; team: string };
+  };
+  // Up to three trades, best first. The three share no player.
+  trades: FinderTrade[];
+  // The line for an empty list, or null when the list has a trade. The page shows it as the pipeline writes it.
+  empty: string | null;
+  as_of: AsOf;
+  // True when the reason call failed, so every reason is null.
+  fallback: boolean;
+  missing: string[];
+  stale: string[];
+};
