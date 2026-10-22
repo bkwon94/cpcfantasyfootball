@@ -44,28 +44,28 @@ export default function HomePage() {
       </Masthead>
       {/* The masthead and the label show at once. Each row reveals as it enters the view. */}
       <Chapter>
-        <Label>Published weeks</Label>
-        {weeks.length === 0 && <Blurb>No weeks are published yet.</Blurb>}
-        {weeks.map((week, index) => (
-          // Each row reveals once with a short, capped stagger, so a row in a long season list never shows late.
-          <Reveal key={week.href} delay={stagger(index)}>
-            <HomeRow href={`${basePath}${week.href}`} first={index === 0}>
-              <b className="mb-sp-1 block text-lead leading-tight group-hover:text-red">Week {week.number}</b>
-              <span className="block text-meta text-mute tabular-nums">{week.dates}</span>
-            </HomeRow>
-          </Reveal>
-        ))}
-      </Chapter>
-      <Chapter>
         <Label>Tools</Label>
-        {/* The row reveals after the last week row, with the same capped stagger. */}
-        <Reveal delay={stagger(weeks.length)}>
+        {/* The row reveals first, so a new week never pushes it down or delays it. */}
+        <Reveal delay={stagger(0)}>
           <HomeRow href={`${basePath}/analyze/`} first>
             <b className="mb-sp-1 block text-lead leading-tight group-hover:text-red">Trade Analyzer</b>
             <span className="block text-meta text-mute">Grade a trade offer before you send it.</span>
             <span className="block text-meta text-mute">League passphrase needed.</span>
           </HomeRow>
         </Reveal>
+      </Chapter>
+      <Chapter>
+        <Label>Published weeks</Label>
+        {weeks.length === 0 && <Blurb>No weeks are published yet.</Blurb>}
+        {weeks.map((week, index) => (
+          // Each row reveals once after the tools row, with a short, capped stagger, so a row in a long season list never shows late.
+          <Reveal key={week.href} delay={stagger(index + 1)}>
+            <HomeRow href={`${basePath}${week.href}`} first={index === 0}>
+              <b className="mb-sp-1 block text-lead leading-tight group-hover:text-red">Week {week.number}</b>
+              <span className="block text-meta text-mute tabular-nums">{week.dates}</span>
+            </HomeRow>
+          </Reveal>
+        ))}
       </Chapter>
     </main>
   );
