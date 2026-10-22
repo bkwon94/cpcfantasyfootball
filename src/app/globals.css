@@ -33,6 +33,10 @@
     --color-on-dark-2: #ccc;
     --color-on-dark-muted: #999;
     --color-rule-dark: #333;
+    /* The movement arrows of the power rankings: blue up, red down, a diverging pair that reads with red-green color blindness.
+       The pair passes the dataviz palette check on the black card #141414: blue is 5.06 to 1, red is 5.04 to 1. */
+    --color-move-up: #3987e5;
+    --color-move-down: #e05a4f;
 
     /* The red glow behind a hero cutout on a black card. */
     --color-red-glow: color-mix(in srgb, var(--color-red) 45%, transparent);
@@ -70,9 +74,14 @@
     --spacing-standings-rank: 24px;
     --spacing-standings-record: 44px;
     --spacing-standings-points: 56px;
+    /* The power rankings columns for movement and each component rank. 40px fits a five-letter column name in caps. */
+    --spacing-rankings-col: 40px;
 
     /* The page is one centered column, so the same layout serves a phone and a desktop. */
     --container-page: 480px;
+    /* The viewport where the page column reaches its full width. Under it, a wide table folds part of each row under the row.
+       A media query cannot read a variable, so the value repeats the page width. */
+    --breakpoint-page: 480px;
 
     /* Type scale: label, meta, row, body, lead, stat, score, headline. Row is for dense lists,
        so names and scores stay on one line. A size sets no line height, so text keeps the inherited body leading. */
