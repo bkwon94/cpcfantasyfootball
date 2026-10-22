@@ -24,13 +24,12 @@ describe("HomePage", () => {
     expect(screen.getByText("Published weeks")).toBeTruthy();
   });
 
-  it("links week 6 with its dates and teams", () => {
+  it("links week 6 with its dates", () => {
     render(<HomePage />);
     const link = screen.getByRole("link", { name: /Week 6/ });
     expect(link.getAttribute("href")).toBe("/2026/week-06/");
     expect(screen.getByText("Week 6")).toBeTruthy();
     expect(screen.getByText("Oct 15 – Oct 19, 2026")).toBeTruthy();
-    expect(screen.getByText("behold the lamb vs Bo Girds")).toBeTruthy();
   });
 
   it("shows no empty-list blurb when weeks exist", () => {

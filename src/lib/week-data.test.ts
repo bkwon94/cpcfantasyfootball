@@ -43,11 +43,10 @@ describe("loadWeek schema check", () => {
 });
 
 describe("listWeekSummaries", () => {
-  it("summarizes week 6 with its dates, teams, and link", () => {
+  it("summarizes week 6 with its dates and link", () => {
     expect(listWeekSummaries()).toContainEqual({
       number: 6,
       dates: "Oct 15 – Oct 19, 2026",
-      teams: "behold the lamb vs Bo Girds",
       href: "/2026/week-06/",
     });
   });

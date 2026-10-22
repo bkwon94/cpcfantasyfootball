@@ -97,6 +97,6 @@ describe("Reduced motion on the static pages", () => {
   it("shows every home page row at once", () => {
     render(<HomePage />);
     expect(screen.getByRole("link", { name: /Week 6/ })).toBeTruthy();
-    expect(screen.getByText("behold the lamb vs Bo Girds")).toBeTruthy();
+    expect(screen.getByText("Oct 15 – Oct 19, 2026")).toBeTruthy();
   });
 });

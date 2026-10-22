@@ -52,7 +52,6 @@ export default function HomePage() {
             <HomeRow href={`${basePath}${week.href}`} first={index === 0}>
               <b className="mb-sp-1 block text-lead leading-tight group-hover:text-red">Week {week.number}</b>
               <span className="block text-meta text-mute tabular-nums">{week.dates}</span>
-              <span className="block text-meta text-mute">{week.teams}</span>
             </HomeRow>
           </Reveal>
         ))}
