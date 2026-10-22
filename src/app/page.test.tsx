@@ -4,6 +4,7 @@
  */
 import { cleanup, render, screen, waitFor } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
+import { season } from "@/lib/config";
 import HomePage from "./page";
 
 afterEach(() => {
@@ -17,7 +18,9 @@ describe("HomePage", () => {
   it("names the site and the page", () => {
     render(<HomePage />);
     expect(screen.getByText("League Weekly")).toBeTruthy();
-    expect(screen.getByText("ALL WEEKS")).toBeTruthy();
+    // The label and the red season number are separate text nodes.
+    expect(screen.getByText("SEASON")).toBeTruthy();
+    expect(screen.getByText(String(season)).className).toContain("text-red");
     expect(screen.getByText("Published weeks")).toBeTruthy();
   });
 
