@@ -7,7 +7,7 @@ import { Analyzer } from "@/components/analyzer";
 import { Masthead } from "@/components/masthead";
 
 export const metadata: Metadata = {
-  title: "Trade Analyzer · CPC Fantasy",
+  title: "Trade Analyzer · Cornerstone Fantasy Football League",
 };
 
 export default function AnalyzePage() {

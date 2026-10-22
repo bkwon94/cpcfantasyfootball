@@ -49,7 +49,6 @@ export function loadWeek(season: string, week: string): WeekPage {
 export type WeekSummary = {
   number: number;
   dates: string;
-  teams: string;
   href: string;
 };
 
@@ -62,7 +61,6 @@ export function listWeekSummaries(): WeekSummary[] {
       return {
         number: page.week,
         dates: page.dates,
-        teams: page.pick.sides.map((side) => side.team.name).join(" vs "),
         href: `/${season}/${week}/`,
       };
     });

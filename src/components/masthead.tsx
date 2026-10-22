@@ -6,14 +6,15 @@ import type { ReactNode } from "react";
 import { basePath } from "@/lib/config";
 
 type MastheadProps = {
-  // The brand line. The home page and the week pages read "Cornerstone". The analyzer reads "CPC Fantasy".
+  // The brand line. It defaults to the league name, which every page shows.
   title?: string;
-  subtitle: string;
+  // The page line under the brand. The home page leaves it out.
+  subtitle?: string;
   // The week line under the brand. Pages with no week line leave it out.
   children?: ReactNode;
 };
 
-export function Masthead({ title = "CPC Fantasy", subtitle, children }: MastheadProps) {
+export function Masthead({ title = "Cornerstone Fantasy Football League", subtitle, children }: MastheadProps) {
   return (
     <header className="bg-blk px-gutter pt-sp-5 pb-sp-4 text-on-dark">
       {/* A plain anchor, not next/link: the home page is a static page with no shared state, so the client router adds nothing. */}
@@ -23,7 +24,7 @@ export function Masthead({ title = "CPC Fantasy", subtitle, children }: Masthead
         <div className="h-divider w-px bg-mute" />
         <div>
           <div className="text-meta leading-tight font-bold tracking-wide uppercase">{title}</div>
-          <div className="text-label tracking-caps text-on-dark-muted uppercase">{subtitle}</div>
+          {subtitle && <div className="text-label tracking-caps text-on-dark-muted uppercase">{subtitle}</div>}
         </div>
       </a>
       {children && <div className="mt-sp-4">{children}</div>}
