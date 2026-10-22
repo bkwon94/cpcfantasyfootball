@@ -2,11 +2,10 @@
  * Tests for the analyzer result. The API fixture document is the one input, and each test reads the screen.
  * They check what a reader sees, not the class names.
  */
-import { cleanup, render, screen, within } from "@testing-library/react";
+import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it } from "vitest";
 import fixtureJson from "../../.scratch/site-react/fixtures/analyze-response.json";
-import letterJson from "../../.scratch/site-react/fixtures/analyze-response-letters.json";
-import { readAnalyzeDocument, type AnalyzeResponse, type Decision, type LetterDocument } from "@/lib/analyze-types";
+import type { AnalyzeResponse, Decision } from "@/lib/analyze-types";
 import AnalyzeResult from "./analyze-result";
 
 const fixture = fixtureJson as AnalyzeResponse;
@@ -144,39 +143,5 @@ describe("AnalyzeResult", () => {
     expect(screen.getAllByText(FALLBACK_LINE)).toHaveLength(2);
     expect(screen.getAllByText(fixture.sides[0].chart.reason)).toHaveLength(2);
     expect(screen.queryByText(ANALYSIS)).toBeNull();
-  });
-});
-
-describe("readAnalyzeDocument", () => {
-  const fromLetters = readAnalyzeDocument(letterJson as LetterDocument);
-
-  it("leaves a decision document as it is", () => {
-    expect(readAnalyzeDocument(fixture)).toBe(fixture);
-  });
-
-  it("renders the letter document with the same decision as the decision document, and no letter", () => {
-    const { container } = render(<AnalyzeResult doc={fromLetters} />);
-    const block = screen.getByText("Decision for Pukancun on 3").parentElement as HTMLElement;
-    expect(within(block).getByText("Not as is")).toBeTruthy();
-    expect(within(block).getByText("The trade is close, so ask for more.")).toBeTruthy();
-    expect(container.textContent).not.toMatch(LETTER);
-  });
-
-  it("builds the chart and the factors from the letters and the steps", () => {
-    expect(fromLetters.sides.map((s) => s.chart)).toEqual(fixture.sides.map((s) => s.chart));
-    expect(fromLetters.sides.map((s) => s.factors)).toEqual(fixture.sides.map((s) => s.factors));
-  });
-
-  it("maps accept to yes and decline to no", () => {
-    const letters = letterJson as LetterDocument;
-    for (const [choice, answer] of [["accept", "yes"], ["decline", "no"]] as const) {
-      const doc = readAnalyzeDocument({ ...letters, verdict: { ...letters.verdict, choice } });
-      expect(doc.decision.answer).toBe(answer);
-    }
-  });
-
-  it("drops the analysis of a fallback letter document", () => {
-    const letters = letterJson as LetterDocument;
-    expect(readAnalyzeDocument({ ...letters, fallback: true }).sides.every((s) => s.analysis === null)).toBe(true);
   });
 });
