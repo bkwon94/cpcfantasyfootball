@@ -34,4 +34,11 @@ describe("config", () => {
     vi.stubEnv("NEXT_PUBLIC_SEASON", "abc");
     expect((await import("./config")).season).toBe(2026);
   });
+
+  it("keeps the finder off by default and turns it on with the value on", async () => {
+    expect((await import("./config")).finderOn).toBe(false);
+    vi.resetModules();
+    vi.stubEnv("NEXT_PUBLIC_FINDER", "on");
+    expect((await import("./config")).finderOn).toBe(true);
+  });
 });

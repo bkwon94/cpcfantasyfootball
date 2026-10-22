@@ -23,3 +23,5 @@
 Each card shows the swap card, the `FairnessBlock` from ticket 02, and the reason. A null reason shows the fairness line alone. A 429 shows the same wait line as the analyze form. A 422 shows the API message and asks the page for fresh rosters. A 503 shows the same fixed line as the trade form. A 401 asks for the passphrase again.
 
 Each card links to the full result through a button. The button "See the full result" fills the trade form with the trade and submits it through the existing analyze path. The analyze page reads no query, so this is the smallest change. The `submit` of the trade form now takes an optional trade, because the new picks land in state one render later. `analyze-result.tsx` now exports `SwapCard`, `FairnessBlock`, and `AsOfLine` for the cards. All 198 tests pass, and the typecheck and the build pass. The site push is for Brian.
+
+2026-10-22: The finder is behind `NEXT_PUBLIC_FINDER` and off by default, because the page felt crowded.

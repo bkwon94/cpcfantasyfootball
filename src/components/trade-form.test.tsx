@@ -9,6 +9,15 @@ import findJson from "../../.scratch/site-react/fixtures/find-response.json";
 import type { Team } from "@/lib/api";
 import { TradeForm } from "./trade-form";
 
+// The finder flag is a build-time value, so the tests switch it through a mock of the config module.
+const flags = vi.hoisted(() => ({ finderOn: false }));
+vi.mock("@/lib/config", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("@/lib/config")>()),
+  get finderOn() {
+    return flags.finderOn;
+  },
+}));
+
 const player = (id: string, name: string) => ({
   player_id: id,
   name,
@@ -287,6 +296,10 @@ describe("TradeForm", () => {
 
 /* The finder cards hand their trade to the form. The fixture finder pair is roster 2 and roster 3, so these tests render those teams. */
 describe("TradeForm with the finder", () => {
+  afterEach(() => {
+    flags.finderOn = false;
+  });
+
   const [first] = findJson.trades;
   const pairTeams: Team[] = first.sides.map((side) => ({
     roster_id: side.roster_id,
@@ -299,7 +312,21 @@ describe("TradeForm with the finder", () => {
 
   beforeEach(() => {
     cleanup();
+    flags.finderOn = true;
     render(<TradeForm teams={pairTeams} passphrase="localtest" onUnauthorized={onUnauthorized} />);
+  });
+
+  it("shows the finder when the flag is on", () => {
+    fireEvent.click(radio("My team", "All You Need Is Love"));
+    expect(screen.getByRole("group", { name: "Trade partner" })).toBeTruthy();
+  });
+
+  it("hides the finder when the flag is off, with my team picked", () => {
+    flags.finderOn = false;
+    cleanup();
+    render(<TradeForm teams={pairTeams} passphrase="localtest" onUnauthorized={onUnauthorized} />);
+    fireEvent.click(radio("My team", "All You Need Is Love"));
+    expect(screen.queryByRole("group", { name: "Trade partner" })).toBeNull();
   });
 
   it("shows no finder until my team is picked", () => {
