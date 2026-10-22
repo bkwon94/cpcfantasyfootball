@@ -55,7 +55,7 @@ export default function HomePage() {
         </Reveal>
       </Chapter>
       <Chapter>
-        <Label>Published weeks</Label>
+        <Label>Weekly reports</Label>
         {weeks.length === 0 && <Blurb>No weeks are published yet.</Blurb>}
         {weeks.map((week, index) => (
           // Each row reveals once after the tools row, with a short, capped stagger, so a row in a long season list never shows late.

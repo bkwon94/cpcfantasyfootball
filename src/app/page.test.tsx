@@ -22,7 +22,7 @@ describe("HomePage", () => {
     // The label and the red season number are separate text nodes.
     expect(screen.getByText("SEASON")).toBeTruthy();
     expect(screen.getByText(String(season)).className).toContain("text-red");
-    expect(screen.getByText("Published weeks")).toBeTruthy();
+    expect(screen.getByText("Weekly reports")).toBeTruthy();
   });
 
   it("links week 6 with its dates", () => {
