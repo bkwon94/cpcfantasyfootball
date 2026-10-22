@@ -44,6 +44,13 @@ describe("HomePage", () => {
     expect(link.getAttribute("href")).toMatch(/\/analyze\/$/);
   });
 
+  it("puts the trade analyzer before the weeks", () => {
+    render(<HomePage />);
+    const analyzer = screen.getByRole("link", { name: /Trade Analyzer/ });
+    const week = screen.getByRole("link", { name: /Week 6/ });
+    expect(analyzer.compareDocumentPosition(week) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  });
+
   it("fetches the teams in the background and stores them when a passphrase is stored", async () => {
     localStorage.setItem("cpc.passphrase", "localtest");
     const teams = [{ roster_id: 1, team: "Gridiron Ghosts", manager: "Ana", avatar: null, players: [] }];
