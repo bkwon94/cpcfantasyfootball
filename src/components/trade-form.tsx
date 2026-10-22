@@ -14,7 +14,7 @@ import { TradeFinder } from "@/components/trade-finder";
 import { Button } from "@/components/ui/button";
 import type { AnalyzeResponse, FinderTrade } from "@/lib/analyze-types";
 import { ApiError, postAnalyze, toErrorLine, type Team } from "@/lib/api";
-import { season } from "@/lib/config";
+import { finderOn, season } from "@/lib/config";
 import { DURATION, SWEEP_EASE, useMotionOff } from "@/lib/motion";
 
 // A cold grade takes about 30 seconds and the server caches the result, so a long wait beats a retry.
@@ -239,7 +239,8 @@ export function TradeForm({ teams, passphrase, onUnauthorized, onRostersStale }:
         )}
       </section>
       {/* The finder needs the asker, so it shows once my team is picked. The key resets the partner and the cards when my team changes. */}
-      {myTeam && (
+      {/* The finder is off by default because the page felt crowded. */}
+      {finderOn && myTeam && (
         <div className="mt-sp-6">
           <TradeFinder
             key={myTeam.roster_id}

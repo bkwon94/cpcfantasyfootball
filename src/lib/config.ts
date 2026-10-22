@@ -13,3 +13,7 @@ export const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 const DEFAULT_SEASON = 2026;
 const parsedSeason = Number(process.env.NEXT_PUBLIC_SEASON);
 export const season = Number.isFinite(parsedSeason) && parsedSeason > 0 ? parsedSeason : DEFAULT_SEASON;
+
+// The trade finder stays hidden until the page layout has room for it.
+// A build with NEXT_PUBLIC_FINDER=on shows it.
+export const finderOn = process.env.NEXT_PUBLIC_FINDER === "on";
