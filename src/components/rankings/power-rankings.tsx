@@ -1,0 +1,184 @@
+/**
+ * The power rankings table: the dark chapter with one row per team for one week, in rank order.
+ * Each row shows the rank, the movement, the team, the record, and the four component ranks. Every number is a rank, never a score.
+ * The row button opens the blurb, and it holds open state, so this file is a client component.
+ */
+"use client";
+
+import { motion } from "framer-motion";
+import { useId, useState, type ReactNode } from "react";
+import { Reveal } from "@/components/reveal";
+import { avatarSrc, Blurb, Chapter, Label, Who } from "@/components/week/parts";
+import { DURATION, EASE_OUT, INSTANT, stagger, useMotionOff } from "@/lib/motion";
+import type { Components, RankingsRow, RankingsWeek } from "@/lib/rankings-types";
+import { cn } from "@/lib/utils";
+import type { AvatarMap } from "@/lib/week-types";
+
+/* The order and the column names of the four component ranks. */
+const COMPONENTS: { key: keyof Components; name: string }[] = [
+  { key: "standing", name: "Stand" },
+  { key: "form", name: "Form" },
+  { key: "schedule_played", name: "Sched" },
+  { key: "scoring", name: "Pts" },
+];
+
+/* The columns on a phone: rank, movement, team, record, and the chevron of the row control.
+   The open row uses the same columns, so its component ranks and its blurb line up under the team. */
+const PHONE_COLS =
+  "grid-cols-[var(--spacing-standings-rank)_var(--spacing-rankings-col)_1fr_var(--spacing-standings-record)_var(--spacing-chevron)]";
+
+/* The same grid style as the standings. On a phone the four component columns do not fit beside the team,
+   so the row keeps its phone columns and the component ranks move into the open row. From the page width up, they join the row.
+   Nine columns need a tighter gap than the four-column standings, so the longest team name fits on two lines at 800. */
+const GRID = `grid ${PHONE_COLS} page:grid-cols-[var(--spacing-standings-rank)_var(--spacing-rankings-col)_1fr_var(--spacing-standings-record)_repeat(4,var(--spacing-rankings-col))_var(--spacing-chevron)] items-center gap-x-sp-2 page:gap-x-sp-1 border-b border-rule-dark text-row leading-tight tabular-nums`;
+
+/* The arrow carries the direction in its shape, and the screen reader text names it, so the color is never the only sign.
+   The count stays in the text color. The arrow sits on two surfaces: the black card #141414 of the table and the white home page #ffffff.
+   On the black card blue is about 5.06 to 1 and red about 5.04 to 1. On white blue is about 3.64 to 1 and red about 3.66 to 1.
+   Both pairs pass the 3 to 1 rule for a graphic. No movement, and no last week in week 1, show a dash. */
+export function Movement({ movement }: { movement: number | null }) {
+  if (movement === null || movement === 0) {
+    return (
+      <span>
+        <span aria-hidden>–</span>
+        <span className="sr-only">{movement === null ? "No last week" : "No change"}</span>
+      </span>
+    );
+  }
+  const up = movement > 0;
+  return (
+    <span className="inline-flex items-center gap-sp-0">
+      <span aria-hidden className={up ? "text-move-up" : "text-move-down"}>
+        {up ? "▲" : "▼"}
+      </span>
+      <span className="sr-only">{up ? "Up" : "Down"}</span>
+      {Math.abs(movement)}
+    </span>
+  );
+}
+
+/* The component cells of the open row on a phone. The line sits under the team and the record, and each cell names its column.
+   From the page width up, the line hides, because the same ranks sit in the row under the header. */
+function ComponentCells({ cells }: { cells: { name: string; value: ReactNode }[] }) {
+  return (
+    <span className="col-span-2 col-start-3 grid grid-cols-4 gap-x-sp-2 pt-sp-1 page:hidden">
+      {cells.map(({ name, value }) => (
+        <span key={name} className="text-right">
+          <span className="mr-sp-1 text-label tracking-caps text-on-dark-muted uppercase">{name}</span>
+          {value}
+        </span>
+      ))}
+    </span>
+  );
+}
+
+/* One team. The row control opens the blurb, and on a phone the component ranks above it.
+   A row with no blurb has nothing to open from the page width up, so its control shows on a phone only. */
+function Row({ row, avatars, index }: { row: RankingsRow; avatars: AvatarMap; index: number }) {
+  const [open, setOpen] = useState(false);
+  const off = useMotionOff();
+  const panelId = useId();
+  const hasBlurb = row.blurb.length > 0;
+  return (
+    // Each row reveals once with the capped stagger, so a row low in the list never shows late.
+    // The row and its open part share the bottom rule, so the rule moves to the reveal box.
+    <Reveal className="border-b border-rule-dark" delay={stagger(index + 1)}>
+      {/* The grid is the positioned box of the control, so a tap anywhere on the row opens it. 44px is the smallest comfortable touch target. */}
+      <div className={cn(GRID, "relative min-h-touch border-b-0 py-sp-1")}>
+        <span>{row.rank}</span>
+        <Movement movement={row.movement} />
+        <Who src={avatarSrc(avatars, row.roster_id)} name={row.name} />
+        <span className="text-right">{`${row.wins}-${row.losses}`}</span>
+        {/* The header names these columns, so the cells hold only the rank. On a phone they move into the open row. */}
+        {COMPONENTS.map(({ key }) => (
+          <span key={key} className="hidden text-right page:block">
+            {row.components[key]}
+          </span>
+        ))}
+        {/* The after box stretches the button over the whole row, so the touch target is the row and not only the chevron. */}
+        <button
+          type="button"
+          aria-expanded={open}
+          aria-controls={panelId}
+          aria-label={`More on ${row.name}`}
+          onClick={() => setOpen(!open)}
+          className={cn(
+            "flex cursor-pointer justify-end border-0 bg-transparent p-0 text-on-dark-muted after:absolute after:inset-0",
+            "[-webkit-tap-highlight-color:transparent]",
+            !hasBlurb && "page:hidden",
+          )}
+        >
+          {/* The same turned square as the recap button. With motion off it turns at once, with no transition class. */}
+          <span
+            aria-hidden
+            className={cn(
+              "inline-block size-chevron border-r-2 border-b-2 border-current",
+              !off && "transition-[translate,rotate] duration-200 ease-out",
+              open ? "translate-y-px -rotate-135" : "-translate-y-sp-0 rotate-45",
+            )}
+          />
+        </button>
+      </div>
+      {/* The open part animates height, the same exception as the recap panel of a matchup row.
+          It stays in the DOM when closed, so find-in-page still finds the blurb. aria-hidden and inert hide it from assistive tech. */}
+      <motion.div
+        id={panelId}
+        aria-hidden={!open}
+        inert={!open}
+        initial={false}
+        animate={open ? { height: "auto", opacity: 1 } : { height: 0, opacity: 0 }}
+        transition={off ? INSTANT : { duration: DURATION.collapse, ease: EASE_OUT }}
+        className="overflow-hidden"
+      >
+        <div className={cn("grid gap-x-sp-2 gap-y-sp-2 pb-sp-2", PHONE_COLS)}>
+          <ComponentCells cells={COMPONENTS.map(({ key, name }) => ({ name, value: row.components[key] }))} />
+          {/* The sentences join in their order in the file, as plain text. The fact IDs are for the checks, not the reader. */}
+          {hasBlurb && (
+            <Blurb dark className="col-[3/-1]">
+              {row.blurb.map((sentence) => sentence.text).join(" ")}
+            </Blurb>
+          )}
+        </div>
+      </motion.div>
+    </Reveal>
+  );
+}
+
+export function PowerRankings({ week, avatars }: { week: RankingsWeek; avatars: AvatarMap }) {
+  return (
+    <Chapter dark>
+      {/* The label and the header reveal first, then the rows stagger in after them, as the trades chapter does. */}
+      <Reveal delay={stagger(0)}>
+        <Label dark>Power rankings</Label>
+        {/* The header names the component columns only from the page width up. On a phone the component ranks show in the open row, and each cell names itself. */}
+        <div
+          aria-hidden
+          // cn drops the leading of the grid when a new text size follows, so the header sets it again.
+          className={cn(GRID, "pt-0 pb-sp-2 text-label leading-tight tracking-caps text-on-dark-muted uppercase")}
+        >
+          <span>#</span>
+          <span>+/-</span>
+          <span>Team</span>
+          <span className="text-right">W-L</span>
+          {COMPONENTS.map(({ name }) => (
+            <span key={name} className="hidden text-right page:block">
+              {name}
+            </span>
+          ))}
+          {/* The empty cell over the column of the row control. */}
+          <span />
+        </div>
+      </Reveal>
+      <ol className="m-0 list-none p-0">
+        {week.rows.map((row, index) => (
+          <li key={row.roster_id}>
+            <Row row={row} avatars={avatars} index={index} />
+          </li>
+        ))}
+      </ol>
+      <Blurb dark className="mt-sp-3 text-meta">
+        Each column ranks the team from 1 to 12: standing, recent form, schedule played, and scoring. Pts ranks scoring: points for and the all-play record.
+      </Blurb>
+    </Chapter>
+  );
+}

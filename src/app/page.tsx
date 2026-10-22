@@ -1,15 +1,18 @@
 /**
- * The home page at /: every published week, newest first, read from each week's page.json.
+ * The home page at /: the tools, the top of the power rankings, and every published week, newest first, read from each week's page.json.
  * It is a server component, so the list is part of the static export.
  */
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { Masthead, WeekLine } from "@/components/masthead";
+import { Movement } from "@/components/rankings/power-rankings";
 import { Reveal } from "@/components/reveal";
 import { TeamsPrefetch } from "@/components/teams-prefetch";
 import { Blurb, Chapter, Label } from "@/components/week/parts";
 import { basePath, season } from "@/lib/config";
 import { stagger } from "@/lib/motion";
+import { biggestMover } from "@/lib/rankings";
+import { loadRankings } from "@/lib/rankings-data";
 import { cn } from "@/lib/utils";
 import { listWeekSummaries } from "@/lib/week-data";
 
@@ -35,6 +38,10 @@ function HomeRow({ href, first, children }: { href: string; first?: boolean; chi
 
 export default function HomePage() {
   const weeks = listWeekSummaries();
+  const rankings = loadRankings()?.weeks.at(-1);
+  const mover = rankings ? biggestMover(rankings) : null;
+  // The week rows start the stagger one step after the rankings chapter, or after the tools row when the chapter is hidden.
+  const firstWeekStep = rankings ? 2 : 1;
   return (
     <main className="mx-auto max-w-page bg-wht">
       {/* A reader who opens the analyzer next sees the pickers at once, because the teams are already in session storage. */}
@@ -54,12 +61,37 @@ export default function HomePage() {
           </HomeRow>
         </Reveal>
       </Chapter>
+      {/* A missing season file hides the chapter, so the page ships before the pipeline writes the file. */}
+      {rankings && (
+        <Chapter>
+          <Label>Power rankings</Label>
+          <Reveal delay={stagger(1)}>
+            <HomeRow href={`${basePath}/rankings/`} first>
+              <b className="mb-sp-1 block text-lead leading-tight group-hover:text-red">Top three</b>
+              <ol className="m-0 mb-sp-1 list-none p-0">
+                {rankings.rows.slice(0, 3).map((row) => (
+                  <li key={row.roster_id} className="text-meta text-ink-2 tabular-nums">
+                    <span className="mr-sp-1 text-mute">{row.rank}</span>
+                    {row.name}
+                  </li>
+                ))}
+              </ol>
+              {mover && (
+                <span className="block text-meta text-mute tabular-nums">
+                  Biggest mover: <Movement movement={mover.movement} /> {mover.name}
+                </span>
+              )}
+              <span className="block text-meta text-mute">See all twelve teams.</span>
+            </HomeRow>
+          </Reveal>
+        </Chapter>
+      )}
       <Chapter>
         <Label>Weekly reports</Label>
         {weeks.length === 0 && <Blurb>No weeks are published yet.</Blurb>}
         {weeks.map((week, index) => (
-          // Each row reveals once after the tools row, with a short, capped stagger, so a row in a long season list never shows late.
-          <Reveal key={week.href} delay={stagger(index + 1)}>
+          // Each row reveals once after the rows above it, with a short, capped stagger, so a row in a long season list never shows late.
+          <Reveal key={week.href} delay={stagger(index + firstWeekStep)}>
             <HomeRow href={`${basePath}${week.href}`} first={index === 0}>
               <b className="mb-sp-1 block text-lead leading-tight group-hover:text-red">Week {week.number}</b>
               <span className="block text-meta text-mute tabular-nums">{week.dates}</span>
