@@ -6,15 +6,18 @@
 
 import type { Team } from "@/lib/api";
 import { HEADSHOT_FALLBACK, swapToDefault } from "@/lib/headshot";
+import { cn } from "@/lib/utils";
 
 type PlayerListProps = {
   team: Team;
   // The picked player ids.
   picked: string[];
   onToggle: (playerId: string) => void;
+  // A grade runs, so a tap must not change the trade that the grade reads.
+  locked?: boolean;
 };
 
-export function PlayerList({ team, picked, onToggle }: PlayerListProps) {
+export function PlayerList({ team, picked, onToggle, locked = false }: PlayerListProps) {
   return (
     <fieldset className="m-0 min-w-0 border-0 p-0">
       <legend className="mb-sp-2 p-0 text-label font-bold tracking-wide text-red uppercase">{team.team} gives</legend>
@@ -22,11 +25,16 @@ export function PlayerList({ team, picked, onToggle }: PlayerListProps) {
         {team.players.map((player) => (
           <label
             key={player.player_id}
-            className="group press flex min-h-touch cursor-pointer items-center gap-sp-3 rounded-card bg-gry px-sp-3 py-sp-1 has-checked:bg-blk has-checked:text-on-dark has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-red"
+            aria-disabled={locked || undefined}
+            className={cn(
+              "group flex min-h-touch items-center gap-sp-3 rounded-card bg-gry px-sp-3 py-sp-1 has-checked:bg-blk has-checked:text-on-dark has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-red",
+              locked ? "cursor-not-allowed opacity-40" : "press cursor-pointer",
+            )}
           >
             <input
               type="checkbox"
               checked={picked.includes(player.player_id)}
+              disabled={locked}
               onChange={() => onToggle(player.player_id)}
               className="size-4 flex-none accent-red"
             />

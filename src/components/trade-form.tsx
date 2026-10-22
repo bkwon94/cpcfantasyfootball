@@ -120,6 +120,7 @@ export function TradeForm({ teams, passphrase, onUnauthorized, onRostersStale }:
   const myTeam = teams.find((t) => t.roster_id === mine.rosterId);
   const otherTeam = teams.find((t) => t.roster_id === other.rosterId);
   const ready = mine.picks.length > 0 && other.picks.length > 0;
+  // The grade locks the form, so the result always matches the picks on the screen. A result or an error ends it.
   const grading = grade.status === "grading";
 
   // A new team makes the old picks and the old result stale, so a change clears them.
@@ -179,16 +180,17 @@ export function TradeForm({ teams, passphrase, onUnauthorized, onRostersStale }:
         <h2 id="pick-teams" className="m-0 text-stat leading-stat font-black uppercase">
           Pick the teams
         </h2>
-        <TeamPicker label="My team" teams={teams} value={mine.rosterId} disabledId={other.rosterId} onChange={(id) => pickTeam("mine", id)} />
-        <TeamPicker label="The other team" teams={teams} value={other.rosterId} disabledId={mine.rosterId} onChange={(id) => pickTeam("other", id)} />
-        {myTeam && <PlayerList team={myTeam} picked={mine.picks} onToggle={(p) => togglePick("mine", p)} />}
-        {otherTeam && <PlayerList team={otherTeam} picked={other.picks} onToggle={(p) => togglePick("other", p)} />}
+        <TeamPicker label="My team" teams={teams} value={mine.rosterId} disabledId={other.rosterId} onChange={(id) => pickTeam("mine", id)} locked={grading} />
+        <TeamPicker label="The other team" teams={teams} value={other.rosterId} disabledId={mine.rosterId} onChange={(id) => pickTeam("other", id)} locked={grading} />
+        {myTeam && <PlayerList team={myTeam} picked={mine.picks} onToggle={(p) => togglePick("mine", p)} locked={grading} />}
+        {otherTeam && <PlayerList team={otherTeam} picked={other.picks} onToggle={(p) => togglePick("other", p)} locked={grading} />}
         <Button
           className="press h-touch w-full rounded-card px-sp-4 text-lead font-bold"
           disabled={!ready || grading}
+          aria-busy={grading || undefined}
           onClick={submit}
         >
-          Grade the trade
+          {grading ? "Grading…" : "Grade the trade"}
         </Button>
         {grading && <GradingStatus />}
         {grade.status === "error" && (

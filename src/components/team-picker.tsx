@@ -29,9 +29,11 @@ type TeamPickerProps = {
   // The roster id that the other picker holds. This picker shows that row as disabled.
   disabledId: number | null;
   onChange: (rosterId: number) => void;
+  // A grade runs, so every row and the Change button stay off until the grade ends.
+  locked?: boolean;
 };
 
-export function TeamPicker({ label, teams, value, disabledId, onChange }: TeamPickerProps) {
+export function TeamPicker({ label, teams, value, disabledId, onChange, locked = false }: TeamPickerProps) {
   // The list opens until a pick, then it collapses to the chosen row, so the form fits on a phone screen.
   const [open, setOpen] = useState(true);
   const off = useMotionOff();
@@ -58,7 +60,7 @@ export function TeamPicker({ label, teams, value, disabledId, onChange }: TeamPi
   }
 
   const rows = shown.map((team) => {
-    const disabled = team.roster_id === disabledId;
+    const disabled = locked || team.roster_id === disabledId;
     return (
       <motion.div
         key={team.roster_id}
@@ -77,6 +79,7 @@ export function TeamPicker({ label, teams, value, disabledId, onChange }: TeamPi
             )}
           >
             <label
+              aria-disabled={disabled || undefined}
               className={cn(
                 "flex min-h-touch min-w-0 flex-1 cursor-pointer items-center gap-sp-3 px-sp-3 py-sp-1",
                 disabled ? "cursor-not-allowed" : "press",
@@ -107,8 +110,9 @@ export function TeamPicker({ label, teams, value, disabledId, onChange }: TeamPi
               <button
                 type="button"
                 onClick={reopen}
+                disabled={locked}
                 aria-label={`Change ${label.toLowerCase()}`}
-                className="press min-h-touch flex-none cursor-pointer rounded-card px-sp-4 text-label font-bold tracking-wide text-on-dark uppercase underline underline-offset-4"
+                className="press min-h-touch flex-none cursor-pointer rounded-card disabled:cursor-not-allowed px-sp-4 text-label font-bold tracking-wide text-on-dark uppercase underline underline-offset-4"
               >
                 Change
               </button>
