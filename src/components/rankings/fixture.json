@@ -225,7 +225,20 @@
             "schedule_played": 6,
             "scoring": 2
           },
-          "blurb": []
+          "blurb": [
+            {
+              "text": "Lil Fridge drops one place to 2 with the best record in the league.",
+              "fact_ids": [
+                "PR.3"
+              ]
+            },
+            {
+              "text": "A soft schedule keeps it off the top.",
+              "fact_ids": [
+                "PR.4"
+              ]
+            }
+          ]
         },
         {
           "roster_id": 6,

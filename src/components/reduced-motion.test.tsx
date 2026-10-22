@@ -1,9 +1,9 @@
 /**
- * Tests for the analyzer, the week page, and the home page with the reduced-motion media query on. The content must show at rest at once.
+ * Tests for the analyzer, the week page, the home page, and the power rankings with the reduced-motion media query on. The content must show at rest at once.
  * matchMedia is a stub, and it must exist before Framer Motion first reads it, so the stub runs at the top of the file.
  * jsdom ignores opacity, so this test proves the text is present. The browser capture 12-week-off-390.png proves no motion.
  */
-import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { afterAll, afterEach, describe, expect, it, vi } from "vitest";
 import fixtureJson from "../../.scratch/site-react/fixtures/analyze-response.json";
 import HomePage from "@/app/page";
@@ -11,6 +11,8 @@ import WeekPage from "@/app/[season]/[week]/page";
 import type { AnalyzeResponse } from "@/lib/analyze-types";
 import type { Team } from "@/lib/api";
 import AnalyzeResult from "./analyze-result";
+import { rankings } from "./rankings/fixture";
+import { PowerRankings } from "./rankings/power-rankings";
 import { TradeForm } from "./trade-form";
 import { week6 } from "./week/fixture";
 
@@ -73,6 +75,28 @@ describe("Reduced motion", () => {
     expect(status.getAttribute("aria-busy")).toBe("true");
     // The track is aria-hidden, so the query must include hidden elements to find the sweep if it existed.
     expect(within(status).queryByRole("presentation", { hidden: true })).toBeNull();
+  });
+});
+
+describe("Reduced motion on the power rankings", () => {
+  it("opens a row at once, with no transition class on the open state", async () => {
+    render(<PowerRankings week={rankings.weeks.at(-1)!} avatars={week6.avatars} />);
+    const button = screen.getByRole("button", { name: "More on Lil Fridge" });
+    fireEvent.click(button);
+    expect(button.getAttribute("aria-expanded")).toBe("true");
+    const panel = document.getElementById(button.getAttribute("aria-controls") ?? "")!;
+    expect(panel.getAttribute("aria-hidden")).toBe("false");
+    // With motion off the panel takes the instant transition, so it is at rest and fully open by the next frame.
+    // The wait is far shorter than the collapse duration, so a real animation fails it.
+    await waitFor(
+      () => {
+        expect(panel.style.opacity).toBe("1");
+        expect(panel.style.height).toBe("auto");
+      },
+      { timeout: 50 },
+    );
+    // The chevron is the one CSS transition of the row. With motion off it carries no transition class.
+    expect(button.querySelector("span")!.className).not.toMatch(/\btransition-/);
   });
 });
 
