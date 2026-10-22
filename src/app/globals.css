@@ -34,7 +34,9 @@
     --color-on-dark-muted: #999;
     --color-rule-dark: #333;
     /* The movement arrows of the power rankings: blue up, red down, a diverging pair that reads with red-green color blindness.
-       The pair passes the dataviz palette check on the black card #141414: blue is 5.06 to 1, red is 5.04 to 1. */
+       The arrows sit on two surfaces. On the black card #141414 blue is about 5.06 to 1 and red about 5.04 to 1.
+       On the white home page #ffffff blue is about 3.64 to 1 and red about 3.66 to 1. Both pass the 3 to 1 rule for a graphic.
+       The arrow shape and the screen reader text also carry the direction, so the color is never the only sign. */
     --color-move-up: #3987e5;
     --color-move-down: #e05a4f;
 

@@ -32,8 +32,10 @@ const PHONE_COLS =
    Nine columns need a tighter gap than the four-column standings, so the longest team name fits on two lines at 800. */
 const GRID = `grid ${PHONE_COLS} page:grid-cols-[var(--spacing-standings-rank)_var(--spacing-rankings-col)_1fr_var(--spacing-standings-record)_repeat(4,var(--spacing-rankings-col))_var(--spacing-chevron)] items-center gap-x-sp-2 page:gap-x-sp-1 border-b border-rule-dark text-row leading-tight tabular-nums`;
 
-/* The arrow carries the direction in its shape, so the color is never the only sign. The count stays in the text color.
-   The arrow colors are for the black card, the only surface of the table. No movement, and no last week in week 1, show a dash. */
+/* The arrow carries the direction in its shape, and the screen reader text names it, so the color is never the only sign.
+   The count stays in the text color. The arrow sits on two surfaces: the black card #141414 of the table and the white home page #ffffff.
+   On the black card blue is about 5.06 to 1 and red about 5.04 to 1. On white blue is about 3.64 to 1 and red about 3.66 to 1.
+   Both pairs pass the 3 to 1 rule for a graphic. No movement, and no last week in week 1, show a dash. */
 export function Movement({ movement }: { movement: number | null }) {
   if (movement === null || movement === 0) {
     return (

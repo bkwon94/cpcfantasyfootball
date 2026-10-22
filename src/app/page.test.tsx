@@ -1,17 +1,26 @@
 /**
- * Tests for the home page. They render the page with the real public/ data and read what a reader sees.
- * The week 6 JSON is the fixture, so these tests break if the publish layout changes.
+ * Tests for the home page. Most render the page with the real public/ data and read what a reader sees.
+ * The week 6 JSON is the fixture, so these tests break if the publish layout changes. The rankings tests build a temp public/ folder.
  */
 import { cleanup, render, screen, waitFor } from "@testing-library/react";
+import { mkdtempSync, mkdirSync, rmSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import { afterEach, describe, expect, it, vi } from "vitest";
+import fixture from "@/components/rankings/fixture.json";
 import { season } from "@/lib/config";
 import HomePage from "./page";
 
+/* The temp public/ folders that homeOver made, so each test removes its own folder. */
+const roots: string[] = [];
+
 afterEach(() => {
   cleanup();
+  for (const root of roots.splice(0)) rmSync(root, { recursive: true, force: true });
   vi.unstubAllGlobals();
   localStorage.clear();
   sessionStorage.clear();
+  vi.restoreAllMocks();
 });
 
 describe("HomePage", () => {
@@ -27,8 +36,8 @@ describe("HomePage", () => {
 
   it("links week 6 with its dates", () => {
     render(<HomePage />);
-    const link = screen.getByRole("link", { name: /Week 6/ });
-    expect(link.getAttribute("href")).toBe("/2026/week-06/");
+    const link = screen.getAllByRole("link").find((item) => item.getAttribute("href") === "/2026/week-06/");
+    expect(link).toBeTruthy();
     expect(screen.getByText("Week 6")).toBeTruthy();
     expect(screen.getByText("Oct 15 – Oct 19, 2026")).toBeTruthy();
   });
@@ -47,7 +56,7 @@ describe("HomePage", () => {
   it("puts the trade analyzer before the weeks", () => {
     render(<HomePage />);
     const analyzer = screen.getByRole("link", { name: /Trade Analyzer/ });
-    const week = screen.getByRole("link", { name: /Week 6/ });
+    const week = screen.getAllByRole("link").find((item) => item.getAttribute("href") === "/2026/week-06/")!;
     expect(analyzer.compareDocumentPosition(week) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
   });
 
@@ -71,4 +80,56 @@ describe("HomePage", () => {
     render(<HomePage />);
     expect(fetchStub).not.toHaveBeenCalled();
   });
+});
+
+/* A temp public/ folder with the week 5 and week 6 pages, and the rankings file when one is given. */
+async function homeOver(rankings?: unknown) {
+  const root = mkdtempSync(join(tmpdir(), "home-page-"));
+  roots.push(root);
+  for (const week of [5, 6]) {
+    const folder = join(root, "public", "2026", `week-0${week}`);
+    mkdirSync(folder, { recursive: true });
+    writeFileSync(join(folder, "page.json"), JSON.stringify({ schema_version: 2, week, dates: `Dates of week ${week}`, avatars: {} }));
+  }
+  if (rankings !== undefined) {
+    writeFileSync(join(root, "public", "2026", "rankings.json"), JSON.stringify(rankings));
+  }
+  vi.spyOn(process, "cwd").mockReturnValue(root);
+  // The readers read the working folder when they load, so reset them to pick up the temp folder.
+  vi.resetModules();
+  return (await import("./page")).default;
+}
+
+describe("HomePage power rankings", () => {
+  it("shows the top three, the biggest mover, and the link to the rankings", async () => {
+    const Home = await homeOver(fixture);
+    render(<Home />);
+    expect(screen.getByText("Power rankings")).toBeTruthy();
+    const link = screen.getByRole("link", { name: /Top three/ });
+    expect(link.getAttribute("href")).toBe("/rankings/");
+    const top = Array.from(link.querySelectorAll("li")).map((item) => item.textContent);
+    expect(top).toEqual(["1London Cooking", "2Lil Fridge", "3Bo Girds"]);
+    // London Cooking moved up four places, the largest movement in the fixture week.
+    expect(link.textContent).toContain("Biggest mover: ▲Up4 London Cooking");
+  });
+
+  it("puts the chapter after the analyzer and before the weeks", async () => {
+    const Home = await homeOver(fixture);
+    render(<Home />);
+    // The masthead link to the home page sits in the banner, above every chapter.
+    const links = screen
+      .getAllByRole("link")
+      .filter((link) => !link.closest("header"))
+      .map((link) => link.getAttribute("href"));
+    expect(links).toEqual(["/analyze/", "/rankings/", "/2026/week-06/", "/2026/week-05/"]);
+  });
+
+  it("hides the chapter when the file is missing and still lists the weeks", async () => {
+    const Home = await homeOver();
+    render(<Home />);
+    expect(screen.queryByText("Power rankings")).toBeNull();
+    expect(screen.queryByRole("link", { name: /Top three/ })).toBeNull();
+    expect(screen.getByRole("link", { name: /Week 6/ })).toBeTruthy();
+  });
+
 });
