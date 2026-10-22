@@ -2,7 +2,7 @@
  * The client for the site API. Each call sends the league passphrase in the X-League-Passphrase header.
  * A failed call throws an ApiError, and the caller decides what the reader sees.
  */
-import { readAnalyzeDocument, type AnalyzeResponse } from "@/lib/analyze-types";
+import type { AnalyzeResponse } from "@/lib/analyze-types";
 import { apiUrl, season } from "@/lib/config";
 
 export type TeamPlayer = {
@@ -105,5 +105,5 @@ export async function postAnalyze(
     signal,
   });
   if (!response.ok) throw await toApiError(response);
-  return readAnalyzeDocument(await response.json());
+  return (await response.json()) as AnalyzeResponse;
 }
