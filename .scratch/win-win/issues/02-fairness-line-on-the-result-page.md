@@ -6,7 +6,7 @@
 
 **Blocked by:** 01 — Fairness rule and document block (pipeline).
 
-**Status:** in-progress
+**Status:** done
 
 - [x] The fixture response document is a byte-identical copy of the pipeline's after ticket 01.
 - [x] The result component renders the three states, with a test per state. The lopsided line names the team.
