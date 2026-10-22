@@ -8,7 +8,7 @@ import { Masthead, WeekLine } from "@/components/masthead";
 import { Reveal } from "@/components/reveal";
 import { TeamsPrefetch } from "@/components/teams-prefetch";
 import { Blurb, Chapter, Label } from "@/components/week/parts";
-import { basePath } from "@/lib/config";
+import { basePath, season } from "@/lib/config";
 import { stagger } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 import { listWeekSummaries } from "@/lib/week-data";
@@ -40,7 +40,7 @@ export default function HomePage() {
       {/* A reader who opens the analyzer next sees the pickers at once, because the teams are already in session storage. */}
       <TeamsPrefetch />
       <Masthead title="Cornerstone" subtitle="League Weekly">
-        <WeekLine label="ALL WEEKS" />
+        <WeekLine label="SEASON" number={season} />
       </Masthead>
       {/* The masthead and the label show at once. Each row reveals as it enters the view. */}
       <Chapter>
