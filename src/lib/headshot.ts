@@ -1,6 +1,6 @@
 /**
  * The default headshot and the image error handler that swaps to it.
- * The player list and the ledger share them, so a missing CDN image looks the same in both.
+ * The player list and the analyzer result share them, so a missing CDN image looks the same in both.
  */
 import type { SyntheticEvent } from "react";
 import { basePath } from "@/lib/config";

@@ -113,7 +113,7 @@ describe("TradeForm", () => {
     answer(200, fixtureJson);
     pickTrade();
     fireEvent.click(submit());
-    await screen.findByText("Counter");
+    await screen.findByText("Not as is");
 
     const [url, init] = fetchStub.mock.calls[0];
     expect(url).toContain("/analyze");
@@ -160,7 +160,7 @@ describe("TradeForm", () => {
     expect((screen.getByRole("button", { name: "Change my team" }) as HTMLButtonElement).disabled).toBe(true);
 
     await act(async () => finish(new Response(JSON.stringify(fixtureJson), { status: 200 })));
-    await screen.findByText("Counter");
+    await screen.findByText("Not as is");
     expect(row.disabled).toBe(false);
     expect(row.closest("label")!.hasAttribute("aria-disabled")).toBe(false);
     expect(submit().hasAttribute("aria-busy")).toBe(false);
@@ -194,12 +194,12 @@ describe("TradeForm", () => {
     answer(200, fixtureJson);
     pickTrade();
     fireEvent.click(submit());
-    await screen.findByText("Counter");
+    await screen.findByText("Not as is");
 
     fetchStub.mockReturnValueOnce(new Promise(() => {}));
     fireEvent.click(submit());
     await screen.findByText("Grading the trade");
-    expect(screen.queryByText("Counter")).toBeNull();
+    expect(screen.queryByText("Not as is")).toBeNull();
   });
 
   it("shows the API message on a 422", async () => {
@@ -238,7 +238,7 @@ describe("TradeForm", () => {
 
     answer(200, fixtureJson);
     fireEvent.click(screen.getByRole("button", { name: "Try again" }));
-    await screen.findByText("Counter");
+    await screen.findByText("Not as is");
     expect(fetchStub).toHaveBeenCalledTimes(2);
   });
 
