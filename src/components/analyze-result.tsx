@@ -1,12 +1,12 @@
 /**
- * The analyzer result: the decision for the asker first, the swap card, then the analysis, the data, and the reasoning per side.
+ * The analyzer result: the decision for the asker first, the fairness line, the swap card, then the analysis, the data, and the reasoning per side.
  * It reads one analyze document. No letter grade shows anywhere.
  */
 "use client";
 
 import { motion } from "framer-motion";
 import type { ReactNode } from "react";
-import type { AnalyzeResponse, DecidedSide, Decision, Factor, Player, TradeSide } from "@/lib/analyze-types";
+import type { AnalyzeResponse, DecidedSide, Decision, Factor, Fairness, Player, TradeSide } from "@/lib/analyze-types";
 import { swapToDefault } from "@/lib/headshot";
 import { DURATION, rise, useMotionOff } from "@/lib/motion";
 import { cn } from "@/lib/utils";
@@ -136,6 +136,44 @@ function DecisionBlock({ decision, team }: { decision: Decision; team?: string }
   );
 }
 
+/* The page words of the fairness states. The glossary says "Good for both" on the page, never "win-win". */
+const FAIRNESS_WORD = {
+  win_win: { word: "Good for both", color: "text-red" },
+  fair: { word: "Fair", color: "text-mute" },
+  lopsided: { word: "Lopsided", color: "text-blk" },
+} as const;
+
+/* The fairness line rises in like the decision word, so both read as one call. With motion off, it shows at rest at once. */
+function FairnessBlock({ sides, fairness }: { sides: Side[]; fairness: Fairness }) {
+  const off = useMotionOff();
+  const state = FAIRNESS_WORD[fairness.state];
+  // A lopsided line names the side that gives more, so the reader knows who loses. The type says a lopsided block always has gives_more, and the pipeline sets it to a side of the trade.
+  const line =
+    fairness.state === "lopsided"
+      ? `${state.word}: ${sides.find((s) => s.roster_id === fairness.gives_more)!.team} gives more.`
+      : state.word;
+  return (
+    <div>
+      <Label>Fairness</Label>
+      <motion.p
+        className={cn("mt-0 mb-sp-3 text-row leading-tight font-extrabold tracking-snug", state.color)}
+        {...rise(off, { duration: DURATION.fairness })}
+      >
+        {line}
+      </motion.p>
+      <ul className="m-0 flex list-none flex-col gap-sp-2 p-0">
+        {/* joinSides puts the asker's side first, so the reasons take that order. */}
+        {sides.map((side) => (
+          <li key={side.roster_id}>
+            <Caps className="mb-sp-1 block">{side.team}</Caps>
+            <Blurb>{fairness.sides.find((f) => f.roster_id === side.roster_id)?.reason}</Blurb>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
 /* The small label over a part of one side. */
 function Part({ children }: { children: ReactNode }) {
   return <Caps className="mt-sp-4 mb-sp-2 block text-ink">{children}</Caps>;
@@ -203,6 +241,13 @@ export default function AnalyzeResult({ doc }: { doc: AnalyzeResponse }) {
       <Chapter>
         <DecisionBlock decision={doc.decision} team={decisionTeam} />
       </Chapter>
+
+      {/* The fairness line sits under the decision, so the decision stays the lead. The ticket asks the page to render a document with no block, as a guard, so it shows no line then. */}
+      {doc.fairness && (
+        <Chapter>
+          <FairnessBlock sides={sides} fairness={doc.fairness} />
+        </Chapter>
+      )}
 
       <Chapter>
         <Label>The trade</Label>

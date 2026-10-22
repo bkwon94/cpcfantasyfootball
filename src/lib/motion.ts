@@ -29,6 +29,8 @@ export const DURATION = {
   collapse: 0.24,
   // The decision word lands. It is a little slower than the rest, so the call lands with a beat.
   decision: 0.36,
+  // The fairness line lands under the decision. It is a little faster than the decision word, so the decision stays the lead.
+  fairness: 0.3,
   // One pass of the loading sweep. It repeats while the grade runs.
   sweep: 1.4,
   // A section or a card enters the viewport. It is a little slower than the page enter, because the reader watches it arrive.
