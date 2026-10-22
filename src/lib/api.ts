@@ -58,9 +58,18 @@ export async function toApiError(response: Response): Promise<ApiError> {
   );
 }
 
+// A wait longer than this reads in hours, because 50000 seconds means nothing to a reader.
+const HOUR_SECONDS = 3600;
+
+/* The wait as plain words. Hours round up, so the reader never tries again too early. Over an hour rounds up to 2 or more. */
+function waitText(seconds: number): string {
+  if (seconds <= HOUR_SECONDS) return `Try again in ${seconds} seconds.`;
+  return `Try again in ${Math.ceil(seconds / HOUR_SECONDS)} hours.`;
+}
+
 /* The text of a 429. The wait is optional, because the Retry-After header may be missing. */
 export function retryText(seconds?: number): string {
-  return `Too many requests. ${seconds ? `Try again in ${seconds} seconds.` : "Try again soon."}`;
+  return `Too many requests. ${seconds ? waitText(seconds) : "Try again soon."}`;
 }
 
 export async function fetchTeams(passphrase: string): Promise<Team[]> {
