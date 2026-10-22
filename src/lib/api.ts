@@ -2,7 +2,7 @@
  * The client for the site API. Each call sends the league passphrase in the X-League-Passphrase header.
  * A failed call throws an ApiError, and the caller decides what the reader sees.
  */
-import type { AnalyzeResponse } from "@/lib/analyze-types";
+import type { AnalyzeResponse, FindResponse } from "@/lib/analyze-types";
 import { apiUrl, season } from "@/lib/config";
 
 export type TeamPlayer = {
@@ -72,6 +72,21 @@ export function retryText(seconds?: number): string {
   return `Too many requests. ${seconds ? waitText(seconds) : "Try again soon."}`;
 }
 
+/* What the reader sees for a failed call, and whether a retry button shows. */
+export type ErrorView = { message: string; retry: boolean };
+
+/* Maps a failed call to what the reader sees. The trade form and the finder share it, so the same failure reads the same on both.
+   A timeout and an unknown failure offer a retry. The caller words the timeout line, because it names the work that ran long. */
+export function toErrorLine(error: unknown, timedOut: boolean, timeoutMessage: string): ErrorView {
+  if (timedOut) return { message: timeoutMessage, retry: true };
+  if (error instanceof ApiError) {
+    if (error.status === 422) return { message: error.message, retry: false };
+    if (error.status === 429) return { message: retryText(error.retryAfter), retry: false };
+    if (error.status === 503) return { message: "No grade this week yet. The chart is not on the server.", retry: false };
+  }
+  return { message: "The API did not answer. Try again.", retry: true };
+}
+
 export async function fetchTeams(passphrase: string): Promise<Team[]> {
   const response = await fetch(`${apiUrl}/teams?season=${season}`, {
     headers: { "X-League-Passphrase": passphrase },
@@ -92,18 +107,27 @@ export type AnalyzeRequest = {
   asker: number;
 };
 
-/* The caller owns the AbortSignal, because a cold week can take 20 seconds and the caller sets the timeout. */
-export async function postAnalyze(
-  passphrase: string,
-  body: AnalyzeRequest,
-  signal: AbortSignal,
-): Promise<AnalyzeResponse> {
-  const response = await fetch(`${apiUrl}/analyze`, {
+/* Posts a JSON body with the passphrase and reads the JSON answer. The caller owns the AbortSignal and sets the timeout. */
+async function postJson<T>(path: string, passphrase: string, body: unknown, signal: AbortSignal): Promise<T> {
+  const response = await fetch(`${apiUrl}${path}`, {
     method: "POST",
     headers: { "X-League-Passphrase": passphrase, "Content-Type": "application/json" },
     body: JSON.stringify(body),
     signal,
   });
   if (!response.ok) throw await toApiError(response);
-  return (await response.json()) as AnalyzeResponse;
+  return (await response.json()) as T;
+}
+
+/* The caller owns the AbortSignal, because a cold week can take 20 seconds and the caller sets the timeout. */
+export function postAnalyze(passphrase: string, body: AnalyzeRequest, signal: AbortSignal): Promise<AnalyzeResponse> {
+  return postJson("/analyze", passphrase, body, signal);
+}
+
+/* The body of the find route: the season, the roster that asks, and the partner roster. */
+export type FindRequest = { season: number; asker: number; partner: number };
+
+/* The finder grades every small swap of the pair, so a cold call can be slow. The caller owns the AbortSignal, as with postAnalyze. */
+export function postFind(passphrase: string, body: FindRequest, signal: AbortSignal): Promise<FindResponse> {
+  return postJson("/find", passphrase, body, signal);
 }

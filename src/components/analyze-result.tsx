@@ -1,18 +1,22 @@
 /**
  * The analyzer result: the decision for the asker first, the fairness line, the swap card, then the analysis, the data, and the reasoning per side.
  * It reads one analyze document. No letter grade shows anywhere.
+ * The trade finder reuses SwapCard, FairnessBlock, and AsOfLine for its cards and its as-of line.
  */
 "use client";
 
 import { motion } from "framer-motion";
 import type { ReactNode } from "react";
-import type { AnalyzeResponse, DecidedSide, Decision, Factor, Fairness, Player, TradeSide } from "@/lib/analyze-types";
+import type { AnalyzeResponse, AsOf, DecidedSide, Decision, Factor, Fairness, Player, TradeSide } from "@/lib/analyze-types";
 import { swapToDefault } from "@/lib/headshot";
 import { DURATION, rise, useMotionOff } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
+/* A trade side with the asker flag. The swap card and the fairness line need no more, so the finder cards reuse them with a side that has no read. */
+export type SwapSide = TradeSide & { mine: boolean };
+
 /* A trade side joined to its read, so each side reads from one object. */
-type Side = TradeSide & DecidedSide & { mine: boolean };
+type Side = SwapSide & DecidedSide;
 
 /* Join the trade sides to the decided sides by roster id. The decision side goes first, so the decision and "your side" name the same team. */
 function joinSides(doc: AnalyzeResponse): Side[] {
@@ -61,7 +65,7 @@ function PlayerChip({ player }: { player: Player }) {
 }
 
 /* One column of the swap card. The column spans the card's three rows, so a long team name pushes both columns' chips down together. */
-function SwapColumn({ side }: { side: Side }) {
+function SwapColumn({ side }: { side: SwapSide }) {
   return (
     <div className="row-span-3 grid min-w-0 grid-rows-subgrid gap-y-0">
       <div className="text-center text-meta leading-tight font-extrabold hyphens-auto">{side.team}</div>
@@ -77,7 +81,7 @@ function SwapColumn({ side }: { side: Side }) {
   );
 }
 
-function SwapCard({ sides }: { sides: Side[] }) {
+export function SwapCard({ sides }: { sides: SwapSide[] }) {
   const [left, right] = sides;
   return (
     <div className="rounded-card bg-gry p-sp-3">
@@ -144,7 +148,7 @@ const FAIRNESS_WORD = {
 } as const;
 
 /* The fairness line rises in like the decision word, so both read as one call. With motion off, it shows at rest at once. */
-function FairnessBlock({ sides, fairness }: { sides: Side[]; fairness: Fairness }) {
+export function FairnessBlock({ sides, fairness }: { sides: SwapSide[]; fairness: Fairness }) {
   const off = useMotionOff();
   const state = FAIRNESS_WORD[fairness.state];
   // A lopsided line names the side that gives more, so the reader knows who loses. The type says a lopsided block always has gives_more, and the pipeline sets it to a side of the trade.
@@ -162,7 +166,7 @@ function FairnessBlock({ sides, fairness }: { sides: Side[]; fairness: Fairness 
         {line}
       </motion.p>
       <ul className="m-0 flex list-none flex-col gap-sp-2 p-0">
-        {/* joinSides puts the asker's side first, so the reasons take that order. */}
+        {/* joinSides puts the asker's side first, so the reasons take that order. A finder card sorts its sides the same way. */}
         {sides.map((side) => (
           <li key={side.roster_id}>
             <Caps className="mb-sp-1 block">{side.team}</Caps>
@@ -213,8 +217,9 @@ function SideRead({ side }: { side: Side }) {
   );
 }
 
-/* The reader's locale formats the time, so each manager sees the fetch time in a familiar form. */
-function AsOfLine({ doc }: { doc: AnalyzeResponse }) {
+/* The reader's locale formats the time, so each manager sees the fetch time in a familiar form.
+   The finder document carries the same as_of block, so the finder page shows the same line. */
+export function AsOfLine({ doc }: { doc: { as_of: AsOf } }) {
   const fetched = new Date(doc.as_of.rosters_fetched).toLocaleString(undefined, {
     month: "short",
     day: "numeric",
