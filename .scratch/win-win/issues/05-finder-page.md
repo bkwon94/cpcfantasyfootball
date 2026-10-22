@@ -6,7 +6,7 @@
 
 **Blocked by:** 02 — Fairness line on the result page; 04 — Finder route (pipeline).
 
-**Status:** ready-for-human
+**Status:** done
 
 - [x] A partner picker on the analyze page with the eleven other teams.
 - [x] The "Find a trade" action calls the finder route with the passphrase and the two roster ids.
