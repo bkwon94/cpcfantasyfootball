@@ -4,7 +4,7 @@
  */
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it } from "vitest";
-import { week6 } from "./fixture";
+import { firstSentence, week6 } from "./fixture";
 import { GameChanger } from "./game-changer";
 
 afterEach(() => {
@@ -38,6 +38,6 @@ describe("GameChanger", () => {
       <GameChanger gameChanger={gameChanger} headshots={week6.headshots} blurb={week6.blurbs.game_changer} />,
     );
     expect(container.querySelector("img")?.getAttribute("src")).toBe("headshots/13274.png");
-    expect(screen.getByText(/Germie Bernard is the Game Changer/)).toBeTruthy();
+    expect(screen.getByText(firstSentence(week6.blurbs.game_changer), { exact: false })).toBeTruthy();
   });
 });

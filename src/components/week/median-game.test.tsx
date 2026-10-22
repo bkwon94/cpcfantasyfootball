@@ -4,7 +4,7 @@
  */
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it } from "vitest";
-import { week6 } from "./fixture";
+import { firstSentence, week6 } from "./fixture";
 import { MedianGame } from "./median-game";
 
 afterEach(() => {
@@ -36,7 +36,7 @@ describe("MedianGame", () => {
   it("shows the hint and the blurb", () => {
     renderMedian();
     expect(screen.getByText("Dashed line: median 106.83.")).toBeTruthy();
-    expect(screen.getByText(/Lil Fridge cleared the median by 19.97/)).toBeTruthy();
+    expect(screen.getByText(firstSentence(week6.blurbs.median), { exact: false })).toBeTruthy();
   });
 
   it("leaves the chapter out when the week has no median game", () => {
