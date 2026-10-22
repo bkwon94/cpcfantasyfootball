@@ -27,8 +27,8 @@ export const DURATION = {
   page: 0.3,
   // A picker list opens or closes. A layout change needs a little more time than a press.
   collapse: 0.24,
-  // A grade letter lands. It is a little slower than the rest, so the grade lands with a beat.
-  grade: 0.36,
+  // The decision word lands. It is a little slower than the rest, so the call lands with a beat.
+  decision: 0.36,
   // One pass of the loading sweep. It repeats while the grade runs.
   sweep: 1.4,
   // A section or a card enters the viewport. It is a little slower than the page enter, because the reader watches it arrive.
@@ -36,9 +36,6 @@ export const DURATION = {
   // A part of the game changer hero enters. It is the slowest reveal, because the hero is the top story of the week page.
   hero: 0.5,
 } as const;
-
-/* The gap between the asker's letter and the other letter, in seconds. The asker reads the own grade first. */
-export const GRADE_STAGGER = 0.2;
 
 /* The gap between two cards that enter together, in seconds. It is short, so a fast scroll never waits on motion. */
 export const REVEAL_STAGGER = 0.05;

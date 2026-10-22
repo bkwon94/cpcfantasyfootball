@@ -6,7 +6,7 @@
 
 import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
-import Ledger from "@/components/ledger";
+import AnalyzeResult from "@/components/analyze-result";
 import { ErrorLine } from "@/components/error-line";
 import { PlayerList } from "@/components/player-list";
 import { TeamPicker } from "@/components/team-picker";
@@ -204,7 +204,7 @@ export function TradeForm({ teams, passphrase, onUnauthorized, onRostersStale }:
           </div>
         )}
       </section>
-      {grade.status === "done" && <Ledger doc={grade.doc} />}
+      {grade.status === "done" && <AnalyzeResult doc={grade.doc} />}
     </>
   );
 }

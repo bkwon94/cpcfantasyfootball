@@ -10,7 +10,7 @@ import HomePage from "@/app/page";
 import WeekPage from "@/app/[season]/[week]/page";
 import type { AnalyzeResponse } from "@/lib/analyze-types";
 import type { Team } from "@/lib/api";
-import Ledger from "./ledger";
+import AnalyzeResult from "./analyze-result";
 import { TradeForm } from "./trade-form";
 import { week6 } from "./week/fixture";
 
@@ -49,11 +49,9 @@ afterAll(() => {
 });
 
 describe("Reduced motion", () => {
-  it("shows both grade letters at once", () => {
-    render(<Ledger doc={fixtureJson as AnalyzeResponse} />);
-    const headers = screen.getAllByRole("columnheader");
-    expect(within(headers[1]).getByText("B")).toBeTruthy();
-    expect(within(headers[2]).getByText("C")).toBeTruthy();
+  it("shows the decision word at once", () => {
+    render(<AnalyzeResult doc={fixtureJson as AnalyzeResponse} />);
+    expect(screen.getByText("Not as is")).toBeTruthy();
   });
 
   it("collapses a picked team at once", () => {
