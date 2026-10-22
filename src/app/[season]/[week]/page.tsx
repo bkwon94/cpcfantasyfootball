@@ -28,7 +28,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { season, week } = await params;
   const page = loadWeek(season, week);
   return {
-    title: `Cornerstone League Weekly · Week ${page.week}`,
+    title: `Week ${page.week} · Cornerstone Fantasy Football League`,
     description: page.summary,
     // The pipeline reads this meta from a week page to list the week on the home page.
     other: { "cornerstone-summary": page.summary },
@@ -40,7 +40,7 @@ export default async function WeekPage({ params }: Props) {
   const page = loadWeek(season, week);
   return (
     <main className="mx-auto max-w-page bg-wht">
-      <Masthead title="Cornerstone" subtitle="League Weekly">
+      <Masthead subtitle="League Weekly">
         <WeekLine label="WEEK" number={page.week} />
         <div className="mt-sp-1 text-meta text-on-dark-2 tabular-nums">
           {/* One string, so React writes one text node and the browser kerns the line as one run. */}

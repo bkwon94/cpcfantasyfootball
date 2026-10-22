@@ -14,7 +14,7 @@ describe("Masthead", () => {
   it("shows the title and the subtitle in the home link", () => {
     render(<Masthead subtitle="Trade Analyzer" />);
     const home = screen.getByRole("link");
-    expect(home.textContent).toContain("CPC Fantasy");
+    expect(home.textContent).toContain("Cornerstone Fantasy Football League");
     expect(home.textContent).toContain("Trade Analyzer");
     expect(home.getAttribute("href")).toBe("/");
   });
@@ -30,14 +30,19 @@ describe("Masthead", () => {
   });
 
   it("shows a custom title in place of the default brand", () => {
-    render(<Masthead title="Cornerstone" subtitle="League Weekly" />);
+    render(<Masthead title="Custom Brand" subtitle="League Weekly" />);
     const home = screen.getByRole("link");
-    expect(home.textContent).toContain("Cornerstone");
-    expect(home.textContent).not.toContain("CPC Fantasy");
+    expect(home.textContent).toContain("Custom Brand");
+    expect(home.textContent).not.toContain("Cornerstone Fantasy Football League");
   });
 
   it("shows no week line when there are no children", () => {
     render(<Masthead subtitle="Trade Analyzer" />);
     expect(screen.queryByText("Week 6")).toBeNull();
+  });
+
+  it("shows no subtitle when none is given", () => {
+    render(<Masthead />);
+    expect(screen.getByRole("link").textContent).toBe("Cornerstone Fantasy Football League");
   });
 });

@@ -15,9 +15,10 @@ afterEach(() => {
 });
 
 describe("HomePage", () => {
-  it("names the site and the page", () => {
+  it("names the league and the page", () => {
     render(<HomePage />);
-    expect(screen.getByText("League Weekly")).toBeTruthy();
+    expect(screen.getByText("Cornerstone Fantasy Football League")).toBeTruthy();
+    expect(screen.queryByText("League Weekly")).toBeNull();
     // The label and the red season number are separate text nodes.
     expect(screen.getByText("SEASON")).toBeTruthy();
     expect(screen.getByText(String(season)).className).toContain("text-red");
