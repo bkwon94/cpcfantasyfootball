@@ -5,7 +5,7 @@
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it } from "vitest";
 import { Awards } from "./awards";
-import { week6 } from "./fixture";
+import { firstSentence, week6 } from "./fixture";
 
 afterEach(() => {
   cleanup();
@@ -46,6 +46,6 @@ describe("Awards", () => {
 
   it("shows the blurb", () => {
     renderAwards();
-    expect(screen.getByText(/Game Changer goes to behold the lamb/)).toBeTruthy();
+    expect(screen.getByText(firstSentence(week6.blurbs.awards), { exact: false })).toBeTruthy();
   });
 });

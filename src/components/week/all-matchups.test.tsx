@@ -5,11 +5,13 @@
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it } from "vitest";
 import { AllMatchups } from "./all-matchups";
-import { week6 } from "./fixture";
+import { firstSentence, week6 } from "./fixture";
 
 afterEach(() => {
   cleanup();
 });
+
+const recapText = firstSentence(week6.matchups[0].recap);
 
 function renderMatchups() {
   return render(<AllMatchups matchups={week6.matchups} avatars={week6.avatars} />);
@@ -34,14 +36,14 @@ describe("AllMatchups", () => {
 
   it("keeps the recap text in the document, so find-in-page finds it", () => {
     renderMatchups();
-    expect(screen.getByText(/with recent add Denver Broncos/)).toBeTruthy();
+    expect(screen.getByText(recapText, { exact: false })).toBeTruthy();
   });
 
   it("opens the recap with the top scorers, then closes it", () => {
     renderMatchups();
     const button = screen.getAllByRole("button", { name: "Read recap" })[0];
     const panel = document.getElementById(button.getAttribute("aria-controls") ?? "");
-    expect(screen.getByText(/with recent add Denver Broncos/)).toBeTruthy();
+    expect(screen.getByText(recapText, { exact: false })).toBeTruthy();
     expect(button.getAttribute("aria-expanded")).toBe("false");
     expect(panel?.getAttribute("aria-hidden")).toBe("true");
     fireEvent.click(button);
@@ -51,7 +53,7 @@ describe("AllMatchups", () => {
     expect(screen.getByText("Top · Lil Fridge")).toBeTruthy();
     expect(screen.getByText("C. McCaffrey 26.2")).toBeTruthy();
     expect(screen.getByText("B. Purdy 17.36")).toBeTruthy();
-    expect(screen.getByText(/with recent add Denver Broncos/)).toBeTruthy();
+    expect(screen.getByText(recapText, { exact: false })).toBeTruthy();
     fireEvent.click(button);
     expect(button.textContent).toBe("Read recap");
     expect(button.getAttribute("aria-expanded")).toBe("false");

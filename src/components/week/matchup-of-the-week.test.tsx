@@ -4,7 +4,7 @@
  */
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it } from "vitest";
-import { week6 } from "./fixture";
+import { firstSentence, week6 } from "./fixture";
 import { MatchupOfTheWeek } from "./matchup-of-the-week";
 
 afterEach(() => {
@@ -43,6 +43,6 @@ describe("MatchupOfTheWeek", () => {
 
   it("shows the blurb", () => {
     renderPick();
-    expect(screen.getByText(/behold the lamb beat Bo Girds by 5.34/)).toBeTruthy();
+    expect(screen.getByText(firstSentence(week6.blurbs.motw), { exact: false })).toBeTruthy();
   });
 });

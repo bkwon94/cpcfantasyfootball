@@ -4,7 +4,7 @@
  */
 import { cleanup, render, screen, within } from "@testing-library/react";
 import { afterEach, describe, expect, it } from "vitest";
-import { week6 } from "./fixture";
+import { firstSentence, week6 } from "./fixture";
 import { PositionLeaders } from "./position-leaders";
 
 afterEach(() => {
@@ -46,6 +46,6 @@ describe("PositionLeaders", () => {
 
   it("shows the blurb", () => {
     renderLeaders();
-    expect(screen.getByText(/Trevor Lawrence led all started QBs/)).toBeTruthy();
+    expect(screen.getByText(firstSentence(week6.blurbs.position_leaders), { exact: false })).toBeTruthy();
   });
 });

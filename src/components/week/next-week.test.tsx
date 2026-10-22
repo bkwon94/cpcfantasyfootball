@@ -4,7 +4,7 @@
  */
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it } from "vitest";
-import { week6 } from "./fixture";
+import { firstSentence, week6 } from "./fixture";
 import { NextWeek } from "./next-week";
 
 afterEach(() => {
@@ -37,6 +37,6 @@ describe("NextWeek", () => {
 
   it("shows the blurb", () => {
     renderNext();
-    expect(screen.getByText(/The Must Watch is Lil Fridge at 10-2/)).toBeTruthy();
+    expect(screen.getByText(firstSentence(week6.blurbs.next_week), { exact: false })).toBeTruthy();
   });
 });
