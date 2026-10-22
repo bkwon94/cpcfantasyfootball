@@ -136,7 +136,58 @@ describe("TradeForm", () => {
     fireEvent.click(submit());
     expect(await screen.findByText("Grading the trade")).toBeTruthy();
     expect(screen.getByText("This can take up to a minute on a new chart week.")).toBeTruthy();
-    expect(submit().disabled).toBe(true);
+    const busy = screen.getByRole("button", { name: "Grading…" }) as HTMLButtonElement;
+    expect(busy.disabled).toBe(true);
+    expect(busy.getAttribute("aria-busy")).toBe("true");
+  });
+
+  it("locks the rows and the pickers while the grade runs, and unlocks them on the result", async () => {
+    let finish!: (response: Response) => void;
+    fetchStub.mockReturnValueOnce(new Promise<Response>((resolve) => (finish = resolve)));
+    pickTrade();
+    fireEvent.click(submit());
+    await screen.findByText("Grading the trade");
+
+    const row = screen.getByLabelText(/Ana Two/) as HTMLInputElement;
+    expect(row.disabled).toBe(true);
+    expect(row.closest("label")!.getAttribute("aria-disabled")).toBe("true");
+    // A tap lands on the row, so the test taps the label, not the input.
+    fireEvent.click(row.closest("label")!);
+    expect(row.checked).toBe(false);
+    expect((screen.getByLabelText(/Ana One/) as HTMLInputElement).checked).toBe(true);
+    expect((radio("My team", "Pukancun on 3") as HTMLInputElement).disabled).toBe(true);
+    expect((radio("The other team", "Blitz Bakers") as HTMLInputElement).disabled).toBe(true);
+    expect((screen.getByRole("button", { name: "Change my team" }) as HTMLButtonElement).disabled).toBe(true);
+
+    await act(async () => finish(new Response(JSON.stringify(fixtureJson), { status: 200 })));
+    await screen.findByText("Counter");
+    expect(row.disabled).toBe(false);
+    expect(row.closest("label")!.hasAttribute("aria-disabled")).toBe(false);
+    expect(submit().hasAttribute("aria-busy")).toBe(false);
+    fireEvent.click(row.closest("label")!);
+    expect(row.checked).toBe(true);
+  });
+
+  it("unlocks the rows after a 422, so a tap fixes the trade", async () => {
+    answer(422, { detail: { message: "Player p1 is not on the giving roster.", player_id: "p1" } });
+    pickTrade();
+    fireEvent.click(submit());
+    await screen.findByText("Player p1 is not on the giving roster.");
+    const row = screen.getByLabelText(/Ana One/) as HTMLInputElement;
+    expect(row.disabled).toBe(false);
+    fireEvent.click(row.closest("label")!);
+    expect(row.checked).toBe(false);
+    expect((radio("The other team", "Blitz Bakers") as HTMLInputElement).disabled).toBe(false);
+  });
+
+  it("unlocks the rows after a 429", async () => {
+    answer(429, { detail: "slow down" }, { "Retry-After": "12" });
+    pickTrade();
+    fireEvent.click(submit());
+    await screen.findByText("Too many requests. Try again in 12 seconds.");
+    const row = screen.getByLabelText(/Ana Two/) as HTMLInputElement;
+    fireEvent.click(row.closest("label")!);
+    expect(row.checked).toBe(true);
   });
 
   it("clears the old result when a new submit starts", async () => {
