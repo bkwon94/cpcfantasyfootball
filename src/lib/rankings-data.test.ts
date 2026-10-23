@@ -42,6 +42,17 @@ describe("loadRankings", () => {
     expect(last.rows[0].components).toEqual({ standing: 2, form: 1, schedule_played: 2, scoring: 1 });
   });
 
+  it("reads rows with odds and rows with no odds under schema version 1", async () => {
+    const { loadRankings } = await readerOver(["week-06"], fixture);
+    const rankings = loadRankings()!;
+    // Week 1 comes before the odds engine ran, so its rows have no odds key. Week 6 rows carry the odds.
+    expect(rankings.weeks[0].rows.every((row) => row.odds === undefined)).toBe(true);
+    const last = rankings.weeks.at(-1)!;
+    expect(last.rows[1].odds).toEqual({ playoff: 100, bye: 88, seed: 1, status: "in" });
+    expect(last.rows[11].odds).toEqual({ playoff: 0, bye: 0, seed: null, status: "out" });
+    expect(last.rows.filter((row) => row.odds?.status === "open")).toHaveLength(10);
+  });
+
   it("throws when the schema version is not 1", async () => {
     const { loadRankings } = await readerOver(["week-06"], { ...fixture, schema_version: 2 });
     expect(() => loadRankings()).toThrow(/schema_version 2/);

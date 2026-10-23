@@ -78,10 +78,46 @@ describe("PowerRankings", () => {
     }
   });
 
+  it("puts the Playoff % column after W-L in the header at every width", () => {
+    render(<PowerRankings week={lastWeek} avatars={week6.avatars} />);
+    // The header holds a soft hyphen, so the match drops it.
+    const header = screen.getByText("Playoff %", { normalizer: (text) => text.replace(/\u00AD/g, "") });
+    expect(header.previousElementSibling?.textContent).toBe("W-L");
+    // jsdom applies no media query, so the test reads the breakpoint class. The column shows on a phone too.
+    expect(header.className).not.toMatch(/\bhidden\b/);
+  });
+
+  it("shows the playoff number for an open row, In for a clinched row, and Out for an eliminated row", () => {
+    render(<PowerRankings week={lastWeek} avatars={week6.avatars} />);
+    // London Cooking is open at 97, Lil Fridge has clinched, and Pukancun on 3 is out.
+    const cellAfterRecord = (index: number, record: string) =>
+      within(rows()[index]).getByText(record).nextElementSibling!;
+    expect(cellAfterRecord(0, "9-3").textContent).toBe("97");
+    expect(cellAfterRecord(1, "10-2").textContent).toBe("In");
+    expect(cellAfterRecord(11, "1-11").textContent).toBe("Out");
+    expect(cellAfterRecord(0, "9-3").className).not.toMatch(/\bhidden\b/);
+  });
+
+  it("leaves the playoff cell blank for a row with no odds", () => {
+    render(<PowerRankings week={firstWeek} avatars={week6.avatars} />);
+    const record = `${firstWeek.rows[0].wins}-${firstWeek.rows[0].losses}`;
+    expect(within(rows()[0]).getByText(record).nextElementSibling?.textContent).toBe("");
+  });
+
+  it("names the source of the playoff odds under the table", () => {
+    render(<PowerRankings week={lastWeek} avatars={week6.avatars} />);
+    expect(screen.getByText("Playoff odds from 5,000 simulated seasons.")).toBeTruthy();
+  });
+
   it("never shows a sum, a ratio, or a decimal", () => {
     render(<PowerRankings week={lastWeek} avatars={week6.avatars} />);
+    // The bye line is the one place with a percent, so a copy of each row drops it. The rest of the open row still gets the check.
     for (const row of rows()) {
-      expect(row.textContent).not.toMatch(/\d\.\d|%|\//);
+      const copy = row.cloneNode(true) as HTMLElement;
+      copy.querySelectorAll("p").forEach((line) => {
+        if (line.textContent?.startsWith("Bye ")) line.remove();
+      });
+      expect(copy.textContent).not.toMatch(/\d\.\d|%|\//);
     }
   });
 });
@@ -125,20 +161,53 @@ describe("The row control", () => {
     render(<PowerRankings week={lastWeek} avatars={week6.avatars} />);
     const panel = panelOf(screen.getByRole("button", { name: "More on Lil Fridge" }));
     // Lil Fridge ranks 1, 3, 6, and 2 on standing, form, schedule played, and scoring.
-    expect(panel.textContent).toBe(`Stand1Form3Sched6Pts2${lastWeek.rows[1].blurb.map((s) => s.text).join(" ")}`);
+    // The bye line sits between the component ranks and the blurb.
+    expect(panel.textContent).toBe(
+      `Stand1Form3Sched6Pts2Bye 88%, most often the 1 seed${lastWeek.rows[1].blurb.map((s) => s.text).join(" ")}`,
+    );
   });
 
-  it("opens a row with no blurb to the component ranks only", () => {
+  it("opens a row with no blurb to the component ranks and the bye line only", () => {
     render(<PowerRankings week={lastWeek} avatars={week6.avatars} />);
     const button = screen.getByRole("button", { name: "More on Bo Girds" });
     fireEvent.click(button);
-    expect(panelOf(button).textContent).toMatch(/^Stand\d+Form\d+Sched\d+Pts\d+$/);
+    expect(panelOf(button).textContent).toMatch(/^Stand\d+Form\d+Sched\d+Pts\d+Bye \d+%, most often the \d+ seed$/);
   });
 
-  it("hides the control of a row with no blurb from the page width up", () => {
+  it("shows the bye odds and the seed in the open row of an open race", () => {
     render(<PowerRankings week={lastWeek} avatars={week6.avatars} />);
+    const panel = panelOf(screen.getByRole("button", { name: "More on London Cooking" }));
+    expect(within(panel).getByText("Bye 64%, most often the 2 seed")).toBeTruthy();
+  });
+
+  it("shows the bye odds with no seed when the row has none", () => {
+    render(<PowerRankings week={lastWeek} avatars={week6.avatars} />);
+    // To Infinity and Bijan is an open race with no seed, and Pukancun on 3 is out with no seed.
+    for (const name of ["To Infinity and Bijan", "Pukancun on 3"]) {
+      const panel = panelOf(screen.getByRole("button", { name: `More on ${name}` }));
+      expect(within(panel).getByText("Bye 0%")).toBeTruthy();
+      expect(panel.textContent).not.toMatch(/seed/);
+    }
+  });
+
+  it("shows no bye line for a row with no odds", () => {
+    render(<PowerRankings week={firstWeek} avatars={week6.avatars} />);
+    for (const row of rows()) {
+      expect(row.textContent).not.toMatch(/Bye/);
+    }
+  });
+
+  it("hides the control of a row with no blurb and no odds from the page width up", () => {
+    render(<PowerRankings week={firstWeek} avatars={week6.avatars} />);
     // jsdom applies no media query, so the test reads the breakpoint class. Only the phone layout has ranks to open.
+    // Week 1 rows have no blurb and no odds.
     expect(screen.getByRole("button", { name: "More on Bo Girds" }).className).toContain("page:hidden");
+  });
+
+  it("shows the control of a row with a blurb or with odds from the page width up", () => {
+    render(<PowerRankings week={lastWeek} avatars={week6.avatars} />);
+    // Bo Girds has no blurb but has odds, so its bye line has a reason to open at every width.
+    expect(screen.getByRole("button", { name: "More on Bo Girds" }).className).not.toContain("page:hidden");
     expect(screen.getByRole("button", { name: "More on Lil Fridge" }).className).not.toContain("page:hidden");
   });
 

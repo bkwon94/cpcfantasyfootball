@@ -76,7 +76,7 @@
     --spacing-standings-rank: 24px;
     --spacing-standings-record: 44px;
     --spacing-standings-points: 56px;
-    /* The power rankings columns for movement and each component rank. 40px fits a five-letter column name in caps. */
+    /* The power rankings columns for movement, the record, the playoff odds, and each component rank. 40px fits a five-letter column name in caps. */
     --spacing-rankings-col: 40px;
 
     /* The page is one centered column, so the same layout serves a phone and a desktop. */
