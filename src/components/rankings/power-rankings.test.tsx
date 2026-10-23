@@ -109,11 +109,15 @@ describe("PowerRankings", () => {
     expect(screen.getByText("Playoff odds from 5,000 simulated seasons.")).toBeTruthy();
   });
 
-  it("never shows a sum, a ratio, or a decimal in the row line", () => {
+  it("never shows a sum, a ratio, or a decimal", () => {
     render(<PowerRankings week={lastWeek} avatars={week6.avatars} />);
-    // The row line is the grid that holds the row control. The open row below it holds the bye line, which has a percent.
+    // The bye line is the one place with a percent, so a copy of each row drops it. The rest of the open row still gets the check.
     for (const row of rows()) {
-      expect(within(row).getByRole("button").parentElement?.textContent).not.toMatch(/\d\.\d|%|\//);
+      const copy = row.cloneNode(true) as HTMLElement;
+      copy.querySelectorAll("p").forEach((line) => {
+        if (line.textContent?.startsWith("Bye ")) line.remove();
+      });
+      expect(copy.textContent).not.toMatch(/\d\.\d|%|\//);
     }
   });
 });

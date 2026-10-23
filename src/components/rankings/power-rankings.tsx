@@ -24,14 +24,18 @@ const COMPONENTS: { key: keyof Components; name: string }[] = [
 ];
 
 /* The columns on a phone: rank, movement, team, record, playoff odds, and the chevron of the row control.
-   The open row uses the same columns, so its component ranks and its blurb line up under the team. */
+   The open row uses the same columns, so its component ranks and its blurb line up under the team.
+   The team track is a plain 1fr, so its minimum is the longest word of the name. A name wraps at a space and never inside a word.
+   The record takes the 40px rankings column, not the 44px standings column: "10-2" fits in 40px, and the 4px go to the team. */
 const PHONE_COLS =
-  "grid-cols-[var(--spacing-standings-rank)_var(--spacing-rankings-col)_1fr_var(--spacing-standings-record)_var(--spacing-rankings-col)_var(--spacing-chevron)]";
+  "grid-cols-[var(--spacing-standings-rank)_var(--spacing-rankings-col)_1fr_var(--spacing-rankings-col)_var(--spacing-rankings-col)_var(--spacing-chevron)]";
 
 /* The same grid style as the standings. On a phone the four component columns do not fit beside the team,
    so the row keeps its phone columns and the component ranks move into the open row. From the page width up, they join the row.
-   Ten columns need a tighter gap than the four-column standings, so the longest team name fits on two lines at 800. */
-const GRID = `grid ${PHONE_COLS} page:grid-cols-[var(--spacing-standings-rank)_var(--spacing-rankings-col)_minmax(0,1fr)_var(--spacing-standings-record)_repeat(5,var(--spacing-rankings-col))_var(--spacing-chevron)] items-center gap-x-sp-2 page:gap-x-sp-1 border-b border-rule-dark text-row leading-tight tabular-nums`;
+   Ten columns need a tighter gap than the four-column standings, so the longest team name fits on two lines at 800.
+   The page grid uses the same plain 1fr team track as the phone grid. At 480 the ten columns leave the team 102px,
+   and the avatar, its gap, and the longest word "Unsolicited" need 101px, so no row grows past the others. */
+const GRID = `grid ${PHONE_COLS} page:grid-cols-[var(--spacing-standings-rank)_var(--spacing-rankings-col)_1fr_repeat(6,var(--spacing-rankings-col))_var(--spacing-chevron)] items-center gap-x-sp-2 page:gap-x-sp-1 border-b border-rule-dark text-row leading-tight tabular-nums`;
 
 /* The arrow carries the direction in its shape, and the screen reader text names it, so the color is never the only sign.
    The count stays in the text color. The arrow sits on two surfaces: the black card #141414 of the table and the white home page #ffffff.
@@ -102,7 +106,7 @@ function Row({ row, avatars, index }: { row: RankingsRow; avatars: AvatarMap; in
       <div className={cn(GRID, "relative min-h-touch border-b-0 py-sp-1")}>
         <span>{row.rank}</span>
         <Movement movement={row.movement} />
-        <Who src={avatarSrc(avatars, row.roster_id)} name={row.name} fill />
+        <Who src={avatarSrc(avatars, row.roster_id)} name={row.name} />
         <span className="text-right">{`${row.wins}-${row.losses}`}</span>
         <span className="text-right">{playoffCell(row)}</span>
         {/* The header names these columns, so the cells hold only the rank. On a phone they move into the open row. */}
