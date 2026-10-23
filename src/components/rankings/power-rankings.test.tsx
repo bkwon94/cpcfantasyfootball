@@ -78,6 +78,37 @@ describe("PowerRankings", () => {
     }
   });
 
+  it("puts the Playoff % column after W-L in the header at every width", () => {
+    render(<PowerRankings week={lastWeek} avatars={week6.avatars} />);
+    // The header holds a soft hyphen, so the match drops it.
+    const header = screen.getByText("Playoff %", { normalizer: (text) => text.replace(/\u00AD/g, "") });
+    expect(header.previousElementSibling?.textContent).toBe("W-L");
+    // jsdom applies no media query, so the test reads the breakpoint class. The column shows on a phone too.
+    expect(header.className).not.toMatch(/\bhidden\b/);
+  });
+
+  it("shows the playoff number for an open row, In for a clinched row, and Out for an eliminated row", () => {
+    render(<PowerRankings week={lastWeek} avatars={week6.avatars} />);
+    // London Cooking is open at 97, Lil Fridge has clinched, and Pukancun on 3 is out.
+    const cellAfterRecord = (index: number, record: string) =>
+      within(rows()[index]).getByText(record).nextElementSibling!;
+    expect(cellAfterRecord(0, "9-3").textContent).toBe("97");
+    expect(cellAfterRecord(1, "10-2").textContent).toBe("In");
+    expect(cellAfterRecord(11, "1-11").textContent).toBe("Out");
+    expect(cellAfterRecord(0, "9-3").className).not.toMatch(/\bhidden\b/);
+  });
+
+  it("leaves the playoff cell blank for a row with no odds", () => {
+    render(<PowerRankings week={firstWeek} avatars={week6.avatars} />);
+    const record = `${firstWeek.rows[0].wins}-${firstWeek.rows[0].losses}`;
+    expect(within(rows()[0]).getByText(record).nextElementSibling?.textContent).toBe("");
+  });
+
+  it("names the source of the playoff odds under the table", () => {
+    render(<PowerRankings week={lastWeek} avatars={week6.avatars} />);
+    expect(screen.getByText("Playoff odds from 5,000 simulated seasons.")).toBeTruthy();
+  });
+
   it("never shows a sum, a ratio, or a decimal", () => {
     render(<PowerRankings week={lastWeek} avatars={week6.avatars} />);
     for (const row of rows()) {

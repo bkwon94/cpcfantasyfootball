@@ -1,6 +1,7 @@
 /**
  * The power rankings table: the dark chapter with one row per team for one week, in rank order.
- * Each row shows the rank, the movement, the team, the record, and the four component ranks. Every number is a rank, never a score.
+ * Each row shows the rank, the movement, the team, the record, the playoff odds, and the four component ranks.
+ * Every component number is a rank, never a score.
  * The row button opens the blurb, and it holds open state, so this file is a client component.
  */
 "use client";
@@ -22,15 +23,15 @@ const COMPONENTS: { key: keyof Components; name: string }[] = [
   { key: "scoring", name: "Pts" },
 ];
 
-/* The columns on a phone: rank, movement, team, record, and the chevron of the row control.
+/* The columns on a phone: rank, movement, team, record, playoff odds, and the chevron of the row control.
    The open row uses the same columns, so its component ranks and its blurb line up under the team. */
 const PHONE_COLS =
-  "grid-cols-[var(--spacing-standings-rank)_var(--spacing-rankings-col)_1fr_var(--spacing-standings-record)_var(--spacing-chevron)]";
+  "grid-cols-[var(--spacing-standings-rank)_var(--spacing-rankings-col)_1fr_var(--spacing-standings-record)_var(--spacing-rankings-col)_var(--spacing-chevron)]";
 
 /* The same grid style as the standings. On a phone the four component columns do not fit beside the team,
    so the row keeps its phone columns and the component ranks move into the open row. From the page width up, they join the row.
-   Nine columns need a tighter gap than the four-column standings, so the longest team name fits on two lines at 800. */
-const GRID = `grid ${PHONE_COLS} page:grid-cols-[var(--spacing-standings-rank)_var(--spacing-rankings-col)_1fr_var(--spacing-standings-record)_repeat(4,var(--spacing-rankings-col))_var(--spacing-chevron)] items-center gap-x-sp-2 page:gap-x-sp-1 border-b border-rule-dark text-row leading-tight tabular-nums`;
+   Ten columns need a tighter gap than the four-column standings, so the longest team name fits on two lines at 800. */
+const GRID = `grid ${PHONE_COLS} page:grid-cols-[var(--spacing-standings-rank)_var(--spacing-rankings-col)_minmax(0,1fr)_var(--spacing-standings-record)_repeat(5,var(--spacing-rankings-col))_var(--spacing-chevron)] items-center gap-x-sp-2 page:gap-x-sp-1 border-b border-rule-dark text-row leading-tight tabular-nums`;
 
 /* The arrow carries the direction in its shape, and the screen reader text names it, so the color is never the only sign.
    The count stays in the text color. The arrow sits on two surfaces: the black card #141414 of the table and the white home page #ffffff.
@@ -55,6 +56,15 @@ export function Movement({ movement }: { movement: number | null }) {
       {Math.abs(movement)}
     </span>
   );
+}
+
+/* The playoff cell reads the number while the race is open, and a word once the team has clinched or is out.
+   A row from a week before the odds engine ran has no odds, so its cell stays blank. */
+function playoffCell(row: RankingsRow): string {
+  if (!row.odds) return "";
+  if (row.odds.status === "in") return "In";
+  if (row.odds.status === "out") return "Out";
+  return String(row.odds.playoff);
 }
 
 /* The component cells of the open row on a phone. The line sits under the team and the record, and each cell names its column.
@@ -87,8 +97,9 @@ function Row({ row, avatars, index }: { row: RankingsRow; avatars: AvatarMap; in
       <div className={cn(GRID, "relative min-h-touch border-b-0 py-sp-1")}>
         <span>{row.rank}</span>
         <Movement movement={row.movement} />
-        <Who src={avatarSrc(avatars, row.roster_id)} name={row.name} />
+        <Who src={avatarSrc(avatars, row.roster_id)} name={row.name} fill />
         <span className="text-right">{`${row.wins}-${row.losses}`}</span>
+        <span className="text-right">{playoffCell(row)}</span>
         {/* The header names these columns, so the cells hold only the rank. On a phone they move into the open row. */}
         {COMPONENTS.map(({ key }) => (
           <span key={key} className="hidden text-right page:block">
@@ -160,6 +171,8 @@ export function PowerRankings({ week, avatars }: { week: RankingsWeek; avatars: 
           <span>+/-</span>
           <span>Team</span>
           <span className="text-right">W-L</span>
+          {/* The playoff header is wider than its column. The soft hyphen breaks it as "Play-" over "off %", never at a random letter. */}
+          <span className="text-right">Play&shy;off %</span>
           {COMPONENTS.map(({ name }) => (
             <span key={name} className="hidden text-right page:block">
               {name}
@@ -178,6 +191,9 @@ export function PowerRankings({ week, avatars }: { week: RankingsWeek; avatars: 
       </ol>
       <Blurb dark className="mt-sp-3 text-meta">
         Each column ranks the team from 1 to 12: standing, recent form, schedule played, and scoring. Pts ranks scoring: points for and the all-play record.
+      </Blurb>
+      <Blurb dark className="mt-sp-1 text-meta">
+        Playoff odds from 5,000 simulated seasons.
       </Blurb>
     </Chapter>
   );
