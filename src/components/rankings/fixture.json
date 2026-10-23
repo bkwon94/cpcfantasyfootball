@@ -210,7 +210,13 @@
                 "PR.5"
               ]
             }
-          ]
+          ],
+          "odds": {
+            "playoff": 97,
+            "bye": 64,
+            "seed": 2,
+            "status": "open"
+          }
         },
         {
           "roster_id": 3,
@@ -238,7 +244,13 @@
                 "PR.4"
               ]
             }
-          ]
+          ],
+          "odds": {
+            "playoff": 100,
+            "bye": 88,
+            "seed": 1,
+            "status": "in"
+          }
         },
         {
           "roster_id": 6,
@@ -253,7 +265,13 @@
             "schedule_played": 1,
             "scoring": 4
           },
-          "blurb": []
+          "blurb": [],
+          "odds": {
+            "playoff": 89,
+            "bye": 31,
+            "seed": 3,
+            "status": "open"
+          }
         },
         {
           "roster_id": 9,
@@ -268,7 +286,13 @@
             "schedule_played": 9,
             "scoring": 5
           },
-          "blurb": []
+          "blurb": [],
+          "odds": {
+            "playoff": 71,
+            "bye": 9,
+            "seed": 4,
+            "status": "open"
+          }
         },
         {
           "roster_id": 2,
@@ -283,7 +307,13 @@
             "schedule_played": 4,
             "scoring": 3
           },
-          "blurb": []
+          "blurb": [],
+          "odds": {
+            "playoff": 66,
+            "bye": 7,
+            "seed": 5,
+            "status": "open"
+          }
         },
         {
           "roster_id": 8,
@@ -298,7 +328,13 @@
             "schedule_played": 3,
             "scoring": 9
           },
-          "blurb": []
+          "blurb": [],
+          "odds": {
+            "playoff": 48,
+            "bye": 2,
+            "seed": 6,
+            "status": "open"
+          }
         },
         {
           "roster_id": 1,
@@ -313,7 +349,13 @@
             "schedule_played": 11,
             "scoring": 7
           },
-          "blurb": []
+          "blurb": [],
+          "odds": {
+            "playoff": 41,
+            "bye": 1,
+            "seed": 6,
+            "status": "open"
+          }
         },
         {
           "roster_id": 10,
@@ -328,7 +370,13 @@
             "schedule_played": 8,
             "scoring": 6
           },
-          "blurb": []
+          "blurb": [],
+          "odds": {
+            "playoff": 37,
+            "bye": 1,
+            "seed": 7,
+            "status": "open"
+          }
         },
         {
           "roster_id": 12,
@@ -343,7 +391,13 @@
             "schedule_played": 12,
             "scoring": 8
           },
-          "blurb": []
+          "blurb": [],
+          "odds": {
+            "playoff": 11,
+            "bye": 0,
+            "seed": 8,
+            "status": "open"
+          }
         },
         {
           "roster_id": 11,
@@ -358,7 +412,13 @@
             "schedule_played": 5,
             "scoring": 11
           },
-          "blurb": []
+          "blurb": [],
+          "odds": {
+            "playoff": 8,
+            "bye": 0,
+            "seed": 9,
+            "status": "open"
+          }
         },
         {
           "roster_id": 7,
@@ -373,7 +433,13 @@
             "schedule_played": 10,
             "scoring": 10
           },
-          "blurb": []
+          "blurb": [],
+          "odds": {
+            "playoff": 3,
+            "bye": 0,
+            "seed": null,
+            "status": "open"
+          }
         },
         {
           "roster_id": 4,
@@ -388,7 +454,13 @@
             "schedule_played": 7,
             "scoring": 12
           },
-          "blurb": []
+          "blurb": [],
+          "odds": {
+            "playoff": 0,
+            "bye": 0,
+            "seed": null,
+            "status": "out"
+          }
         }
       ]
     }
