@@ -11,7 +11,7 @@ import { useId, useState, type ReactNode } from "react";
 import { Reveal } from "@/components/reveal";
 import { avatarSrc, Blurb, Chapter, Label, Who } from "@/components/week/parts";
 import { DURATION, EASE_OUT, INSTANT, stagger, useMotionOff } from "@/lib/motion";
-import type { Components, RankingsRow, RankingsWeek } from "@/lib/rankings-types";
+import type { Components, Odds, RankingsRow, RankingsWeek } from "@/lib/rankings-types";
 import { cn } from "@/lib/utils";
 import type { AvatarMap } from "@/lib/week-types";
 
@@ -67,11 +67,16 @@ function playoffCell(row: RankingsRow): string {
   return String(row.odds.playoff);
 }
 
-/* The component cells of the open row on a phone. The line sits under the team and the record, and each cell names its column.
+/* The bye line of the open row: the bye odds, and the seed the team gets most often when it has one. */
+function byeLine(odds: Odds): string {
+  return odds.seed === null ? `Bye ${odds.bye}%` : `Bye ${odds.bye}%, most often the ${odds.seed} seed`;
+}
+
+/* The component cells of the open row on a phone. The line sits under the team, the record, and the playoff odds, and each cell names its column.
    From the page width up, the line hides, because the same ranks sit in the row under the header. */
 function ComponentCells({ cells }: { cells: { name: string; value: ReactNode }[] }) {
   return (
-    <span className="col-span-2 col-start-3 grid grid-cols-4 gap-x-sp-2 pt-sp-1 page:hidden">
+    <span className="col-span-3 col-start-3 grid grid-cols-4 gap-x-sp-2 pt-sp-1 page:hidden">
       {cells.map(({ name, value }) => (
         <span key={name} className="text-right">
           <span className="mr-sp-1 text-label tracking-caps text-on-dark-muted uppercase">{name}</span>
@@ -82,8 +87,8 @@ function ComponentCells({ cells }: { cells: { name: string; value: ReactNode }[]
   );
 }
 
-/* One team. The row control opens the blurb, and on a phone the component ranks above it.
-   A row with no blurb has nothing to open from the page width up, so its control shows on a phone only. */
+/* One team. The row control opens the bye line and the blurb, and on a phone the component ranks above them.
+   A row with no blurb and no odds has nothing to open from the page width up, so its control shows on a phone only. */
 function Row({ row, avatars, index }: { row: RankingsRow; avatars: AvatarMap; index: number }) {
   const [open, setOpen] = useState(false);
   const off = useMotionOff();
@@ -116,7 +121,7 @@ function Row({ row, avatars, index }: { row: RankingsRow; avatars: AvatarMap; in
           className={cn(
             "flex cursor-pointer justify-end border-0 bg-transparent p-0 text-on-dark-muted after:absolute after:inset-0",
             "[-webkit-tap-highlight-color:transparent]",
-            !hasBlurb && "page:hidden",
+            !hasBlurb && !row.odds && "page:hidden",
           )}
         >
           {/* The same turned square as the recap button. With motion off it turns at once, with no transition class. */}
@@ -143,6 +148,12 @@ function Row({ row, avatars, index }: { row: RankingsRow; avatars: AvatarMap; in
       >
         <div className={cn("grid gap-x-sp-2 gap-y-sp-2 pb-sp-2", PHONE_COLS)}>
           <ComponentCells cells={COMPONENTS.map(({ key, name }) => ({ name, value: row.components[key] }))} />
+          {/* The bye line shows at every width, because the row line has no room for the bye odds and the seed. */}
+          {row.odds && (
+            <Blurb dark className="col-[3/-1] text-meta">
+              {byeLine(row.odds)}
+            </Blurb>
+          )}
           {/* The sentences join in their order in the file, as plain text. The fact IDs are for the checks, not the reader. */}
           {hasBlurb && (
             <Blurb dark className="col-[3/-1]">
