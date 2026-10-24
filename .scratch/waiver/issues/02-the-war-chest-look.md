@@ -19,12 +19,12 @@ global stylesheet as tokens. Motion goes through the one reduced-motion switch.
 
 **Status:** ready-for-agent
 
-- [ ] The ring renders twelve bars in budget order from the fixture, none red with no pick.
-- [ ] The tabs switch the bucket, and the sheet keeps its player across a switch.
-- [ ] The field shows the top 6 with the size from the rank and the price on each.
-- [ ] A tap on a headshot or a row fills the sheet with the facts, the claims as links, the price, and the last like him.
-- [ ] The missing-experts line shows when the file flag is set.
-- [ ] The drops bucket rows name the roster and the pool player who beats him.
-- [ ] The reduced-motion test shows the drift off; a hidden tab stops it.
-- [ ] No two field slots overlap at 390 pixels, checked in a test on the layout table.
-- [ ] A missing headshot swaps to the default once.
+- [x] The ring renders twelve bars in budget order from the fixture, none red with no pick.
+- [x] The tabs switch the bucket, and the sheet keeps its player across a switch.
+- [x] The field shows the top 6 with the size from the rank and the price on each.
+- [x] A tap on a headshot or a row fills the sheet with the facts, the claims as links, the price, and the last like him.
+- [x] The missing-experts line shows when the file flag is set.
+- [x] The drops bucket rows name the roster and the pool player who beats him.
+- [x] The reduced-motion test shows the drift off; a hidden tab stops it.
+- [x] No two field slots overlap at 390 pixels, checked in a test on the layout table.
+- [x] A missing headshot swaps to the default once.
