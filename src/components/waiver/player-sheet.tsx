@@ -44,8 +44,10 @@ export function PlayerSheet({
   const trending = player ? trendingLine(player) : null;
   const price = player?.price ?? null;
   const last = price?.last_like ?? null;
-  // The pipeline keys the map by budget level as a string and already leaves the viewer out of the count, so the site only looks it up.
+  // The pipeline keys the map by budget level as a string. It already leaves the viewer out of the count, so the site only looks it up.
   const outbid = price && viewerBudget !== null ? price.outbid[String(viewerBudget)] : undefined;
+  // The engine counts the rivals over the lower of the bid and the viewer's budget, so the line names that amount.
+  const outbidOver = price && viewerBudget !== null ? Math.min(price.bid, viewerBudget) : null;
   return (
     <section aria-label="Player sheet" className="mt-sp-3 rounded-card border border-rule-dark bg-ink px-sp-4 py-sp-3">
       {/* A screen reader reads this one short line after a tap, and not the whole sheet. */}
@@ -100,7 +102,7 @@ export function PlayerSheet({
               )}
               {outbid !== undefined && (
                 <BidBox name="Can outbid you" value={String(outbid)}>
-                  {`Rivals with more than your $${viewerBudget}`}
+                  {`Rivals over $${outbidOver}`}
                 </BidBox>
               )}
             </div>

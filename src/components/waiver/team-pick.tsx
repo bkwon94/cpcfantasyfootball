@@ -27,10 +27,12 @@ function pickerTeams(budgets: BudgetRow[], teams: Record<string, Team>, avatars:
     }));
 }
 
-/* The picked team as one row: the avatar, the name, the budget left, and a Change link that opens the list again. */
+/* The picked team as one row: the avatar, the name, the budget left, and a Change link that opens the list again.
+   The picker has its own collapsed row, but it opens on every mount and has no budget line. A change to it changes the analyzer,
+   so the waiver page keeps this second chip. */
 function PickChip({ name, avatar, budget, onChange }: { name: string; avatar: string; budget: number; onChange: () => void }) {
   return (
-    <section aria-label={LABEL} className="flex min-h-touch items-center gap-sp-3 rounded-card bg-chip-dark py-sp-1 pl-sp-3">
+    <section aria-label={LABEL} className="flex h-pick-chip items-center gap-sp-3 rounded-card bg-chip-dark py-sp-1 pl-sp-3">
       <img src={avatar} alt="" className="size-avatar flex-none rounded-full bg-gry object-cover" />
       <span className="flex min-w-0 flex-1 flex-col">
         <b className="truncate text-row leading-tight font-extrabold">{name}</b>

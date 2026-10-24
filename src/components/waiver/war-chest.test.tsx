@@ -3,6 +3,7 @@
  * jsdom applies no CSS and runs no animation, so the size and the drift tests read an inline style and a data attribute.
  */
 import { act, cleanup, fireEvent, render, screen, within } from "@testing-library/react";
+import { renderToString } from "react-dom/server";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { week6 } from "@/components/week/fixture";
 import type { WaiverBoard, WaiverPlayer } from "@/lib/waiver-types";
@@ -269,6 +270,21 @@ describe("the team pick", () => {
     expect(chip()!.querySelector("img")?.getAttribute("src")).toBe("/2026/week-06/avatars/4.jpg");
     expect(picked.getByRole("button", { name: "Change your team" })).toBeTruthy();
   });
+
+  it("shows the default avatar on the chip for a team with no avatar, as the ring does", () => {
+    localStorage.setItem("cpc.waiver-team", "3");
+    renderBoard();
+    const ring = within(rowsOf("Budgets")[2]);
+    expect(ring.getByText("Lil Fridge")).toBeTruthy();
+    expect(chip()!.querySelector("img")?.getAttribute("src")).toBe("/images/avatar-default.svg");
+    expect(rowsOf("Budgets")[2].querySelector("img")?.getAttribute("src")).toBe("/images/avatar-default.svg");
+  });
+
+  it("holds an empty slot of the chip height until it reads storage", () => {
+    const markup = renderToString(<WarChest board={waiver} teams={week6.teams} avatars={{}} />);
+    expect(markup).toContain("h-pick-chip");
+    expect(markup).not.toContain('name="Your team"');
+  });
 });
 
 describe("the team pick across visits", () => {
@@ -312,23 +328,25 @@ describe("the ring and the sheet with a pick", () => {
     expect(marked[0].querySelector("[data-viewer]")?.className).toContain("bg-red");
   });
 
-  it("shows how many teams can outbid the viewer at his budget", () => {
+  it("names the bid as the line when the viewer's budget is above the bid", () => {
     localStorage.setItem("cpc.waiver-team", "3");
     renderBoard();
     const open = within(sheet());
     expect(open.getByText("Can outbid you")).toBeTruthy();
-    // Lil Fridge has $72, and the outbid map of Kenny Gainwell holds 10 at "72".
-    expect(open.getByText("10")).toBeTruthy();
+    // Lil Fridge has $72 and Kenny Gainwell's bid is $23. The outbid map holds 9 at "72".
+    expect(open.getByText("9")).toBeTruthy();
+    expect(open.getByText("Rivals over $23")).toBeTruthy();
   });
 
-  it("follows the budget of a new pick", () => {
+  it("names the budget as the line when the viewer's budget is below the bid, and follows a new pick", () => {
     localStorage.setItem("cpc.waiver-team", "3");
     renderBoard();
     fireEvent.click(screen.getByRole("button", { name: "Change your team" }));
-    fireEvent.click(within(pickList()!).getByRole("radio", { name: /London Cooking/ }));
-    // London Cooking has $25, and the map holds 2 at "25".
-    expect(within(chip()!).getByText("you have $25")).toBeTruthy();
-    expect(within(sheet()).getByText("2")).toBeTruthy();
+    fireEvent.click(within(pickList()!).getByRole("radio", { name: /Maye d'force B with U/ }));
+    // Maye d'force B with U has $19, below the $23 bid. The map holds 10 at "19".
+    expect(within(chip()!).getByText("you have $19")).toBeTruthy();
+    expect(within(sheet()).getByText("10")).toBeTruthy();
+    expect(within(sheet()).getByText("Rivals over $19")).toBeTruthy();
   });
 
   it("shows no outbid box with no pick", () => {

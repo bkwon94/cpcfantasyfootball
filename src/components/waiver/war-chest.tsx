@@ -31,7 +31,7 @@ function viewerDropsFirst(players: WaiverPlayer[], viewerId: number | null): Wai
 }
 
 /* The twelve budgets as a row of avatars over thin bars. The largest budget fills its bar, so the ring needs no league cap.
-   The viewer's bar is red, so a manager finds his own budget in a glance. */
+   The viewer's bar is red, so a manager finds his own budget at once. */
 function BudgetRing({
   budgets,
   teams,
@@ -139,10 +139,8 @@ export function WarChest({ board, teams, avatars }: { board: WaiverBoard; teams:
   // The sheet holds the player and not an index, so it keeps him when the tab changes to a bucket without him.
   const [sheetPlayer, setSheetPlayer] = useState<WaiverPlayer | null>(board.buckets[BEST_ADDS]?.[0] ?? null);
   const sheetId = sheetPlayer?.player_id ?? null;
-  // The static page has no storage, so the pick loads after the first render. Until then the pick area stays empty,
-  // so a returning manager never sees the list flash open before his chip.
-  const [pickLoaded, setPickLoaded] = useState(false);
-  const [pick, setPick] = useState<number | null>(null);
+  // Undefined until the page reads storage after the first render, since the static page has no storage. Null is no pick.
+  const [pick, setPick] = useState<number | null | undefined>(undefined);
   // A roster id that the budget table does not hold, such as a stale pick after a league change, counts as no pick.
   const viewer = board.budgets.find((row) => row.roster_id === pick) ?? null;
   const players = viewerDropsFirst(board.buckets[bucket] ?? [], viewer?.roster_id ?? null);
@@ -150,7 +148,6 @@ export function WarChest({ board, teams, avatars }: { board: WaiverBoard; teams:
 
   useEffect(() => {
     setPick(getTeamPick());
-    setPickLoaded(true);
   }, []);
 
   function choose(rosterId: number) {
@@ -160,11 +157,15 @@ export function WarChest({ board, teams, avatars }: { board: WaiverBoard; teams:
 
   return (
     <Chapter dark>
-      {pickLoaded && (
-        <div className="mb-sp-4">
+      <div className="mb-sp-4">
+        {/* Before the read, an empty slot of the chip height holds the place. A returning manager never sees the list flash open,
+            and the ring does not move down when his chip shows. */}
+        {pick === undefined ? (
+          <div aria-hidden className="h-pick-chip" />
+        ) : (
           <TeamPick viewer={viewer} budgets={board.budgets} teams={teams} avatars={avatars} onPick={choose} />
-        </div>
-      )}
+        )}
+      </div>
       <Label dark>War chest</Label>
       <BudgetRing budgets={board.budgets} teams={teams} avatars={avatars} viewerId={viewer?.roster_id ?? null} />
       <div role="group" aria-label="Buckets" className="mt-sp-4 flex gap-sp-1">
