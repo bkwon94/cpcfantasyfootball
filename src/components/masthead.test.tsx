@@ -45,4 +45,14 @@ describe("Masthead", () => {
     render(<Masthead />);
     expect(screen.getByRole("link").textContent).toBe("Cornerstone Fantasy Football League");
   });
+
+  it("links the waiver page when a link is given", () => {
+    render(<Masthead subtitle="League Weekly" waiverHref="/2026/week-06/waiver/" />);
+    expect(screen.getByRole("link", { name: "Waiver wire" }).getAttribute("href")).toBe("/2026/week-06/waiver/");
+  });
+
+  it("shows no waiver link when none is given", () => {
+    render(<Masthead subtitle="League Weekly" waiverHref={null} />);
+    expect(screen.queryByRole("link", { name: "Waiver wire" })).toBeNull();
+  });
 });

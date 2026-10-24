@@ -4,12 +4,14 @@
  */
 import type { NextConfig } from "next";
 import { basePath } from "./src/lib/config";
+import { waiverRouteOn } from "./src/lib/waiver-data";
 
 const nextConfig: NextConfig = {
   output: "export",
   trailingSlash: true,
   basePath,
   images: { unoptimized: true },
+  pageExtensions: ["tsx", "ts", "jsx", "js", ...(waiverRouteOn() ? ["waiver.tsx"] : [])],
 };
 
 export default nextConfig;

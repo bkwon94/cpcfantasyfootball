@@ -1,0 +1,183 @@
+{
+  "schema_version": 1,
+  "week": 6,
+  "built": "2026-10-23T14:05:12Z",
+  "buckets": {
+    "best_adds": [
+      {
+        "player_id": "7567",
+        "name": "Kenny Gainwell",
+        "position": "RB",
+        "team": "TB",
+        "week_projection": 13.4,
+        "ros_projection": 142.6,
+        "scores": {
+          "usage": 0.0,
+          "environment": 0.0,
+          "projection": 0.82
+        },
+        "board_score": 0.82
+      },
+      {
+        "player_id": "7528",
+        "name": "Najee Harris",
+        "position": "RB",
+        "team": "NYG",
+        "week_projection": 12.1,
+        "ros_projection": 128.3,
+        "scores": {
+          "usage": 0.0,
+          "environment": 0.0,
+          "projection": 0.77
+        },
+        "board_score": 0.77
+      },
+      {
+        "player_id": "5012",
+        "name": "Mark Andrews",
+        "position": "TE",
+        "team": "BAL",
+        "week_projection": 10.8,
+        "ros_projection": 113.9,
+        "scores": {
+          "usage": 0.0,
+          "environment": 0.0,
+          "projection": 0.71
+        },
+        "board_score": 0.71
+      },
+      {
+        "player_id": "11579",
+        "name": "Audric Estime",
+        "position": "RB",
+        "team": "CLE",
+        "week_projection": 10.2,
+        "ros_projection": 104.5,
+        "scores": {
+          "usage": 0.0,
+          "environment": 0.0,
+          "projection": 0.66
+        },
+        "board_score": 0.66
+      },
+      {
+        "player_id": "4037",
+        "name": "Chris Godwin",
+        "position": "WR",
+        "team": "TB",
+        "week_projection": 11.6,
+        "ros_projection": 98.7,
+        "scores": {
+          "usage": 0.0,
+          "environment": 0.0,
+          "projection": 0.63
+        },
+        "board_score": 0.63
+      },
+      {
+        "player_id": "5045",
+        "name": "Courtland Sutton",
+        "position": "WR",
+        "team": "DEN",
+        "week_projection": 11.3,
+        "ros_projection": 119.2,
+        "scores": {
+          "usage": 0.0,
+          "environment": 0.0,
+          "projection": 0.61
+        },
+        "board_score": 0.61
+      },
+      {
+        "player_id": "9482",
+        "name": "Michael Mayer",
+        "position": "TE",
+        "team": "LV",
+        "week_projection": 8.4,
+        "ros_projection": 86.1,
+        "scores": {
+          "usage": 0.0,
+          "environment": 0.0,
+          "projection": 0.52
+        },
+        "board_score": 0.52
+      },
+      {
+        "player_id": "4663",
+        "name": "Austin Ekeler",
+        "position": "RB",
+        "team": "WAS",
+        "week_projection": 7.9,
+        "ros_projection": 79.4,
+        "scores": {
+          "usage": 0.0,
+          "environment": 0.0,
+          "projection": 0.47
+        },
+        "board_score": 0.47
+      }
+    ]
+  },
+  "budgets": [
+    {
+      "roster_id": 1,
+      "budget_left": 61,
+      "waiver_order": 7
+    },
+    {
+      "roster_id": 2,
+      "budget_left": 9,
+      "waiver_order": 12
+    },
+    {
+      "roster_id": 3,
+      "budget_left": 72,
+      "waiver_order": 3
+    },
+    {
+      "roster_id": 4,
+      "budget_left": 90,
+      "waiver_order": 1
+    },
+    {
+      "roster_id": 5,
+      "budget_left": 25,
+      "waiver_order": 10
+    },
+    {
+      "roster_id": 6,
+      "budget_left": 58,
+      "waiver_order": 8
+    },
+    {
+      "roster_id": 7,
+      "budget_left": 82,
+      "waiver_order": 2
+    },
+    {
+      "roster_id": 8,
+      "budget_left": 67,
+      "waiver_order": 5
+    },
+    {
+      "roster_id": 9,
+      "budget_left": 19,
+      "waiver_order": 11
+    },
+    {
+      "roster_id": 10,
+      "budget_left": 69,
+      "waiver_order": 4
+    },
+    {
+      "roster_id": 11,
+      "budget_left": 51,
+      "waiver_order": 9
+    },
+    {
+      "roster_id": 12,
+      "budget_left": 65,
+      "waiver_order": 6
+    }
+  ]
+}
