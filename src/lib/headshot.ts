@@ -1,6 +1,6 @@
 /**
- * The default headshot and the image error handler that swaps to it.
- * The player list and the analyzer result share them, so a missing CDN image looks the same in both.
+ * The default headshot, the image error handler that swaps to it, and the Sleeper CDN headshot URL.
+ * The player list, the analyzer result, and the waiver list share them, so a missing CDN image looks the same in all.
  */
 import type { SyntheticEvent } from "react";
 import { basePath } from "@/lib/config";
@@ -13,4 +13,9 @@ export function swapToDefault(event: SyntheticEvent<HTMLImageElement>) {
   if (img.dataset.fallback) return;
   img.dataset.fallback = "1";
   img.src = HEADSHOT_FALLBACK;
+}
+
+/* The Sleeper CDN headshot of a player, by player id. It is the same URL the pipeline downloads from. */
+export function sleeperHeadshot(playerId: string): string {
+  return `https://sleepercdn.com/content/nfl/players/${playerId}.jpg`;
 }

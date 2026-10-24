@@ -1,6 +1,6 @@
 /**
  * The types of the waiver.json file that the Python build writes beside page.json in a week folder.
- * Later pipeline builds add keys to the same file, so every key past the first board is optional.
+ * Only bye is optional today. Later pipeline builds add more keys to the same file, and those keys will be optional too.
  */
 
 /* The three scores of a pool player, each from 0 to 1. A score with no input is 0. */

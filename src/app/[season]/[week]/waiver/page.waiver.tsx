@@ -1,6 +1,7 @@
 /**
  * The waiver page at /<season>/week-NN/waiver/, one static page per waiver.json in public/.
- * The .waiver.tsx name keeps it out of a build with the flag off: next.config adds the extension only with the flag on.
+ * The .waiver.tsx name keeps it out of most builds: next.config adds the extension only with the flag on
+ * and at least one week with a waiver file.
  */
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";

@@ -41,7 +41,7 @@ describe("loadWaiver", () => {
     const { loadWaiver } = await readerOver(["week-06"], { "week-06": fixture });
     const board = loadWaiver("2026", "week-06")!;
     expect(board.week).toBe(6);
-    expect(board.buckets.best_adds.map((player) => player.name)).toHaveLength(8);
+    expect(board.buckets.best_adds).toHaveLength(8);
     expect(board.buckets.best_adds[0]).toMatchObject({ player_id: "7567", name: "Kenny Gainwell", position: "RB" });
     expect(board.budgets).toHaveLength(12);
   });

@@ -55,6 +55,15 @@ describe("WaiverList best adds", () => {
     expect(row.getByText("142.6")).toBeTruthy();
   });
 
+  it("shows the bye when the row has one", () => {
+    const players = waiver.buckets.best_adds;
+    const board = { ...waiver, buckets: { best_adds: [{ ...players[0], bye: 9 }, { ...players[1], bye: null }] } };
+    render(<WaiverList board={board} teams={week6.teams} avatars={{}} />);
+    const rows = rowsOf("Best adds");
+    expect(within(rows[0]).getByText("RB · TB · Bye 9")).toBeTruthy();
+    expect(within(rows[1]).getByText("RB · NYG")).toBeTruthy();
+  });
+
   it("shows the Sleeper headshot, and swaps a missing one to the default once", () => {
     renderFixture();
     const img = rowsOf("Best adds")[0].querySelector("img")!;

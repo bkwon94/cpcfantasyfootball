@@ -6,15 +6,10 @@
 
 import { avatarSrc, Chapter, Label, Who } from "@/components/week/parts";
 import { num } from "@/lib/format";
-import { swapToDefault } from "@/lib/headshot";
+import { sleeperHeadshot, swapToDefault } from "@/lib/headshot";
 import { cn } from "@/lib/utils";
 import { BEST_ADDS, type BudgetRow, type WaiverBoard, type WaiverPlayer } from "@/lib/waiver-types";
 import type { AvatarMap, Team } from "@/lib/week-types";
-
-/* The file has no headshot path yet, so the row reads the Sleeper CDN by player id, as the pipeline does. */
-function headshotSrc(playerId: string): string {
-  return `https://sleepercdn.com/content/nfl/players/${playerId}.jpg`;
-}
 
 /* The most money first. Two equal budgets go in waiver order, since the first claim wins a tie bid. */
 function byBudget(rows: BudgetRow[]): BudgetRow[] {
@@ -60,9 +55,10 @@ function BestAdds({ players }: { players: WaiverPlayer[] }) {
       <ol aria-label="Best adds" className="m-0 list-none p-0">
         {players.map((player) => (
           <li key={player.player_id} className={cn(PLAYER_GRID, "py-sp-1")}>
-            {/* The player name sits next to the headshot, so the image is decorative. */}
+            {/* The player name sits next to the headshot, so the image is decorative.
+                The file has no headshot path yet, so the row reads the Sleeper CDN by player id. */}
             <img
-              src={headshotSrc(player.player_id)}
+              src={sleeperHeadshot(player.player_id)}
               alt=""
               loading="lazy"
               onError={swapToDefault}
@@ -70,7 +66,10 @@ function BestAdds({ players }: { players: WaiverPlayer[] }) {
             />
             <span className="flex min-w-0 flex-col">
               <b className="font-extrabold">{player.name}</b>
-              <span className="text-meta text-mute">{`${player.position} · ${player.team}`}</span>
+              <span className="text-meta text-mute">
+                {/* A null or missing bye shows nothing. */}
+                {player.bye == null ? `${player.position} · ${player.team}` : `${player.position} · ${player.team} · Bye ${player.bye}`}
+              </span>
             </span>
             <span className="text-right">{num(player.week_projection)}</span>
             <span className="text-right">{num(player.ros_projection)}</span>
