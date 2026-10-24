@@ -13,9 +13,9 @@ outbid count. The pick never touches the analyzer's two sides.
 
 **Status:** ready-for-agent
 
-- [ ] The picker renders the team list and a pick collapses it to the chip.
-- [ ] The pick survives a reload, and a storage throw leaves the page working for the visit.
-- [ ] With a pick, the matching bar is red and the sheet shows the outbid count for that budget.
-- [ ] With no pick, no bar is red and the sheet has no outbid line.
-- [ ] Change opens the list again and a new pick replaces the old.
-- [ ] The analyzer tests still pass with no change to its sides.
+- [x] The picker renders the team list and a pick collapses it to the chip.
+- [x] The pick survives a reload, and a storage throw leaves the page working for the visit.
+- [x] With a pick, the matching bar is red and the sheet shows the outbid count for that budget.
+- [x] With no pick, no bar is red and the sheet has no outbid line.
+- [x] Change opens the list again and a new pick replaces the old.
+- [x] The analyzer tests still pass with no change to its sides.
