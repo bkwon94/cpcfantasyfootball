@@ -11,7 +11,7 @@ outbid count. The pick never touches the analyzer's two sides.
 
 **Blocked by:** 02 The War chest look.
 
-**Status:** ready-for-agent
+**Status:** done
 
 - [x] The picker renders the team list and a pick collapses it to the chip.
 - [x] The pick survives a reload, and a storage throw leaves the page working for the visit.
@@ -19,3 +19,7 @@ outbid count. The pick never touches the analyzer's two sides.
 - [x] With no pick, no bar is red and the sheet has no outbid line.
 - [x] Change opens the list again and a new pick replaces the old.
 - [x] The analyzer tests still pass with no change to its sides.
+
+## Comments
+
+- The chip sits at the top of the dark chapter under the masthead, because the masthead is a server component.
