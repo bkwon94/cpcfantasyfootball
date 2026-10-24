@@ -1,6 +1,6 @@
 /**
  * The types of the waiver.json file that the Python build writes beside page.json in a week folder.
- * Only bye is optional today. Later pipeline builds add more keys to the same file, and those keys will be optional too.
+ * A key that an older build or a ticket in flight may leave out is optional, so the site reads every file the pipeline wrote.
  */
 
 /* The three scores of a pool player, each from 0 to 1. A score with no input is 0. */
@@ -8,6 +8,47 @@ export type BoardScores = {
   usage: number;
   environment: number;
   projection: number;
+};
+
+/* One fact of the pipeline. Every number in the text is in numbers, so the checks can match the page to the facts. */
+export type WaiverFact = {
+  id: string;
+  text: string;
+  numbers: string[];
+  teams: string[];
+  players: string[];
+};
+
+/* The most recent winning claim at the player's position this season. The roster id names the fantasy team that won it. */
+export type LastLike = {
+  player_id: string;
+  name: string;
+  roster_id: number;
+  team: string;
+  week: number;
+  bid: number;
+};
+
+/* The bid to win of one pool player, a whole dollar, with the fact that holds its inputs.
+   The outbid map keys a budget level, as a JSON string, to the count of other rosters that can bid more than a viewer at that level. */
+export type WaiverPrice = {
+  bid: number;
+  fact: WaiverFact;
+  // Null when no claim at the position won this season.
+  last_like: LastLike | null;
+  outbid: Record<string, number>;
+};
+
+/* Whether a research claim backs the board facts or disputes them. */
+export type ClaimStance = "backs" | "disputes";
+
+/* One research claim: one sentence from a web source, with the link, the source name, and an ISO 8601 date. */
+export type ResearchClaim = {
+  sentence: string;
+  url: string;
+  source: string;
+  date: string;
+  stance: ClaimStance;
 };
 
 /* One ranked player of a bucket. The week projection is for the next week, the rest of season one runs to week 17. */
@@ -22,6 +63,18 @@ export type WaiverPlayer = {
   board_score: number;
   // The first file has no bye. A later build adds it.
   bye?: number | null;
+  // The Sleeper injury status and the expected return week, for a stash.
+  injury_status?: string | null;
+  return_week?: number | null;
+  // The adds across all Sleeper leagues in the last day. 0 when he is not in the trending file.
+  trending_count?: number;
+  facts?: WaiverFact[];
+  // Null for a drop.
+  price?: WaiverPrice | null;
+  claims?: ResearchClaim[];
+  // A drop names why he is a drop, as a code, and the roster that holds him. A pool player has neither.
+  reason?: string;
+  roster_id?: number;
 };
 
 /* The FAAB budget left and the waiver order of one roster. */
@@ -34,6 +87,15 @@ export type BudgetRow = {
 /* The best adds bucket is the one key every file has. Later builds add more buckets by key. */
 export const BEST_ADDS = "best_adds";
 
+/* The five bucket keys in tab order, with the tab names. A file can lack any bucket but best adds. */
+export const BUCKETS = [
+  { key: BEST_ADDS, name: "Best adds" },
+  { key: "trending", name: "Trending" },
+  { key: "sneaky", name: "Sneaky" },
+  { key: "stashes", name: "Stashes" },
+  { key: "drops", name: "Drops" },
+] as const;
+
 /* The board of one week: the buckets by key, each in rank order, and the budget table in roster order. */
 export type WaiverBoard = {
   schema_version: 1;
@@ -42,4 +104,6 @@ export type WaiverBoard = {
   built: string;
   buckets: Record<string, WaiverPlayer[]>;
   budgets: BudgetRow[];
+  // True when the research step failed for every player, so the page says the experts are out.
+  experts_missing?: boolean;
 };
