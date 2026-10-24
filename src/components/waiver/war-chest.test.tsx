@@ -3,14 +3,19 @@
  * jsdom applies no CSS and runs no animation, so the size and the drift tests read an inline style and a data attribute.
  */
 import { act, cleanup, fireEvent, render, screen, within } from "@testing-library/react";
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { week6 } from "@/components/week/fixture";
 import type { WaiverBoard, WaiverPlayer } from "@/lib/waiver-types";
 import { waiver } from "./fixture";
 import { WarChest } from "./war-chest";
 
+beforeEach(() => {
+  localStorage.clear();
+});
+
 afterEach(() => {
   cleanup();
+  vi.restoreAllMocks();
 });
 
 function renderBoard(board: WaiverBoard = waiver) {
@@ -235,5 +240,33 @@ describe("the headshots", () => {
     img.setAttribute("src", "broken.svg");
     fireEvent.error(img);
     expect(img.getAttribute("src")).toBe("broken.svg");
+  });
+});
+
+/* The pick list, open when there is no pick. */
+function pickList() {
+  return screen.queryByRole("group", { name: "Your team" });
+}
+
+function chip() {
+  return screen.queryByRole("region", { name: "Your team" });
+}
+
+describe("the team pick", () => {
+  it("shows the team list open with no pick, and no chip", () => {
+    renderBoard();
+    expect(within(pickList()!).getAllByRole("radio")).toHaveLength(12);
+    expect(chip()).toBeNull();
+  });
+
+  it("collapses the list to a chip with the team, the budget, and a Change link on a pick", () => {
+    renderBoard();
+    fireEvent.click(within(pickList()!).getByRole("radio", { name: /Pukancun on 3/ }));
+    expect(pickList()).toBeNull();
+    const picked = within(chip()!);
+    expect(picked.getByText("Pukancun on 3")).toBeTruthy();
+    expect(picked.getByText("you have $90")).toBeTruthy();
+    expect(chip()!.querySelector("img")?.getAttribute("src")).toBe("/2026/week-06/avatars/4.jpg");
+    expect(picked.getByRole("button", { name: "Change your team" })).toBeTruthy();
   });
 });

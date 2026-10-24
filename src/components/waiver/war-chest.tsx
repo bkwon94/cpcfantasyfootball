@@ -4,10 +4,11 @@
  */
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useMarkHydrated } from "@/components/reveal";
 import { avatarSrc, Chapter, Label } from "@/components/week/parts";
 import { sleeperHeadshot, swapToDefault } from "@/lib/headshot";
+import { getTeamPick, setTeamPick } from "@/lib/team-pick";
 import { cn } from "@/lib/utils";
 import { BEST_ADDS, BUCKETS, type BucketKey, type BudgetRow, type WaiverBoard, type WaiverPlayer } from "@/lib/waiver-types";
 import type { AvatarMap, Team } from "@/lib/week-types";
@@ -15,6 +16,7 @@ import { DriftField } from "./drift-field";
 import { SLOTS } from "./field-layout";
 import { holderLine, metaLine, priceText, teamName } from "./format";
 import { PlayerSheet } from "./player-sheet";
+import { TeamPick } from "./team-pick";
 
 /* The most money first. Two equal budgets go in waiver order, since the first claim wins a tie bid. */
 function byBudget(rows: BudgetRow[]): BudgetRow[] {
@@ -116,9 +118,31 @@ export function WarChest({ board, teams, avatars }: { board: WaiverBoard; teams:
   const [sheetPlayer, setSheetPlayer] = useState<WaiverPlayer | null>(board.buckets[BEST_ADDS]?.[0] ?? null);
   const players = board.buckets[bucket] ?? [];
   const sheetId = sheetPlayer?.player_id ?? null;
+  // The static page has no storage, so the pick loads after the first render. Until then the pick area stays empty,
+  // so a returning manager never sees the list flash open before his chip.
+  const [pickLoaded, setPickLoaded] = useState(false);
+  const [pick, setPick] = useState<number | null>(null);
+  // A roster id that the budget table does not hold, such as a stale pick after a league change, counts as no pick.
+  const viewer = board.budgets.find((row) => row.roster_id === pick) ?? null;
   useMarkHydrated();
+
+  useEffect(() => {
+    setPick(getTeamPick());
+    setPickLoaded(true);
+  }, []);
+
+  function choose(rosterId: number) {
+    setPick(rosterId);
+    setTeamPick(rosterId);
+  }
+
   return (
     <Chapter dark>
+      {pickLoaded && (
+        <div className="mb-sp-4">
+          <TeamPick viewer={viewer} budgets={board.budgets} teams={teams} avatars={avatars} onPick={choose} />
+        </div>
+      )}
       <Label dark>War chest</Label>
       <BudgetRing budgets={board.budgets} teams={teams} avatars={avatars} />
       <div role="group" aria-label="Buckets" className="mt-sp-4 flex gap-sp-1">
