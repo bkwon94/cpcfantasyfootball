@@ -102,3 +102,92 @@ describe("the drift field", () => {
     expect(field().getAttribute("data-drift")).toBe("on");
   });
 });
+
+describe("the sheet", () => {
+  it("opens on the top player of the best adds", () => {
+    renderBoard();
+    expect(within(sheet()).getByRole("heading", { name: "Kenny Gainwell" })).toBeTruthy();
+    expect(within(sheet()).getByText("RB · TB · Bye 9")).toBeTruthy();
+  });
+
+  it("fills with the facts, the claims as links, the price, and the last like him on a tap of a headshot", () => {
+    renderBoard();
+    fireEvent.click(within(field()).getByRole("button", { name: "Najee Harris, $14" }));
+    const open = within(sheet());
+    expect(open.getByRole("heading", { name: "Najee Harris" })).toBeTruthy();
+    const facts = within(open.getByRole("list", { name: "Facts" })).getAllByRole("listitem");
+    expect(facts).toHaveLength(3);
+    expect(facts[0].textContent).toBe("Najee Harris played 71% of snaps and took 6 targets last week, up from 48% and 3");
+    const links = within(open.getByRole("list", { name: "Claims" })).getAllByRole("link");
+    expect(links).toHaveLength(2);
+    expect(links[0].textContent).toBe("Najee Harris took the lead role in practice this week.");
+    expect(links[0].getAttribute("href")).toBe("https://sports.yahoo.com/fantasy/najee-harris-waiver");
+    expect(open.getByText("Yahoo Fantasy · Backs the board")).toBeTruthy();
+    expect(open.getByText("ESPN · Disputes the board")).toBeTruthy();
+    expect(open.getByText("$14")).toBeTruthy();
+    expect(open.getByText("$14 beats the top rival bid of $13")).toBeTruthy();
+    // The last RB to win was Najee Harris himself, for $19 in week 4, by roster 3.
+    expect(open.getByText("Last RB won")).toBeTruthy();
+    expect(open.getByText("$19")).toBeTruthy();
+    expect(open.getByText("Najee Harris, week 4, Lil Fridge")).toBeTruthy();
+  });
+
+  it("fills on a tap of a list row, with the trending count in thousands", () => {
+    renderBoard();
+    fireEvent.click(screen.getByRole("button", { name: /^Trending/ }));
+    fireEvent.click(within(rowsOf("Trending")[1]).getByRole("button"));
+    const open = within(sheet());
+    expect(open.getByRole("heading", { name: "Courtland Sutton" })).toBeTruthy();
+    expect(open.getByText("31,877 adds on Sleeper in the last day")).toBeTruthy();
+  });
+
+  it("shows no last like him when no claim at the position won", () => {
+    renderBoard();
+    fireEvent.click(within(field()).getByRole("button", { name: "Chris Godwin, $4" }));
+    expect(within(sheet()).queryByText(/^Last WR won/)).toBeNull();
+  });
+
+  it("says the experts are out only when the file flag is set", () => {
+    renderBoard();
+    expect(screen.queryByText("The experts are out this week.")).toBeNull();
+    cleanup();
+    renderBoard({ ...waiver, experts_missing: true });
+    expect(within(sheet()).getByText("The experts are out this week.")).toBeTruthy();
+  });
+});
+
+describe("the drops bucket", () => {
+  it("names the roster that holds each drop and the pool player who beats him", () => {
+    renderBoard();
+    fireEvent.click(screen.getByRole("button", { name: /^Drops/ }));
+    const rows = rowsOf("Drops");
+    expect(within(rows[0]).getByText("Austin Ekeler")).toBeTruthy();
+    expect(within(rows[0]).getByText("RB · WAS · Bye 12 · On Lil Fridge")).toBeTruthy();
+    expect(within(rows[0]).getByText("Kenny Gainwell projects 101.6 more points than Austin Ekeler for the rest of the season")).toBeTruthy();
+    expect(within(rows[1]).getByText("TE · CAR · Bye 14 · On Bo Girds")).toBeTruthy();
+    // A drop has no price, so his headshot wears no tag.
+    expect(within(field()).getByRole("button", { name: "Darren Waller" })).toBeTruthy();
+  });
+
+  it("names the roster on the sheet of a drop", () => {
+    renderBoard();
+    fireEvent.click(screen.getByRole("button", { name: /^Drops/ }));
+    fireEvent.click(within(field()).getByRole("button", { name: "Austin Ekeler" }));
+    expect(within(sheet()).getByText("On Lil Fridge")).toBeTruthy();
+    expect(within(sheet()).queryByText("Bid to win")).toBeNull();
+  });
+});
+
+describe("the headshots", () => {
+  it("shows the Sleeper headshot, and swaps a missing one to the default once", () => {
+    renderBoard();
+    const img = within(field()).getAllByRole("button")[0].querySelector("img")!;
+    expect(img.getAttribute("src")).toBe("https://sleepercdn.com/content/nfl/players/7567.jpg");
+    fireEvent.error(img);
+    expect(img.getAttribute("src")).toBe("/images/headshot-default.svg");
+    // A second error keeps the default, so a missing default file never loops.
+    img.setAttribute("src", "broken.svg");
+    fireEvent.error(img);
+    expect(img.getAttribute("src")).toBe("broken.svg");
+  });
+});

@@ -1,5 +1,5 @@
 /**
- * Tests for the analyzer, the week page, the home page, and the power rankings with the reduced-motion media query on. The content must show at rest at once.
+ * Tests for the analyzer, the week page, the home page, the power rankings, and the waiver page with the reduced-motion media query on. The content must show at rest at once.
  * matchMedia is a stub, and it must exist before Framer Motion first reads it, so the stub runs at the top of the file.
  * jsdom ignores opacity, so this test proves the text is present. The browser capture 12-week-off-390.png proves no motion.
  */
@@ -14,6 +14,8 @@ import AnalyzeResult from "./analyze-result";
 import { rankings } from "./rankings/fixture";
 import { PowerRankings } from "./rankings/power-rankings";
 import { TradeForm } from "./trade-form";
+import { waiver } from "./waiver/fixture";
+import { WarChest } from "./waiver/war-chest";
 import { week6 } from "./week/fixture";
 
 vi.stubGlobal(
@@ -104,6 +106,19 @@ describe("Reduced motion on the power rankings", () => {
     );
     // The chevron is the one CSS transition of the row. With motion off it carries no transition class.
     expect(button.querySelector("span")!.className).not.toMatch(/\btransition-/);
+  });
+});
+
+describe("Reduced motion on the waiver page", () => {
+  it("turns the drift off and shows the top six at once", () => {
+    render(<WarChest board={waiver} teams={week6.teams} avatars={week6.avatars} />);
+    const field = screen.getByRole("group", { name: "Top six" });
+    expect(field.getAttribute("data-drift")).toBe("off");
+    expect(within(field).getAllByRole("button")).toHaveLength(6);
+    // With motion off a headshot takes no rise, so it sits at rest with no transform from the first render.
+    for (const orb of field.querySelectorAll("[data-reveal]")) {
+      expect((orb as HTMLElement).style.transform).not.toMatch(/translate/);
+    }
   });
 });
 
