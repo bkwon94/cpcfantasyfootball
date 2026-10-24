@@ -126,7 +126,7 @@
     --radius-sm: 3px;
     --radius-card: 8px;
 
-    /* The red halo of a headshot in the waiver drift field, so each face lifts off the black card as the hero cutout does. */
+    /* The red halo of a headshot in the waiver drift field. It sets each face apart from the black card, as the hero glow does. */
     --shadow-orb: 0 0 24px var(--color-red-glow);
 
     /* The press easing. A strong ease-out gives instant feedback on a tap. src/lib/motion.ts holds the same curve as numbers. */
