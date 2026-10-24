@@ -16,7 +16,107 @@
           "environment": 0.0,
           "projection": 0.82
         },
-        "board_score": 0.82
+        "board_score": 0.82,
+        "bye": 9,
+        "trending_count": 48213,
+        "facts": [
+          {
+            "id": "waiver.7567.usage",
+            "text": "Kenny Gainwell played 71% of snaps and took 6 targets last week, up from 48% and 3",
+            "numbers": [
+              "71",
+              "6",
+              "48",
+              "3"
+            ],
+            "teams": [
+              "TB"
+            ],
+            "players": [
+              "7567"
+            ]
+          },
+          {
+            "id": "waiver.7567.environment",
+            "text": "TB runs the 5th fastest offense and passes on 58% of neutral downs",
+            "numbers": [
+              "5",
+              "58"
+            ],
+            "teams": [
+              "TB"
+            ],
+            "players": []
+          },
+          {
+            "id": "waiver.7567.story",
+            "text": "The starter ahead of Kenny Gainwell is out, and Kenny Gainwell is next on the depth chart",
+            "numbers": [],
+            "teams": [
+              "TB"
+            ],
+            "players": [
+              "7567"
+            ]
+          }
+        ],
+        "price": {
+          "bid": 23,
+          "fact": {
+            "id": "waiver.7567.price",
+            "text": "$23 beats the top rival bid of $22",
+            "numbers": [
+              "23",
+              "22"
+            ],
+            "teams": [],
+            "players": [
+              "7567"
+            ]
+          },
+          "last_like": {
+            "player_id": "7528",
+            "name": "Najee Harris",
+            "roster_id": 3,
+            "team": "NYG",
+            "week": 4,
+            "bid": 19
+          },
+          "outbid": {
+            "9": 0,
+            "19": 1,
+            "25": 2,
+            "51": 4,
+            "58": 5,
+            "61": 6,
+            "65": 7,
+            "67": 8,
+            "69": 9,
+            "72": 10,
+            "82": 11,
+            "90": 11
+          }
+        },
+        "research": [
+          {
+            "text": "Kenny Gainwell took the lead role in practice this week.",
+            "url": "https://sports.yahoo.com/fantasy/kenny-gainwell-waiver",
+            "source": "Yahoo Fantasy",
+            "date": "2026-10-21",
+            "stance": "backs"
+          },
+          {
+            "text": "Kenny Gainwell may split the work once the starter returns.",
+            "url": "https://www.espn.com/fantasy/football/story/kenny-gainwell",
+            "source": "ESPN",
+            "date": "2026-10-20",
+            "stance": "disputes"
+          }
+        ],
+        "injury_status": null,
+        "return_week": null,
+        "reason": null,
+        "drop": null
       },
       {
         "player_id": "7528",
@@ -30,7 +130,107 @@
           "environment": 0.0,
           "projection": 0.77
         },
-        "board_score": 0.77
+        "board_score": 0.77,
+        "bye": 14,
+        "trending_count": 3311,
+        "facts": [
+          {
+            "id": "waiver.7528.usage",
+            "text": "Najee Harris played 71% of snaps and took 6 targets last week, up from 48% and 3",
+            "numbers": [
+              "71",
+              "6",
+              "48",
+              "3"
+            ],
+            "teams": [
+              "NYG"
+            ],
+            "players": [
+              "7528"
+            ]
+          },
+          {
+            "id": "waiver.7528.environment",
+            "text": "NYG runs the 5th fastest offense and passes on 58% of neutral downs",
+            "numbers": [
+              "5",
+              "58"
+            ],
+            "teams": [
+              "NYG"
+            ],
+            "players": []
+          },
+          {
+            "id": "waiver.7528.story",
+            "text": "The starter ahead of Najee Harris is out, and Najee Harris is next on the depth chart",
+            "numbers": [],
+            "teams": [
+              "NYG"
+            ],
+            "players": [
+              "7528"
+            ]
+          }
+        ],
+        "price": {
+          "bid": 14,
+          "fact": {
+            "id": "waiver.7528.price",
+            "text": "$14 beats the top rival bid of $13",
+            "numbers": [
+              "14",
+              "13"
+            ],
+            "teams": [],
+            "players": [
+              "7528"
+            ]
+          },
+          "last_like": {
+            "player_id": "7528",
+            "name": "Najee Harris",
+            "roster_id": 3,
+            "team": "NYG",
+            "week": 4,
+            "bid": 19
+          },
+          "outbid": {
+            "9": 0,
+            "19": 1,
+            "25": 2,
+            "51": 4,
+            "58": 5,
+            "61": 6,
+            "65": 7,
+            "67": 8,
+            "69": 9,
+            "72": 10,
+            "82": 11,
+            "90": 11
+          }
+        },
+        "research": [
+          {
+            "text": "Najee Harris took the lead role in practice this week.",
+            "url": "https://sports.yahoo.com/fantasy/najee-harris-waiver",
+            "source": "Yahoo Fantasy",
+            "date": "2026-10-21",
+            "stance": "backs"
+          },
+          {
+            "text": "Najee Harris may split the work once the starter returns.",
+            "url": "https://www.espn.com/fantasy/football/story/najee-harris",
+            "source": "ESPN",
+            "date": "2026-10-20",
+            "stance": "disputes"
+          }
+        ],
+        "injury_status": null,
+        "return_week": null,
+        "reason": null,
+        "drop": null
       },
       {
         "player_id": "5012",
@@ -44,7 +244,107 @@
           "environment": 0.0,
           "projection": 0.71
         },
-        "board_score": 0.71
+        "board_score": 0.71,
+        "bye": 7,
+        "trending_count": 640,
+        "facts": [
+          {
+            "id": "waiver.5012.usage",
+            "text": "Mark Andrews played 71% of snaps and took 6 targets last week, up from 48% and 3",
+            "numbers": [
+              "71",
+              "6",
+              "48",
+              "3"
+            ],
+            "teams": [
+              "BAL"
+            ],
+            "players": [
+              "5012"
+            ]
+          },
+          {
+            "id": "waiver.5012.environment",
+            "text": "BAL runs the 5th fastest offense and passes on 58% of neutral downs",
+            "numbers": [
+              "5",
+              "58"
+            ],
+            "teams": [
+              "BAL"
+            ],
+            "players": []
+          },
+          {
+            "id": "waiver.5012.story",
+            "text": "The starter ahead of Mark Andrews is out, and Mark Andrews is next on the depth chart",
+            "numbers": [],
+            "teams": [
+              "BAL"
+            ],
+            "players": [
+              "5012"
+            ]
+          }
+        ],
+        "price": {
+          "bid": 8,
+          "fact": {
+            "id": "waiver.5012.price",
+            "text": "$8 beats the top rival bid of $7",
+            "numbers": [
+              "8",
+              "7"
+            ],
+            "teams": [],
+            "players": [
+              "5012"
+            ]
+          },
+          "last_like": {
+            "player_id": "9482",
+            "name": "Michael Mayer",
+            "roster_id": 10,
+            "team": "LV",
+            "week": 5,
+            "bid": 7
+          },
+          "outbid": {
+            "9": 0,
+            "19": 1,
+            "25": 2,
+            "51": 4,
+            "58": 5,
+            "61": 6,
+            "65": 7,
+            "67": 8,
+            "69": 9,
+            "72": 10,
+            "82": 11,
+            "90": 11
+          }
+        },
+        "research": [
+          {
+            "text": "Mark Andrews took the lead role in practice this week.",
+            "url": "https://sports.yahoo.com/fantasy/mark-andrews-waiver",
+            "source": "Yahoo Fantasy",
+            "date": "2026-10-21",
+            "stance": "backs"
+          },
+          {
+            "text": "Mark Andrews may split the work once the starter returns.",
+            "url": "https://www.espn.com/fantasy/football/story/mark-andrews",
+            "source": "ESPN",
+            "date": "2026-10-20",
+            "stance": "news"
+          }
+        ],
+        "injury_status": null,
+        "return_week": null,
+        "reason": null,
+        "drop": null
       },
       {
         "player_id": "11579",
@@ -58,7 +358,107 @@
           "environment": 0.0,
           "projection": 0.66
         },
-        "board_score": 0.66
+        "board_score": 0.66,
+        "bye": 9,
+        "trending_count": 7402,
+        "facts": [
+          {
+            "id": "waiver.11579.usage",
+            "text": "Audric Estime played 71% of snaps and took 6 targets last week, up from 48% and 3",
+            "numbers": [
+              "71",
+              "6",
+              "48",
+              "3"
+            ],
+            "teams": [
+              "CLE"
+            ],
+            "players": [
+              "11579"
+            ]
+          },
+          {
+            "id": "waiver.11579.environment",
+            "text": "CLE runs the 5th fastest offense and passes on 58% of neutral downs",
+            "numbers": [
+              "5",
+              "58"
+            ],
+            "teams": [
+              "CLE"
+            ],
+            "players": []
+          },
+          {
+            "id": "waiver.11579.story",
+            "text": "The starter ahead of Audric Estime is out, and Audric Estime is next on the depth chart",
+            "numbers": [],
+            "teams": [
+              "CLE"
+            ],
+            "players": [
+              "11579"
+            ]
+          }
+        ],
+        "price": {
+          "bid": 6,
+          "fact": {
+            "id": "waiver.11579.price",
+            "text": "$6 beats the top rival bid of $5",
+            "numbers": [
+              "6",
+              "5"
+            ],
+            "teams": [],
+            "players": [
+              "11579"
+            ]
+          },
+          "last_like": {
+            "player_id": "7528",
+            "name": "Najee Harris",
+            "roster_id": 3,
+            "team": "NYG",
+            "week": 4,
+            "bid": 19
+          },
+          "outbid": {
+            "9": 0,
+            "19": 1,
+            "25": 2,
+            "51": 4,
+            "58": 5,
+            "61": 6,
+            "65": 7,
+            "67": 8,
+            "69": 9,
+            "72": 10,
+            "82": 11,
+            "90": 11
+          }
+        },
+        "research": [
+          {
+            "text": "Audric Estime took the lead role in practice this week.",
+            "url": "https://sports.yahoo.com/fantasy/audric-estime-waiver",
+            "source": "Yahoo Fantasy",
+            "date": "2026-10-21",
+            "stance": "backs"
+          },
+          {
+            "text": "Audric Estime may split the work once the starter returns.",
+            "url": "https://www.espn.com/fantasy/football/story/audric-estime",
+            "source": "ESPN",
+            "date": "2026-10-20",
+            "stance": "disputes"
+          }
+        ],
+        "injury_status": null,
+        "return_week": null,
+        "reason": null,
+        "drop": null
       },
       {
         "player_id": "4037",
@@ -72,7 +472,100 @@
           "environment": 0.0,
           "projection": 0.63
         },
-        "board_score": 0.63
+        "board_score": 0.63,
+        "bye": 9,
+        "trending_count": 1250,
+        "facts": [
+          {
+            "id": "waiver.4037.usage",
+            "text": "Chris Godwin played 71% of snaps and took 6 targets last week, up from 48% and 3",
+            "numbers": [
+              "71",
+              "6",
+              "48",
+              "3"
+            ],
+            "teams": [
+              "TB"
+            ],
+            "players": [
+              "4037"
+            ]
+          },
+          {
+            "id": "waiver.4037.environment",
+            "text": "TB runs the 5th fastest offense and passes on 58% of neutral downs",
+            "numbers": [
+              "5",
+              "58"
+            ],
+            "teams": [
+              "TB"
+            ],
+            "players": []
+          },
+          {
+            "id": "waiver.4037.story",
+            "text": "The starter ahead of Chris Godwin is out, and Chris Godwin is next on the depth chart",
+            "numbers": [],
+            "teams": [
+              "TB"
+            ],
+            "players": [
+              "4037"
+            ]
+          }
+        ],
+        "price": {
+          "bid": 4,
+          "fact": {
+            "id": "waiver.4037.price",
+            "text": "$4 beats the top rival bid of $3",
+            "numbers": [
+              "4",
+              "3"
+            ],
+            "teams": [],
+            "players": [
+              "4037"
+            ]
+          },
+          "last_like": null,
+          "outbid": {
+            "9": 0,
+            "19": 1,
+            "25": 2,
+            "51": 4,
+            "58": 5,
+            "61": 6,
+            "65": 7,
+            "67": 8,
+            "69": 9,
+            "72": 10,
+            "82": 11,
+            "90": 11
+          }
+        },
+        "research": [
+          {
+            "text": "Chris Godwin took the lead role in practice this week.",
+            "url": "https://sports.yahoo.com/fantasy/chris-godwin-waiver",
+            "source": "Yahoo Fantasy",
+            "date": "2026-10-21",
+            "stance": "backs"
+          },
+          {
+            "text": "Chris Godwin may split the work once the starter returns.",
+            "url": "https://www.espn.com/fantasy/football/story/chris-godwin",
+            "source": "ESPN",
+            "date": "2026-10-20",
+            "stance": "disputes"
+          }
+        ],
+        "injury_status": null,
+        "return_week": null,
+        "reason": null,
+        "drop": null
       },
       {
         "player_id": "5045",
@@ -86,7 +579,100 @@
           "environment": 0.0,
           "projection": 0.61
         },
-        "board_score": 0.61
+        "board_score": 0.61,
+        "bye": 12,
+        "trending_count": 31877,
+        "facts": [
+          {
+            "id": "waiver.5045.usage",
+            "text": "Courtland Sutton played 71% of snaps and took 6 targets last week, up from 48% and 3",
+            "numbers": [
+              "71",
+              "6",
+              "48",
+              "3"
+            ],
+            "teams": [
+              "DEN"
+            ],
+            "players": [
+              "5045"
+            ]
+          },
+          {
+            "id": "waiver.5045.environment",
+            "text": "DEN runs the 5th fastest offense and passes on 58% of neutral downs",
+            "numbers": [
+              "5",
+              "58"
+            ],
+            "teams": [
+              "DEN"
+            ],
+            "players": []
+          },
+          {
+            "id": "waiver.5045.story",
+            "text": "The starter ahead of Courtland Sutton is out, and Courtland Sutton is next on the depth chart",
+            "numbers": [],
+            "teams": [
+              "DEN"
+            ],
+            "players": [
+              "5045"
+            ]
+          }
+        ],
+        "price": {
+          "bid": 3,
+          "fact": {
+            "id": "waiver.5045.price",
+            "text": "$3 beats the top rival bid of $2",
+            "numbers": [
+              "3",
+              "2"
+            ],
+            "teams": [],
+            "players": [
+              "5045"
+            ]
+          },
+          "last_like": null,
+          "outbid": {
+            "9": 0,
+            "19": 1,
+            "25": 2,
+            "51": 4,
+            "58": 5,
+            "61": 6,
+            "65": 7,
+            "67": 8,
+            "69": 9,
+            "72": 10,
+            "82": 11,
+            "90": 11
+          }
+        },
+        "research": [
+          {
+            "text": "Courtland Sutton took the lead role in practice this week.",
+            "url": "https://sports.yahoo.com/fantasy/courtland-sutton-waiver",
+            "source": "Yahoo Fantasy",
+            "date": "2026-10-21",
+            "stance": "backs"
+          },
+          {
+            "text": "Courtland Sutton may split the work once the starter returns.",
+            "url": "https://www.espn.com/fantasy/football/story/courtland-sutton",
+            "source": "ESPN",
+            "date": "2026-10-20",
+            "stance": "disputes"
+          }
+        ],
+        "injury_status": null,
+        "return_week": null,
+        "reason": null,
+        "drop": null
       },
       {
         "player_id": "9482",
@@ -100,7 +686,107 @@
           "environment": 0.0,
           "projection": 0.52
         },
-        "board_score": 0.52
+        "board_score": 0.52,
+        "bye": 8,
+        "trending_count": 9120,
+        "facts": [
+          {
+            "id": "waiver.9482.usage",
+            "text": "Michael Mayer played 71% of snaps and took 6 targets last week, up from 48% and 3",
+            "numbers": [
+              "71",
+              "6",
+              "48",
+              "3"
+            ],
+            "teams": [
+              "LV"
+            ],
+            "players": [
+              "9482"
+            ]
+          },
+          {
+            "id": "waiver.9482.environment",
+            "text": "LV runs the 5th fastest offense and passes on 58% of neutral downs",
+            "numbers": [
+              "5",
+              "58"
+            ],
+            "teams": [
+              "LV"
+            ],
+            "players": []
+          },
+          {
+            "id": "waiver.9482.story",
+            "text": "The starter ahead of Michael Mayer is out, and Michael Mayer is next on the depth chart",
+            "numbers": [],
+            "teams": [
+              "LV"
+            ],
+            "players": [
+              "9482"
+            ]
+          }
+        ],
+        "price": {
+          "bid": 2,
+          "fact": {
+            "id": "waiver.9482.price",
+            "text": "$2 beats the top rival bid of $1",
+            "numbers": [
+              "2",
+              "1"
+            ],
+            "teams": [],
+            "players": [
+              "9482"
+            ]
+          },
+          "last_like": {
+            "player_id": "9482",
+            "name": "Michael Mayer",
+            "roster_id": 10,
+            "team": "LV",
+            "week": 5,
+            "bid": 7
+          },
+          "outbid": {
+            "9": 0,
+            "19": 1,
+            "25": 2,
+            "51": 4,
+            "58": 5,
+            "61": 6,
+            "65": 7,
+            "67": 8,
+            "69": 9,
+            "72": 10,
+            "82": 11,
+            "90": 11
+          }
+        },
+        "research": [
+          {
+            "text": "Michael Mayer took the lead role in practice this week.",
+            "url": "https://sports.yahoo.com/fantasy/michael-mayer-waiver",
+            "source": "Yahoo Fantasy",
+            "date": "2026-10-21",
+            "stance": "backs"
+          },
+          {
+            "text": "Michael Mayer may split the work once the starter returns.",
+            "url": "https://www.espn.com/fantasy/football/story/michael-mayer",
+            "source": "ESPN",
+            "date": "2026-10-20",
+            "stance": "disputes"
+          }
+        ],
+        "injury_status": null,
+        "return_week": null,
+        "reason": null,
+        "drop": null
       },
       {
         "player_id": "4663",
@@ -114,7 +800,1572 @@
           "environment": 0.0,
           "projection": 0.47
         },
-        "board_score": 0.47
+        "board_score": 0.47,
+        "bye": 12,
+        "trending_count": 0,
+        "facts": [
+          {
+            "id": "waiver.4663.usage",
+            "text": "Austin Ekeler played 71% of snaps and took 6 targets last week, up from 48% and 3",
+            "numbers": [
+              "71",
+              "6",
+              "48",
+              "3"
+            ],
+            "teams": [
+              "WAS"
+            ],
+            "players": [
+              "4663"
+            ]
+          },
+          {
+            "id": "waiver.4663.environment",
+            "text": "WAS runs the 5th fastest offense and passes on 58% of neutral downs",
+            "numbers": [
+              "5",
+              "58"
+            ],
+            "teams": [
+              "WAS"
+            ],
+            "players": []
+          },
+          {
+            "id": "waiver.4663.story",
+            "text": "The starter ahead of Austin Ekeler is out, and Austin Ekeler is next on the depth chart",
+            "numbers": [],
+            "teams": [
+              "WAS"
+            ],
+            "players": [
+              "4663"
+            ]
+          }
+        ],
+        "price": {
+          "bid": 1,
+          "fact": {
+            "id": "waiver.4663.price",
+            "text": "$1 beats the top rival bid of $0",
+            "numbers": [
+              "1",
+              "0"
+            ],
+            "teams": [],
+            "players": [
+              "4663"
+            ]
+          },
+          "last_like": {
+            "player_id": "7528",
+            "name": "Najee Harris",
+            "roster_id": 3,
+            "team": "NYG",
+            "week": 4,
+            "bid": 19
+          },
+          "outbid": {
+            "9": 0,
+            "19": 1,
+            "25": 2,
+            "51": 4,
+            "58": 5,
+            "61": 6,
+            "65": 7,
+            "67": 8,
+            "69": 9,
+            "72": 10,
+            "82": 11,
+            "90": 11
+          }
+        },
+        "research": [
+          {
+            "text": "Austin Ekeler took the lead role in practice this week.",
+            "url": "https://sports.yahoo.com/fantasy/austin-ekeler-waiver",
+            "source": "Yahoo Fantasy",
+            "date": "2026-10-21",
+            "stance": "backs"
+          },
+          {
+            "text": "Austin Ekeler may split the work once the starter returns.",
+            "url": "https://www.espn.com/fantasy/football/story/austin-ekeler",
+            "source": "ESPN",
+            "date": "2026-10-20",
+            "stance": "disputes"
+          }
+        ],
+        "injury_status": null,
+        "return_week": null,
+        "reason": null,
+        "drop": null
+      }
+    ],
+    "trending": [
+      {
+        "player_id": "7567",
+        "name": "Kenny Gainwell",
+        "position": "RB",
+        "team": "TB",
+        "week_projection": 13.4,
+        "ros_projection": 142.6,
+        "scores": {
+          "usage": 0.0,
+          "environment": 0.0,
+          "projection": 0.82
+        },
+        "board_score": 0.82,
+        "bye": 9,
+        "trending_count": 48213,
+        "facts": [
+          {
+            "id": "waiver.7567.usage",
+            "text": "Kenny Gainwell played 71% of snaps and took 6 targets last week, up from 48% and 3",
+            "numbers": [
+              "71",
+              "6",
+              "48",
+              "3"
+            ],
+            "teams": [
+              "TB"
+            ],
+            "players": [
+              "7567"
+            ]
+          },
+          {
+            "id": "waiver.7567.environment",
+            "text": "TB runs the 5th fastest offense and passes on 58% of neutral downs",
+            "numbers": [
+              "5",
+              "58"
+            ],
+            "teams": [
+              "TB"
+            ],
+            "players": []
+          },
+          {
+            "id": "waiver.7567.story",
+            "text": "The starter ahead of Kenny Gainwell is out, and Kenny Gainwell is next on the depth chart",
+            "numbers": [],
+            "teams": [
+              "TB"
+            ],
+            "players": [
+              "7567"
+            ]
+          }
+        ],
+        "price": {
+          "bid": 23,
+          "fact": {
+            "id": "waiver.7567.price",
+            "text": "$23 beats the top rival bid of $22",
+            "numbers": [
+              "23",
+              "22"
+            ],
+            "teams": [],
+            "players": [
+              "7567"
+            ]
+          },
+          "last_like": {
+            "player_id": "7528",
+            "name": "Najee Harris",
+            "roster_id": 3,
+            "team": "NYG",
+            "week": 4,
+            "bid": 19
+          },
+          "outbid": {
+            "9": 0,
+            "19": 1,
+            "25": 2,
+            "51": 4,
+            "58": 5,
+            "61": 6,
+            "65": 7,
+            "67": 8,
+            "69": 9,
+            "72": 10,
+            "82": 11,
+            "90": 11
+          }
+        },
+        "research": [
+          {
+            "text": "Kenny Gainwell took the lead role in practice this week.",
+            "url": "https://sports.yahoo.com/fantasy/kenny-gainwell-waiver",
+            "source": "Yahoo Fantasy",
+            "date": "2026-10-21",
+            "stance": "backs"
+          },
+          {
+            "text": "Kenny Gainwell may split the work once the starter returns.",
+            "url": "https://www.espn.com/fantasy/football/story/kenny-gainwell",
+            "source": "ESPN",
+            "date": "2026-10-20",
+            "stance": "disputes"
+          }
+        ],
+        "injury_status": null,
+        "return_week": null,
+        "reason": null,
+        "drop": null
+      },
+      {
+        "player_id": "5045",
+        "name": "Courtland Sutton",
+        "position": "WR",
+        "team": "DEN",
+        "week_projection": 11.3,
+        "ros_projection": 119.2,
+        "scores": {
+          "usage": 0.0,
+          "environment": 0.0,
+          "projection": 0.61
+        },
+        "board_score": 0.61,
+        "bye": 12,
+        "trending_count": 31877,
+        "facts": [
+          {
+            "id": "waiver.5045.usage",
+            "text": "Courtland Sutton played 71% of snaps and took 6 targets last week, up from 48% and 3",
+            "numbers": [
+              "71",
+              "6",
+              "48",
+              "3"
+            ],
+            "teams": [
+              "DEN"
+            ],
+            "players": [
+              "5045"
+            ]
+          },
+          {
+            "id": "waiver.5045.environment",
+            "text": "DEN runs the 5th fastest offense and passes on 58% of neutral downs",
+            "numbers": [
+              "5",
+              "58"
+            ],
+            "teams": [
+              "DEN"
+            ],
+            "players": []
+          },
+          {
+            "id": "waiver.5045.story",
+            "text": "The starter ahead of Courtland Sutton is out, and Courtland Sutton is next on the depth chart",
+            "numbers": [],
+            "teams": [
+              "DEN"
+            ],
+            "players": [
+              "5045"
+            ]
+          }
+        ],
+        "price": {
+          "bid": 3,
+          "fact": {
+            "id": "waiver.5045.price",
+            "text": "$3 beats the top rival bid of $2",
+            "numbers": [
+              "3",
+              "2"
+            ],
+            "teams": [],
+            "players": [
+              "5045"
+            ]
+          },
+          "last_like": null,
+          "outbid": {
+            "9": 0,
+            "19": 1,
+            "25": 2,
+            "51": 4,
+            "58": 5,
+            "61": 6,
+            "65": 7,
+            "67": 8,
+            "69": 9,
+            "72": 10,
+            "82": 11,
+            "90": 11
+          }
+        },
+        "research": [
+          {
+            "text": "Courtland Sutton took the lead role in practice this week.",
+            "url": "https://sports.yahoo.com/fantasy/courtland-sutton-waiver",
+            "source": "Yahoo Fantasy",
+            "date": "2026-10-21",
+            "stance": "backs"
+          },
+          {
+            "text": "Courtland Sutton may split the work once the starter returns.",
+            "url": "https://www.espn.com/fantasy/football/story/courtland-sutton",
+            "source": "ESPN",
+            "date": "2026-10-20",
+            "stance": "disputes"
+          }
+        ],
+        "injury_status": null,
+        "return_week": null,
+        "reason": null,
+        "drop": null
+      },
+      {
+        "player_id": "9482",
+        "name": "Michael Mayer",
+        "position": "TE",
+        "team": "LV",
+        "week_projection": 8.4,
+        "ros_projection": 86.1,
+        "scores": {
+          "usage": 0.0,
+          "environment": 0.0,
+          "projection": 0.52
+        },
+        "board_score": 0.52,
+        "bye": 8,
+        "trending_count": 9120,
+        "facts": [
+          {
+            "id": "waiver.9482.usage",
+            "text": "Michael Mayer played 71% of snaps and took 6 targets last week, up from 48% and 3",
+            "numbers": [
+              "71",
+              "6",
+              "48",
+              "3"
+            ],
+            "teams": [
+              "LV"
+            ],
+            "players": [
+              "9482"
+            ]
+          },
+          {
+            "id": "waiver.9482.environment",
+            "text": "LV runs the 5th fastest offense and passes on 58% of neutral downs",
+            "numbers": [
+              "5",
+              "58"
+            ],
+            "teams": [
+              "LV"
+            ],
+            "players": []
+          },
+          {
+            "id": "waiver.9482.story",
+            "text": "The starter ahead of Michael Mayer is out, and Michael Mayer is next on the depth chart",
+            "numbers": [],
+            "teams": [
+              "LV"
+            ],
+            "players": [
+              "9482"
+            ]
+          }
+        ],
+        "price": {
+          "bid": 2,
+          "fact": {
+            "id": "waiver.9482.price",
+            "text": "$2 beats the top rival bid of $1",
+            "numbers": [
+              "2",
+              "1"
+            ],
+            "teams": [],
+            "players": [
+              "9482"
+            ]
+          },
+          "last_like": {
+            "player_id": "9482",
+            "name": "Michael Mayer",
+            "roster_id": 10,
+            "team": "LV",
+            "week": 5,
+            "bid": 7
+          },
+          "outbid": {
+            "9": 0,
+            "19": 1,
+            "25": 2,
+            "51": 4,
+            "58": 5,
+            "61": 6,
+            "65": 7,
+            "67": 8,
+            "69": 9,
+            "72": 10,
+            "82": 11,
+            "90": 11
+          }
+        },
+        "research": [
+          {
+            "text": "Michael Mayer took the lead role in practice this week.",
+            "url": "https://sports.yahoo.com/fantasy/michael-mayer-waiver",
+            "source": "Yahoo Fantasy",
+            "date": "2026-10-21",
+            "stance": "backs"
+          },
+          {
+            "text": "Michael Mayer may split the work once the starter returns.",
+            "url": "https://www.espn.com/fantasy/football/story/michael-mayer",
+            "source": "ESPN",
+            "date": "2026-10-20",
+            "stance": "disputes"
+          }
+        ],
+        "injury_status": null,
+        "return_week": null,
+        "reason": null,
+        "drop": null
+      },
+      {
+        "player_id": "11579",
+        "name": "Audric Estime",
+        "position": "RB",
+        "team": "CLE",
+        "week_projection": 10.2,
+        "ros_projection": 104.5,
+        "scores": {
+          "usage": 0.0,
+          "environment": 0.0,
+          "projection": 0.66
+        },
+        "board_score": 0.66,
+        "bye": 9,
+        "trending_count": 7402,
+        "facts": [
+          {
+            "id": "waiver.11579.usage",
+            "text": "Audric Estime played 71% of snaps and took 6 targets last week, up from 48% and 3",
+            "numbers": [
+              "71",
+              "6",
+              "48",
+              "3"
+            ],
+            "teams": [
+              "CLE"
+            ],
+            "players": [
+              "11579"
+            ]
+          },
+          {
+            "id": "waiver.11579.environment",
+            "text": "CLE runs the 5th fastest offense and passes on 58% of neutral downs",
+            "numbers": [
+              "5",
+              "58"
+            ],
+            "teams": [
+              "CLE"
+            ],
+            "players": []
+          },
+          {
+            "id": "waiver.11579.story",
+            "text": "The starter ahead of Audric Estime is out, and Audric Estime is next on the depth chart",
+            "numbers": [],
+            "teams": [
+              "CLE"
+            ],
+            "players": [
+              "11579"
+            ]
+          }
+        ],
+        "price": {
+          "bid": 6,
+          "fact": {
+            "id": "waiver.11579.price",
+            "text": "$6 beats the top rival bid of $5",
+            "numbers": [
+              "6",
+              "5"
+            ],
+            "teams": [],
+            "players": [
+              "11579"
+            ]
+          },
+          "last_like": {
+            "player_id": "7528",
+            "name": "Najee Harris",
+            "roster_id": 3,
+            "team": "NYG",
+            "week": 4,
+            "bid": 19
+          },
+          "outbid": {
+            "9": 0,
+            "19": 1,
+            "25": 2,
+            "51": 4,
+            "58": 5,
+            "61": 6,
+            "65": 7,
+            "67": 8,
+            "69": 9,
+            "72": 10,
+            "82": 11,
+            "90": 11
+          }
+        },
+        "research": [
+          {
+            "text": "Audric Estime took the lead role in practice this week.",
+            "url": "https://sports.yahoo.com/fantasy/audric-estime-waiver",
+            "source": "Yahoo Fantasy",
+            "date": "2026-10-21",
+            "stance": "backs"
+          },
+          {
+            "text": "Audric Estime may split the work once the starter returns.",
+            "url": "https://www.espn.com/fantasy/football/story/audric-estime",
+            "source": "ESPN",
+            "date": "2026-10-20",
+            "stance": "disputes"
+          }
+        ],
+        "injury_status": null,
+        "return_week": null,
+        "reason": null,
+        "drop": null
+      },
+      {
+        "player_id": "7528",
+        "name": "Najee Harris",
+        "position": "RB",
+        "team": "NYG",
+        "week_projection": 12.1,
+        "ros_projection": 128.3,
+        "scores": {
+          "usage": 0.0,
+          "environment": 0.0,
+          "projection": 0.77
+        },
+        "board_score": 0.77,
+        "bye": 14,
+        "trending_count": 3311,
+        "facts": [
+          {
+            "id": "waiver.7528.usage",
+            "text": "Najee Harris played 71% of snaps and took 6 targets last week, up from 48% and 3",
+            "numbers": [
+              "71",
+              "6",
+              "48",
+              "3"
+            ],
+            "teams": [
+              "NYG"
+            ],
+            "players": [
+              "7528"
+            ]
+          },
+          {
+            "id": "waiver.7528.environment",
+            "text": "NYG runs the 5th fastest offense and passes on 58% of neutral downs",
+            "numbers": [
+              "5",
+              "58"
+            ],
+            "teams": [
+              "NYG"
+            ],
+            "players": []
+          },
+          {
+            "id": "waiver.7528.story",
+            "text": "The starter ahead of Najee Harris is out, and Najee Harris is next on the depth chart",
+            "numbers": [],
+            "teams": [
+              "NYG"
+            ],
+            "players": [
+              "7528"
+            ]
+          }
+        ],
+        "price": {
+          "bid": 14,
+          "fact": {
+            "id": "waiver.7528.price",
+            "text": "$14 beats the top rival bid of $13",
+            "numbers": [
+              "14",
+              "13"
+            ],
+            "teams": [],
+            "players": [
+              "7528"
+            ]
+          },
+          "last_like": {
+            "player_id": "7528",
+            "name": "Najee Harris",
+            "roster_id": 3,
+            "team": "NYG",
+            "week": 4,
+            "bid": 19
+          },
+          "outbid": {
+            "9": 0,
+            "19": 1,
+            "25": 2,
+            "51": 4,
+            "58": 5,
+            "61": 6,
+            "65": 7,
+            "67": 8,
+            "69": 9,
+            "72": 10,
+            "82": 11,
+            "90": 11
+          }
+        },
+        "research": [
+          {
+            "text": "Najee Harris took the lead role in practice this week.",
+            "url": "https://sports.yahoo.com/fantasy/najee-harris-waiver",
+            "source": "Yahoo Fantasy",
+            "date": "2026-10-21",
+            "stance": "backs"
+          },
+          {
+            "text": "Najee Harris may split the work once the starter returns.",
+            "url": "https://www.espn.com/fantasy/football/story/najee-harris",
+            "source": "ESPN",
+            "date": "2026-10-20",
+            "stance": "disputes"
+          }
+        ],
+        "injury_status": null,
+        "return_week": null,
+        "reason": null,
+        "drop": null
+      },
+      {
+        "player_id": "4037",
+        "name": "Chris Godwin",
+        "position": "WR",
+        "team": "TB",
+        "week_projection": 11.6,
+        "ros_projection": 98.7,
+        "scores": {
+          "usage": 0.0,
+          "environment": 0.0,
+          "projection": 0.63
+        },
+        "board_score": 0.63,
+        "bye": 9,
+        "trending_count": 1250,
+        "facts": [
+          {
+            "id": "waiver.4037.usage",
+            "text": "Chris Godwin played 71% of snaps and took 6 targets last week, up from 48% and 3",
+            "numbers": [
+              "71",
+              "6",
+              "48",
+              "3"
+            ],
+            "teams": [
+              "TB"
+            ],
+            "players": [
+              "4037"
+            ]
+          },
+          {
+            "id": "waiver.4037.environment",
+            "text": "TB runs the 5th fastest offense and passes on 58% of neutral downs",
+            "numbers": [
+              "5",
+              "58"
+            ],
+            "teams": [
+              "TB"
+            ],
+            "players": []
+          },
+          {
+            "id": "waiver.4037.story",
+            "text": "The starter ahead of Chris Godwin is out, and Chris Godwin is next on the depth chart",
+            "numbers": [],
+            "teams": [
+              "TB"
+            ],
+            "players": [
+              "4037"
+            ]
+          }
+        ],
+        "price": {
+          "bid": 4,
+          "fact": {
+            "id": "waiver.4037.price",
+            "text": "$4 beats the top rival bid of $3",
+            "numbers": [
+              "4",
+              "3"
+            ],
+            "teams": [],
+            "players": [
+              "4037"
+            ]
+          },
+          "last_like": null,
+          "outbid": {
+            "9": 0,
+            "19": 1,
+            "25": 2,
+            "51": 4,
+            "58": 5,
+            "61": 6,
+            "65": 7,
+            "67": 8,
+            "69": 9,
+            "72": 10,
+            "82": 11,
+            "90": 11
+          }
+        },
+        "research": [
+          {
+            "text": "Chris Godwin took the lead role in practice this week.",
+            "url": "https://sports.yahoo.com/fantasy/chris-godwin-waiver",
+            "source": "Yahoo Fantasy",
+            "date": "2026-10-21",
+            "stance": "backs"
+          },
+          {
+            "text": "Chris Godwin may split the work once the starter returns.",
+            "url": "https://www.espn.com/fantasy/football/story/chris-godwin",
+            "source": "ESPN",
+            "date": "2026-10-20",
+            "stance": "disputes"
+          }
+        ],
+        "injury_status": null,
+        "return_week": null,
+        "reason": null,
+        "drop": null
+      },
+      {
+        "player_id": "5012",
+        "name": "Mark Andrews",
+        "position": "TE",
+        "team": "BAL",
+        "week_projection": 10.8,
+        "ros_projection": 113.9,
+        "scores": {
+          "usage": 0.0,
+          "environment": 0.0,
+          "projection": 0.71
+        },
+        "board_score": 0.71,
+        "bye": 7,
+        "trending_count": 640,
+        "facts": [
+          {
+            "id": "waiver.5012.usage",
+            "text": "Mark Andrews played 71% of snaps and took 6 targets last week, up from 48% and 3",
+            "numbers": [
+              "71",
+              "6",
+              "48",
+              "3"
+            ],
+            "teams": [
+              "BAL"
+            ],
+            "players": [
+              "5012"
+            ]
+          },
+          {
+            "id": "waiver.5012.environment",
+            "text": "BAL runs the 5th fastest offense and passes on 58% of neutral downs",
+            "numbers": [
+              "5",
+              "58"
+            ],
+            "teams": [
+              "BAL"
+            ],
+            "players": []
+          },
+          {
+            "id": "waiver.5012.story",
+            "text": "The starter ahead of Mark Andrews is out, and Mark Andrews is next on the depth chart",
+            "numbers": [],
+            "teams": [
+              "BAL"
+            ],
+            "players": [
+              "5012"
+            ]
+          }
+        ],
+        "price": {
+          "bid": 8,
+          "fact": {
+            "id": "waiver.5012.price",
+            "text": "$8 beats the top rival bid of $7",
+            "numbers": [
+              "8",
+              "7"
+            ],
+            "teams": [],
+            "players": [
+              "5012"
+            ]
+          },
+          "last_like": {
+            "player_id": "9482",
+            "name": "Michael Mayer",
+            "roster_id": 10,
+            "team": "LV",
+            "week": 5,
+            "bid": 7
+          },
+          "outbid": {
+            "9": 0,
+            "19": 1,
+            "25": 2,
+            "51": 4,
+            "58": 5,
+            "61": 6,
+            "65": 7,
+            "67": 8,
+            "69": 9,
+            "72": 10,
+            "82": 11,
+            "90": 11
+          }
+        },
+        "research": [
+          {
+            "text": "Mark Andrews took the lead role in practice this week.",
+            "url": "https://sports.yahoo.com/fantasy/mark-andrews-waiver",
+            "source": "Yahoo Fantasy",
+            "date": "2026-10-21",
+            "stance": "backs"
+          },
+          {
+            "text": "Mark Andrews may split the work once the starter returns.",
+            "url": "https://www.espn.com/fantasy/football/story/mark-andrews",
+            "source": "ESPN",
+            "date": "2026-10-20",
+            "stance": "disputes"
+          }
+        ],
+        "injury_status": null,
+        "return_week": null,
+        "reason": null,
+        "drop": null
+      }
+    ],
+    "sneaky": [
+      {
+        "player_id": "9482",
+        "name": "Michael Mayer",
+        "position": "TE",
+        "team": "LV",
+        "week_projection": 8.4,
+        "ros_projection": 86.1,
+        "scores": {
+          "usage": 0.0,
+          "environment": 0.0,
+          "projection": 0.52
+        },
+        "board_score": 0.52,
+        "bye": 8,
+        "trending_count": 9120,
+        "facts": [
+          {
+            "id": "waiver.9482.usage",
+            "text": "Michael Mayer played 71% of snaps and took 6 targets last week, up from 48% and 3",
+            "numbers": [
+              "71",
+              "6",
+              "48",
+              "3"
+            ],
+            "teams": [
+              "LV"
+            ],
+            "players": [
+              "9482"
+            ]
+          },
+          {
+            "id": "waiver.9482.environment",
+            "text": "LV runs the 5th fastest offense and passes on 58% of neutral downs",
+            "numbers": [
+              "5",
+              "58"
+            ],
+            "teams": [
+              "LV"
+            ],
+            "players": []
+          },
+          {
+            "id": "waiver.9482.story",
+            "text": "The starter ahead of Michael Mayer is out, and Michael Mayer is next on the depth chart",
+            "numbers": [],
+            "teams": [
+              "LV"
+            ],
+            "players": [
+              "9482"
+            ]
+          }
+        ],
+        "price": {
+          "bid": 2,
+          "fact": {
+            "id": "waiver.9482.price",
+            "text": "$2 beats the top rival bid of $1",
+            "numbers": [
+              "2",
+              "1"
+            ],
+            "teams": [],
+            "players": [
+              "9482"
+            ]
+          },
+          "last_like": {
+            "player_id": "9482",
+            "name": "Michael Mayer",
+            "roster_id": 10,
+            "team": "LV",
+            "week": 5,
+            "bid": 7
+          },
+          "outbid": {
+            "9": 0,
+            "19": 1,
+            "25": 2,
+            "51": 4,
+            "58": 5,
+            "61": 6,
+            "65": 7,
+            "67": 8,
+            "69": 9,
+            "72": 10,
+            "82": 11,
+            "90": 11
+          }
+        },
+        "research": [
+          {
+            "text": "Michael Mayer took the lead role in practice this week.",
+            "url": "https://sports.yahoo.com/fantasy/michael-mayer-waiver",
+            "source": "Yahoo Fantasy",
+            "date": "2026-10-21",
+            "stance": "backs"
+          },
+          {
+            "text": "Michael Mayer may split the work once the starter returns.",
+            "url": "https://www.espn.com/fantasy/football/story/michael-mayer",
+            "source": "ESPN",
+            "date": "2026-10-20",
+            "stance": "disputes"
+          }
+        ],
+        "injury_status": null,
+        "return_week": null,
+        "reason": null,
+        "drop": null
+      },
+      {
+        "player_id": "4037",
+        "name": "Chris Godwin",
+        "position": "WR",
+        "team": "TB",
+        "week_projection": 11.6,
+        "ros_projection": 98.7,
+        "scores": {
+          "usage": 0.0,
+          "environment": 0.0,
+          "projection": 0.63
+        },
+        "board_score": 0.63,
+        "bye": 9,
+        "trending_count": 1250,
+        "facts": [
+          {
+            "id": "waiver.4037.usage",
+            "text": "Chris Godwin played 71% of snaps and took 6 targets last week, up from 48% and 3",
+            "numbers": [
+              "71",
+              "6",
+              "48",
+              "3"
+            ],
+            "teams": [
+              "TB"
+            ],
+            "players": [
+              "4037"
+            ]
+          },
+          {
+            "id": "waiver.4037.environment",
+            "text": "TB runs the 5th fastest offense and passes on 58% of neutral downs",
+            "numbers": [
+              "5",
+              "58"
+            ],
+            "teams": [
+              "TB"
+            ],
+            "players": []
+          },
+          {
+            "id": "waiver.4037.story",
+            "text": "The starter ahead of Chris Godwin is out, and Chris Godwin is next on the depth chart",
+            "numbers": [],
+            "teams": [
+              "TB"
+            ],
+            "players": [
+              "4037"
+            ]
+          }
+        ],
+        "price": {
+          "bid": 4,
+          "fact": {
+            "id": "waiver.4037.price",
+            "text": "$4 beats the top rival bid of $3",
+            "numbers": [
+              "4",
+              "3"
+            ],
+            "teams": [],
+            "players": [
+              "4037"
+            ]
+          },
+          "last_like": null,
+          "outbid": {
+            "9": 0,
+            "19": 1,
+            "25": 2,
+            "51": 4,
+            "58": 5,
+            "61": 6,
+            "65": 7,
+            "67": 8,
+            "69": 9,
+            "72": 10,
+            "82": 11,
+            "90": 11
+          }
+        },
+        "research": [
+          {
+            "text": "Chris Godwin took the lead role in practice this week.",
+            "url": "https://sports.yahoo.com/fantasy/chris-godwin-waiver",
+            "source": "Yahoo Fantasy",
+            "date": "2026-10-21",
+            "stance": "backs"
+          },
+          {
+            "text": "Chris Godwin may split the work once the starter returns.",
+            "url": "https://www.espn.com/fantasy/football/story/chris-godwin",
+            "source": "ESPN",
+            "date": "2026-10-20",
+            "stance": "disputes"
+          }
+        ],
+        "injury_status": null,
+        "return_week": null,
+        "reason": null,
+        "drop": null
+      },
+      {
+        "player_id": "4663",
+        "name": "Austin Ekeler",
+        "position": "RB",
+        "team": "WAS",
+        "week_projection": 7.9,
+        "ros_projection": 79.4,
+        "scores": {
+          "usage": 0.0,
+          "environment": 0.0,
+          "projection": 0.47
+        },
+        "board_score": 0.47,
+        "bye": 12,
+        "trending_count": 0,
+        "facts": [
+          {
+            "id": "waiver.4663.usage",
+            "text": "Austin Ekeler played 71% of snaps and took 6 targets last week, up from 48% and 3",
+            "numbers": [
+              "71",
+              "6",
+              "48",
+              "3"
+            ],
+            "teams": [
+              "WAS"
+            ],
+            "players": [
+              "4663"
+            ]
+          },
+          {
+            "id": "waiver.4663.environment",
+            "text": "WAS runs the 5th fastest offense and passes on 58% of neutral downs",
+            "numbers": [
+              "5",
+              "58"
+            ],
+            "teams": [
+              "WAS"
+            ],
+            "players": []
+          },
+          {
+            "id": "waiver.4663.story",
+            "text": "The starter ahead of Austin Ekeler is out, and Austin Ekeler is next on the depth chart",
+            "numbers": [],
+            "teams": [
+              "WAS"
+            ],
+            "players": [
+              "4663"
+            ]
+          }
+        ],
+        "price": {
+          "bid": 1,
+          "fact": {
+            "id": "waiver.4663.price",
+            "text": "$1 beats the top rival bid of $0",
+            "numbers": [
+              "1",
+              "0"
+            ],
+            "teams": [],
+            "players": [
+              "4663"
+            ]
+          },
+          "last_like": {
+            "player_id": "7528",
+            "name": "Najee Harris",
+            "roster_id": 3,
+            "team": "NYG",
+            "week": 4,
+            "bid": 19
+          },
+          "outbid": {
+            "9": 0,
+            "19": 1,
+            "25": 2,
+            "51": 4,
+            "58": 5,
+            "61": 6,
+            "65": 7,
+            "67": 8,
+            "69": 9,
+            "72": 10,
+            "82": 11,
+            "90": 11
+          }
+        },
+        "research": [
+          {
+            "text": "Austin Ekeler took the lead role in practice this week.",
+            "url": "https://sports.yahoo.com/fantasy/austin-ekeler-waiver",
+            "source": "Yahoo Fantasy",
+            "date": "2026-10-21",
+            "stance": "backs"
+          },
+          {
+            "text": "Austin Ekeler may split the work once the starter returns.",
+            "url": "https://www.espn.com/fantasy/football/story/austin-ekeler",
+            "source": "ESPN",
+            "date": "2026-10-20",
+            "stance": "disputes"
+          }
+        ],
+        "injury_status": null,
+        "return_week": null,
+        "reason": null,
+        "drop": null
+      }
+    ],
+    "stashes": [
+      {
+        "player_id": "5012",
+        "name": "Mark Andrews",
+        "position": "TE",
+        "team": "BAL",
+        "week_projection": 10.8,
+        "ros_projection": 113.9,
+        "scores": {
+          "usage": 0.0,
+          "environment": 0.0,
+          "projection": 0.71
+        },
+        "board_score": 0.71,
+        "bye": 7,
+        "trending_count": 640,
+        "facts": [
+          {
+            "id": "waiver.5012.usage",
+            "text": "Mark Andrews played 71% of snaps and took 6 targets last week, up from 48% and 3",
+            "numbers": [
+              "71",
+              "6",
+              "48",
+              "3"
+            ],
+            "teams": [
+              "BAL"
+            ],
+            "players": [
+              "5012"
+            ]
+          },
+          {
+            "id": "waiver.5012.environment",
+            "text": "BAL runs the 5th fastest offense and passes on 58% of neutral downs",
+            "numbers": [
+              "5",
+              "58"
+            ],
+            "teams": [
+              "BAL"
+            ],
+            "players": []
+          },
+          {
+            "id": "waiver.5012.story",
+            "text": "The starter ahead of Mark Andrews is out, and Mark Andrews is next on the depth chart",
+            "numbers": [],
+            "teams": [
+              "BAL"
+            ],
+            "players": [
+              "5012"
+            ]
+          }
+        ],
+        "price": {
+          "bid": 8,
+          "fact": {
+            "id": "waiver.5012.price",
+            "text": "$8 beats the top rival bid of $7",
+            "numbers": [
+              "8",
+              "7"
+            ],
+            "teams": [],
+            "players": [
+              "5012"
+            ]
+          },
+          "last_like": {
+            "player_id": "9482",
+            "name": "Michael Mayer",
+            "roster_id": 10,
+            "team": "LV",
+            "week": 5,
+            "bid": 7
+          },
+          "outbid": {
+            "9": 0,
+            "19": 1,
+            "25": 2,
+            "51": 4,
+            "58": 5,
+            "61": 6,
+            "65": 7,
+            "67": 8,
+            "69": 9,
+            "72": 10,
+            "82": 11,
+            "90": 11
+          }
+        },
+        "research": [
+          {
+            "text": "Mark Andrews took the lead role in practice this week.",
+            "url": "https://sports.yahoo.com/fantasy/mark-andrews-waiver",
+            "source": "Yahoo Fantasy",
+            "date": "2026-10-21",
+            "stance": "backs"
+          },
+          {
+            "text": "Mark Andrews may split the work once the starter returns.",
+            "url": "https://www.espn.com/fantasy/football/story/mark-andrews",
+            "source": "ESPN",
+            "date": "2026-10-20",
+            "stance": "disputes"
+          }
+        ],
+        "injury_status": "IR",
+        "return_week": 9,
+        "reason": null,
+        "drop": null
+      },
+      {
+        "player_id": "11579",
+        "name": "Audric Estime",
+        "position": "RB",
+        "team": "CLE",
+        "week_projection": 10.2,
+        "ros_projection": 104.5,
+        "scores": {
+          "usage": 0.0,
+          "environment": 0.0,
+          "projection": 0.66
+        },
+        "board_score": 0.66,
+        "bye": 9,
+        "trending_count": 7402,
+        "facts": [
+          {
+            "id": "waiver.11579.usage",
+            "text": "Audric Estime played 71% of snaps and took 6 targets last week, up from 48% and 3",
+            "numbers": [
+              "71",
+              "6",
+              "48",
+              "3"
+            ],
+            "teams": [
+              "CLE"
+            ],
+            "players": [
+              "11579"
+            ]
+          },
+          {
+            "id": "waiver.11579.environment",
+            "text": "CLE runs the 5th fastest offense and passes on 58% of neutral downs",
+            "numbers": [
+              "5",
+              "58"
+            ],
+            "teams": [
+              "CLE"
+            ],
+            "players": []
+          },
+          {
+            "id": "waiver.11579.story",
+            "text": "The starter ahead of Audric Estime is out, and Audric Estime is next on the depth chart",
+            "numbers": [],
+            "teams": [
+              "CLE"
+            ],
+            "players": [
+              "11579"
+            ]
+          }
+        ],
+        "price": {
+          "bid": 6,
+          "fact": {
+            "id": "waiver.11579.price",
+            "text": "$6 beats the top rival bid of $5",
+            "numbers": [
+              "6",
+              "5"
+            ],
+            "teams": [],
+            "players": [
+              "11579"
+            ]
+          },
+          "last_like": {
+            "player_id": "7528",
+            "name": "Najee Harris",
+            "roster_id": 3,
+            "team": "NYG",
+            "week": 4,
+            "bid": 19
+          },
+          "outbid": {
+            "9": 0,
+            "19": 1,
+            "25": 2,
+            "51": 4,
+            "58": 5,
+            "61": 6,
+            "65": 7,
+            "67": 8,
+            "69": 9,
+            "72": 10,
+            "82": 11,
+            "90": 11
+          }
+        },
+        "research": [
+          {
+            "text": "Audric Estime took the lead role in practice this week.",
+            "url": "https://sports.yahoo.com/fantasy/audric-estime-waiver",
+            "source": "Yahoo Fantasy",
+            "date": "2026-10-21",
+            "stance": "backs"
+          },
+          {
+            "text": "Audric Estime may split the work once the starter returns.",
+            "url": "https://www.espn.com/fantasy/football/story/audric-estime",
+            "source": "ESPN",
+            "date": "2026-10-20",
+            "stance": "disputes"
+          }
+        ],
+        "injury_status": null,
+        "return_week": null,
+        "reason": null,
+        "drop": null
+      }
+    ],
+    "drops": [
+      {
+        "player_id": "4663",
+        "name": "Austin Ekeler",
+        "position": "RB",
+        "team": "WAS",
+        "week_projection": 4.1,
+        "ros_projection": 41.0,
+        "scores": {
+          "usage": 0.12,
+          "environment": 0.3,
+          "projection": 0.2
+        },
+        "board_score": 0.2,
+        "bye": 12,
+        "trending_count": 0,
+        "facts": [
+          {
+            "id": "waiver.4663.drop",
+            "text": "Kenny Gainwell projects 101.6 more points than Austin Ekeler for the rest of the season",
+            "numbers": [
+              "101.6"
+            ],
+            "teams": [],
+            "players": [
+              "4663"
+            ]
+          },
+          {
+            "id": "waiver.4663.usage",
+            "text": "Austin Ekeler lost snap share for 3 weeks in a row",
+            "numbers": [
+              "3"
+            ],
+            "teams": [
+              "WAS"
+            ],
+            "players": [
+              "4663"
+            ]
+          }
+        ],
+        "price": null,
+        "research": [],
+        "injury_status": null,
+        "return_week": null,
+        "reason": null,
+        "drop": {
+          "roster_id": 3,
+          "holder": "Lil Fridge",
+          "reason": "snaps_down",
+          "beaten_by": "7567",
+          "beaten_by_name": "Kenny Gainwell",
+          "margin": 9.3
+        }
+      },
+      {
+        "player_id": "2505",
+        "name": "Darren Waller",
+        "position": "TE",
+        "team": "CAR",
+        "week_projection": 3.6,
+        "ros_projection": 35.2,
+        "scores": {
+          "usage": 0.12,
+          "environment": 0.3,
+          "projection": 0.2
+        },
+        "board_score": 0.2,
+        "bye": 14,
+        "trending_count": 0,
+        "facts": [
+          {
+            "id": "waiver.2505.drop",
+            "text": "Mark Andrews projects 78.7 more points than Darren Waller for the rest of the season",
+            "numbers": [
+              "78.7"
+            ],
+            "teams": [],
+            "players": [
+              "2505"
+            ]
+          },
+          {
+            "id": "waiver.2505.usage",
+            "text": "Darren Waller lost snap share for 3 weeks in a row",
+            "numbers": [
+              "3"
+            ],
+            "teams": [
+              "CAR"
+            ],
+            "players": [
+              "2505"
+            ]
+          }
+        ],
+        "price": null,
+        "research": [],
+        "injury_status": null,
+        "return_week": null,
+        "reason": null,
+        "drop": {
+          "roster_id": 6,
+          "holder": "Bo Girds",
+          "reason": "snaps_down",
+          "beaten_by": "5012",
+          "beaten_by_name": "Mark Andrews",
+          "margin": 7.2
+        }
       }
     ]
   },
@@ -179,5 +2430,6 @@
       "budget_left": 65,
       "waiver_order": 6
     }
-  ]
+  ],
+  "experts_missing": false
 }

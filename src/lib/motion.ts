@@ -21,6 +21,9 @@ export const RISE = "var(--spacing-sp-2)";
 /* The ease of the loading sweep. The bar travels both ways, so it eases in and out. */
 export const SWEEP_EASE = "easeInOut";
 
+/* The ease of the waiver drift. A headshot drifts there and back, so it eases in and out at each end. */
+export const DRIFT_EASE = "easeInOut";
+
 /* Durations in seconds. The page enter is short, so the content is ready to tap almost at once. */
 export const DURATION = {
   // The content of the route fades and rises in once.

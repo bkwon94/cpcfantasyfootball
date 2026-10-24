@@ -19,3 +19,8 @@ export function shortName(name: string): string {
   if (space < 0) return name;
   return `${name[0]}. ${name.slice(space + 1)}`;
 }
+
+/* A whole count with a comma between each group of three digits: 48,213. The locale is fixed, so the static build and the browser agree. */
+export function thousands(x: number): string {
+  return x.toLocaleString("en-US");
+}

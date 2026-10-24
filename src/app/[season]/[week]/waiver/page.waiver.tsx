@@ -6,7 +6,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Masthead, WeekLine } from "@/components/masthead";
-import { WaiverList } from "@/components/waiver/waiver-list";
+import { WarChest } from "@/components/waiver/war-chest";
 import { basePath } from "@/lib/config";
 import { listWaiverWeeks, loadWaiver } from "@/lib/waiver-data";
 import { loadWeek, type WeekRef } from "@/lib/week-data";
@@ -49,11 +49,12 @@ export default async function WaiverPage({ params }: Props) {
   const page = loadWeek(season, week);
   return (
     <main className="mx-auto max-w-page bg-wht">
-      <Masthead subtitle="Waiver Wire">
+      {/* This page is the waiver page, so the masthead shows no link to it. */}
+      <Masthead subtitle="Waiver Wire" waiverHref={null}>
         <WeekLine label="WEEK" number={board.week} />
         <div className="mt-sp-1 text-meta text-on-dark-2 tabular-nums">{`Built ${BUILT.format(new Date(board.built))}`}</div>
       </Masthead>
-      <WaiverList board={board} teams={page.teams} avatars={weekAvatars(season, week, page.avatars)} />
+      <WarChest board={board} teams={page.teams} avatars={weekAvatars(season, week, page.avatars)} />
     </main>
   );
 }
