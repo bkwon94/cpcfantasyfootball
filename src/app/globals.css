@@ -40,6 +40,9 @@
     --color-move-up: #3987e5;
     --color-move-down: #e05a4f;
 
+    /* The raised surface on the black card: a tab that is off and a box of the waiver sheet. It is one step up from the card, so it reads as a layer. */
+    --color-chip-dark: #262626;
+
     /* The red glow behind a hero cutout on a black card. */
     --color-red-glow: color-mix(in srgb, var(--color-red) 45%, transparent);
 
@@ -66,6 +69,11 @@
     --spacing-headshot: 64px;
     /* The headshot on an award tile: two steps of sp-5, as the stylesheet sets it. */
     --spacing-award: calc(var(--spacing-sp-5) * 2);
+    /* The waiver budget ring: twelve team avatars with a bar each in one row. 24px avatars keep twelve columns inside 358px at 390.
+       The bar is a thin column, so twelve bars read as one chart and not as twelve buttons. */
+    --spacing-ring-avatar: 24px;
+    --spacing-ring-bar: 36px;
+    --spacing-ring-bar-w: 4px;
     /* The chevron on a recap button: a small square turned 45 degrees, so it reads as an arrow. */
     --spacing-chevron: 6px;
     /* The median chart: the bar height, and the score column on the right. The plot box ends where the
@@ -117,6 +125,9 @@
     /* Radii: small for tags and bars, card for every grey card. */
     --radius-sm: 3px;
     --radius-card: 8px;
+
+    /* The red halo of a headshot in the waiver drift field, so each face lifts off the black card as the hero cutout does. */
+    --shadow-orb: 0 0 24px var(--color-red-glow);
 
     /* The press easing. A strong ease-out gives instant feedback on a tap. src/lib/motion.ts holds the same curve as numbers. */
     --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
@@ -257,6 +268,12 @@
 @layer components {
     /* The red glow sits behind the head, so the cutout lifts off the black card.
        The glow is an element and not a pseudo-element, so the hero can fade it in on its own. */
+    /* The red glow under the waiver drift field. It sits a little below the middle, behind the top add. */
+    .field-glow {
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(circle at 50% 45%, var(--color-red-glow), transparent 60%);
+    }
     .stage-glow {
         position: absolute;
         z-index: 0;
