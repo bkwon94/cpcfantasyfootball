@@ -14,6 +14,7 @@ import { stagger } from "@/lib/motion";
 import { biggestMover } from "@/lib/rankings";
 import { loadRankings } from "@/lib/rankings-data";
 import { cn } from "@/lib/utils";
+import { currentWaiverHref } from "@/lib/waiver-data";
 import { listWeekSummaries } from "@/lib/week-data";
 
 export const metadata: Metadata = {
@@ -46,7 +47,7 @@ export default function HomePage() {
     <main className="mx-auto max-w-page bg-wht">
       {/* A reader who opens the analyzer next sees the pickers at once, because the teams are already in session storage. */}
       <TeamsPrefetch />
-      <Masthead>
+      <Masthead waiverHref={currentWaiverHref()}>
         <WeekLine label="SEASON" number={season} />
       </Masthead>
       {/* The masthead and the label show at once. Each row reveals as it enters the view. */}

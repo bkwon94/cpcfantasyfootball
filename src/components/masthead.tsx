@@ -12,9 +12,11 @@ type MastheadProps = {
   subtitle?: string;
   // The week line under the brand. Pages with no week line leave it out.
   children?: ReactNode;
+  // The waiver page of the current week. A build with the waiver flag off passes null, so no link shows.
+  waiverHref?: string | null;
 };
 
-export function Masthead({ title = "Cornerstone Fantasy Football League", subtitle, children }: MastheadProps) {
+export function Masthead({ title = "Cornerstone Fantasy Football League", subtitle, children, waiverHref }: MastheadProps) {
   return (
     <header className="bg-blk px-gutter pt-sp-5 pb-sp-4 text-on-dark">
       {/* A plain anchor, not next/link: the home page is a static page with no shared state, so the client router adds nothing. */}
@@ -28,6 +30,15 @@ export function Masthead({ title = "Cornerstone Fantasy Football League", subtit
         </div>
       </a>
       {children && <div className="mt-sp-4">{children}</div>}
+      {/* A plain anchor, as the brand link is. The touch height keeps the small label easy to tap on a phone. */}
+      {waiverHref && (
+        <a
+          href={waiverHref}
+          className="mt-sp-2 inline-flex min-h-touch items-center text-label font-bold tracking-caps text-red-lt uppercase no-underline"
+        >
+          Waiver wire
+        </a>
+      )}
     </header>
   );
 }

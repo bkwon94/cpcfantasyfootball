@@ -13,6 +13,7 @@ import { NextWeek } from "@/components/week/next-week";
 import { PositionLeaders } from "@/components/week/position-leaders";
 import { Standings } from "@/components/week/standings";
 import { Trades } from "@/components/week/trades";
+import { currentWaiverHref } from "@/lib/waiver-data";
 import { listWeeks, loadWeek, type WeekRef } from "@/lib/week-data";
 
 type Props = { params: Promise<WeekRef> };
@@ -40,7 +41,7 @@ export default async function WeekPage({ params }: Props) {
   const page = loadWeek(season, week);
   return (
     <main className="mx-auto max-w-page bg-wht">
-      <Masthead subtitle="League Weekly">
+      <Masthead subtitle="League Weekly" waiverHref={currentWaiverHref()}>
         <WeekLine label="WEEK" number={page.week} />
         <div className="mt-sp-1 text-meta text-on-dark-2 tabular-nums">
           {/* One string, so React writes one text node and the browser kerns the line as one run. */}
