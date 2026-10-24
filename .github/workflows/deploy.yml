@@ -40,9 +40,6 @@ jobs:
         run: pnpm test
 
       - name: Build the export
-        # The waiver flag is on, so the export has the waiver route and the masthead link.
-        env:
-          NEXT_PUBLIC_WAIVER: "on"
         run: pnpm build
 
       - name: Check the export
