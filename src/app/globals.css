@@ -74,6 +74,9 @@
     --spacing-ring-avatar: 24px;
     --spacing-ring-bar: 36px;
     --spacing-ring-bar-w: 4px;
+    /* The team pick chip on the waiver page: a 44px touch row and 4px above and below. The empty slot takes the same height
+       before the page reads storage, so the ring does not move down when the chip shows. */
+    --spacing-pick-chip: 52px;
     /* The chevron on a recap button: a small square turned 45 degrees, so it reads as an arrow. */
     --spacing-chevron: 6px;
     /* The median chart: the bar height, and the score column on the right. The plot box ends where the

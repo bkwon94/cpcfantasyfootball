@@ -4,10 +4,11 @@
  */
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useMarkHydrated } from "@/components/reveal";
 import { avatarSrc, Chapter, Label } from "@/components/week/parts";
 import { sleeperHeadshot, swapToDefault } from "@/lib/headshot";
+import { getTeamPick, setTeamPick } from "@/lib/team-pick";
 import { cn } from "@/lib/utils";
 import { BEST_ADDS, BUCKETS, type BucketKey, type BudgetRow, type WaiverBoard, type WaiverPlayer } from "@/lib/waiver-types";
 import type { AvatarMap, Team } from "@/lib/week-types";
@@ -15,14 +16,33 @@ import { DriftField } from "./drift-field";
 import { SLOTS } from "./field-layout";
 import { holderLine, metaLine, priceText, teamName } from "./format";
 import { PlayerSheet } from "./player-sheet";
+import { TeamPick } from "./team-pick";
 
 /* The most money first. Two equal budgets go in waiver order, since the first claim wins a tie bid. */
 function byBudget(rows: BudgetRow[]): BudgetRow[] {
   return [...rows].sort((a, b) => b.budget_left - a.budget_left || a.waiver_order - b.waiver_order);
 }
 
-/* The twelve budgets as a row of avatars over thin bars. The largest budget fills its bar, so the ring needs no league cap. */
-function BudgetRing({ budgets, teams, avatars }: { budgets: BudgetRow[]; teams: Record<string, Team>; avatars: AvatarMap }) {
+/* The viewer's own drop candidates first, so a manager sees his roster before the rest. The sort is stable, so each group keeps the file rank. */
+function viewerDropsFirst(players: WaiverPlayer[], viewerId: number | null): WaiverPlayer[] {
+  if (viewerId === null) return players;
+  const own = (player: WaiverPlayer) => (player.drop?.roster_id === viewerId ? 0 : 1);
+  return [...players].sort((a, b) => own(a) - own(b));
+}
+
+/* The twelve budgets as a row of avatars over thin bars. The largest budget fills its bar, so the ring needs no league cap.
+   The viewer's bar is red, so a manager finds his own budget at once. */
+function BudgetRing({
+  budgets,
+  teams,
+  avatars,
+  viewerId,
+}: {
+  budgets: BudgetRow[];
+  teams: Record<string, Team>;
+  avatars: AvatarMap;
+  viewerId: number | null;
+}) {
   const rows = byBudget(budgets);
   const top = Math.max(1, ...rows.map((row) => row.budget_left));
   return (
@@ -36,7 +56,11 @@ function BudgetRing({ budgets, teams, avatars }: { budgets: BudgetRow[]; teams: 
           />
           {/* The bar is a picture of the number under it, so it is hidden from a screen reader. */}
           <span aria-hidden className="relative mt-sp-1 block h-ring-bar w-ring-bar-w overflow-hidden rounded-sm bg-rule-dark">
-            <span className="absolute inset-x-0 bottom-0 rounded-sm bg-bar-off" style={{ height: `${(row.budget_left / top) * 100}%` }} />
+            <span
+              data-viewer={row.roster_id === viewerId || undefined}
+              className={cn("absolute inset-x-0 bottom-0 rounded-sm", row.roster_id === viewerId ? "bg-red" : "bg-bar-off")}
+              style={{ height: `${(row.budget_left / top) * 100}%` }}
+            />
           </span>
           <span className="mt-sp-0 text-label text-on-dark-muted tabular-nums">{`$${row.budget_left}`}</span>
           {/* Twelve names do not fit in one row at 390, so the name is for a screen reader only. */}
@@ -114,13 +138,36 @@ export function WarChest({ board, teams, avatars }: { board: WaiverBoard; teams:
   const [bucket, setBucket] = useState<BucketKey>(BEST_ADDS);
   // The sheet holds the player and not an index, so it keeps him when the tab changes to a bucket without him.
   const [sheetPlayer, setSheetPlayer] = useState<WaiverPlayer | null>(board.buckets[BEST_ADDS]?.[0] ?? null);
-  const players = board.buckets[bucket] ?? [];
   const sheetId = sheetPlayer?.player_id ?? null;
+  // Undefined until the page reads storage after the first render, since the static page has no storage. Null is no pick.
+  const [pick, setPick] = useState<number | null | undefined>(undefined);
+  // A roster id that the budget table does not hold, such as a stale pick after a league change, counts as no pick.
+  const viewer = board.budgets.find((row) => row.roster_id === pick) ?? null;
+  const players = viewerDropsFirst(board.buckets[bucket] ?? [], viewer?.roster_id ?? null);
   useMarkHydrated();
+
+  useEffect(() => {
+    setPick(getTeamPick());
+  }, []);
+
+  function choose(rosterId: number) {
+    setPick(rosterId);
+    setTeamPick(rosterId);
+  }
+
   return (
     <Chapter dark>
+      <div className="mb-sp-4">
+        {/* Before the read, an empty slot of the chip height holds the place. A returning manager never sees the list flash open,
+            and the ring does not move down when his chip shows. */}
+        {pick === undefined ? (
+          <div aria-hidden className="h-pick-chip" />
+        ) : (
+          <TeamPick viewer={viewer} budgets={board.budgets} teams={teams} avatars={avatars} onPick={choose} />
+        )}
+      </div>
       <Label dark>War chest</Label>
-      <BudgetRing budgets={board.budgets} teams={teams} avatars={avatars} />
+      <BudgetRing budgets={board.budgets} teams={teams} avatars={avatars} viewerId={viewer?.roster_id ?? null} />
       <div role="group" aria-label="Buckets" className="mt-sp-4 flex gap-sp-1">
         {tabs.map((tab) => {
           const on = tab.key === bucket;
@@ -143,7 +190,12 @@ export function WarChest({ board, teams, avatars }: { board: WaiverBoard; teams:
       <div className="mt-sp-3">
         <DriftField bucket={bucket} players={players} openId={sheetId} onOpen={setSheetPlayer} />
       </div>
-      <PlayerSheet player={sheetPlayer} teams={teams} expertsMissing={board.experts_missing === true} />
+      <PlayerSheet
+        player={sheetPlayer}
+        teams={teams}
+        expertsMissing={board.experts_missing === true}
+        viewerBudget={viewer?.budget_left ?? null}
+      />
       <RestList players={players} sheetId={sheetId} onOpen={setSheetPlayer} />
     </Chapter>
   );

@@ -3,14 +3,20 @@
  * jsdom applies no CSS and runs no animation, so the size and the drift tests read an inline style and a data attribute.
  */
 import { act, cleanup, fireEvent, render, screen, within } from "@testing-library/react";
-import { afterEach, describe, expect, it } from "vitest";
+import { renderToString } from "react-dom/server";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { week6 } from "@/components/week/fixture";
 import type { WaiverBoard, WaiverPlayer } from "@/lib/waiver-types";
 import { waiver } from "./fixture";
 import { WarChest } from "./war-chest";
 
+beforeEach(() => {
+  localStorage.clear();
+});
+
 afterEach(() => {
   cleanup();
+  vi.restoreAllMocks();
 });
 
 function renderBoard(board: WaiverBoard = waiver) {
@@ -235,5 +241,158 @@ describe("the headshots", () => {
     img.setAttribute("src", "broken.svg");
     fireEvent.error(img);
     expect(img.getAttribute("src")).toBe("broken.svg");
+  });
+});
+
+/* The pick list, open when there is no pick. */
+function pickList() {
+  return screen.queryByRole("group", { name: "Your team" });
+}
+
+function chip() {
+  return screen.queryByRole("region", { name: "Your team" });
+}
+
+describe("the team pick", () => {
+  it("shows the team list open with no pick, and no chip", () => {
+    renderBoard();
+    expect(within(pickList()!).getAllByRole("radio")).toHaveLength(12);
+    expect(chip()).toBeNull();
+  });
+
+  it("collapses the list to a chip with the team, the budget, and a Change link on a pick", () => {
+    renderBoard();
+    fireEvent.click(within(pickList()!).getByRole("radio", { name: /Pukancun on 3/ }));
+    expect(pickList()).toBeNull();
+    const picked = within(chip()!);
+    expect(picked.getByText("Pukancun on 3")).toBeTruthy();
+    expect(picked.getByText("you have $90")).toBeTruthy();
+    expect(chip()!.querySelector("img")?.getAttribute("src")).toBe("/2026/week-06/avatars/4.jpg");
+    expect(picked.getByRole("button", { name: "Change your team" })).toBeTruthy();
+  });
+
+  it("shows the default avatar on the chip for a team with no avatar, as the ring does", () => {
+    localStorage.setItem("cpc.waiver-team", "3");
+    renderBoard();
+    const ring = within(rowsOf("Budgets")[2]);
+    expect(ring.getByText("Lil Fridge")).toBeTruthy();
+    expect(chip()!.querySelector("img")?.getAttribute("src")).toBe("/images/avatar-default.svg");
+    expect(rowsOf("Budgets")[2].querySelector("img")?.getAttribute("src")).toBe("/images/avatar-default.svg");
+  });
+
+  it("holds an empty slot of the chip height until it reads storage", () => {
+    const markup = renderToString(<WarChest board={waiver} teams={week6.teams} avatars={{}} />);
+    expect(markup).toContain("h-pick-chip");
+    expect(markup).not.toContain('name="Your team"');
+  });
+});
+
+describe("the team pick across visits", () => {
+  it("survives a reload through storage", () => {
+    renderBoard();
+    fireEvent.click(within(pickList()!).getByRole("radio", { name: /Lil Fridge/ }));
+    cleanup();
+    renderBoard();
+    expect(pickList()).toBeNull();
+    expect(within(chip()!).getByText("Lil Fridge")).toBeTruthy();
+    expect(within(chip()!).getByText("you have $72")).toBeTruthy();
+  });
+
+  it("keeps the page working for the visit when storage throws", () => {
+    vi.spyOn(Storage.prototype, "getItem").mockImplementation(() => {
+      throw new Error("blocked");
+    });
+    vi.spyOn(Storage.prototype, "setItem").mockImplementation(() => {
+      throw new Error("blocked");
+    });
+    renderBoard();
+    fireEvent.click(within(pickList()!).getByRole("radio", { name: /Lil Fridge/ }));
+    expect(within(chip()!).getByText("you have $72")).toBeTruthy();
+  });
+
+  it("reads a roster id that the budget table does not hold as no pick", () => {
+    localStorage.setItem("cpc.waiver-team", "99");
+    renderBoard();
+    expect(chip()).toBeNull();
+    expect(within(pickList()!).queryByRole("radio", { checked: true })).toBeNull();
+  });
+});
+
+describe("the ring and the sheet with a pick", () => {
+  it("turns only the picked team's bar red", () => {
+    localStorage.setItem("cpc.waiver-team", "3");
+    renderBoard();
+    const marked = rowsOf("Budgets").filter((row) => row.querySelector("[data-viewer]"));
+    expect(marked).toHaveLength(1);
+    expect(within(marked[0]).getByText("Lil Fridge")).toBeTruthy();
+    expect(marked[0].querySelector("[data-viewer]")?.className).toContain("bg-red");
+  });
+
+  it("names the bid as the line when the viewer's budget is above the bid", () => {
+    localStorage.setItem("cpc.waiver-team", "3");
+    renderBoard();
+    const open = within(sheet());
+    expect(open.getByText("Can outbid you")).toBeTruthy();
+    // Lil Fridge has $72 and Kenny Gainwell's bid is $23. The outbid map holds 9 at "72".
+    expect(open.getByText("9")).toBeTruthy();
+    expect(open.getByText("Rivals over $23")).toBeTruthy();
+  });
+
+  it("names the budget as the line when the viewer's budget is below the bid, and follows a new pick", () => {
+    localStorage.setItem("cpc.waiver-team", "3");
+    renderBoard();
+    fireEvent.click(screen.getByRole("button", { name: "Change your team" }));
+    fireEvent.click(within(pickList()!).getByRole("radio", { name: /Maye d'force B with U/ }));
+    // Maye d'force B with U has $19, below the $23 bid. The map holds 10 at "19".
+    expect(within(chip()!).getByText("you have $19")).toBeTruthy();
+    expect(within(sheet()).getByText("10")).toBeTruthy();
+    expect(within(sheet()).getByText("Rivals over $19")).toBeTruthy();
+  });
+
+  it("shows no outbid box with no pick", () => {
+    renderBoard();
+    expect(within(sheet()).queryByText("Can outbid you")).toBeNull();
+  });
+
+  it("shows no outbid box for a drop, which has no price", () => {
+    localStorage.setItem("cpc.waiver-team", "3");
+    renderBoard();
+    fireEvent.click(screen.getByRole("button", { name: "Drops" }));
+    fireEvent.click(within(field()).getByRole("button", { name: "Austin Ekeler" }));
+    expect(within(sheet()).queryByText("Can outbid you")).toBeNull();
+  });
+});
+
+describe("the Change link", () => {
+  it("opens the list again with the pick checked, and a new pick replaces the old", () => {
+    localStorage.setItem("cpc.waiver-team", "3");
+    renderBoard();
+    fireEvent.click(screen.getByRole("button", { name: "Change your team" }));
+    expect(chip()).toBeNull();
+    const checked = within(pickList()!).getByRole("radio", { checked: true });
+    expect(checked.closest("label")?.textContent).toContain("Lil Fridge");
+    expect(document.activeElement).toBe(checked);
+    fireEvent.click(within(pickList()!).getByRole("radio", { name: /Bo Girds/ }));
+    expect(within(chip()!).getByText("Bo Girds")).toBeTruthy();
+    expect(localStorage.getItem("cpc.waiver-team")).toBe("6");
+  });
+});
+
+describe("the drops bucket with a pick", () => {
+  function dropNames() {
+    return within(field()).getAllByRole("button").map((orb) => orb.getAttribute("aria-label"));
+  }
+
+  it("lists the viewer's own drop candidates first", () => {
+    localStorage.setItem("cpc.waiver-team", "6");
+    renderBoard();
+    fireEvent.click(screen.getByRole("button", { name: "Drops" }));
+    expect(dropNames()).toEqual(["Darren Waller", "Austin Ekeler"]);
+  });
+
+  it("keeps the file order with no pick", () => {
+    renderBoard();
+    fireEvent.click(screen.getByRole("button", { name: "Drops" }));
+    expect(dropNames()).toEqual(["Austin Ekeler", "Darren Waller"]);
   });
 });
