@@ -3,7 +3,7 @@
  * so the React page prints the same numbers as the old page.
  */
 import { describe, expect, it } from "vitest";
-import { gap, num, shortName } from "./format";
+import { gap, num, shortName, thousands } from "./format";
 
 describe("num", () => {
   it("drops trailing zeros", () => {
@@ -34,5 +34,13 @@ describe("shortName", () => {
 
   it("keeps a one-word name whole", () => {
     expect(shortName("Steelers")).toBe("Steelers");
+  });
+});
+
+describe("thousands", () => {
+  it("puts a comma between each group of three digits", () => {
+    expect(thousands(48213)).toBe("48,213");
+    expect(thousands(1250000)).toBe("1,250,000");
+    expect(thousands(640)).toBe("640");
   });
 });
