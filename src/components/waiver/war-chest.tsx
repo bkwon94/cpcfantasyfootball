@@ -23,6 +23,13 @@ function byBudget(rows: BudgetRow[]): BudgetRow[] {
   return [...rows].sort((a, b) => b.budget_left - a.budget_left || a.waiver_order - b.waiver_order);
 }
 
+/* The viewer's own drop candidates first, so a manager sees his roster before the rest. The sort is stable, so each group keeps the file rank. */
+function viewerDropsFirst(players: WaiverPlayer[], viewerId: number | null): WaiverPlayer[] {
+  if (viewerId === null) return players;
+  const own = (player: WaiverPlayer) => (player.drop?.roster_id === viewerId ? 0 : 1);
+  return [...players].sort((a, b) => own(a) - own(b));
+}
+
 /* The twelve budgets as a row of avatars over thin bars. The largest budget fills its bar, so the ring needs no league cap.
    The viewer's bar is red, so a manager finds his own budget in a glance. */
 function BudgetRing({
@@ -131,7 +138,6 @@ export function WarChest({ board, teams, avatars }: { board: WaiverBoard; teams:
   const [bucket, setBucket] = useState<BucketKey>(BEST_ADDS);
   // The sheet holds the player and not an index, so it keeps him when the tab changes to a bucket without him.
   const [sheetPlayer, setSheetPlayer] = useState<WaiverPlayer | null>(board.buckets[BEST_ADDS]?.[0] ?? null);
-  const players = board.buckets[bucket] ?? [];
   const sheetId = sheetPlayer?.player_id ?? null;
   // The static page has no storage, so the pick loads after the first render. Until then the pick area stays empty,
   // so a returning manager never sees the list flash open before his chip.
@@ -139,6 +145,7 @@ export function WarChest({ board, teams, avatars }: { board: WaiverBoard; teams:
   const [pick, setPick] = useState<number | null>(null);
   // A roster id that the budget table does not hold, such as a stale pick after a league change, counts as no pick.
   const viewer = board.budgets.find((row) => row.roster_id === pick) ?? null;
+  const players = viewerDropsFirst(board.buckets[bucket] ?? [], viewer?.roster_id ?? null);
   useMarkHydrated();
 
   useEffect(() => {

@@ -344,3 +344,37 @@ describe("the ring and the sheet with a pick", () => {
     expect(within(sheet()).queryByText("Can outbid you")).toBeNull();
   });
 });
+
+describe("the Change link", () => {
+  it("opens the list again with the pick checked, and a new pick replaces the old", () => {
+    localStorage.setItem("cpc.waiver-team", "3");
+    renderBoard();
+    fireEvent.click(screen.getByRole("button", { name: "Change your team" }));
+    expect(chip()).toBeNull();
+    const checked = within(pickList()!).getByRole("radio", { checked: true });
+    expect(checked.closest("label")?.textContent).toContain("Lil Fridge");
+    expect(document.activeElement).toBe(checked);
+    fireEvent.click(within(pickList()!).getByRole("radio", { name: /Bo Girds/ }));
+    expect(within(chip()!).getByText("Bo Girds")).toBeTruthy();
+    expect(localStorage.getItem("cpc.waiver-team")).toBe("6");
+  });
+});
+
+describe("the drops bucket with a pick", () => {
+  function dropNames() {
+    return within(field()).getAllByRole("button").map((orb) => orb.getAttribute("aria-label"));
+  }
+
+  it("lists the viewer's own drop candidates first", () => {
+    localStorage.setItem("cpc.waiver-team", "6");
+    renderBoard();
+    fireEvent.click(screen.getByRole("button", { name: "Drops" }));
+    expect(dropNames()).toEqual(["Darren Waller", "Austin Ekeler"]);
+  });
+
+  it("keeps the file order with no pick", () => {
+    renderBoard();
+    fireEvent.click(screen.getByRole("button", { name: "Drops" }));
+    expect(dropNames()).toEqual(["Austin Ekeler", "Darren Waller"]);
+  });
+});
