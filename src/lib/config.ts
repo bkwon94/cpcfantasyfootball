@@ -17,3 +17,7 @@ export const season = Number.isFinite(parsedSeason) && parsedSeason > 0 ? parsed
 // The trade finder stays hidden until the page layout has room for it.
 // A build with NEXT_PUBLIC_FINDER=on shows it.
 export const finderOn = process.env.NEXT_PUBLIC_FINDER === "on";
+
+// The waiver page stays hidden until the pipeline writes a full week file.
+// A build with NEXT_PUBLIC_WAIVER=on builds the route and the masthead link.
+export const waiverOn = process.env.NEXT_PUBLIC_WAIVER === "on";

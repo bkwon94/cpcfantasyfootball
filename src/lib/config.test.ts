@@ -41,4 +41,11 @@ describe("config", () => {
     vi.stubEnv("NEXT_PUBLIC_FINDER", "on");
     expect((await import("./config")).finderOn).toBe(true);
   });
+
+  it("keeps the waiver page off by default and turns it on with the value on", async () => {
+    expect((await import("./config")).waiverOn).toBe(false);
+    vi.resetModules();
+    vi.stubEnv("NEXT_PUBLIC_WAIVER", "on");
+    expect((await import("./config")).waiverOn).toBe(true);
+  });
 });
