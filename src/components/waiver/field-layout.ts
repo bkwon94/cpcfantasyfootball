@@ -50,3 +50,21 @@ export function slotBox(slot: Slot): Box {
     bottom: slot.y + slot.size + LABEL.gap + LABEL.height + driftY,
   };
 }
+
+/* The scale of the field in a column of this width. The field never grows past the table, and it shrinks under 358.
+   A width of 0 means the column is not measured yet, so the field keeps the table size. */
+export function fieldScale(width: number): number {
+  return width > 0 ? Math.min(1, width / FIELD.width) : 1;
+}
+
+/* A slot at a scale. The period stays, so a small phone gets the same slow drift. */
+export function scaleSlot(slot: Slot, scale: number): Slot {
+  return {
+    x: slot.x * scale,
+    y: slot.y * scale,
+    size: slot.size * scale,
+    dx: slot.dx * scale,
+    dy: slot.dy * scale,
+    period: slot.period,
+  };
+}

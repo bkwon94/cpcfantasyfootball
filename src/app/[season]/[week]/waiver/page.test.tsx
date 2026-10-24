@@ -12,6 +12,7 @@ import fixture from "@/components/waiver/fixture.json";
 afterEach(() => {
   cleanup();
   vi.restoreAllMocks();
+  vi.unstubAllEnvs();
 });
 
 /* A temp public/ folder with week 5 and week 6 pages. Only week 6 has the waiver file. */
@@ -54,13 +55,21 @@ describe("WaiverPage", () => {
     expect(banner.textContent).toContain("Built Fri, Oct 23, 10:05 AM EDT");
   });
 
-  it("shows the budgets with the avatars of the week folder, and the best adds", async () => {
+  it("shows no link to itself in the masthead, even with the flag on", async () => {
+    // The flag on gives every other page the link, so the test proves this page turns it off.
+    vi.stubEnv("NEXT_PUBLIC_WAIVER", "on");
+    const { default: WaiverPage } = await routeOver();
+    render(await WaiverPage({ params: Promise.resolve({ season: "2026", week: "week-06" }) }));
+    expect(within(screen.getByRole("banner")).queryByRole("link", { name: "Waiver wire" })).toBeNull();
+  });
+
+  it("shows the budgets with the avatars of the week folder, and the best adds after the top six", async () => {
     const { default: WaiverPage } = await routeOver();
     render(await WaiverPage({ params: Promise.resolve({ season: "2026", week: "week-06" }) }));
     const budgets = within(screen.getByRole("list", { name: "Budgets" })).getAllByRole("listitem");
     expect(budgets).toHaveLength(12);
     expect(within(budgets[0]).getByText("Pukancun on 3")).toBeTruthy();
     expect(budgets[0].querySelector("img")?.getAttribute("src")).toBe("/2026/week-06/avatars/4.jpg");
-    expect(within(screen.getByRole("list", { name: "Best adds" })).getAllByRole("listitem")).toHaveLength(8);
+    expect(within(screen.getByRole("list", { name: "Also" })).getAllByRole("listitem")).toHaveLength(2);
   });
 });

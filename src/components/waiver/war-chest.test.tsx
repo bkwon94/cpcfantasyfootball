@@ -5,7 +5,7 @@
 import { act, cleanup, fireEvent, render, screen, within } from "@testing-library/react";
 import { afterEach, describe, expect, it } from "vitest";
 import { week6 } from "@/components/week/fixture";
-import type { WaiverBoard } from "@/lib/waiver-types";
+import type { WaiverBoard, WaiverPlayer } from "@/lib/waiver-types";
 import { waiver } from "./fixture";
 import { WarChest } from "./war-chest";
 
@@ -50,10 +50,10 @@ describe("the budget ring", () => {
 });
 
 describe("the bucket tabs", () => {
-  it("shows one tab per bucket in the file, with the count", () => {
+  it("shows one short tab per bucket in the file", () => {
     renderBoard();
     const tabs = within(screen.getByRole("group", { name: "Buckets" })).getAllByRole("button");
-    expect(tabs.map((tab) => tab.textContent)).toEqual(["Best adds8", "Trending7", "Sneaky3", "Stashes2", "Drops2"]);
+    expect(tabs.map((tab) => tab.textContent)).toEqual(["Best", "Trending", "Sneaky", "Stash", "Drops"]);
     expect(tabs[0].getAttribute("aria-pressed")).toBe("true");
   });
 
@@ -61,9 +61,12 @@ describe("the bucket tabs", () => {
     renderBoard();
     fireEvent.click(within(field()).getByRole("button", { name: /Courtland Sutton/ }));
     expect(within(sheet()).getByRole("heading", { name: "Courtland Sutton" })).toBeTruthy();
-    fireEvent.click(screen.getByRole("button", { name: /^Stashes/ }));
-    expect(screen.getByRole("button", { name: /^Stashes/ }).getAttribute("aria-pressed")).toBe("true");
-    expect(within(rowsOf("Stashes")[0]).getByText("Mark Andrews")).toBeTruthy();
+    fireEvent.click(screen.getByRole("button", { name: "Stash" }));
+    expect(screen.getByRole("button", { name: "Stash" }).getAttribute("aria-pressed")).toBe("true");
+    expect(within(field()).getAllByRole("button").map((orb) => orb.getAttribute("aria-label"))).toEqual([
+      "Mark Andrews, $8",
+      "Audric Estime, $6",
+    ]);
     // Courtland Sutton is not a stash, and the sheet still holds him.
     expect(within(sheet()).getByRole("heading", { name: "Courtland Sutton" })).toBeTruthy();
   });
@@ -132,13 +135,38 @@ describe("the sheet", () => {
     expect(open.getByText("Najee Harris, week 4, Lil Fridge")).toBeTruthy();
   });
 
-  it("fills on a tap of a list row, with the trending count in thousands", () => {
+  it("fills on a tap of a list row", () => {
     renderBoard();
-    fireEvent.click(screen.getByRole("button", { name: /^Trending/ }));
-    fireEvent.click(within(rowsOf("Trending")[1]).getByRole("button"));
-    const open = within(sheet());
-    expect(open.getByRole("heading", { name: "Courtland Sutton" })).toBeTruthy();
-    expect(open.getByText("31,877 adds on Sleeper in the last day")).toBeTruthy();
+    fireEvent.click(within(rowsOf("Also")[0]).getByRole("button"));
+    expect(within(sheet()).getByRole("heading", { name: "Michael Mayer" })).toBeTruthy();
+  });
+
+  it("shows the trending count with a thousands separator", () => {
+    renderBoard();
+    fireEvent.click(screen.getByRole("button", { name: "Trending" }));
+    fireEvent.click(within(field()).getByRole("button", { name: "Courtland Sutton, $3" }));
+    expect(within(sheet()).getByText("31,877 adds on Sleeper in the last day")).toBeTruthy();
+  });
+
+  it("shows the injury status and the return week on the meta line", () => {
+    renderBoard();
+    fireEvent.click(screen.getByRole("button", { name: "Stash" }));
+    fireEvent.click(within(field()).getByRole("button", { name: "Mark Andrews, $8" }));
+    expect(within(sheet()).getByText("TE · BAL · Bye 7 · IR · Back week 9")).toBeTruthy();
+  });
+
+  it("labels a news claim as news", () => {
+    renderBoard();
+    fireEvent.click(within(field()).getByRole("button", { name: "Mark Andrews, $8" }));
+    expect(within(sheet()).getByText("ESPN · News")).toBeTruthy();
+  });
+
+  it("names the sheet player in one short live line", () => {
+    renderBoard();
+    fireEvent.click(within(field()).getByRole("button", { name: "Najee Harris, $14" }));
+    const live = sheet().querySelectorAll("[aria-live]");
+    expect(live).toHaveLength(1);
+    expect(live[0].textContent).toBe("Sheet: Najee Harris");
   });
 
   it("shows no last like him when no claim at the position won", () => {
@@ -157,24 +185,42 @@ describe("the sheet", () => {
 });
 
 describe("the drops bucket", () => {
-  it("names the roster that holds each drop and the pool player who beats him", () => {
+  it("names the roster that holds each drop on his headshot sheet, with the pool player who beats him", () => {
     renderBoard();
-    fireEvent.click(screen.getByRole("button", { name: /^Drops/ }));
-    const rows = rowsOf("Drops");
-    expect(within(rows[0]).getByText("Austin Ekeler")).toBeTruthy();
-    expect(within(rows[0]).getByText("RB · WAS · Bye 12 · On Lil Fridge")).toBeTruthy();
-    expect(within(rows[0]).getByText("Kenny Gainwell projects 101.6 more points than Austin Ekeler for the rest of the season")).toBeTruthy();
-    expect(within(rows[1]).getByText("TE · CAR · Bye 14 · On Bo Girds")).toBeTruthy();
-    // A drop has no price, so his headshot wears no tag.
-    expect(within(field()).getByRole("button", { name: "Darren Waller" })).toBeTruthy();
+    fireEvent.click(screen.getByRole("button", { name: "Drops" }));
+    // A drop has no price, so his headshot has no price tag and his name is the whole label.
+    fireEvent.click(within(field()).getByRole("button", { name: "Austin Ekeler" }));
+    const open = within(sheet());
+    expect(open.getByText("On Lil Fridge")).toBeTruthy();
+    expect(open.getByText("Kenny Gainwell projects 9.3 a week higher")).toBeTruthy();
+    expect(open.queryByText("Bid to win")).toBeNull();
   });
 
-  it("names the roster on the sheet of a drop", () => {
+  it("names the holder on a drops row after the top six", () => {
+    // Seven drops, so the seventh goes in the list. Each copy gets its own id, so the keys stay unique.
+    const ekeler = waiver.buckets.drops[0];
+    const drops: WaiverPlayer[] = Array.from({ length: 7 }, (_, index) => ({ ...ekeler, player_id: `${ekeler.player_id}-${index}` }));
+    renderBoard({ ...waiver, buckets: { ...waiver.buckets, drops } });
+    fireEvent.click(screen.getByRole("button", { name: "Drops" }));
+    const rows = rowsOf("Also");
+    expect(rows).toHaveLength(1);
+    expect(within(rows[0]).getByText("RB · WAS · Bye 12 · On Lil Fridge")).toBeTruthy();
+  });
+});
+
+describe("the list", () => {
+  it("holds the rest of the bucket from rank 7, with the price", () => {
     renderBoard();
-    fireEvent.click(screen.getByRole("button", { name: /^Drops/ }));
-    fireEvent.click(within(field()).getByRole("button", { name: "Austin Ekeler" }));
-    expect(within(sheet()).getByText("On Lil Fridge")).toBeTruthy();
-    expect(within(sheet()).queryByText("Bid to win")).toBeNull();
+    const rows = rowsOf("Also");
+    expect(rows).toHaveLength(2);
+    expect(rows[0].textContent).toBe("7Michael MayerTE · LV · Bye 8$2");
+    expect(rows[1].textContent).toBe("8Austin EkelerRB · WAS · Bye 12$1");
+  });
+
+  it("is not there for a bucket of six or fewer", () => {
+    renderBoard();
+    fireEvent.click(screen.getByRole("button", { name: "Sneaky" }));
+    expect(screen.queryByRole("list", { name: "Also" })).toBeNull();
   });
 });
 

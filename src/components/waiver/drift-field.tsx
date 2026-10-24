@@ -5,13 +5,14 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { shortName } from "@/lib/format";
 import { sleeperHeadshot, swapToDefault } from "@/lib/headshot";
 import { DRIFT_EASE, DURATION, INSTANT, rise, stagger, useMotionOff } from "@/lib/motion";
 import { cn } from "@/lib/utils";
-import type { WaiverPlayer } from "@/lib/waiver-types";
-import { FIELD, LABEL, SLOTS, TAG, type Slot } from "./field-layout";
+import type { BucketKey, WaiverPlayer } from "@/lib/waiver-types";
+import { FIELD, fieldScale, LABEL, scaleSlot, SLOTS, TAG, type Slot } from "./field-layout";
+import { priceText } from "./format";
 
 /* False while the document is hidden, so a drift in a background tab does not drain the battery.
    The first render reads true, so the static HTML and the first client render match. */
@@ -26,14 +27,20 @@ function usePageVisible(): boolean {
   return visible;
 }
 
-/* The price on a headshot, or no price for a drop. */
-export function priceText(player: WaiverPlayer): string | null {
-  return player.price ? `$${player.price.bid}` : null;
+/* The scale of the field in its column, measured once on mount. A phone under 390 gets a smaller field and no side scroll. */
+function useFieldScale() {
+  const ref = useRef<HTMLDivElement>(null);
+  const [scale, setScale] = useState(1);
+  useEffect(() => {
+    setScale(fieldScale(ref.current?.clientWidth ?? 0));
+  }, []);
+  return { ref, scale };
 }
 
 function Orb({
   player,
   slot,
+  scale,
   index,
   open,
   drift,
@@ -42,6 +49,7 @@ function Orb({
 }: {
   player: WaiverPlayer;
   slot: Slot;
+  scale: number;
   index: number;
   open: boolean;
   drift: boolean;
@@ -50,9 +58,9 @@ function Orb({
 }) {
   const price = priceText(player);
   // The box is as wide as the headshot or the label, whichever is wider, and its center is the center of the slot.
-  const width = Math.max(slot.size, LABEL.width);
+  const width = Math.max(slot.size, LABEL.width * scale);
   return (
-    // The outer box rises in once per bucket, and the inner box drifts, so the two motions never fight over one transform.
+    // The outer box rises in once per bucket, and the inner box drifts. Each motion has its own box, so each owns its own transform.
     // data-reveal lets the safety rule in globals.css show the headshot if the script never loads.
     <motion.div
       data-reveal
@@ -85,7 +93,7 @@ function Orb({
             />
             {price && (
               <span
-                style={{ top: -TAG.up, right: -TAG.out }}
+                style={{ top: -TAG.up * scale, right: -TAG.out * scale }}
                 className="absolute rounded-full bg-wht px-sp-1 py-sp-0 text-label leading-tight font-bold text-blk tabular-nums"
               >
                 {price}
@@ -106,7 +114,7 @@ export function DriftField({
   openId,
   onOpen,
 }: {
-  bucket: string;
+  bucket: BucketKey;
   players: WaiverPlayer[];
   openId: string | null;
   onOpen: (player: WaiverPlayer) => void;
@@ -114,28 +122,33 @@ export function DriftField({
   const off = useMotionOff();
   const visible = usePageVisible();
   const drift = !off && visible;
+  const { ref, scale } = useFieldScale();
   return (
-    <div
-      role="group"
-      aria-label="Top six"
-      data-drift={drift ? "on" : "off"}
-      className="relative mx-auto"
-      style={{ width: FIELD.width, height: FIELD.height }}
-    >
-      <div aria-hidden className="field-glow" />
-      {players.slice(0, SLOTS.length).map((player, index) => (
-        // The key holds the bucket, so a tab change mounts new headshots and they rise in again.
-        <Orb
-          key={`${bucket}-${player.player_id}`}
-          player={player}
-          slot={SLOTS[index]}
-          index={index}
-          open={player.player_id === openId}
-          drift={drift}
-          off={off}
-          onOpen={onOpen}
-        />
-      ))}
+    // The outer box takes the column width, so the hook can measure it. It clips the field before the measure, so the page never scrolls sideways.
+    <div ref={ref} className="w-full overflow-hidden">
+      <div
+        role="group"
+        aria-label="Top six"
+        data-drift={drift ? "on" : "off"}
+        className="relative mx-auto"
+        style={{ width: FIELD.width * scale, height: FIELD.height * scale }}
+      >
+        <div aria-hidden className="field-glow" />
+        {players.slice(0, SLOTS.length).map((player, index) => (
+          // The key holds the bucket, so a tab change mounts new headshots and they rise in again.
+          <Orb
+            key={`${bucket}-${player.player_id}`}
+            player={player}
+            slot={scaleSlot(SLOTS[index], scale)}
+            scale={scale}
+            index={index}
+            open={player.player_id === openId}
+            drift={drift}
+            off={off}
+            onOpen={onOpen}
+          />
+        ))}
+      </div>
     </div>
   );
 }

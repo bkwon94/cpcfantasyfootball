@@ -17,6 +17,14 @@ const SHOWN = { opacity: 1, y: 0 };
 const FADE_HIDDEN = { opacity: 0 };
 const FADE_SHOWN = { opacity: 1 };
 
+/* Sets data-hydrated on the root once the script runs. The attribute turns off the CSS safety rule in globals.css,
+   so Framer Motion owns every reveal after hydration. The set is the same each time, so the first caller is enough. */
+export function useMarkHydrated() {
+  useEffect(() => {
+    document.documentElement.setAttribute("data-hydrated", "");
+  }, []);
+}
+
 type RevealProps = {
   children?: ReactNode;
   // "view" waits for the viewport. "mount" plays at once, for the content of a route.
@@ -39,11 +47,7 @@ export function Reveal({
   className,
 }: RevealProps) {
   const off = useMotionOff();
-  // The attribute turns off the CSS safety rule in globals.css, so Framer Motion owns the reveal after hydration.
-  // Every Reveal runs this effect, and the set is the same each time, so the first one to mount is enough.
-  useEffect(() => {
-    document.documentElement.setAttribute("data-hydrated", "");
-  }, []);
+  useMarkHydrated();
   // The static HTML holds the start state, and the first client render must match it, so the start state is the same
   // with motion off. With motion off the content then goes to rest at once on mount and never waits for the viewport.
   // The data-reveal rule in globals.css shows the content at rest before the script loads, for reduced motion and no script.

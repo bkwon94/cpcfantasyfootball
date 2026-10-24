@@ -3,7 +3,7 @@
  * A slot box holds the headshot, the price tag, the name label, and the full drift, so no headshot covers another at 390.
  */
 import { describe, expect, it } from "vitest";
-import { FIELD, SLOTS, slotBox } from "./field-layout";
+import { FIELD, fieldScale, scaleSlot, SLOTS, slotBox } from "./field-layout";
 
 /* The page column at 390 pixels, less the two 16 pixel gutters. */
 const PHONE_FIELD = 390 - 16 * 2;
@@ -48,5 +48,22 @@ describe("the field layout", () => {
 
   it("gives each slot a different drift period, so the headshots never move in step", () => {
     expect(new Set(SLOTS.map((slot) => slot.period)).size).toBe(6);
+  });
+});
+
+describe("the field scale", () => {
+  it("keeps the table size at 358 and wider, and shrinks it under 358", () => {
+    expect(fieldScale(358)).toBe(1);
+    expect(fieldScale(448)).toBe(1);
+    // A 360 phone has 328 pixels inside the gutters.
+    expect(fieldScale(328)).toBeCloseTo(328 / 358);
+  });
+
+  it("keeps the table size before a measure, when the width reads 0", () => {
+    expect(fieldScale(0)).toBe(1);
+  });
+
+  it("scales the place, the size, and the drift of a slot, but not its period", () => {
+    expect(scaleSlot(SLOTS[0], 0.5)).toEqual({ x: 89.5, y: 35, size: 44, dx: 4, dy: -5, period: 7 });
   });
 });

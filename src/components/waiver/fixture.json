@@ -97,22 +97,26 @@
             "90": 11
           }
         },
-        "claims": [
+        "research": [
           {
-            "sentence": "Kenny Gainwell took the lead role in practice this week.",
+            "text": "Kenny Gainwell took the lead role in practice this week.",
             "url": "https://sports.yahoo.com/fantasy/kenny-gainwell-waiver",
             "source": "Yahoo Fantasy",
             "date": "2026-10-21",
             "stance": "backs"
           },
           {
-            "sentence": "Kenny Gainwell may split the work once the starter returns.",
+            "text": "Kenny Gainwell may split the work once the starter returns.",
             "url": "https://www.espn.com/fantasy/football/story/kenny-gainwell",
             "source": "ESPN",
             "date": "2026-10-20",
             "stance": "disputes"
           }
-        ]
+        ],
+        "injury_status": null,
+        "return_week": null,
+        "reason": null,
+        "drop": null
       },
       {
         "player_id": "7528",
@@ -207,22 +211,26 @@
             "90": 11
           }
         },
-        "claims": [
+        "research": [
           {
-            "sentence": "Najee Harris took the lead role in practice this week.",
+            "text": "Najee Harris took the lead role in practice this week.",
             "url": "https://sports.yahoo.com/fantasy/najee-harris-waiver",
             "source": "Yahoo Fantasy",
             "date": "2026-10-21",
             "stance": "backs"
           },
           {
-            "sentence": "Najee Harris may split the work once the starter returns.",
+            "text": "Najee Harris may split the work once the starter returns.",
             "url": "https://www.espn.com/fantasy/football/story/najee-harris",
             "source": "ESPN",
             "date": "2026-10-20",
             "stance": "disputes"
           }
-        ]
+        ],
+        "injury_status": null,
+        "return_week": null,
+        "reason": null,
+        "drop": null
       },
       {
         "player_id": "5012",
@@ -317,22 +325,26 @@
             "90": 11
           }
         },
-        "claims": [
+        "research": [
           {
-            "sentence": "Mark Andrews took the lead role in practice this week.",
+            "text": "Mark Andrews took the lead role in practice this week.",
             "url": "https://sports.yahoo.com/fantasy/mark-andrews-waiver",
             "source": "Yahoo Fantasy",
             "date": "2026-10-21",
             "stance": "backs"
           },
           {
-            "sentence": "Mark Andrews may split the work once the starter returns.",
+            "text": "Mark Andrews may split the work once the starter returns.",
             "url": "https://www.espn.com/fantasy/football/story/mark-andrews",
             "source": "ESPN",
             "date": "2026-10-20",
-            "stance": "disputes"
+            "stance": "news"
           }
-        ]
+        ],
+        "injury_status": null,
+        "return_week": null,
+        "reason": null,
+        "drop": null
       },
       {
         "player_id": "11579",
@@ -427,22 +439,26 @@
             "90": 11
           }
         },
-        "claims": [
+        "research": [
           {
-            "sentence": "Audric Estime took the lead role in practice this week.",
+            "text": "Audric Estime took the lead role in practice this week.",
             "url": "https://sports.yahoo.com/fantasy/audric-estime-waiver",
             "source": "Yahoo Fantasy",
             "date": "2026-10-21",
             "stance": "backs"
           },
           {
-            "sentence": "Audric Estime may split the work once the starter returns.",
+            "text": "Audric Estime may split the work once the starter returns.",
             "url": "https://www.espn.com/fantasy/football/story/audric-estime",
             "source": "ESPN",
             "date": "2026-10-20",
             "stance": "disputes"
           }
-        ]
+        ],
+        "injury_status": null,
+        "return_week": null,
+        "reason": null,
+        "drop": null
       },
       {
         "player_id": "4037",
@@ -530,22 +546,26 @@
             "90": 11
           }
         },
-        "claims": [
+        "research": [
           {
-            "sentence": "Chris Godwin took the lead role in practice this week.",
+            "text": "Chris Godwin took the lead role in practice this week.",
             "url": "https://sports.yahoo.com/fantasy/chris-godwin-waiver",
             "source": "Yahoo Fantasy",
             "date": "2026-10-21",
             "stance": "backs"
           },
           {
-            "sentence": "Chris Godwin may split the work once the starter returns.",
+            "text": "Chris Godwin may split the work once the starter returns.",
             "url": "https://www.espn.com/fantasy/football/story/chris-godwin",
             "source": "ESPN",
             "date": "2026-10-20",
             "stance": "disputes"
           }
-        ]
+        ],
+        "injury_status": null,
+        "return_week": null,
+        "reason": null,
+        "drop": null
       },
       {
         "player_id": "5045",
@@ -633,22 +653,26 @@
             "90": 11
           }
         },
-        "claims": [
+        "research": [
           {
-            "sentence": "Courtland Sutton took the lead role in practice this week.",
+            "text": "Courtland Sutton took the lead role in practice this week.",
             "url": "https://sports.yahoo.com/fantasy/courtland-sutton-waiver",
             "source": "Yahoo Fantasy",
             "date": "2026-10-21",
             "stance": "backs"
           },
           {
-            "sentence": "Courtland Sutton may split the work once the starter returns.",
+            "text": "Courtland Sutton may split the work once the starter returns.",
             "url": "https://www.espn.com/fantasy/football/story/courtland-sutton",
             "source": "ESPN",
             "date": "2026-10-20",
             "stance": "disputes"
           }
-        ]
+        ],
+        "injury_status": null,
+        "return_week": null,
+        "reason": null,
+        "drop": null
       },
       {
         "player_id": "9482",
@@ -743,22 +767,26 @@
             "90": 11
           }
         },
-        "claims": [
+        "research": [
           {
-            "sentence": "Michael Mayer took the lead role in practice this week.",
+            "text": "Michael Mayer took the lead role in practice this week.",
             "url": "https://sports.yahoo.com/fantasy/michael-mayer-waiver",
             "source": "Yahoo Fantasy",
             "date": "2026-10-21",
             "stance": "backs"
           },
           {
-            "sentence": "Michael Mayer may split the work once the starter returns.",
+            "text": "Michael Mayer may split the work once the starter returns.",
             "url": "https://www.espn.com/fantasy/football/story/michael-mayer",
             "source": "ESPN",
             "date": "2026-10-20",
             "stance": "disputes"
           }
-        ]
+        ],
+        "injury_status": null,
+        "return_week": null,
+        "reason": null,
+        "drop": null
       },
       {
         "player_id": "4663",
@@ -853,22 +881,26 @@
             "90": 11
           }
         },
-        "claims": [
+        "research": [
           {
-            "sentence": "Austin Ekeler took the lead role in practice this week.",
+            "text": "Austin Ekeler took the lead role in practice this week.",
             "url": "https://sports.yahoo.com/fantasy/austin-ekeler-waiver",
             "source": "Yahoo Fantasy",
             "date": "2026-10-21",
             "stance": "backs"
           },
           {
-            "sentence": "Austin Ekeler may split the work once the starter returns.",
+            "text": "Austin Ekeler may split the work once the starter returns.",
             "url": "https://www.espn.com/fantasy/football/story/austin-ekeler",
             "source": "ESPN",
             "date": "2026-10-20",
             "stance": "disputes"
           }
-        ]
+        ],
+        "injury_status": null,
+        "return_week": null,
+        "reason": null,
+        "drop": null
       }
     ],
     "trending": [
@@ -965,22 +997,26 @@
             "90": 11
           }
         },
-        "claims": [
+        "research": [
           {
-            "sentence": "Kenny Gainwell took the lead role in practice this week.",
+            "text": "Kenny Gainwell took the lead role in practice this week.",
             "url": "https://sports.yahoo.com/fantasy/kenny-gainwell-waiver",
             "source": "Yahoo Fantasy",
             "date": "2026-10-21",
             "stance": "backs"
           },
           {
-            "sentence": "Kenny Gainwell may split the work once the starter returns.",
+            "text": "Kenny Gainwell may split the work once the starter returns.",
             "url": "https://www.espn.com/fantasy/football/story/kenny-gainwell",
             "source": "ESPN",
             "date": "2026-10-20",
             "stance": "disputes"
           }
-        ]
+        ],
+        "injury_status": null,
+        "return_week": null,
+        "reason": null,
+        "drop": null
       },
       {
         "player_id": "5045",
@@ -1068,22 +1104,26 @@
             "90": 11
           }
         },
-        "claims": [
+        "research": [
           {
-            "sentence": "Courtland Sutton took the lead role in practice this week.",
+            "text": "Courtland Sutton took the lead role in practice this week.",
             "url": "https://sports.yahoo.com/fantasy/courtland-sutton-waiver",
             "source": "Yahoo Fantasy",
             "date": "2026-10-21",
             "stance": "backs"
           },
           {
-            "sentence": "Courtland Sutton may split the work once the starter returns.",
+            "text": "Courtland Sutton may split the work once the starter returns.",
             "url": "https://www.espn.com/fantasy/football/story/courtland-sutton",
             "source": "ESPN",
             "date": "2026-10-20",
             "stance": "disputes"
           }
-        ]
+        ],
+        "injury_status": null,
+        "return_week": null,
+        "reason": null,
+        "drop": null
       },
       {
         "player_id": "9482",
@@ -1178,22 +1218,26 @@
             "90": 11
           }
         },
-        "claims": [
+        "research": [
           {
-            "sentence": "Michael Mayer took the lead role in practice this week.",
+            "text": "Michael Mayer took the lead role in practice this week.",
             "url": "https://sports.yahoo.com/fantasy/michael-mayer-waiver",
             "source": "Yahoo Fantasy",
             "date": "2026-10-21",
             "stance": "backs"
           },
           {
-            "sentence": "Michael Mayer may split the work once the starter returns.",
+            "text": "Michael Mayer may split the work once the starter returns.",
             "url": "https://www.espn.com/fantasy/football/story/michael-mayer",
             "source": "ESPN",
             "date": "2026-10-20",
             "stance": "disputes"
           }
-        ]
+        ],
+        "injury_status": null,
+        "return_week": null,
+        "reason": null,
+        "drop": null
       },
       {
         "player_id": "11579",
@@ -1288,22 +1332,26 @@
             "90": 11
           }
         },
-        "claims": [
+        "research": [
           {
-            "sentence": "Audric Estime took the lead role in practice this week.",
+            "text": "Audric Estime took the lead role in practice this week.",
             "url": "https://sports.yahoo.com/fantasy/audric-estime-waiver",
             "source": "Yahoo Fantasy",
             "date": "2026-10-21",
             "stance": "backs"
           },
           {
-            "sentence": "Audric Estime may split the work once the starter returns.",
+            "text": "Audric Estime may split the work once the starter returns.",
             "url": "https://www.espn.com/fantasy/football/story/audric-estime",
             "source": "ESPN",
             "date": "2026-10-20",
             "stance": "disputes"
           }
-        ]
+        ],
+        "injury_status": null,
+        "return_week": null,
+        "reason": null,
+        "drop": null
       },
       {
         "player_id": "7528",
@@ -1398,22 +1446,26 @@
             "90": 11
           }
         },
-        "claims": [
+        "research": [
           {
-            "sentence": "Najee Harris took the lead role in practice this week.",
+            "text": "Najee Harris took the lead role in practice this week.",
             "url": "https://sports.yahoo.com/fantasy/najee-harris-waiver",
             "source": "Yahoo Fantasy",
             "date": "2026-10-21",
             "stance": "backs"
           },
           {
-            "sentence": "Najee Harris may split the work once the starter returns.",
+            "text": "Najee Harris may split the work once the starter returns.",
             "url": "https://www.espn.com/fantasy/football/story/najee-harris",
             "source": "ESPN",
             "date": "2026-10-20",
             "stance": "disputes"
           }
-        ]
+        ],
+        "injury_status": null,
+        "return_week": null,
+        "reason": null,
+        "drop": null
       },
       {
         "player_id": "4037",
@@ -1501,22 +1553,26 @@
             "90": 11
           }
         },
-        "claims": [
+        "research": [
           {
-            "sentence": "Chris Godwin took the lead role in practice this week.",
+            "text": "Chris Godwin took the lead role in practice this week.",
             "url": "https://sports.yahoo.com/fantasy/chris-godwin-waiver",
             "source": "Yahoo Fantasy",
             "date": "2026-10-21",
             "stance": "backs"
           },
           {
-            "sentence": "Chris Godwin may split the work once the starter returns.",
+            "text": "Chris Godwin may split the work once the starter returns.",
             "url": "https://www.espn.com/fantasy/football/story/chris-godwin",
             "source": "ESPN",
             "date": "2026-10-20",
             "stance": "disputes"
           }
-        ]
+        ],
+        "injury_status": null,
+        "return_week": null,
+        "reason": null,
+        "drop": null
       },
       {
         "player_id": "5012",
@@ -1611,22 +1667,26 @@
             "90": 11
           }
         },
-        "claims": [
+        "research": [
           {
-            "sentence": "Mark Andrews took the lead role in practice this week.",
+            "text": "Mark Andrews took the lead role in practice this week.",
             "url": "https://sports.yahoo.com/fantasy/mark-andrews-waiver",
             "source": "Yahoo Fantasy",
             "date": "2026-10-21",
             "stance": "backs"
           },
           {
-            "sentence": "Mark Andrews may split the work once the starter returns.",
+            "text": "Mark Andrews may split the work once the starter returns.",
             "url": "https://www.espn.com/fantasy/football/story/mark-andrews",
             "source": "ESPN",
             "date": "2026-10-20",
             "stance": "disputes"
           }
-        ]
+        ],
+        "injury_status": null,
+        "return_week": null,
+        "reason": null,
+        "drop": null
       }
     ],
     "sneaky": [
@@ -1723,22 +1783,26 @@
             "90": 11
           }
         },
-        "claims": [
+        "research": [
           {
-            "sentence": "Michael Mayer took the lead role in practice this week.",
+            "text": "Michael Mayer took the lead role in practice this week.",
             "url": "https://sports.yahoo.com/fantasy/michael-mayer-waiver",
             "source": "Yahoo Fantasy",
             "date": "2026-10-21",
             "stance": "backs"
           },
           {
-            "sentence": "Michael Mayer may split the work once the starter returns.",
+            "text": "Michael Mayer may split the work once the starter returns.",
             "url": "https://www.espn.com/fantasy/football/story/michael-mayer",
             "source": "ESPN",
             "date": "2026-10-20",
             "stance": "disputes"
           }
-        ]
+        ],
+        "injury_status": null,
+        "return_week": null,
+        "reason": null,
+        "drop": null
       },
       {
         "player_id": "4037",
@@ -1826,22 +1890,26 @@
             "90": 11
           }
         },
-        "claims": [
+        "research": [
           {
-            "sentence": "Chris Godwin took the lead role in practice this week.",
+            "text": "Chris Godwin took the lead role in practice this week.",
             "url": "https://sports.yahoo.com/fantasy/chris-godwin-waiver",
             "source": "Yahoo Fantasy",
             "date": "2026-10-21",
             "stance": "backs"
           },
           {
-            "sentence": "Chris Godwin may split the work once the starter returns.",
+            "text": "Chris Godwin may split the work once the starter returns.",
             "url": "https://www.espn.com/fantasy/football/story/chris-godwin",
             "source": "ESPN",
             "date": "2026-10-20",
             "stance": "disputes"
           }
-        ]
+        ],
+        "injury_status": null,
+        "return_week": null,
+        "reason": null,
+        "drop": null
       },
       {
         "player_id": "4663",
@@ -1936,22 +2004,26 @@
             "90": 11
           }
         },
-        "claims": [
+        "research": [
           {
-            "sentence": "Austin Ekeler took the lead role in practice this week.",
+            "text": "Austin Ekeler took the lead role in practice this week.",
             "url": "https://sports.yahoo.com/fantasy/austin-ekeler-waiver",
             "source": "Yahoo Fantasy",
             "date": "2026-10-21",
             "stance": "backs"
           },
           {
-            "sentence": "Austin Ekeler may split the work once the starter returns.",
+            "text": "Austin Ekeler may split the work once the starter returns.",
             "url": "https://www.espn.com/fantasy/football/story/austin-ekeler",
             "source": "ESPN",
             "date": "2026-10-20",
             "stance": "disputes"
           }
-        ]
+        ],
+        "injury_status": null,
+        "return_week": null,
+        "reason": null,
+        "drop": null
       }
     ],
     "stashes": [
@@ -2048,22 +2120,26 @@
             "90": 11
           }
         },
-        "claims": [
+        "research": [
           {
-            "sentence": "Mark Andrews took the lead role in practice this week.",
+            "text": "Mark Andrews took the lead role in practice this week.",
             "url": "https://sports.yahoo.com/fantasy/mark-andrews-waiver",
             "source": "Yahoo Fantasy",
             "date": "2026-10-21",
             "stance": "backs"
           },
           {
-            "sentence": "Mark Andrews may split the work once the starter returns.",
+            "text": "Mark Andrews may split the work once the starter returns.",
             "url": "https://www.espn.com/fantasy/football/story/mark-andrews",
             "source": "ESPN",
             "date": "2026-10-20",
             "stance": "disputes"
           }
-        ]
+        ],
+        "injury_status": "IR",
+        "return_week": 9,
+        "reason": null,
+        "drop": null
       },
       {
         "player_id": "11579",
@@ -2158,22 +2234,26 @@
             "90": 11
           }
         },
-        "claims": [
+        "research": [
           {
-            "sentence": "Audric Estime took the lead role in practice this week.",
+            "text": "Audric Estime took the lead role in practice this week.",
             "url": "https://sports.yahoo.com/fantasy/audric-estime-waiver",
             "source": "Yahoo Fantasy",
             "date": "2026-10-21",
             "stance": "backs"
           },
           {
-            "sentence": "Audric Estime may split the work once the starter returns.",
+            "text": "Audric Estime may split the work once the starter returns.",
             "url": "https://www.espn.com/fantasy/football/story/audric-estime",
             "source": "ESPN",
             "date": "2026-10-20",
             "stance": "disputes"
           }
-        ]
+        ],
+        "injury_status": null,
+        "return_week": null,
+        "reason": null,
+        "drop": null
       }
     ],
     "drops": [
@@ -2219,9 +2299,18 @@
           }
         ],
         "price": null,
-        "claims": [],
-        "reason": "snaps_down",
-        "roster_id": 3
+        "research": [],
+        "injury_status": null,
+        "return_week": null,
+        "reason": null,
+        "drop": {
+          "roster_id": 3,
+          "holder": "Lil Fridge",
+          "reason": "snaps_down",
+          "beaten_by": "7567",
+          "beaten_by_name": "Kenny Gainwell",
+          "margin": 9.3
+        }
       },
       {
         "player_id": "2505",
@@ -2265,9 +2354,18 @@
           }
         ],
         "price": null,
-        "claims": [],
-        "reason": "snaps_down",
-        "roster_id": 6
+        "research": [],
+        "injury_status": null,
+        "return_week": null,
+        "reason": null,
+        "drop": {
+          "roster_id": 6,
+          "holder": "Bo Girds",
+          "reason": "snaps_down",
+          "beaten_by": "5012",
+          "beaten_by_name": "Mark Andrews",
+          "margin": 7.2
+        }
       }
     ]
   },
