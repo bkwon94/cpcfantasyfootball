@@ -270,3 +270,77 @@ describe("the team pick", () => {
     expect(picked.getByRole("button", { name: "Change your team" })).toBeTruthy();
   });
 });
+
+describe("the team pick across visits", () => {
+  it("survives a reload through storage", () => {
+    renderBoard();
+    fireEvent.click(within(pickList()!).getByRole("radio", { name: /Lil Fridge/ }));
+    cleanup();
+    renderBoard();
+    expect(pickList()).toBeNull();
+    expect(within(chip()!).getByText("Lil Fridge")).toBeTruthy();
+    expect(within(chip()!).getByText("you have $72")).toBeTruthy();
+  });
+
+  it("keeps the page working for the visit when storage throws", () => {
+    vi.spyOn(Storage.prototype, "getItem").mockImplementation(() => {
+      throw new Error("blocked");
+    });
+    vi.spyOn(Storage.prototype, "setItem").mockImplementation(() => {
+      throw new Error("blocked");
+    });
+    renderBoard();
+    fireEvent.click(within(pickList()!).getByRole("radio", { name: /Lil Fridge/ }));
+    expect(within(chip()!).getByText("you have $72")).toBeTruthy();
+  });
+
+  it("reads a roster id that the budget table does not hold as no pick", () => {
+    localStorage.setItem("cpc.waiver-team", "99");
+    renderBoard();
+    expect(chip()).toBeNull();
+    expect(within(pickList()!).queryByRole("radio", { checked: true })).toBeNull();
+  });
+});
+
+describe("the ring and the sheet with a pick", () => {
+  it("turns only the picked team's bar red", () => {
+    localStorage.setItem("cpc.waiver-team", "3");
+    renderBoard();
+    const marked = rowsOf("Budgets").filter((row) => row.querySelector("[data-viewer]"));
+    expect(marked).toHaveLength(1);
+    expect(within(marked[0]).getByText("Lil Fridge")).toBeTruthy();
+    expect(marked[0].querySelector("[data-viewer]")?.className).toContain("bg-red");
+  });
+
+  it("shows how many teams can outbid the viewer at his budget", () => {
+    localStorage.setItem("cpc.waiver-team", "3");
+    renderBoard();
+    const open = within(sheet());
+    expect(open.getByText("Can outbid you")).toBeTruthy();
+    // Lil Fridge has $72, and the outbid map of Kenny Gainwell holds 10 at "72".
+    expect(open.getByText("10")).toBeTruthy();
+  });
+
+  it("follows the budget of a new pick", () => {
+    localStorage.setItem("cpc.waiver-team", "3");
+    renderBoard();
+    fireEvent.click(screen.getByRole("button", { name: "Change your team" }));
+    fireEvent.click(within(pickList()!).getByRole("radio", { name: /London Cooking/ }));
+    // London Cooking has $25, and the map holds 2 at "25".
+    expect(within(chip()!).getByText("you have $25")).toBeTruthy();
+    expect(within(sheet()).getByText("2")).toBeTruthy();
+  });
+
+  it("shows no outbid box with no pick", () => {
+    renderBoard();
+    expect(within(sheet()).queryByText("Can outbid you")).toBeNull();
+  });
+
+  it("shows no outbid box for a drop, which has no price", () => {
+    localStorage.setItem("cpc.waiver-team", "3");
+    renderBoard();
+    fireEvent.click(screen.getByRole("button", { name: "Drops" }));
+    fireEvent.click(within(field()).getByRole("button", { name: "Austin Ekeler" }));
+    expect(within(sheet()).queryByText("Can outbid you")).toBeNull();
+  });
+});

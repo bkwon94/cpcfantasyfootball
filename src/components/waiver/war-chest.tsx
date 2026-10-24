@@ -23,8 +23,19 @@ function byBudget(rows: BudgetRow[]): BudgetRow[] {
   return [...rows].sort((a, b) => b.budget_left - a.budget_left || a.waiver_order - b.waiver_order);
 }
 
-/* The twelve budgets as a row of avatars over thin bars. The largest budget fills its bar, so the ring needs no league cap. */
-function BudgetRing({ budgets, teams, avatars }: { budgets: BudgetRow[]; teams: Record<string, Team>; avatars: AvatarMap }) {
+/* The twelve budgets as a row of avatars over thin bars. The largest budget fills its bar, so the ring needs no league cap.
+   The viewer's bar is red, so a manager finds his own budget in a glance. */
+function BudgetRing({
+  budgets,
+  teams,
+  avatars,
+  viewerId,
+}: {
+  budgets: BudgetRow[];
+  teams: Record<string, Team>;
+  avatars: AvatarMap;
+  viewerId: number | null;
+}) {
   const rows = byBudget(budgets);
   const top = Math.max(1, ...rows.map((row) => row.budget_left));
   return (
@@ -38,7 +49,11 @@ function BudgetRing({ budgets, teams, avatars }: { budgets: BudgetRow[]; teams: 
           />
           {/* The bar is a picture of the number under it, so it is hidden from a screen reader. */}
           <span aria-hidden className="relative mt-sp-1 block h-ring-bar w-ring-bar-w overflow-hidden rounded-sm bg-rule-dark">
-            <span className="absolute inset-x-0 bottom-0 rounded-sm bg-bar-off" style={{ height: `${(row.budget_left / top) * 100}%` }} />
+            <span
+              data-viewer={row.roster_id === viewerId || undefined}
+              className={cn("absolute inset-x-0 bottom-0 rounded-sm", row.roster_id === viewerId ? "bg-red" : "bg-bar-off")}
+              style={{ height: `${(row.budget_left / top) * 100}%` }}
+            />
           </span>
           <span className="mt-sp-0 text-label text-on-dark-muted tabular-nums">{`$${row.budget_left}`}</span>
           {/* Twelve names do not fit in one row at 390, so the name is for a screen reader only. */}
@@ -144,7 +159,7 @@ export function WarChest({ board, teams, avatars }: { board: WaiverBoard; teams:
         </div>
       )}
       <Label dark>War chest</Label>
-      <BudgetRing budgets={board.budgets} teams={teams} avatars={avatars} />
+      <BudgetRing budgets={board.budgets} teams={teams} avatars={avatars} viewerId={viewer?.roster_id ?? null} />
       <div role="group" aria-label="Buckets" className="mt-sp-4 flex gap-sp-1">
         {tabs.map((tab) => {
           const on = tab.key === bucket;
@@ -167,7 +182,12 @@ export function WarChest({ board, teams, avatars }: { board: WaiverBoard; teams:
       <div className="mt-sp-3">
         <DriftField bucket={bucket} players={players} openId={sheetId} onOpen={setSheetPlayer} />
       </div>
-      <PlayerSheet player={sheetPlayer} teams={teams} expertsMissing={board.experts_missing === true} />
+      <PlayerSheet
+        player={sheetPlayer}
+        teams={teams}
+        expertsMissing={board.experts_missing === true}
+        viewerBudget={viewer?.budget_left ?? null}
+      />
       <RestList players={players} sheetId={sheetId} onOpen={setSheetPlayer} />
     </Chapter>
   );
