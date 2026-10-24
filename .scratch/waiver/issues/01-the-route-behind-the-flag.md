@@ -13,9 +13,9 @@ motion, no ring, no sheet yet. A week folder with no file has no route, and old 
 
 **Status:** ready-for-agent
 
-- [ ] `waiverOn` reads one env var in the config module, off by default, with a config test like the finder flag.
-- [ ] With the flag off, the export has no waiver route and the masthead has no link.
-- [ ] With the flag on, the export has a route for each week with a file and none for a week without.
-- [ ] The loader accepts a week with and without the file, and the types mirror the file.
-- [ ] The list renders from a fixture file with the fallback headshot on a missing image.
-- [ ] The page passes the export check.
+- [x] `waiverOn` reads one env var in the config module, off by default, with a config test like the finder flag.
+- [x] With the flag off, the export has no waiver route and the masthead has no link.
+- [x] With the flag on, the export has a route for each week with a file and none for a week without.
+- [x] The loader accepts a week with and without the file, and the types mirror the file.
+- [x] The list renders from a fixture file with the fallback headshot on a missing image.
+- [x] The page passes the export check.
