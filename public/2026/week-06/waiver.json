@@ -1,0 +1,2569 @@
+{
+  "schema_version": 1,
+  "week": 6,
+  "built": "2026-10-24T09:40:12.622643-04:00",
+  "buckets": {
+    "best_adds": [
+      {
+        "player_id": "12718",
+        "name": "Konata Mumpfield",
+        "position": "WR",
+        "team": "LAR",
+        "week_projection": 4.26,
+        "ros_projection": 29.0,
+        "scores": {
+          "usage": 1.0,
+          "environment": 0.9516,
+          "projection": 0.8611
+        },
+        "board_score": 0.9577,
+        "trending_count": 399051,
+        "facts": [
+          {
+            "id": "W.usage.12718",
+            "text": "Konata Mumpfield played 47% of snaps and took 3 targets last week, up from 7% and 0.",
+            "numbers": [
+              "47",
+              "3",
+              "7",
+              "0"
+            ],
+            "teams": [],
+            "players": [
+              "Konata Mumpfield"
+            ]
+          },
+          {
+            "id": "W.env.12718",
+            "text": "LAR runs the 3rd fastest offense and passes on 59% of neutral downs.",
+            "numbers": [
+              "59",
+              "3"
+            ],
+            "teams": [],
+            "players": [
+              "Konata Mumpfield"
+            ]
+          },
+          {
+            "id": "WV.trending.12718",
+            "text": "Konata Mumpfield was added in 399051 Sleeper leagues in the last day.",
+            "numbers": [
+              "399051"
+            ],
+            "teams": [],
+            "players": [
+              "Konata Mumpfield"
+            ]
+          }
+        ],
+        "price": {
+          "bid": 29,
+          "fact": {
+            "id": "waiver_price_12718",
+            "text": "Bid $29 to win Konata Mumpfield. The top rival bid is about $10.34, from London Cooking with $90 left. The last winning WR claim in the last 3 weeks is $28.",
+            "numbers": [
+              "29",
+              "10.34",
+              "90",
+              "3",
+              "28"
+            ],
+            "teams": [
+              "London Cooking"
+            ],
+            "players": [
+              "Konata Mumpfield"
+            ]
+          },
+          "last_like": {
+            "player_id": "13276",
+            "name": "Omar Cooper Jr.",
+            "roster_id": 4,
+            "team": "Pukancun on 3",
+            "week": 6,
+            "bid": 28
+          },
+          "outbid": {
+            "9": 11,
+            "11": 10,
+            "17": 9,
+            "24": 8,
+            "46": 7,
+            "58": 7,
+            "60": 7,
+            "61": 7,
+            "66": 7,
+            "67": 7,
+            "69": 7,
+            "90": 7
+          }
+        },
+        "drop": null,
+        "reason": "board_score",
+        "bye": 11,
+        "injury_status": null,
+        "return_week": null,
+        "research": []
+      },
+      {
+        "player_id": "8122",
+        "name": "Zonovan Knight",
+        "position": "RB",
+        "team": "ARI",
+        "week_projection": 7.05,
+        "ros_projection": 21.4,
+        "scores": {
+          "usage": 0.8571,
+          "environment": 0.7581,
+          "projection": 0.873
+        },
+        "board_score": 0.8306,
+        "trending_count": 100054,
+        "facts": [
+          {
+            "id": "W.usage.8122",
+            "text": "Zonovan Knight played 44% of snaps and took 15 carries last week, up from 8% and 1.",
+            "numbers": [
+              "44",
+              "15",
+              "8",
+              "1"
+            ],
+            "teams": [],
+            "players": [
+              "Zonovan Knight"
+            ]
+          },
+          {
+            "id": "W.env.8122",
+            "text": "ARI runs the 5th fastest offense and succeeds on 43% of runs.",
+            "numbers": [
+              "43",
+              "5"
+            ],
+            "teams": [],
+            "players": [
+              "Zonovan Knight"
+            ]
+          },
+          {
+            "id": "WV.trending.8122",
+            "text": "Zonovan Knight was added in 100054 Sleeper leagues in the last day.",
+            "numbers": [
+              "100054"
+            ],
+            "teams": [],
+            "players": [
+              "Zonovan Knight"
+            ]
+          }
+        ],
+        "price": {
+          "bid": 14,
+          "fact": {
+            "id": "waiver_price_8122",
+            "text": "Bid $14 to win Zonovan Knight. The top rival bid is about $8.97, from London Cooking with $90 left. The last winning RB claim in the last 3 weeks is $13.",
+            "numbers": [
+              "14",
+              "8.97",
+              "90",
+              "3",
+              "13"
+            ],
+            "teams": [
+              "London Cooking"
+            ],
+            "players": [
+              "Zonovan Knight"
+            ]
+          },
+          "last_like": {
+            "player_id": "11655",
+            "name": "Tyrone Tracy Jr.",
+            "roster_id": 4,
+            "team": "Pukancun on 3",
+            "week": 6,
+            "bid": 13
+          },
+          "outbid": {
+            "9": 11,
+            "11": 10,
+            "17": 9,
+            "24": 9,
+            "46": 9,
+            "58": 9,
+            "60": 9,
+            "61": 9,
+            "66": 9,
+            "67": 9,
+            "69": 9,
+            "90": 9
+          }
+        },
+        "drop": null,
+        "reason": "board_score",
+        "bye": 14,
+        "injury_status": null,
+        "return_week": null,
+        "research": []
+      },
+      {
+        "player_id": "11565",
+        "name": "J.J. McCarthy",
+        "position": "QB",
+        "team": "NYG",
+        "week_projection": 13.25,
+        "ros_projection": 151.55,
+        "scores": {
+          "usage": 1.0,
+          "environment": 0.4516,
+          "projection": 0.9495
+        },
+        "board_score": 0.8254,
+        "trending_count": 0,
+        "facts": [
+          {
+            "id": "W.usage.11565",
+            "text": "J.J. McCarthy played 40% of snaps and took 1 carries last week, up from 6% and 2.",
+            "numbers": [
+              "40",
+              "1",
+              "6",
+              "2"
+            ],
+            "teams": [],
+            "players": [
+              "J.J. McCarthy"
+            ]
+          },
+          {
+            "id": "W.env.11565",
+            "text": "NYG runs the 8th fastest offense and passes on 45% of neutral downs.",
+            "numbers": [
+              "45",
+              "8"
+            ],
+            "teams": [],
+            "players": [
+              "J.J. McCarthy"
+            ]
+          }
+        ],
+        "price": {
+          "bid": 9,
+          "fact": {
+            "id": "waiver_price_11565",
+            "text": "Bid $9 to win J.J. McCarthy. The top rival bid is about $8.91, from London Cooking with $90 left. The last winning QB claim in the last 3 weeks is $5.",
+            "numbers": [
+              "9",
+              "8.91",
+              "90",
+              "3",
+              "5"
+            ],
+            "teams": [
+              "London Cooking"
+            ],
+            "players": [
+              "J.J. McCarthy"
+            ]
+          },
+          "last_like": {
+            "player_id": "11563",
+            "name": "Bo Nix",
+            "roster_id": 12,
+            "team": "Amon-Ra Dawg Your Team",
+            "week": 6,
+            "bid": 5
+          },
+          "outbid": {
+            "9": 11,
+            "11": 10,
+            "17": 10,
+            "24": 10,
+            "46": 10,
+            "58": 10,
+            "60": 10,
+            "61": 10,
+            "66": 10,
+            "67": 10,
+            "69": 10,
+            "90": 10
+          }
+        },
+        "drop": null,
+        "reason": "board_score",
+        "bye": 8,
+        "injury_status": null,
+        "return_week": null,
+        "research": []
+      },
+      {
+        "player_id": "6865",
+        "name": "Colby Parkinson",
+        "position": "TE",
+        "team": "LAR",
+        "week_projection": 5.41,
+        "ros_projection": 42.51,
+        "scores": {
+          "usage": 0.6897,
+          "environment": 0.9516,
+          "projection": 0.9128
+        },
+        "board_score": 0.8129,
+        "trending_count": 58554,
+        "facts": [
+          {
+            "id": "W.usage.6865",
+            "text": "Colby Parkinson played 62% of snaps and took 6 targets last week, down from 65% and 2.",
+            "numbers": [
+              "62",
+              "6",
+              "65",
+              "2"
+            ],
+            "teams": [],
+            "players": [
+              "Colby Parkinson"
+            ]
+          },
+          {
+            "id": "W.env.6865",
+            "text": "LAR runs the 3rd fastest offense and passes on 59% of neutral downs.",
+            "numbers": [
+              "59",
+              "3"
+            ],
+            "teams": [],
+            "players": [
+              "Colby Parkinson"
+            ]
+          },
+          {
+            "id": "WV.trending.6865",
+            "text": "Colby Parkinson was added in 58554 Sleeper leagues in the last day.",
+            "numbers": [
+              "58554"
+            ],
+            "teams": [],
+            "players": [
+              "Colby Parkinson"
+            ]
+          }
+        ],
+        "price": {
+          "bid": 9,
+          "fact": {
+            "id": "waiver_price_6865",
+            "text": "Bid $9 to win Colby Parkinson. The top rival bid is about $8.78, from London Cooking with $90 left. The last winning TE claim in the last 3 weeks is $8.",
+            "numbers": [
+              "9",
+              "8.78",
+              "90",
+              "3",
+              "8"
+            ],
+            "teams": [
+              "London Cooking"
+            ],
+            "players": [
+              "Colby Parkinson"
+            ]
+          },
+          "last_like": {
+            "player_id": "7553",
+            "name": "Kyle Pitts Sr.",
+            "roster_id": 7,
+            "team": "To Infinity and Bijan",
+            "week": 6,
+            "bid": 8
+          },
+          "outbid": {
+            "9": 11,
+            "11": 10,
+            "17": 10,
+            "24": 10,
+            "46": 10,
+            "58": 10,
+            "60": 10,
+            "61": 10,
+            "66": 10,
+            "67": 10,
+            "69": 10,
+            "90": 10
+          }
+        },
+        "drop": null,
+        "reason": "board_score",
+        "bye": 11,
+        "injury_status": null,
+        "return_week": null,
+        "research": []
+      },
+      {
+        "player_id": "13322",
+        "name": "Sam Roush",
+        "position": "TE",
+        "team": "CHI",
+        "week_projection": 1.79,
+        "ros_projection": 18.73,
+        "scores": {
+          "usage": 0.8966,
+          "environment": 0.5806,
+          "projection": 0.8256
+        },
+        "board_score": 0.7876,
+        "trending_count": 0,
+        "facts": [
+          {
+            "id": "W.usage.13322",
+            "text": "Sam Roush played 31% of snaps and took 0 targets last week, up from 7% and 0.",
+            "numbers": [
+              "31",
+              "0",
+              "7",
+              "0"
+            ],
+            "teams": [],
+            "players": [
+              "Sam Roush"
+            ]
+          },
+          {
+            "id": "W.env.13322",
+            "text": "CHI runs the 1st fastest offense and passes on 47% of neutral downs.",
+            "numbers": [
+              "47",
+              "1"
+            ],
+            "teams": [],
+            "players": [
+              "Sam Roush"
+            ]
+          }
+        ],
+        "price": {
+          "bid": 9,
+          "fact": {
+            "id": "waiver_price_13322",
+            "text": "Bid $9 to win Sam Roush. The top rival bid is about $8.51, from London Cooking with $90 left. The last winning TE claim in the last 3 weeks is $8.",
+            "numbers": [
+              "9",
+              "8.51",
+              "90",
+              "3",
+              "8"
+            ],
+            "teams": [
+              "London Cooking"
+            ],
+            "players": [
+              "Sam Roush"
+            ]
+          },
+          "last_like": {
+            "player_id": "7553",
+            "name": "Kyle Pitts Sr.",
+            "roster_id": 7,
+            "team": "To Infinity and Bijan",
+            "week": 6,
+            "bid": 8
+          },
+          "outbid": {
+            "9": 11,
+            "11": 10,
+            "17": 10,
+            "24": 10,
+            "46": 10,
+            "58": 10,
+            "60": 10,
+            "61": 10,
+            "66": 10,
+            "67": 10,
+            "69": 10,
+            "90": 10
+          }
+        },
+        "drop": null,
+        "reason": "board_score",
+        "bye": 10,
+        "injury_status": null,
+        "return_week": null,
+        "research": []
+      },
+      {
+        "player_id": "5985",
+        "name": "Foster Moreau",
+        "position": "TE",
+        "team": "HOU",
+        "week_projection": 2.57,
+        "ros_projection": 25.59,
+        "scores": {
+          "usage": 0.8276,
+          "environment": 0.6452,
+          "projection": 0.8547
+        },
+        "board_score": 0.7783,
+        "trending_count": 0,
+        "facts": [
+          {
+            "id": "W.usage.5985",
+            "text": "Foster Moreau played 62% of snaps and took 2 targets last week, up from 39% and 3.",
+            "numbers": [
+              "62",
+              "2",
+              "39",
+              "3"
+            ],
+            "teams": [],
+            "players": [
+              "Foster Moreau"
+            ]
+          },
+          {
+            "id": "W.env.5985",
+            "text": "HOU runs the 16th fastest offense and passes on 55% of neutral downs.",
+            "numbers": [
+              "55",
+              "16"
+            ],
+            "teams": [],
+            "players": [
+              "Foster Moreau"
+            ]
+          }
+        ],
+        "price": {
+          "bid": 9,
+          "fact": {
+            "id": "waiver_price_5985",
+            "text": "Bid $9 to win Foster Moreau. The top rival bid is about $8.41, from London Cooking with $90 left. The last winning TE claim in the last 3 weeks is $8.",
+            "numbers": [
+              "9",
+              "8.41",
+              "90",
+              "3",
+              "8"
+            ],
+            "teams": [
+              "London Cooking"
+            ],
+            "players": [
+              "Foster Moreau"
+            ]
+          },
+          "last_like": {
+            "player_id": "7553",
+            "name": "Kyle Pitts Sr.",
+            "roster_id": 7,
+            "team": "To Infinity and Bijan",
+            "week": 6,
+            "bid": 8
+          },
+          "outbid": {
+            "9": 11,
+            "11": 10,
+            "17": 10,
+            "24": 10,
+            "46": 10,
+            "58": 10,
+            "60": 10,
+            "61": 10,
+            "66": 10,
+            "67": 10,
+            "69": 10,
+            "90": 10
+          }
+        },
+        "drop": null,
+        "reason": "board_score",
+        "bye": 8,
+        "injury_status": null,
+        "return_week": null,
+        "research": []
+      },
+      {
+        "player_id": "13285",
+        "name": "Malachi Fields",
+        "position": "WR",
+        "team": "NYG",
+        "week_projection": 4.45,
+        "ros_projection": 45.71,
+        "scores": {
+          "usage": 0.9062,
+          "environment": 0.4516,
+          "projection": 0.9405
+        },
+        "board_score": 0.7767,
+        "trending_count": 0,
+        "facts": [
+          {
+            "id": "W.usage.13285",
+            "text": "Malachi Fields played 94% of snaps and took 8 targets last week, up from 72% and 2.",
+            "numbers": [
+              "94",
+              "8",
+              "72",
+              "2"
+            ],
+            "teams": [],
+            "players": [
+              "Malachi Fields"
+            ]
+          },
+          {
+            "id": "W.env.13285",
+            "text": "NYG runs the 8th fastest offense and passes on 45% of neutral downs.",
+            "numbers": [
+              "45",
+              "8"
+            ],
+            "teams": [],
+            "players": [
+              "Malachi Fields"
+            ]
+          }
+        ],
+        "price": {
+          "bid": 29,
+          "fact": {
+            "id": "waiver_price_13285",
+            "text": "Bid $29 to win Malachi Fields. The top rival bid is about $8.39, from London Cooking with $90 left. The last winning WR claim in the last 3 weeks is $28.",
+            "numbers": [
+              "29",
+              "8.39",
+              "90",
+              "3",
+              "28"
+            ],
+            "teams": [
+              "London Cooking"
+            ],
+            "players": [
+              "Malachi Fields"
+            ]
+          },
+          "last_like": {
+            "player_id": "13276",
+            "name": "Omar Cooper Jr.",
+            "roster_id": 4,
+            "team": "Pukancun on 3",
+            "week": 6,
+            "bid": 28
+          },
+          "outbid": {
+            "9": 11,
+            "11": 10,
+            "17": 9,
+            "24": 8,
+            "46": 7,
+            "58": 7,
+            "60": 7,
+            "61": 7,
+            "66": 7,
+            "67": 7,
+            "69": 7,
+            "90": 7
+          }
+        },
+        "drop": null,
+        "reason": "board_score",
+        "bye": 8,
+        "injury_status": null,
+        "return_week": null,
+        "research": []
+      },
+      {
+        "player_id": "12497",
+        "name": "Tory Horton",
+        "position": "WR",
+        "team": "SEA",
+        "week_projection": 2.86,
+        "ros_projection": 29.53,
+        "scores": {
+          "usage": 0.9375,
+          "environment": 0.4032,
+          "projection": 0.869
+        },
+        "board_score": 0.7635,
+        "trending_count": 0,
+        "facts": [
+          {
+            "id": "W.usage.12497",
+            "text": "Tory Horton played 46% of snaps and took 5 targets last week, up from 17% and 0.",
+            "numbers": [
+              "46",
+              "5",
+              "17",
+              "0"
+            ],
+            "teams": [],
+            "players": [
+              "Tory Horton"
+            ]
+          },
+          {
+            "id": "W.env.12497",
+            "text": "SEA runs the 13th fastest offense and passes on 47% of neutral downs.",
+            "numbers": [
+              "47",
+              "13"
+            ],
+            "teams": [],
+            "players": [
+              "Tory Horton"
+            ]
+          }
+        ],
+        "price": {
+          "bid": 29,
+          "fact": {
+            "id": "waiver_price_12497",
+            "text": "Bid $29 to win Tory Horton. The top rival bid is about $8.25, from London Cooking with $90 left. The last winning WR claim in the last 3 weeks is $28.",
+            "numbers": [
+              "29",
+              "8.25",
+              "90",
+              "3",
+              "28"
+            ],
+            "teams": [
+              "London Cooking"
+            ],
+            "players": [
+              "Tory Horton"
+            ]
+          },
+          "last_like": {
+            "player_id": "13276",
+            "name": "Omar Cooper Jr.",
+            "roster_id": 4,
+            "team": "Pukancun on 3",
+            "week": 6,
+            "bid": 28
+          },
+          "outbid": {
+            "9": 11,
+            "11": 10,
+            "17": 9,
+            "24": 8,
+            "46": 7,
+            "58": 7,
+            "60": 7,
+            "61": 7,
+            "66": 7,
+            "67": 7,
+            "69": 7,
+            "90": 7
+          }
+        },
+        "drop": null,
+        "reason": "board_score",
+        "bye": 11,
+        "injury_status": null,
+        "return_week": null,
+        "research": []
+      }
+    ],
+    "trending": [
+      {
+        "player_id": "12718",
+        "name": "Konata Mumpfield",
+        "position": "WR",
+        "team": "LAR",
+        "week_projection": 4.26,
+        "ros_projection": 29.0,
+        "scores": {
+          "usage": 1.0,
+          "environment": 0.9516,
+          "projection": 0.8611
+        },
+        "board_score": 0.9577,
+        "trending_count": 399051,
+        "facts": [
+          {
+            "id": "W.usage.12718",
+            "text": "Konata Mumpfield played 47% of snaps and took 3 targets last week, up from 7% and 0.",
+            "numbers": [
+              "47",
+              "3",
+              "7",
+              "0"
+            ],
+            "teams": [],
+            "players": [
+              "Konata Mumpfield"
+            ]
+          },
+          {
+            "id": "W.env.12718",
+            "text": "LAR runs the 3rd fastest offense and passes on 59% of neutral downs.",
+            "numbers": [
+              "59",
+              "3"
+            ],
+            "teams": [],
+            "players": [
+              "Konata Mumpfield"
+            ]
+          },
+          {
+            "id": "WV.trending.12718",
+            "text": "Konata Mumpfield was added in 399051 Sleeper leagues in the last day.",
+            "numbers": [
+              "399051"
+            ],
+            "teams": [],
+            "players": [
+              "Konata Mumpfield"
+            ]
+          }
+        ],
+        "price": {
+          "bid": 29,
+          "fact": {
+            "id": "waiver_price_12718",
+            "text": "Bid $29 to win Konata Mumpfield. The top rival bid is about $10.34, from London Cooking with $90 left. The last winning WR claim in the last 3 weeks is $28.",
+            "numbers": [
+              "29",
+              "10.34",
+              "90",
+              "3",
+              "28"
+            ],
+            "teams": [
+              "London Cooking"
+            ],
+            "players": [
+              "Konata Mumpfield"
+            ]
+          },
+          "last_like": {
+            "player_id": "13276",
+            "name": "Omar Cooper Jr.",
+            "roster_id": 4,
+            "team": "Pukancun on 3",
+            "week": 6,
+            "bid": 28
+          },
+          "outbid": {
+            "9": 11,
+            "11": 10,
+            "17": 9,
+            "24": 8,
+            "46": 7,
+            "58": 7,
+            "60": 7,
+            "61": 7,
+            "66": 7,
+            "67": 7,
+            "69": 7,
+            "90": 7
+          }
+        },
+        "drop": null,
+        "reason": "trending",
+        "bye": 11,
+        "injury_status": null,
+        "return_week": null,
+        "research": []
+      },
+      {
+        "player_id": "4037",
+        "name": "Chris Godwin Jr.",
+        "position": "WR",
+        "team": "TB",
+        "week_projection": 9.09,
+        "ros_projection": 82.71,
+        "scores": {
+          "usage": 0.5312,
+          "environment": 0.3871,
+          "projection": 1.0
+        },
+        "board_score": 0.5817,
+        "trending_count": 201870,
+        "facts": [
+          {
+            "id": "W.usage.4037",
+            "text": "Chris Godwin Jr. played 92% of snaps and took 8 targets last week, up from 88% and 3.",
+            "numbers": [
+              "92",
+              "8",
+              "88",
+              "3"
+            ],
+            "teams": [],
+            "players": [
+              "Chris Godwin Jr."
+            ]
+          },
+          {
+            "id": "W.env.4037",
+            "text": "TB runs the 15th fastest offense and passes on 47% of neutral downs.",
+            "numbers": [
+              "47",
+              "15"
+            ],
+            "teams": [],
+            "players": [
+              "Chris Godwin Jr."
+            ]
+          },
+          {
+            "id": "WV.trending.4037",
+            "text": "Chris Godwin Jr. was added in 201870 Sleeper leagues in the last day.",
+            "numbers": [
+              "201870"
+            ],
+            "teams": [],
+            "players": [
+              "Chris Godwin Jr."
+            ]
+          }
+        ],
+        "price": {
+          "bid": 29,
+          "fact": {
+            "id": "waiver_price_4037",
+            "text": "Bid $29 to win Chris Godwin Jr.. The top rival bid is about $6.28, from London Cooking with $90 left. The last winning WR claim in the last 3 weeks is $28.",
+            "numbers": [
+              "29",
+              "6.28",
+              "90",
+              "3",
+              "28"
+            ],
+            "teams": [
+              "London Cooking"
+            ],
+            "players": [
+              "Chris Godwin Jr."
+            ]
+          },
+          "last_like": {
+            "player_id": "13276",
+            "name": "Omar Cooper Jr.",
+            "roster_id": 4,
+            "team": "Pukancun on 3",
+            "week": 6,
+            "bid": 28
+          },
+          "outbid": {
+            "9": 11,
+            "11": 10,
+            "17": 9,
+            "24": 8,
+            "46": 7,
+            "58": 7,
+            "60": 7,
+            "61": 7,
+            "66": 7,
+            "67": 7,
+            "69": 7,
+            "90": 7
+          }
+        },
+        "drop": null,
+        "reason": "trending",
+        "bye": 10,
+        "injury_status": null,
+        "return_week": null,
+        "research": []
+      },
+      {
+        "player_id": "13317",
+        "name": "Ted Hurst III",
+        "position": "WR",
+        "team": "TB",
+        "week_projection": 6.68,
+        "ros_projection": 44.71,
+        "scores": {
+          "usage": 0.7188,
+          "environment": 0.3871,
+          "projection": 0.9246
+        },
+        "board_score": 0.6604,
+        "trending_count": 130272,
+        "facts": [
+          {
+            "id": "W.usage.13317",
+            "text": "Ted Hurst III played 50% of snaps and took 6 targets last week, up from 46% and 0.",
+            "numbers": [
+              "50",
+              "6",
+              "46",
+              "0"
+            ],
+            "teams": [],
+            "players": [
+              "Ted Hurst III"
+            ]
+          },
+          {
+            "id": "W.env.13317",
+            "text": "TB runs the 15th fastest offense and passes on 47% of neutral downs.",
+            "numbers": [
+              "47",
+              "15"
+            ],
+            "teams": [],
+            "players": [
+              "Ted Hurst III"
+            ]
+          },
+          {
+            "id": "WV.trending.13317",
+            "text": "Ted Hurst III was added in 130272 Sleeper leagues in the last day.",
+            "numbers": [
+              "130272"
+            ],
+            "teams": [],
+            "players": [
+              "Ted Hurst III"
+            ]
+          }
+        ],
+        "price": {
+          "bid": 29,
+          "fact": {
+            "id": "waiver_price_13317",
+            "text": "Bid $29 to win Ted Hurst III. The top rival bid is about $7.13, from London Cooking with $90 left. The last winning WR claim in the last 3 weeks is $28.",
+            "numbers": [
+              "29",
+              "7.13",
+              "90",
+              "3",
+              "28"
+            ],
+            "teams": [
+              "London Cooking"
+            ],
+            "players": [
+              "Ted Hurst III"
+            ]
+          },
+          "last_like": {
+            "player_id": "13276",
+            "name": "Omar Cooper Jr.",
+            "roster_id": 4,
+            "team": "Pukancun on 3",
+            "week": 6,
+            "bid": 28
+          },
+          "outbid": {
+            "9": 11,
+            "11": 10,
+            "17": 9,
+            "24": 8,
+            "46": 7,
+            "58": 7,
+            "60": 7,
+            "61": 7,
+            "66": 7,
+            "67": 7,
+            "69": 7,
+            "90": 7
+          }
+        },
+        "drop": null,
+        "reason": "trending",
+        "bye": 10,
+        "injury_status": null,
+        "return_week": null,
+        "research": []
+      },
+      {
+        "player_id": "8122",
+        "name": "Zonovan Knight",
+        "position": "RB",
+        "team": "ARI",
+        "week_projection": 7.05,
+        "ros_projection": 21.4,
+        "scores": {
+          "usage": 0.8571,
+          "environment": 0.7581,
+          "projection": 0.873
+        },
+        "board_score": 0.8306,
+        "trending_count": 100054,
+        "facts": [
+          {
+            "id": "W.usage.8122",
+            "text": "Zonovan Knight played 44% of snaps and took 15 carries last week, up from 8% and 1.",
+            "numbers": [
+              "44",
+              "15",
+              "8",
+              "1"
+            ],
+            "teams": [],
+            "players": [
+              "Zonovan Knight"
+            ]
+          },
+          {
+            "id": "W.env.8122",
+            "text": "ARI runs the 5th fastest offense and succeeds on 43% of runs.",
+            "numbers": [
+              "43",
+              "5"
+            ],
+            "teams": [],
+            "players": [
+              "Zonovan Knight"
+            ]
+          },
+          {
+            "id": "WV.trending.8122",
+            "text": "Zonovan Knight was added in 100054 Sleeper leagues in the last day.",
+            "numbers": [
+              "100054"
+            ],
+            "teams": [],
+            "players": [
+              "Zonovan Knight"
+            ]
+          }
+        ],
+        "price": {
+          "bid": 14,
+          "fact": {
+            "id": "waiver_price_8122",
+            "text": "Bid $14 to win Zonovan Knight. The top rival bid is about $8.97, from London Cooking with $90 left. The last winning RB claim in the last 3 weeks is $13.",
+            "numbers": [
+              "14",
+              "8.97",
+              "90",
+              "3",
+              "13"
+            ],
+            "teams": [
+              "London Cooking"
+            ],
+            "players": [
+              "Zonovan Knight"
+            ]
+          },
+          "last_like": {
+            "player_id": "11655",
+            "name": "Tyrone Tracy Jr.",
+            "roster_id": 4,
+            "team": "Pukancun on 3",
+            "week": 6,
+            "bid": 13
+          },
+          "outbid": {
+            "9": 11,
+            "11": 10,
+            "17": 9,
+            "24": 9,
+            "46": 9,
+            "58": 9,
+            "60": 9,
+            "61": 9,
+            "66": 9,
+            "67": 9,
+            "69": 9,
+            "90": 9
+          }
+        },
+        "drop": null,
+        "reason": "trending",
+        "bye": 14,
+        "injury_status": null,
+        "return_week": null,
+        "research": []
+      },
+      {
+        "player_id": "8132",
+        "name": "Tyler Allgeier",
+        "position": "RB",
+        "team": "ARI",
+        "week_projection": 9.91,
+        "ros_projection": 61.08,
+        "scores": {
+          "usage": 0.5714,
+          "environment": 0.7581,
+          "projection": 0.9841
+        },
+        "board_score": 0.7099,
+        "trending_count": 72010,
+        "facts": [
+          {
+            "id": "W.usage.8132",
+            "text": "Tyler Allgeier played 56% of snaps and took 18 carries last week, up from 44% and 3.",
+            "numbers": [
+              "56",
+              "18",
+              "44",
+              "3"
+            ],
+            "teams": [],
+            "players": [
+              "Tyler Allgeier"
+            ]
+          },
+          {
+            "id": "W.env.8132",
+            "text": "ARI runs the 5th fastest offense and succeeds on 43% of runs.",
+            "numbers": [
+              "43",
+              "5"
+            ],
+            "teams": [],
+            "players": [
+              "Tyler Allgeier"
+            ]
+          },
+          {
+            "id": "WV.trending.8132",
+            "text": "Tyler Allgeier was added in 72010 Sleeper leagues in the last day.",
+            "numbers": [
+              "72010"
+            ],
+            "teams": [],
+            "players": [
+              "Tyler Allgeier"
+            ]
+          }
+        ],
+        "price": {
+          "bid": 14,
+          "fact": {
+            "id": "waiver_price_8132",
+            "text": "Bid $14 to win Tyler Allgeier. The top rival bid is about $7.67, from London Cooking with $90 left. The last winning RB claim in the last 3 weeks is $13.",
+            "numbers": [
+              "14",
+              "7.67",
+              "90",
+              "3",
+              "13"
+            ],
+            "teams": [
+              "London Cooking"
+            ],
+            "players": [
+              "Tyler Allgeier"
+            ]
+          },
+          "last_like": {
+            "player_id": "11655",
+            "name": "Tyrone Tracy Jr.",
+            "roster_id": 4,
+            "team": "Pukancun on 3",
+            "week": 6,
+            "bid": 13
+          },
+          "outbid": {
+            "9": 11,
+            "11": 10,
+            "17": 9,
+            "24": 9,
+            "46": 9,
+            "58": 9,
+            "60": 9,
+            "61": 9,
+            "66": 9,
+            "67": 9,
+            "69": 9,
+            "90": 9
+          }
+        },
+        "drop": null,
+        "reason": "trending",
+        "bye": 14,
+        "injury_status": null,
+        "return_week": null,
+        "research": []
+      },
+      {
+        "player_id": "6865",
+        "name": "Colby Parkinson",
+        "position": "TE",
+        "team": "LAR",
+        "week_projection": 5.41,
+        "ros_projection": 42.51,
+        "scores": {
+          "usage": 0.6897,
+          "environment": 0.9516,
+          "projection": 0.9128
+        },
+        "board_score": 0.8129,
+        "trending_count": 58554,
+        "facts": [
+          {
+            "id": "W.usage.6865",
+            "text": "Colby Parkinson played 62% of snaps and took 6 targets last week, down from 65% and 2.",
+            "numbers": [
+              "62",
+              "6",
+              "65",
+              "2"
+            ],
+            "teams": [],
+            "players": [
+              "Colby Parkinson"
+            ]
+          },
+          {
+            "id": "W.env.6865",
+            "text": "LAR runs the 3rd fastest offense and passes on 59% of neutral downs.",
+            "numbers": [
+              "59",
+              "3"
+            ],
+            "teams": [],
+            "players": [
+              "Colby Parkinson"
+            ]
+          },
+          {
+            "id": "WV.trending.6865",
+            "text": "Colby Parkinson was added in 58554 Sleeper leagues in the last day.",
+            "numbers": [
+              "58554"
+            ],
+            "teams": [],
+            "players": [
+              "Colby Parkinson"
+            ]
+          }
+        ],
+        "price": {
+          "bid": 9,
+          "fact": {
+            "id": "waiver_price_6865",
+            "text": "Bid $9 to win Colby Parkinson. The top rival bid is about $8.78, from London Cooking with $90 left. The last winning TE claim in the last 3 weeks is $8.",
+            "numbers": [
+              "9",
+              "8.78",
+              "90",
+              "3",
+              "8"
+            ],
+            "teams": [
+              "London Cooking"
+            ],
+            "players": [
+              "Colby Parkinson"
+            ]
+          },
+          "last_like": {
+            "player_id": "7553",
+            "name": "Kyle Pitts Sr.",
+            "roster_id": 7,
+            "team": "To Infinity and Bijan",
+            "week": 6,
+            "bid": 8
+          },
+          "outbid": {
+            "9": 11,
+            "11": 10,
+            "17": 10,
+            "24": 10,
+            "46": 10,
+            "58": 10,
+            "60": 10,
+            "61": 10,
+            "66": 10,
+            "67": 10,
+            "69": 10,
+            "90": 10
+          }
+        },
+        "drop": null,
+        "reason": "trending",
+        "bye": 11,
+        "injury_status": null,
+        "return_week": null,
+        "research": []
+      },
+      {
+        "player_id": "8111",
+        "name": "Cade Otton",
+        "position": "TE",
+        "team": "TB",
+        "week_projection": 6.5,
+        "ros_projection": 63.06,
+        "scores": {
+          "usage": 0.0,
+          "environment": 0.3871,
+          "projection": 0.9593
+        },
+        "board_score": 0.308,
+        "trending_count": 43368,
+        "facts": [
+          {
+            "id": "W.usage.8111",
+            "text": "Cade Otton played 100% of snaps and took 2 targets last week, up from 92% and 4.",
+            "numbers": [
+              "100",
+              "2",
+              "92",
+              "4"
+            ],
+            "teams": [],
+            "players": [
+              "Cade Otton"
+            ]
+          },
+          {
+            "id": "W.env.8111",
+            "text": "TB runs the 15th fastest offense and passes on 47% of neutral downs.",
+            "numbers": [
+              "47",
+              "15"
+            ],
+            "teams": [],
+            "players": [
+              "Cade Otton"
+            ]
+          },
+          {
+            "id": "WV.trending.8111",
+            "text": "Cade Otton was added in 43368 Sleeper leagues in the last day.",
+            "numbers": [
+              "43368"
+            ],
+            "teams": [],
+            "players": [
+              "Cade Otton"
+            ]
+          }
+        ],
+        "price": {
+          "bid": 9,
+          "fact": {
+            "id": "waiver_price_8111",
+            "text": "Bid $9 to win Cade Otton. The top rival bid is about $3.33, from London Cooking with $90 left. The last winning TE claim in the last 3 weeks is $8.",
+            "numbers": [
+              "9",
+              "3.33",
+              "90",
+              "3",
+              "8"
+            ],
+            "teams": [
+              "London Cooking"
+            ],
+            "players": [
+              "Cade Otton"
+            ]
+          },
+          "last_like": {
+            "player_id": "7553",
+            "name": "Kyle Pitts Sr.",
+            "roster_id": 7,
+            "team": "To Infinity and Bijan",
+            "week": 6,
+            "bid": 8
+          },
+          "outbid": {
+            "9": 11,
+            "11": 10,
+            "17": 10,
+            "24": 10,
+            "46": 10,
+            "58": 10,
+            "60": 10,
+            "61": 10,
+            "66": 10,
+            "67": 10,
+            "69": 10,
+            "90": 10
+          }
+        },
+        "drop": null,
+        "reason": "trending",
+        "bye": 10,
+        "injury_status": null,
+        "return_week": null,
+        "research": []
+      },
+      {
+        "player_id": "5995",
+        "name": "Justice Hill",
+        "position": "RB",
+        "team": "BAL",
+        "week_projection": 6.81,
+        "ros_projection": 54.28,
+        "scores": {
+          "usage": 0.0,
+          "environment": 0.5484,
+          "projection": 0.9603
+        },
+        "board_score": 0.3566,
+        "trending_count": 36792,
+        "facts": [
+          {
+            "id": "W.usage.5995",
+            "text": "Justice Hill played 42% of snaps and took 0 carries last week, down from 46% and 4.",
+            "numbers": [
+              "42",
+              "0",
+              "46",
+              "4"
+            ],
+            "teams": [],
+            "players": [
+              "Justice Hill"
+            ]
+          },
+          {
+            "id": "W.env.5995",
+            "text": "BAL runs the 20th fastest offense and succeeds on 44% of runs.",
+            "numbers": [
+              "44",
+              "20"
+            ],
+            "teams": [],
+            "players": [
+              "Justice Hill"
+            ]
+          },
+          {
+            "id": "WV.trending.5995",
+            "text": "Justice Hill was added in 36792 Sleeper leagues in the last day.",
+            "numbers": [
+              "36792"
+            ],
+            "teams": [],
+            "players": [
+              "Justice Hill"
+            ]
+          }
+        ],
+        "price": {
+          "bid": 14,
+          "fact": {
+            "id": "waiver_price_5995",
+            "text": "Bid $14 to win Justice Hill. The top rival bid is about $3.85, from London Cooking with $90 left. The last winning RB claim in the last 3 weeks is $13.",
+            "numbers": [
+              "14",
+              "3.85",
+              "90",
+              "3",
+              "13"
+            ],
+            "teams": [
+              "London Cooking"
+            ],
+            "players": [
+              "Justice Hill"
+            ]
+          },
+          "last_like": {
+            "player_id": "11655",
+            "name": "Tyrone Tracy Jr.",
+            "roster_id": 4,
+            "team": "Pukancun on 3",
+            "week": 6,
+            "bid": 13
+          },
+          "outbid": {
+            "9": 11,
+            "11": 10,
+            "17": 9,
+            "24": 9,
+            "46": 9,
+            "58": 9,
+            "60": 9,
+            "61": 9,
+            "66": 9,
+            "67": 9,
+            "69": 9,
+            "90": 9
+          }
+        },
+        "drop": null,
+        "reason": "trending",
+        "bye": 13,
+        "injury_status": null,
+        "return_week": null,
+        "research": []
+      }
+    ],
+    "sneaky": [
+      {
+        "player_id": "12715",
+        "name": "Thomas Fidone II",
+        "position": "TE",
+        "team": "NYG",
+        "week_projection": 0.0,
+        "ros_projection": 0.0,
+        "scores": {
+          "usage": 1.0,
+          "environment": 0.4516,
+          "projection": 0.4535
+        },
+        "board_score": 0.7262,
+        "trending_count": 0,
+        "facts": [
+          {
+            "id": "W.usage.12715",
+            "text": "Thomas Fidone II played 38% of snaps and took 0 targets last week, up from 0% and 0.",
+            "numbers": [
+              "38",
+              "0",
+              "0",
+              "0"
+            ],
+            "teams": [],
+            "players": [
+              "Thomas Fidone II"
+            ]
+          },
+          {
+            "id": "W.env.12715",
+            "text": "NYG runs the 8th fastest offense and passes on 45% of neutral downs.",
+            "numbers": [
+              "45",
+              "8"
+            ],
+            "teams": [],
+            "players": [
+              "Thomas Fidone II"
+            ]
+          }
+        ],
+        "price": {
+          "bid": 9,
+          "fact": {
+            "id": "waiver_price_12715",
+            "text": "Bid $9 to win Thomas Fidone II. The top rival bid is about $7.84, from London Cooking with $90 left. The last winning TE claim in the last 3 weeks is $8.",
+            "numbers": [
+              "9",
+              "7.84",
+              "90",
+              "3",
+              "8"
+            ],
+            "teams": [
+              "London Cooking"
+            ],
+            "players": [
+              "Thomas Fidone II"
+            ]
+          },
+          "last_like": {
+            "player_id": "7553",
+            "name": "Kyle Pitts Sr.",
+            "roster_id": 7,
+            "team": "To Infinity and Bijan",
+            "week": 6,
+            "bid": 8
+          },
+          "outbid": {
+            "9": 11,
+            "11": 10,
+            "17": 10,
+            "24": 10,
+            "46": 10,
+            "58": 10,
+            "60": 10,
+            "61": 10,
+            "66": 10,
+            "67": 10,
+            "69": 10,
+            "90": 10
+          }
+        },
+        "drop": null,
+        "reason": "usage_rise",
+        "bye": 8,
+        "injury_status": null,
+        "return_week": null,
+        "research": []
+      },
+      {
+        "player_id": "2197",
+        "name": "Brandin Cooks",
+        "position": "WR",
+        "team": "SF",
+        "week_projection": 6.86,
+        "ros_projection": 10.97,
+        "scores": {
+          "usage": 0.5312,
+          "environment": 0.4032,
+          "projection": 0.7222
+        },
+        "board_score": 0.531,
+        "trending_count": 91172,
+        "facts": [
+          {
+            "id": "W.usage.2197",
+            "text": "Brandin Cooks played 52% of snaps and took 2 targets last week, up from 40% and 2.",
+            "numbers": [
+              "52",
+              "2",
+              "40",
+              "2"
+            ],
+            "teams": [],
+            "players": [
+              "Brandin Cooks"
+            ]
+          },
+          {
+            "id": "W.env.2197",
+            "text": "SF runs the 30th fastest offense and passes on 54% of neutral downs.",
+            "numbers": [
+              "54",
+              "30"
+            ],
+            "teams": [],
+            "players": [
+              "Brandin Cooks"
+            ]
+          },
+          {
+            "id": "WV.trending.2197",
+            "text": "Brandin Cooks was added in 91172 Sleeper leagues in the last day.",
+            "numbers": [
+              "91172"
+            ],
+            "teams": [],
+            "players": [
+              "Brandin Cooks"
+            ]
+          },
+          {
+            "id": "WV.story.2197",
+            "text": "Deebo Samuel Sr. is out, and Brandin Cooks is next on the depth chart.",
+            "numbers": [],
+            "teams": [],
+            "players": [
+              "Brandin Cooks",
+              "Deebo Samuel Sr."
+            ]
+          }
+        ],
+        "price": {
+          "bid": 29,
+          "fact": {
+            "id": "waiver_price_2197",
+            "text": "Bid $29 to win Brandin Cooks. The top rival bid is about $5.73, from London Cooking with $90 left. The last winning WR claim in the last 3 weeks is $28.",
+            "numbers": [
+              "29",
+              "5.73",
+              "90",
+              "3",
+              "28"
+            ],
+            "teams": [
+              "London Cooking"
+            ],
+            "players": [
+              "Brandin Cooks"
+            ]
+          },
+          "last_like": {
+            "player_id": "13276",
+            "name": "Omar Cooper Jr.",
+            "roster_id": 4,
+            "team": "Pukancun on 3",
+            "week": 6,
+            "bid": 28
+          },
+          "outbid": {
+            "9": 11,
+            "11": 10,
+            "17": 9,
+            "24": 8,
+            "46": 7,
+            "58": 7,
+            "60": 7,
+            "61": 7,
+            "66": 7,
+            "67": 7,
+            "69": 7,
+            "90": 7
+          }
+        },
+        "drop": null,
+        "reason": "behind_injury",
+        "bye": 8,
+        "injury_status": null,
+        "return_week": null,
+        "research": []
+      },
+      {
+        "player_id": "9754",
+        "name": "Quentin Johnston",
+        "position": "WR",
+        "team": "LAC",
+        "week_projection": 0.0,
+        "ros_projection": 56.86,
+        "scores": {
+          "usage": 0.0,
+          "environment": 0.2581,
+          "projection": 0.9841
+        },
+        "board_score": 0.2742,
+        "trending_count": 0,
+        "facts": [
+          {
+            "id": "W.env.9754",
+            "text": "LAC runs the 16th fastest offense and passes on 38% of neutral downs.",
+            "numbers": [
+              "38",
+              "16"
+            ],
+            "teams": [],
+            "players": [
+              "Quentin Johnston"
+            ]
+          },
+          {
+            "id": "WV.story.9754",
+            "text": "Ladd McConkey is out, and Quentin Johnston is next on the depth chart.",
+            "numbers": [],
+            "teams": [],
+            "players": [
+              "Quentin Johnston",
+              "Ladd McConkey"
+            ]
+          }
+        ],
+        "price": {
+          "bid": 29,
+          "fact": {
+            "id": "waiver_price_9754",
+            "text": "Bid $29 to win Quentin Johnston. The top rival bid is about $2.96, from London Cooking with $90 left. The last winning WR claim in the last 3 weeks is $28.",
+            "numbers": [
+              "29",
+              "2.96",
+              "90",
+              "3",
+              "28"
+            ],
+            "teams": [
+              "London Cooking"
+            ],
+            "players": [
+              "Quentin Johnston"
+            ]
+          },
+          "last_like": {
+            "player_id": "13276",
+            "name": "Omar Cooper Jr.",
+            "roster_id": 4,
+            "team": "Pukancun on 3",
+            "week": 6,
+            "bid": 28
+          },
+          "outbid": {
+            "9": 11,
+            "11": 10,
+            "17": 9,
+            "24": 8,
+            "46": 7,
+            "58": 7,
+            "60": 7,
+            "61": 7,
+            "66": 7,
+            "67": 7,
+            "69": 7,
+            "90": 7
+          }
+        },
+        "drop": null,
+        "reason": "behind_injury",
+        "bye": 7,
+        "injury_status": null,
+        "return_week": null,
+        "research": []
+      },
+      {
+        "player_id": "12670",
+        "name": "KeAndre Lambert-Smith",
+        "position": "WR",
+        "team": "LAC",
+        "week_projection": 0.0,
+        "ros_projection": 10.86,
+        "scores": {
+          "usage": 0.0,
+          "environment": 0.2581,
+          "projection": 0.7183
+        },
+        "board_score": 0.2211,
+        "trending_count": 0,
+        "facts": [
+          {
+            "id": "W.env.12670",
+            "text": "LAC runs the 16th fastest offense and passes on 38% of neutral downs.",
+            "numbers": [
+              "38",
+              "16"
+            ],
+            "teams": [],
+            "players": [
+              "KeAndre Lambert-Smith"
+            ]
+          },
+          {
+            "id": "WV.story.12670",
+            "text": "Tre' Harris is out, and KeAndre Lambert-Smith is next on the depth chart.",
+            "numbers": [],
+            "teams": [],
+            "players": [
+              "KeAndre Lambert-Smith",
+              "Tre' Harris"
+            ]
+          }
+        ],
+        "price": {
+          "bid": 29,
+          "fact": {
+            "id": "waiver_price_12670",
+            "text": "Bid $29 to win KeAndre Lambert-Smith. The top rival bid is about $2.39, from London Cooking with $90 left. The last winning WR claim in the last 3 weeks is $28.",
+            "numbers": [
+              "29",
+              "2.39",
+              "90",
+              "3",
+              "28"
+            ],
+            "teams": [
+              "London Cooking"
+            ],
+            "players": [
+              "KeAndre Lambert-Smith"
+            ]
+          },
+          "last_like": {
+            "player_id": "13276",
+            "name": "Omar Cooper Jr.",
+            "roster_id": 4,
+            "team": "Pukancun on 3",
+            "week": 6,
+            "bid": 28
+          },
+          "outbid": {
+            "9": 11,
+            "11": 10,
+            "17": 9,
+            "24": 8,
+            "46": 7,
+            "58": 7,
+            "60": 7,
+            "61": 7,
+            "66": 7,
+            "67": 7,
+            "69": 7,
+            "90": 7
+          }
+        },
+        "drop": null,
+        "reason": "behind_injury",
+        "bye": 7,
+        "injury_status": null,
+        "return_week": null,
+        "research": []
+      },
+      {
+        "player_id": "13557",
+        "name": "Athan Kaliakmanis",
+        "position": "QB",
+        "team": "WAS",
+        "week_projection": 0.0,
+        "ros_projection": 0.0,
+        "scores": {
+          "usage": 0.0,
+          "environment": 0.5645,
+          "projection": 0.8586
+        },
+        "board_score": 0.3411,
+        "trending_count": 0,
+        "facts": [
+          {
+            "id": "W.env.13557",
+            "text": "WAS runs the 12th fastest offense and passes on 50% of neutral downs.",
+            "numbers": [
+              "50",
+              "12"
+            ],
+            "teams": [],
+            "players": [
+              "Athan Kaliakmanis"
+            ]
+          },
+          {
+            "id": "WV.story.13557",
+            "text": "Marcus Mariota is out, and Athan Kaliakmanis is next on the depth chart.",
+            "numbers": [],
+            "teams": [],
+            "players": [
+              "Athan Kaliakmanis",
+              "Marcus Mariota"
+            ]
+          }
+        ],
+        "price": {
+          "bid": 6,
+          "fact": {
+            "id": "waiver_price_13557",
+            "text": "Bid $6 to win Athan Kaliakmanis. The top rival bid is about $3.68, from London Cooking with $90 left. The last winning QB claim in the last 3 weeks is $5.",
+            "numbers": [
+              "6",
+              "3.68",
+              "90",
+              "3",
+              "5"
+            ],
+            "teams": [
+              "London Cooking"
+            ],
+            "players": [
+              "Athan Kaliakmanis"
+            ]
+          },
+          "last_like": {
+            "player_id": "11563",
+            "name": "Bo Nix",
+            "roster_id": 12,
+            "team": "Amon-Ra Dawg Your Team",
+            "week": 6,
+            "bid": 5
+          },
+          "outbid": {
+            "9": 11,
+            "11": 11,
+            "17": 11,
+            "24": 11,
+            "46": 11,
+            "58": 11,
+            "60": 11,
+            "61": 11,
+            "66": 11,
+            "67": 11,
+            "69": 11,
+            "90": 11
+          }
+        },
+        "drop": null,
+        "reason": "behind_injury",
+        "bye": 7,
+        "injury_status": null,
+        "return_week": null,
+        "research": []
+      }
+    ],
+    "stashes": [
+      {
+        "player_id": "7021",
+        "name": "Rico Dowdle",
+        "position": "RB",
+        "team": "PIT",
+        "week_projection": 8.08,
+        "ros_projection": 67.07,
+        "scores": {
+          "usage": 0.0,
+          "environment": 0.5968,
+          "projection": 1.0
+        },
+        "board_score": 0.379,
+        "trending_count": 0,
+        "facts": [
+          {
+            "id": "W.env.7021",
+            "text": "PIT runs the 13th fastest offense and succeeds on 42% of runs.",
+            "numbers": [
+              "42",
+              "13"
+            ],
+            "teams": [],
+            "players": [
+              "Rico Dowdle"
+            ]
+          }
+        ],
+        "price": {
+          "bid": 14,
+          "fact": {
+            "id": "waiver_price_7021",
+            "text": "Bid $14 to win Rico Dowdle. The top rival bid is about $4.09, from London Cooking with $90 left. The last winning RB claim in the last 3 weeks is $13.",
+            "numbers": [
+              "14",
+              "4.09",
+              "90",
+              "3",
+              "13"
+            ],
+            "teams": [
+              "London Cooking"
+            ],
+            "players": [
+              "Rico Dowdle"
+            ]
+          },
+          "last_like": {
+            "player_id": "11655",
+            "name": "Tyrone Tracy Jr.",
+            "roster_id": 4,
+            "team": "Pukancun on 3",
+            "week": 6,
+            "bid": 13
+          },
+          "outbid": {
+            "9": 11,
+            "11": 10,
+            "17": 9,
+            "24": 9,
+            "46": 9,
+            "58": 9,
+            "60": 9,
+            "61": 9,
+            "66": 9,
+            "67": 9,
+            "69": 9,
+            "90": 9
+          }
+        },
+        "drop": null,
+        "reason": "handcuff",
+        "bye": 9,
+        "injury_status": "Questionable",
+        "return_week": null,
+        "research": []
+      },
+      {
+        "player_id": "9508",
+        "name": "Tyjae Spears",
+        "position": "RB",
+        "team": "TEN",
+        "week_projection": 6.0,
+        "ros_projection": 62.45,
+        "scores": {
+          "usage": 0.0,
+          "environment": 0.2419,
+          "projection": 0.9921
+        },
+        "board_score": 0.271,
+        "trending_count": 0,
+        "facts": [
+          {
+            "id": "W.usage.9508",
+            "text": "Tyjae Spears played 24% of snaps and took 1 carries last week, down from 54% and 2.",
+            "numbers": [
+              "24",
+              "1",
+              "54",
+              "2"
+            ],
+            "teams": [],
+            "players": [
+              "Tyjae Spears"
+            ]
+          },
+          {
+            "id": "W.env.9508",
+            "text": "TEN runs the 32nd fastest offense and succeeds on 39% of runs.",
+            "numbers": [
+              "39",
+              "32"
+            ],
+            "teams": [],
+            "players": [
+              "Tyjae Spears"
+            ]
+          }
+        ],
+        "price": {
+          "bid": 14,
+          "fact": {
+            "id": "waiver_price_9508",
+            "text": "Bid $14 to win Tyjae Spears. The top rival bid is about $2.93, from London Cooking with $90 left. The last winning RB claim in the last 3 weeks is $13.",
+            "numbers": [
+              "14",
+              "2.93",
+              "90",
+              "3",
+              "13"
+            ],
+            "teams": [
+              "London Cooking"
+            ],
+            "players": [
+              "Tyjae Spears"
+            ]
+          },
+          "last_like": {
+            "player_id": "11655",
+            "name": "Tyrone Tracy Jr.",
+            "roster_id": 4,
+            "team": "Pukancun on 3",
+            "week": 6,
+            "bid": 13
+          },
+          "outbid": {
+            "9": 11,
+            "11": 10,
+            "17": 9,
+            "24": 9,
+            "46": 9,
+            "58": 9,
+            "60": 9,
+            "61": 9,
+            "66": 9,
+            "67": 9,
+            "69": 9,
+            "90": 9
+          }
+        },
+        "drop": null,
+        "reason": "handcuff",
+        "bye": 9,
+        "injury_status": null,
+        "return_week": null,
+        "research": []
+      },
+      {
+        "player_id": "8132",
+        "name": "Tyler Allgeier",
+        "position": "RB",
+        "team": "ARI",
+        "week_projection": 9.91,
+        "ros_projection": 61.08,
+        "scores": {
+          "usage": 0.5714,
+          "environment": 0.7581,
+          "projection": 0.9841
+        },
+        "board_score": 0.7099,
+        "trending_count": 72010,
+        "facts": [
+          {
+            "id": "W.usage.8132",
+            "text": "Tyler Allgeier played 56% of snaps and took 18 carries last week, up from 44% and 3.",
+            "numbers": [
+              "56",
+              "18",
+              "44",
+              "3"
+            ],
+            "teams": [],
+            "players": [
+              "Tyler Allgeier"
+            ]
+          },
+          {
+            "id": "W.env.8132",
+            "text": "ARI runs the 5th fastest offense and succeeds on 43% of runs.",
+            "numbers": [
+              "43",
+              "5"
+            ],
+            "teams": [],
+            "players": [
+              "Tyler Allgeier"
+            ]
+          },
+          {
+            "id": "WV.trending.8132",
+            "text": "Tyler Allgeier was added in 72010 Sleeper leagues in the last day.",
+            "numbers": [
+              "72010"
+            ],
+            "teams": [],
+            "players": [
+              "Tyler Allgeier"
+            ]
+          }
+        ],
+        "price": {
+          "bid": 14,
+          "fact": {
+            "id": "waiver_price_8132",
+            "text": "Bid $14 to win Tyler Allgeier. The top rival bid is about $7.67, from London Cooking with $90 left. The last winning RB claim in the last 3 weeks is $13.",
+            "numbers": [
+              "14",
+              "7.67",
+              "90",
+              "3",
+              "13"
+            ],
+            "teams": [
+              "London Cooking"
+            ],
+            "players": [
+              "Tyler Allgeier"
+            ]
+          },
+          "last_like": {
+            "player_id": "11655",
+            "name": "Tyrone Tracy Jr.",
+            "roster_id": 4,
+            "team": "Pukancun on 3",
+            "week": 6,
+            "bid": 13
+          },
+          "outbid": {
+            "9": 11,
+            "11": 10,
+            "17": 9,
+            "24": 9,
+            "46": 9,
+            "58": 9,
+            "60": 9,
+            "61": 9,
+            "66": 9,
+            "67": 9,
+            "69": 9,
+            "90": 9
+          }
+        },
+        "drop": null,
+        "reason": "handcuff",
+        "bye": 14,
+        "injury_status": null,
+        "return_week": null,
+        "research": []
+      },
+      {
+        "player_id": "9502",
+        "name": "Tank Dell",
+        "position": "WR",
+        "team": "HOU",
+        "week_projection": 1.59,
+        "ros_projection": 20.35,
+        "scores": {
+          "usage": 0.0,
+          "environment": 0.6452,
+          "projection": 0.7976
+        },
+        "board_score": 0.3531,
+        "trending_count": 28424,
+        "facts": [
+          {
+            "id": "W.env.9502",
+            "text": "HOU runs the 16th fastest offense and passes on 55% of neutral downs.",
+            "numbers": [
+              "55",
+              "16"
+            ],
+            "teams": [],
+            "players": [
+              "Tank Dell"
+            ]
+          },
+          {
+            "id": "WV.trending.9502",
+            "text": "Tank Dell was added in 28424 Sleeper leagues in the last day.",
+            "numbers": [
+              "28424"
+            ],
+            "teams": [],
+            "players": [
+              "Tank Dell"
+            ]
+          }
+        ],
+        "price": {
+          "bid": 29,
+          "fact": {
+            "id": "waiver_price_9502",
+            "text": "Bid $29 to win Tank Dell. The top rival bid is about $3.81, from London Cooking with $90 left. The last winning WR claim in the last 3 weeks is $28.",
+            "numbers": [
+              "29",
+              "3.81",
+              "90",
+              "3",
+              "28"
+            ],
+            "teams": [
+              "London Cooking"
+            ],
+            "players": [
+              "Tank Dell"
+            ]
+          },
+          "last_like": {
+            "player_id": "13276",
+            "name": "Omar Cooper Jr.",
+            "roster_id": 4,
+            "team": "Pukancun on 3",
+            "week": 6,
+            "bid": 28
+          },
+          "outbid": {
+            "9": 11,
+            "11": 10,
+            "17": 9,
+            "24": 8,
+            "46": 7,
+            "58": 7,
+            "60": 7,
+            "61": 7,
+            "66": 7,
+            "67": 7,
+            "69": 7,
+            "90": 7
+          }
+        },
+        "drop": null,
+        "reason": "return",
+        "bye": 8,
+        "injury_status": "IR",
+        "return_week": 7,
+        "research": []
+      }
+    ],
+    "drops": [
+      {
+        "player_id": "12481",
+        "name": "Cam Skattebo",
+        "position": "RB",
+        "team": "NYG",
+        "week_projection": 4.31,
+        "ros_projection": 55.89,
+        "scores": {
+          "usage": 0.0,
+          "environment": 0.0,
+          "projection": 0.0
+        },
+        "board_score": 0.0,
+        "trending_count": 0,
+        "facts": [
+          {
+            "id": "WV.drop.12481",
+            "text": "Pukancun on 3 holds Cam Skattebo, and Rico Dowdle projects 1 points a week higher.",
+            "numbers": [
+              "1"
+            ],
+            "teams": [
+              "Pukancun on 3"
+            ],
+            "players": [
+              "Cam Skattebo",
+              "Rico Dowdle"
+            ]
+          }
+        ],
+        "price": null,
+        "drop": {
+          "roster_id": 4,
+          "holder": "Pukancun on 3",
+          "reason": "three_falls",
+          "beaten_by": "7021",
+          "beaten_by_name": "Rico Dowdle",
+          "margin": 1.0
+        },
+        "reason": null,
+        "bye": null,
+        "injury_status": null,
+        "return_week": null,
+        "research": []
+      },
+      {
+        "player_id": "9511",
+        "name": "Keaton Mitchell",
+        "position": "RB",
+        "team": "LAC",
+        "week_projection": 0.0,
+        "ros_projection": 56.36,
+        "scores": {
+          "usage": 0.0,
+          "environment": 0.0,
+          "projection": 0.0
+        },
+        "board_score": 0.0,
+        "trending_count": 0,
+        "facts": [
+          {
+            "id": "WV.drop.9511",
+            "text": "Unsolicited Dak Picks holds Keaton Mitchell, and Rico Dowdle projects 1 points a week higher.",
+            "numbers": [
+              "1"
+            ],
+            "teams": [
+              "Unsolicited Dak Picks"
+            ],
+            "players": [
+              "Keaton Mitchell",
+              "Rico Dowdle"
+            ]
+          }
+        ],
+        "price": null,
+        "drop": {
+          "roster_id": 11,
+          "holder": "Unsolicited Dak Picks",
+          "reason": "three_falls",
+          "beaten_by": "7021",
+          "beaten_by_name": "Rico Dowdle",
+          "margin": 1.0
+        },
+        "reason": null,
+        "bye": null,
+        "injury_status": null,
+        "return_week": null,
+        "research": []
+      }
+    ]
+  },
+  "budgets": [
+    {
+      "roster_id": 1,
+      "budget_left": 69,
+      "waiver_order": 1
+    },
+    {
+      "roster_id": 2,
+      "budget_left": 67,
+      "waiver_order": 7
+    },
+    {
+      "roster_id": 3,
+      "budget_left": 58,
+      "waiver_order": 6
+    },
+    {
+      "roster_id": 4,
+      "budget_left": 17,
+      "waiver_order": 4
+    },
+    {
+      "roster_id": 5,
+      "budget_left": 90,
+      "waiver_order": 2
+    },
+    {
+      "roster_id": 6,
+      "budget_left": 46,
+      "waiver_order": 12
+    },
+    {
+      "roster_id": 7,
+      "budget_left": 11,
+      "waiver_order": 5
+    },
+    {
+      "roster_id": 8,
+      "budget_left": 9,
+      "waiver_order": 11
+    },
+    {
+      "roster_id": 9,
+      "budget_left": 66,
+      "waiver_order": 10
+    },
+    {
+      "roster_id": 10,
+      "budget_left": 61,
+      "waiver_order": 3
+    },
+    {
+      "roster_id": 11,
+      "budget_left": 24,
+      "waiver_order": 9
+    },
+    {
+      "roster_id": 12,
+      "budget_left": 60,
+      "waiver_order": 8
+    }
+  ],
+  "experts_missing": false
+}
