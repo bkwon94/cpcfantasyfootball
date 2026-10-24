@@ -79,3 +79,22 @@ describe("currentWaiverHref", () => {
     expect(currentWaiverHref()).toBeNull();
   });
 });
+
+describe("waiverRouteOn", () => {
+  it("is on with the flag on and a week with a waiver file", async () => {
+    vi.stubEnv("NEXT_PUBLIC_WAIVER", "on");
+    const { waiverRouteOn } = await readerOver(["week-06"], { "week-06": fixture });
+    expect(waiverRouteOn()).toBe(true);
+  });
+
+  it("is off with the flag off", async () => {
+    const { waiverRouteOn } = await readerOver(["week-06"], { "week-06": fixture });
+    expect(waiverRouteOn()).toBe(false);
+  });
+
+  it("is off with the flag on and no waiver file", async () => {
+    vi.stubEnv("NEXT_PUBLIC_WAIVER", "on");
+    const { waiverRouteOn } = await readerOver(["week-06"], {});
+    expect(waiverRouteOn()).toBe(false);
+  });
+});

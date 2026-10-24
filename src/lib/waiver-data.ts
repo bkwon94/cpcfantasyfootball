@@ -4,9 +4,10 @@
  */
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
-import { basePath, waiverOn } from "@/lib/config";
-import { listWeeks, type WeekRef } from "@/lib/week-data";
-import type { WaiverBoard } from "@/lib/waiver-types";
+// Relative imports, not the @ alias: next.config imports this module, and its loader does not resolve the alias.
+import { basePath, waiverOn } from "./config";
+import { listWeeks, type WeekRef } from "./week-data";
+import type { WaiverBoard } from "./waiver-types";
 
 /* The waiver file layout version this site reads. It counts apart from the page JSON version. */
 const SCHEMA_VERSION = 1;
@@ -39,4 +40,10 @@ export function currentWaiverHref(): string | null {
   if (!waiverOn) return null;
   const latest = listWaiverWeeks().at(-1);
   return latest ? `${basePath}/${latest.season}/${latest.week}/waiver/` : null;
+}
+
+/* Whether the build has a waiver route. A static export fails on a dynamic route with no params,
+   so the route file only counts as a page when the flag is on and at least one week has a file. */
+export function waiverRouteOn(): boolean {
+  return waiverOn && listWaiverWeeks().length > 0;
 }
