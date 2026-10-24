@@ -7,7 +7,6 @@ import { Masthead, WeekLine } from "@/components/masthead";
 import { PowerRankings } from "@/components/rankings/power-rankings";
 import { Blurb, Chapter, Label } from "@/components/week/parts";
 import { latestAvatars, loadRankings } from "@/lib/rankings-data";
-import { currentWaiverHref } from "@/lib/waiver-data";
 
 export const metadata: Metadata = {
   title: "Power Rankings · Cornerstone Fantasy Football League",
@@ -18,7 +17,7 @@ export default function RankingsPage() {
   const week = rankings?.weeks.at(-1);
   return (
     <main className="mx-auto max-w-page bg-wht">
-      <Masthead subtitle="Power Rankings" waiverHref={currentWaiverHref()}>{week && <WeekLine label="WEEK" number={week.week} />}</Masthead>
+      <Masthead subtitle="Power Rankings">{week && <WeekLine label="WEEK" number={week.week} />}</Masthead>
       {rankings && week ? (
         <PowerRankings week={week} avatars={latestAvatars(rankings.season)} />
       ) : (

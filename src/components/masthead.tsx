@@ -1,9 +1,10 @@
 /**
- * The black masthead at the top of every page: the brand link, the page subtitle, and an optional week line.
+ * The black masthead at the top of every page: the brand link, the page subtitle, an optional week line, and the waiver link.
  * It matches the masthead of the source stylesheet, so a reader cannot tell the two apart.
  */
 import type { ReactNode } from "react";
 import { basePath } from "@/lib/config";
+import { currentWaiverHref } from "@/lib/waiver-data";
 
 type MastheadProps = {
   // The brand line. It defaults to the league name, which every page shows.
@@ -12,11 +13,17 @@ type MastheadProps = {
   subtitle?: string;
   // The week line under the brand. Pages with no week line leave it out.
   children?: ReactNode;
-  // The waiver page of the current week. A build with the waiver flag off passes null, so no link shows.
+  // The waiver page link. Left out, the masthead reads the current week from public/, and a build with the flag off gets null.
+  // A test passes a value to set the link without a temp public/ folder.
   waiverHref?: string | null;
 };
 
-export function Masthead({ title = "Cornerstone Fantasy Football League", subtitle, children, waiverHref }: MastheadProps) {
+export function Masthead({
+  title = "Cornerstone Fantasy Football League",
+  subtitle,
+  children,
+  waiverHref = currentWaiverHref(),
+}: MastheadProps) {
   return (
     <header className="bg-blk px-gutter pt-sp-5 pb-sp-4 text-on-dark">
       {/* A plain anchor, not next/link: the home page is a static page with no shared state, so the client router adds nothing. */}
