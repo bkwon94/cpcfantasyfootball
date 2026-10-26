@@ -71,7 +71,7 @@ export type KnownGames = {
 export type AsOf = {
   chart_week: number;
   stats_through: number;
-  // Optional, because a document from before the block has neither field.
+  // A document can lack both fields, so each is optional.
   completed_through?: number;
   known_games?: KnownGames | null;
   // An ISO 8601 timestamp with an offset.
