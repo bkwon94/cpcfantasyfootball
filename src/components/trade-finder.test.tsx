@@ -83,9 +83,9 @@ describe("TradeFinder", () => {
     find();
     await waitFor(() => expect(cards()).toHaveLength(3));
     const first = cards()[0];
-    expect(first.textContent).toContain("Derrick Henry");
+    expect(first.textContent).toContain("Jameis Winston");
     expect(first.textContent).toContain("Tre Tucker");
-    expect(first.textContent).toContain("Aaron Jones");
+    expect(first.textContent).toContain("Wan'Dale Robinson");
     expect(first.textContent).toContain("Good for both");
     expect(first.textContent).toContain(fixture.trades[0].reason);
   });
@@ -121,7 +121,7 @@ describe("TradeFinder", () => {
   it("shows the as-of line as on the analyze result", async () => {
     answer(200, fixture);
     find();
-    expect(await screen.findByText(/Chart week 6 · stats through week 5 · rosters fetched/)).toBeTruthy();
+    expect(await screen.findByText(/Stats through week 5 · Chart week 6 · rosters fetched/)).toBeTruthy();
   });
 
   it("shows the wait line on a 429", async () => {

@@ -148,8 +148,26 @@ describe("AnalyzeResult", () => {
       hour: "numeric",
       minute: "2-digit",
     });
-    const line = screen.getByText(/^Chart week 6 · stats through week 5 · rosters fetched/);
-    expect(line.textContent).toBe(`Chart week 6 · stats through week 5 · rosters fetched ${fetched}`);
+    const line = screen.getByText(/^Stats through week 6.* · Chart week 6 · rosters fetched/);
+    expect(line.textContent).toBe(
+      `Stats through week 6, plus 14 week 6 games · Chart week 6 · rosters fetched ${fetched}`,
+    );
+    expect(line.textContent).not.toMatch(/live|partial|current week/i);
+  });
+
+  it("shows the in-progress count and each pending count as its own segment", () => {
+    const known_games = { week: 7, games: 13, in_progress: 2, pending: { snaps: 9 } };
+    render(<AnalyzeResult doc={{ ...fixture, as_of: { ...fixture.as_of, stats_through: 6, known_games } }} />);
+    const line = screen.getByText(/^Stats through week 6/);
+    expect(line.textContent).toMatch(
+      /^Stats through week 6, plus 13 week 7 games, 2 in progress · Snaps pending for 9 games · Chart week 6 · /,
+    );
+  });
+
+  it("shows the stats week alone when the document has no known-games block", () => {
+    const { completed_through: _c, known_games: _k, ...asOf } = fixture.as_of;
+    render(<AnalyzeResult doc={{ ...fixture, as_of: asOf }} />);
+    expect(screen.getByText(/^Stats through week 6 · Chart week 6/)).toBeTruthy();
   });
 
   it("shows the decision, the data, and the fallback line when the analysis is null", () => {
