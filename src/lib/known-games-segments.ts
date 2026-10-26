@@ -8,9 +8,11 @@ const plural = (n: number, word: string) => `${n} ${word}${n === 1 ? "" : "s"}`;
 
 /* A document with no block, or no games read, gets the stats week alone, so the line never claims games it lacks. */
 export function knownGamesSegments(asOf: AsOf): string[] {
-  const stats = `Stats through week ${asOf.stats_through}`;
   const known = asOf.known_games;
-  if (!known || known.games === 0) return [stats];
+  if (!known || known.games === 0) return [`Stats through week ${asOf.stats_through}`];
+
+  // On a game day the stats cover the played games of the trade week, so the base stops one week earlier. Counting both would count that week twice.
+  const stats = `Stats through week ${asOf.completed_through ?? asOf.stats_through - 1}`;
 
   const inProgress = known.in_progress > 0 ? `, ${known.in_progress} in progress` : "";
   const pending = Object.entries(known.pending).map(

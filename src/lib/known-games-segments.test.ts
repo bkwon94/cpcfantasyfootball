@@ -9,6 +9,8 @@ import { knownGamesSegments } from "./known-games-segments";
 const base: AsOf = { chart_week: 7, stats_through: 6, rosters_fetched: "2026-10-26T09:30:00-04:00" };
 const known = (over: Partial<NonNullable<AsOf["known_games"]>>): AsOf => ({
   ...base,
+  stats_through: 7,
+  completed_through: 6,
   known_games: { week: 7, games: 13, in_progress: 0, pending: {}, ...over },
 });
 
@@ -22,11 +24,16 @@ describe("knownGamesSegments", () => {
   });
 
   it("shows the stats week alone when no games are read", () => {
-    expect(knownGamesSegments(known({ games: 0 }))).toEqual(["Stats through week 6"]);
+    expect(knownGamesSegments({ ...known({ games: 0 }), stats_through: 6 })).toEqual(["Stats through week 6"]);
   });
 
   it("stops after the games count when nothing is in progress or pending", () => {
     expect(knownGamesSegments(known({}))).toEqual(["Stats through week 6, plus 13 week 7 games"]);
+  });
+
+  it("falls back to the week before the stats week when completed_through is absent", () => {
+    const { completed_through: _c, ...asOf } = known({});
+    expect(knownGamesSegments(asOf)).toEqual(["Stats through week 6, plus 13 week 7 games"]);
   });
 
   it("uses the singular for one game", () => {
