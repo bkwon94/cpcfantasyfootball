@@ -148,8 +148,16 @@ describe("AnalyzeResult", () => {
       hour: "numeric",
       minute: "2-digit",
     });
-    const line = screen.getByText(/^Chart week 6 · stats through week 5 · rosters fetched/);
-    expect(line.textContent).toBe(`Chart week 6 · stats through week 5 · rosters fetched ${fetched}`);
+    const line = screen.getByText(/^Stats through week 6.* · Chart week 6 · rosters fetched/);
+    expect(line.textContent).toBe(
+      `Stats through week 6, plus 14 week 6 games. · Chart week 6 · rosters fetched ${fetched}`,
+    );
+  });
+
+  it("shows the stats week alone when the document has no known-games block", () => {
+    const { completed_through: _c, known_games: _k, ...asOf } = fixture.as_of;
+    render(<AnalyzeResult doc={{ ...fixture, as_of: asOf }} />);
+    expect(screen.getByText(/^Stats through week 6 · Chart week 6/)).toBeTruthy();
   });
 
   it("shows the decision, the data, and the fallback line when the analysis is null", () => {

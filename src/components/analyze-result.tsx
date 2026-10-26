@@ -9,6 +9,7 @@ import { motion } from "framer-motion";
 import type { ReactNode } from "react";
 import type { AnalyzeResponse, AsOf, DecidedSide, Decision, Factor, Fairness, Player, TradeSide } from "@/lib/analyze-types";
 import { swapToDefault } from "@/lib/headshot";
+import { knownGamesLine } from "@/lib/known-games-line";
 import { DURATION, rise, useMotionOff } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
@@ -228,7 +229,7 @@ export function AsOfLine({ doc }: { doc: { as_of: AsOf } }) {
   });
   return (
     <p className="m-0 text-meta text-mute tabular-nums">
-      Chart week {doc.as_of.chart_week} · stats through week {doc.as_of.stats_through} · rosters fetched{" "}
+      {knownGamesLine(doc.as_of)} · Chart week {doc.as_of.chart_week} · rosters fetched{" "}
       {/* The build and the browser can format the time apart, so a static render must not warn about it. */}
       <time dateTime={doc.as_of.rosters_fetched} suppressHydrationWarning>
         {fetched}

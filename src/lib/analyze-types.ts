@@ -60,9 +60,20 @@ export type Fairness = {
   sides: FairnessSide[];
 } & ({ state: "win_win" | "fair"; gives_more: null } | { state: "lopsided"; gives_more: number });
 
+/* The games of the known-games week that the stat readers use. Pending counts are by plain name, such as snaps. */
+export type KnownGames = {
+  week: number;
+  games: number;
+  in_progress: number;
+  pending: Record<string, number>;
+};
+
 export type AsOf = {
   chart_week: number;
   stats_through: number;
+  // Optional, because a document from before the block has neither field.
+  completed_through?: number;
+  known_games?: KnownGames | null;
   // An ISO 8601 timestamp with an offset.
   rosters_fetched: string;
 };
