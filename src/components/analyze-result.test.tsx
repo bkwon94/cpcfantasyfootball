@@ -150,7 +150,7 @@ describe("AnalyzeResult", () => {
     });
     const line = screen.getByText(/^Stats through week 6.* · Chart week 6 · rosters fetched/);
     expect(line.textContent).toBe(
-      `Stats through week 6, plus 14 week 6 games · Chart week 6 · rosters fetched ${fetched}`,
+      `Stats through week 6, plus 14 week 6 games · Usage pending for 8 games · Chart week 6 · rosters fetched ${fetched}`,
     );
     expect(line.textContent).not.toMatch(/live|partial|current week/i);
   });
