@@ -220,7 +220,11 @@ function SideRead({ side }: { side: Side }) {
 
 /* The reader's locale formats the time, so each manager sees the fetch time in a familiar form.
    The finder document carries the same as_of block, so the finder page shows the same line. */
-export function AsOfLine({ doc }: { doc: { as_of: AsOf } }) {
+export function AsOfLine({ doc }: { doc: { as_of: AsOf; stale: string[] } }) {
+  const { as_of, stale } = doc;
+  const tradeWeek = as_of.known_games?.week ?? as_of.stats_through + 1;
+  // Stats that failed to fetch leave the line stale, so the line says so.
+  const staleSegments = stale.includes("stats") ? [`Week ${tradeWeek} stats not fetched`] : [];
   const fetched = new Date(doc.as_of.rosters_fetched).toLocaleString(undefined, {
     month: "short",
     day: "numeric",
@@ -229,7 +233,7 @@ export function AsOfLine({ doc }: { doc: { as_of: AsOf } }) {
   });
   return (
     <p className="m-0 text-meta text-mute tabular-nums">
-      {[...knownGamesSegments(doc.as_of), `Chart week ${doc.as_of.chart_week}`].join(" · ")} · rosters fetched{" "}
+      {[...knownGamesSegments(as_of), ...staleSegments, `Chart week ${as_of.chart_week}`].join(" · ")} · rosters fetched{" "}
       {/* The build and the browser can format the time apart, so a static render must not warn about it. */}
       <time dateTime={doc.as_of.rosters_fetched} suppressHydrationWarning>
         {fetched}
