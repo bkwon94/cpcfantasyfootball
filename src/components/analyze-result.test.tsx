@@ -156,9 +156,9 @@ describe("AnalyzeResult", () => {
   });
 
   it("shows the no-chart line when the document says the week has no chart", () => {
-    const no_chart_line = "Week 8 has no trade value chart yet, so the chart gives neither side an edge.";
-    render(<AnalyzeResult doc={{ ...fixture, as_of: { ...fixture.as_of, no_chart: true, no_chart_line } }} />);
-    expect(screen.getByText(no_chart_line)).toBeTruthy();
+    const no_chart_note = "Week 8 has no trade value chart yet, so the chart gives neither side an edge.";
+    render(<AnalyzeResult doc={{ ...fixture, as_of: { ...fixture.as_of, no_chart: true, no_chart_note } }} />);
+    expect(screen.getByText(no_chart_note)).toBeTruthy();
   });
 
   it("shows no no-chart line when the document lacks the field", () => {

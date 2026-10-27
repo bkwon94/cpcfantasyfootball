@@ -77,7 +77,7 @@ export type AsOf = {
   // True when the week has no trade value chart yet. A document can lack both fields, so each is optional.
   no_chart?: boolean;
   // The sentence that says so, written by the pipeline.
-  no_chart_line?: string;
+  no_chart_note?: string;
   // An ISO 8601 timestamp with an offset.
   rosters_fetched: string;
 };

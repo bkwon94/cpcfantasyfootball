@@ -244,8 +244,8 @@ export function AsOfLine({ doc }: { doc: { as_of: AsOf; stale: string[] } }) {
 
 /* A week with no chart gets one meta line that says so. A document without the flag shows nothing. */
 export function NoChartLine({ asOf }: { asOf: AsOf }) {
-  if (!asOf.no_chart || !asOf.no_chart_line) return null;
-  return <p className="m-0 pt-sp-3 text-meta text-mute">{asOf.no_chart_line}</p>;
+  if (!asOf.no_chart || !asOf.no_chart_note) return null;
+  return <p className="m-0 pt-sp-3 text-meta text-mute">{asOf.no_chart_note}</p>;
 }
 
 export default function AnalyzeResult({ doc }: { doc: AnalyzeResponse }) {
