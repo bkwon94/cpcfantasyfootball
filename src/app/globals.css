@@ -120,6 +120,10 @@
     --container-measure: 68ch;
     /* The gap between two chapter cards on the grey body, from the tablet tier up. */
     --spacing-card-gap: var(--spacing-sp-4);
+    /* The game changer hero height from the tablet tier up. A set height lets a long name and a short name give the same hero,
+       and the cutout fills it without a push. The desktop hero is taller, because its points and its column are bigger. */
+    --spacing-hero-tablet: 360px;
+    --spacing-hero-desktop: 420px;
 
     /* Type scale: label, meta, row, body, lead, stat, score, headline. Row is for dense lists,
        so names and scores stay on one line. A size sets no line height, so text keeps the inherited body leading.
