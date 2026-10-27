@@ -173,9 +173,13 @@ function Row({ row, avatars, index }: { row: RankingsRow; avatars: AvatarMap; in
 export function PowerRankings({ week, avatars }: { week: RankingsWeek; avatars: AvatarMap }) {
   return (
     <Chapter dark>
-      {/* The label and the header reveal first, then the rows stagger in after them, as the trades chapter does. */}
+      {/* The label, the method note, and the header reveal first, then the rows stagger in after them, as the trades chapter does.
+          The note sits above the table, so a reader knows what each column ranks before the first row. */}
       <Reveal delay={stagger(0)}>
         <Label dark>Power rankings</Label>
+        <Blurb dark className="mb-sp-3 text-meta">
+          Each column ranks the team from 1 to 12: standing, recent form, schedule played, and scoring. Form reads the last 3 weeks: the head-to-head record and streak, the median game at half the weight, and the all-play record, and it carries 60 percent of the score. Pts ranks scoring: points for and the all-play record.
+        </Blurb>
         {/* The header names the component columns only from the page width up. On a phone the component ranks show in the open row, and each cell names itself. */}
         <div
           aria-hidden
@@ -204,9 +208,6 @@ export function PowerRankings({ week, avatars }: { week: RankingsWeek; avatars: 
           </li>
         ))}
       </ol>
-      <Blurb dark className="mt-sp-3 text-meta">
-        Each column ranks the team from 1 to 12: standing, recent form, schedule played, and scoring. Pts ranks scoring: points for and the all-play record.
-      </Blurb>
       <Blurb dark className="mt-sp-1 text-meta">
         Playoff odds from 5,000 simulated seasons.
       </Blurb>
