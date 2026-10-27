@@ -49,7 +49,7 @@ export default async function WeekPage({ params }: Props) {
     ...(page.leaders.length > 0 ? [{ id: "leaders", label: "Position Leaders" }] : []),
     { id: "trades", label: "Trades" },
     { id: "matchups", label: "All Matchups" },
-    { id: "median", label: "Median Game" },
+    { id: "median", label: "The Median Game" },
     { id: "standings", label: "Standings" },
     { id: "next-week", label: "Next Week" },
   ];
@@ -62,11 +62,11 @@ export default async function WeekPage({ params }: Props) {
           {`${page.dates} · Published ${page.publish_date}`}
         </div>
       </Masthead>
-      {/* From the desktop tier the rail and the page column form one centered grid, the rail left of the column.
-          Under it the grid is one column, the rail is hidden, and the column centers as before. */}
-      <div className="desktop:grid desktop:grid-cols-[var(--spacing-rail)_var(--container-page)] desktop:justify-center desktop:gap-x-rail-gap">
+      {/* From the tablet tier a three-track grid keeps the page column in the middle track, so it lines up with the masthead
+          and the compact bar. The rail sits in the left margin track. On a phone the column fills the width, so no grid. */}
+      <div className="tablet:grid tablet:grid-cols-[minmax(0,1fr)_var(--container-page)_minmax(0,1fr)]">
         <ChapterRail chapters={chapters} />
-        <main className="mx-auto max-w-page bg-wht">
+        <main className="mx-auto max-w-page bg-wht tablet:col-start-2">
           {/* The masthead and the top story show at once. The hero plays its own motion on load.
               Each chapter below reveals once as it enters the view, as a unit or card by card. */}
           <MatchupOfTheWeek pick={page.pick} avatars={page.avatars} blurb={page.blurbs.motw} />

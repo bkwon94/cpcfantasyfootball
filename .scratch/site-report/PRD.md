@@ -108,12 +108,12 @@ with a week footer that links the prior and the next week. The phone keeps the r
 
 ### The chapter rail
 
-- A client island rendered by the week page on every tier and shown from the desktop tier by the tier variant. It takes the list of chapters, each with an id and a label, from the page at build time. The chapter ids are the ones the chapter parts already set.
+- A client island rendered by the week page on every tier and shown from the rail tier by the tier variant. The rail tier is 1152px, where the margin beside the 720px column holds the rail plus the gap: 720 + 2 × (180 + 24) = 1128. It takes the list of chapters, each with an id and a label, from the page at build time. The chapter ids are the ones the chapter parts already set.
 - The rail sits left of the page column, outside it, at a token width of about 180px, sticky under the compact bar. The column keeps its 720px measure.
 - The rail is a navigation landmark with a label. Each label is a plain anchor to the chapter id, in the report's label style, muted ink, the in-view chapter in red with the current state.
 - An observer on the chapters marks the one nearest the top of the viewport as in view. The mark is state in the island.
 - A tap scrolls to the chapter. With reduced motion the scroll is instant; otherwise the page's scroll behavior applies. The compact bar's scroll padding keeps the chapter's label clear of the bar.
-- Under the desktop tier the rail is hidden. The page's grid is one column there.
+- Under the rail tier the rail is hidden and the column stays centered. On a phone the page is one column.
 
 ### The week footer
 

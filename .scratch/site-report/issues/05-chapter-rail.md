@@ -6,8 +6,8 @@
 
 **Status:** ready-for-agent
 
-- [ ] From 1024px the rail shows left of the page column, outside it, at a token width of about 180px, sticky under the compact bar. The column keeps its width.
-- [ ] Under 1024px the rail is hidden and the page is one column.
+- [ ] From the rail tier at 1152px the rail shows left of the page column, outside it, at a token width of about 180px, sticky under the compact bar. The column keeps its width.
+- [ ] Under the rail tier at 1152px the rail is hidden and the page is one column.
 - [ ] The rail is a navigation landmark with a label. It lists nine plain anchors in the report's order, each to a chapter id the chapter parts set.
 - [ ] An observer marks the chapter nearest the top of the viewport as in view: red, with the current state. The mark moves as the reader scrolls.
 - [ ] A tap scrolls to the chapter, clear of the compact bar. With reduced motion the jump is instant.

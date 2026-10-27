@@ -107,6 +107,9 @@
     --breakpoint-phone: 0rem;
     --breakpoint-tablet: 40rem;
     --breakpoint-desktop: 64rem;
+    /* The chapter rail sits in the margin left of the page column, so the margin must hold the rail plus the gap on each side:
+       720 + 2 × (180 + 24) = 1128px. 72rem is 1152px, the first round value past it. Under it the rail is hidden. */
+    --breakpoint-rail: 72rem;
 
     /* The page column per tier. A phone column fills the viewport and the content keeps the gutter inside it.
        The desktop width is the content measure; a wider tier adds space beside the column, not inside it. */

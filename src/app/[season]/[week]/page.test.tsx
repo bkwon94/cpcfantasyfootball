@@ -14,7 +14,7 @@ const CHAPTERS = [
   { id: "leaders", label: "Position Leaders" },
   { id: "trades", label: "Trades" },
   { id: "matchups", label: "All Matchups" },
-  { id: "median", label: "Median Game" },
+  { id: "median", label: "The Median Game" },
   { id: "standings", label: "Standings" },
   { id: "next-week", label: "Next Week" },
 ];
@@ -165,7 +165,7 @@ describe("WeekPage chapter in view", () => {
     await renderWeek7();
     reportChapter("median", true);
     reportChapter("standings", true);
-    expect(currentLabels()).toEqual(["Median Game"]);
+    expect(currentLabels()).toEqual(["The Median Game"]);
     reportChapter("median", false);
     expect(currentLabels()).toEqual(["Standings"]);
   });
