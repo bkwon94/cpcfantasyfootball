@@ -29,7 +29,7 @@ The short black bar that shows at the top of the viewport once the masthead scro
 _Avoid_: Sticky header, mini header, app bar, toolbar
 
 **Chapter**:
-One section of the weekly report, such as the awards or the standings. On a tablet and a desktop each chapter is a card on the grey body.
+One part of the weekly report, such as the awards or the standings. On a tablet and a desktop each chapter is a card on the grey body.
 _Avoid_: Section, block, panel
 
 **Sheet**:

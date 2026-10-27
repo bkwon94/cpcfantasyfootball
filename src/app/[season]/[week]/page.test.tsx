@@ -102,7 +102,7 @@ async function renderWeek7() {
   render(await WeekPage({ params: Promise.resolve({ season: "2026", week: "week-07" }) }));
 }
 
-/* The temp public/ folders that weekOver made, so each test removes its own folder. */
+/* The temp public/ folders that publicWithWeeks made, so each test removes its own folder. */
 const roots: string[] = [];
 
 afterEach(() => {
@@ -236,7 +236,7 @@ describe("WeekPage week footer", () => {
 
 /* A temp public/ folder with weeks 5, 6, and 7, so week 6 has a week on each side. Weeks 6 and 7 are the real pages.
    Week 5 is only what the footer reads, because the test never renders it. Returns the week page read from that folder. */
-async function weekOver() {
+async function publicWithWeeks() {
   const root = mkdtempSync(join(tmpdir(), "week-page-"));
   roots.push(root);
   const season = join(root, "public", "2026");
@@ -253,7 +253,7 @@ async function weekOver() {
 
 /* Renders the week 6 report from the temp folder. */
 async function renderWeek6() {
-  const Page = await weekOver();
+  const Page = await publicWithWeeks();
   render(await Page({ params: Promise.resolve({ season: "2026", week: "week-06" }) }));
 }
 

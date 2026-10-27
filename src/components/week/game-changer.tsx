@@ -37,8 +37,9 @@ export function GameChanger({
           duration={DURATION.hero}
         />
         {/* The name wraps inside 60 percent of the card, so a long name never runs under the face.
-            From the tablet tier up the left part bounds the name, and the text sits on the floor of the hero,
-            so the points and the cutout share one baseline. A balanced wrap keeps a long name from a one-word last line. */}
+            From the tablet tier up the left part bounds the name.
+            The text aligns to the bottom of the hero, so the points and the cutout share one baseline.
+            A balanced wrap keeps a long name from a one-word last line. */}
         <div className="relative z-3 max-w-[60%] px-gutter pt-sp-5 pb-sp-4 [grid-area:1/1] tablet:flex tablet:max-w-none tablet:flex-col tablet:justify-end tablet:pb-sp-6">
           <Label dark heading>Game Changer</Label>
           <div className="m-0 text-score leading-stat font-black text-balance tabular-nums">

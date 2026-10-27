@@ -1,5 +1,5 @@
 /**
- * The chapter rail: the list of the weekly report's chapters beside the page column on a desktop.
+ * The chapter rail: the list of the weekly report's chapters beside the page column from the rail tier.
  * It is the client island of the week page. It links each chapter by its id and marks the chapter in view.
  */
 "use client";
@@ -55,7 +55,7 @@ export function ChapterRail({ chapters }: { chapters: RailChapter[] }) {
 
   return (
     // The rail renders at every tier, so the static HTML is the same for each. The rail variant shows it once the margin holds it.
-    // It sits at the end of the left margin track with the gap before the column. Sticky under the compact bar, so it stays at hand.
+    // It sits at the end of the left margin track with the gap before the column. The rail is sticky under the compact bar, so it stays in view as the reader scrolls.
     <nav
       aria-label="Chapters"
       className="sticky top-touch col-start-1 row-start-1 mr-rail-gap hidden w-rail self-start justify-self-end py-sp-5 rail:block"
