@@ -92,6 +92,9 @@
        score column starts, so the median line and the bars share one percent scale. */
     --spacing-median-bar: 14px;
     --spacing-val-col: 52px;
+    /* The median bar from the tablet tier up. A bar that spans a 640px column reads as a thin line at 14px,
+       so a taller bar keeps each team's bar easy to tell apart from the next. */
+    --spacing-median-bar-wide: 20px;
     /* The standings columns: rank, W-L, and points. The points column fits 000.00 at the row size. */
     --spacing-standings-rank: 24px;
     --spacing-standings-record: 44px;
@@ -99,6 +102,11 @@
     /* The chapter rail on a desktop and the gap between it and the page column. 180px fits the longest chapter label on one line. */
     --spacing-rail: 180px;
     --spacing-rail-gap: var(--spacing-sp-6);
+    /* The standings columns from the tablet tier up. The phone tokens pack the numbers against the names,
+       so the wide row gives each number column more room and the eye can follow a row across the width. */
+    --spacing-standings-rank-wide: 40px;
+    --spacing-standings-record-wide: 72px;
+    --spacing-standings-points-wide: 96px;
     /* The power rankings columns for movement, the record, the playoff odds, and each component rank. 40px fits a five-letter column name in caps. */
     --spacing-rankings-col: 40px;
 

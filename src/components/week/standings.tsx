@@ -10,8 +10,9 @@ import { avatarSrc, Blurb, Chapter, Label, Who } from "./parts";
 /* Six teams make the playoffs, so the dashed cut line sits under the sixth row. */
 const PLAYOFF_SPOTS = 6;
 
+/* From the tablet tier the wide column tokens and a wider gap spread the numbers across the row. */
 const GRID =
-  "grid grid-cols-[var(--spacing-standings-rank)_1fr_var(--spacing-standings-record)_var(--spacing-standings-points)] items-center gap-sp-2 border-b border-rule-dark text-row leading-tight tabular-nums";
+  "grid grid-cols-[var(--spacing-standings-rank)_1fr_var(--spacing-standings-record)_var(--spacing-standings-points)] tablet:grid-cols-[var(--spacing-standings-rank-wide)_1fr_var(--spacing-standings-record-wide)_var(--spacing-standings-points-wide)] items-center gap-sp-2 tablet:gap-sp-4 border-b border-rule-dark text-row leading-tight tabular-nums";
 
 /* The W-L and points columns align right, so the numbers line up on the last digit. */
 function Line({ cells, className }: { cells: [ReactNode, ReactNode, ReactNode, ReactNode]; className?: string }) {
