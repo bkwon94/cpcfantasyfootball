@@ -126,16 +126,18 @@ describe("Reduced motion on the static pages", () => {
   it("shows every week page chapter at once", async () => {
     render(await WeekPage({ params: Promise.resolve({ season: "2026", week: "week-06" }) }));
     // One line from each chapter, from the top story to next week. The text must be there on the first render.
-    expect(screen.getByText("Matchup of the Week")).toBeTruthy();
-    expect(screen.getByText("Game Changer")).toBeTruthy();
-    expect(screen.getByText("WR · PIT · behold the lamb")).toBeTruthy();
-    expect(screen.getAllByText(week6.awards[0].title).length).toBeGreaterThan(0);
-    expect(screen.getByText("Position Leaders")).toBeTruthy();
-    expect(screen.getAllByText(week6.trades[0].sides[0].players[0].name).length).toBeGreaterThan(0);
-    expect(screen.getAllByRole("button", { name: /Read recap/ })).toHaveLength(week6.matchups.length);
-    expect(screen.getByText("The Median Game")).toBeTruthy();
-    expect(screen.getByText("Standings")).toBeTruthy();
-    expect(screen.getByText(`Next Week · Week ${week6.week + 1}`)).toBeTruthy();
+    // The chapter rail repeats the chapter labels, so the queries stay inside the page column.
+    const main = within(screen.getByRole("main"));
+    expect(main.getByText("Matchup of the Week")).toBeTruthy();
+    expect(main.getByText("Game Changer")).toBeTruthy();
+    expect(main.getByText("WR · PIT · behold the lamb")).toBeTruthy();
+    expect(main.getAllByText(week6.awards[0].title).length).toBeGreaterThan(0);
+    expect(main.getByText("Position Leaders")).toBeTruthy();
+    expect(main.getAllByText(week6.trades[0].sides[0].players[0].name).length).toBeGreaterThan(0);
+    expect(main.getAllByRole("button", { name: /Read recap/ })).toHaveLength(week6.matchups.length);
+    expect(main.getByText("The Median Game")).toBeTruthy();
+    expect(main.getByText("Standings")).toBeTruthy();
+    expect(main.getByText(`Next Week · Week ${week6.week + 1}`)).toBeTruthy();
   });
 
   it("shows every home page row at once", () => {

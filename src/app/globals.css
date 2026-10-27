@@ -96,6 +96,9 @@
     --spacing-standings-rank: 24px;
     --spacing-standings-record: 44px;
     --spacing-standings-points: 56px;
+    /* The chapter rail on a desktop and the gap between it and the page column. 180px fits the longest chapter label on one line. */
+    --spacing-rail: 180px;
+    --spacing-rail-gap: var(--spacing-sp-6);
     /* The power rankings columns for movement, the record, the playoff odds, and each component rank. 40px fits a five-letter column name in caps. */
     --spacing-rankings-col: 40px;
 
@@ -104,6 +107,9 @@
     --breakpoint-phone: 0rem;
     --breakpoint-tablet: 40rem;
     --breakpoint-desktop: 64rem;
+    /* The chapter rail sits in the margin left of the page column, so the margin must hold the rail plus the gap on each side:
+       720 + 2 × (180 + 24) = 1128px. 72rem is 1152px, the first round value past it. Under it the rail is hidden. */
+    --breakpoint-rail: 72rem;
 
     /* The page column per tier. A phone column fills the viewport and the content keeps the gutter inside it.
        The desktop width is the content measure; a wider tier adds space beside the column, not inside it. */
