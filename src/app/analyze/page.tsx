@@ -1,6 +1,6 @@
 /**
  * The trade analyzer route at /analyze/.
- * It renders the masthead and the client analyzer in the centered page column on the white page background.
+ * It renders the masthead above the client analyzer, which sits in the centered page column on the white page background.
  */
 import type { Metadata } from "next";
 import { Analyzer } from "@/components/analyzer";
@@ -12,9 +12,11 @@ export const metadata: Metadata = {
 
 export default function AnalyzePage() {
   return (
-    <main className="mx-auto max-w-page bg-wht">
+    <>
       <Masthead subtitle="Trade Analyzer" />
-      <Analyzer />
-    </main>
+      <main className="mx-auto max-w-page bg-wht">
+        <Analyzer />
+      </main>
+    </>
   );
 }

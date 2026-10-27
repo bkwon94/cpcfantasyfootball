@@ -16,24 +16,28 @@ export const metadata: Metadata = {
 export default function RankingsPage() {
   const rankings = loadRankings();
   return (
-    <main className="mx-auto max-w-page bg-wht">
+    <>
       {rankings && rankings.weeks.length > 0 ? (
         // The provider holds the chosen week, so the masthead week line and the table read the same week.
         <WeekChoiceProvider weeks={rankings.weeks}>
           <Masthead subtitle="Power Rankings">
             <ChosenWeekLine />
           </Masthead>
-          <PowerRankings weeks={rankings.weeks} avatars={latestAvatars(rankings.season)} />
+          <main className="mx-auto max-w-page bg-wht">
+            <PowerRankings weeks={rankings.weeks} avatars={latestAvatars(rankings.season)} />
+          </main>
         </WeekChoiceProvider>
       ) : (
         <>
           <Masthead subtitle="Power Rankings" />
-          <Chapter>
-            <Label>Power rankings</Label>
-            <Blurb>No power rankings are published yet.</Blurb>
-          </Chapter>
+          <main className="mx-auto max-w-page bg-wht">
+            <Chapter>
+              <Label>Power rankings</Label>
+              <Blurb>No power rankings are published yet.</Blurb>
+            </Chapter>
+          </main>
         </>
       )}
-    </main>
+    </>
   );
 }
