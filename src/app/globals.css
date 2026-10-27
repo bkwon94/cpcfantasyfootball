@@ -8,6 +8,15 @@
 /*---break---
  */
 @custom-variant dark (&:is(.dark *));
+/* A hover style only for a device with a fine pointer that can hover. Some touch devices report hover,
+   and the color then sticks on a tapped link, so the pointer check keeps the hover to a mouse or a trackpad. */
+@custom-variant hover-fine {
+    @media (hover: hover) and (pointer: fine) {
+        &:hover {
+            @slot;
+        }
+    }
+}
 /*---break---
  */
 /* The brand tokens, ported from the source stylesheet. Static keeps every token on :root,
