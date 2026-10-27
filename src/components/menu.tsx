@@ -93,13 +93,18 @@ function RowLink({ destination, pageHref }: { destination: Destination; pageHref
 /* The scale the popover starts from. It is close to 1, so the popover grows out of its trigger and does not pop. */
 const POPOVER_SCALE = 0.95;
 
+type RowProps = MenuProps & {
+  // The name of the landmark. The compact bar holds a second row, so each row takes its own name and a screen reader tells them apart.
+  label: string;
+};
+
 /* The menu as a row of links for the desktop tier. It renders the same destinations as the sheet, so an item lives in one place. */
-function Row({ destinations, pageHref }: MenuProps) {
+function Row({ destinations, pageHref, label }: RowProps) {
   const off = useMotionOff();
   return (
     // The row shows from the desktop tier up, where the menu button hides. With scripts off the noscript row of the masthead takes its place.
     <nav
-      aria-label="Site menu"
+      aria-label={label}
       className="hidden items-center gap-x-sp-4 desktop:flex [@media(scripting:none)]:hidden"
     >
       {destinations.pages.map((destination) => (
@@ -155,7 +160,8 @@ function CompactBar({ title, off, children, ref }: CompactBarProps) {
     <motion.div
       ref={ref}
       role="region"
-      aria-label="Compact bar"
+      // A reader does not know the word "compact bar", so the landmark takes a name for where the bar sits.
+      aria-label="Top bar"
       className="fixed inset-x-0 top-0 z-40 h-touch bg-blk text-on-dark"
       initial={{ opacity: 0, ...offset }}
       animate={{ opacity: 1, y: 0 }}
@@ -166,7 +172,7 @@ function CompactBar({ title, off, children, ref }: CompactBarProps) {
       <div className="mx-auto flex h-full max-w-page items-center justify-between gap-sp-3 px-gutter">
         {/* The bar shows the logo with no title, so the logo names the home link. */}
         <a href={`${basePath}/`} className="flex flex-none items-center">
-          <img src={`${basePath}/images/logo.png`} alt={title} className="size-logo rounded-full" />
+          <img src={`${basePath}/images/logo.png`} alt={title} width={30} height={30} className="size-logo rounded-full" />
         </a>
         {children}
       </div>
@@ -221,7 +227,7 @@ export function Menu({ destinations, pageHref, title }: MenuIslandProps) {
 
   return (
     <>
-      <Row destinations={destinations} pageHref={pageHref} />
+      <Row destinations={destinations} pageHref={pageHref} label="Site menu" />
       <Dialog open={open} onOpenChange={openChange}>
         <DialogTrigger
           ref={buttonRef}
@@ -229,19 +235,19 @@ export function Menu({ destinations, pageHref, title }: MenuIslandProps) {
           aria-controls={listId}
           // With scripts off the button can open nothing, so it hides, and the masthead shows the destinations as plain links.
           // From the desktop tier up the row shows the destinations, so the button hides.
-          className="press -mr-sp-3 flex size-touch flex-none items-center justify-center text-on-dark desktop:hidden [@media(scripting:none)]:hidden"
+          className="press -mr-sp-3 flex size-touch flex-none items-center justify-center text-on-dark hover-fine:text-red-lt desktop:hidden [@media(scripting:none)]:hidden"
         >
           <MenuIcon open={open} off={off} />
         </DialogTrigger>
         <AnimatePresence>
           {barShown && (
             <CompactBar ref={barRef} title={title} off={off}>
-              <Row destinations={destinations} pageHref={pageHref} />
+              <Row destinations={destinations} pageHref={pageHref} label="Top bar menu" />
               {/* A second trigger of the same dialog. Base UI marks the trigger that opened the sheet, so focus returns to it on close. */}
               <DialogTrigger
                 aria-label="Menu"
                 aria-controls={listId}
-                className="press -mr-sp-3 flex size-touch flex-none items-center justify-center text-on-dark desktop:hidden"
+                className="press -mr-sp-3 flex size-touch flex-none items-center justify-center text-on-dark hover-fine:text-red-lt desktop:hidden"
               >
                 <MenuIcon open={open} off={off} />
               </DialogTrigger>

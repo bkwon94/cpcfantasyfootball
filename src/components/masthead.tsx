@@ -63,10 +63,13 @@ export function Masthead({
           {/* A plain anchor, not next/link: the home page is a static page with no shared state, so the client router adds nothing. */}
           <a href={`${basePath}/`} className="flex items-center gap-sp-3 text-inherit no-underline">
             {/* The title next to the logo names the link, so the logo is decorative. */}
-            <img src={`${basePath}/images/logo.png`} alt="" className="size-logo flex-none rounded-full" />
+            <img src={`${basePath}/images/logo.png`} alt="" width={30} height={30} className="size-logo flex-none rounded-full" />
             <div className="h-divider w-px bg-mute" />
             <div>
-              <div className="text-meta leading-tight font-bold tracking-wide uppercase">{title}</div>
+              {/* The brand name stays as it is under a page translator. Where the title must wrap, the balance splits it into even lines. */}
+              <div translate="no" className="text-meta leading-tight font-bold tracking-wide text-balance uppercase">
+                {title}
+              </div>
               {subtitle && <div className="text-label tracking-caps text-on-dark-muted uppercase">{subtitle}</div>}
             </div>
           </a>

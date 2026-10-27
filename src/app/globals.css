@@ -288,8 +288,10 @@
       --container-page: var(--container-page-desktop);
     }
     }
+  /* The compact bar is fixed over the top 44px of the viewport. The padding keeps a focused element or an anchor target clear of it. */
   html {
     @apply font-sans;
+    scroll-padding-top: var(--spacing-touch);
     }
   :focus-visible {
     outline: 2px solid var(--color-red);

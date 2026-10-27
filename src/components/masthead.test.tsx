@@ -354,11 +354,11 @@ describe("Masthead row", () => {
 
 /* The compact bar. It shows once the masthead scrolls out of view. */
 function bar() {
-  return screen.getByRole("region", { name: "Compact bar" });
+  return screen.getByRole("region", { name: "Top bar" });
 }
 
 function queryBar() {
-  return screen.queryByRole("region", { name: "Compact bar" });
+  return screen.queryByRole("region", { name: "Top bar" });
 }
 
 describe("Masthead compact bar", () => {
@@ -416,10 +416,18 @@ describe("Masthead compact bar", () => {
     await waitFor(() => expect(queryBar()).toBeNull());
   });
 
+  it("names the row of the bar apart from the row of the masthead", () => {
+    renderWeekMasthead();
+    reportMasthead(false);
+    // A screen reader lists both rows while the bar shows, so each landmark takes its own name.
+    const names = screen.getAllByRole("navigation").map((nav) => nav.getAttribute("aria-label"));
+    expect(names).toEqual(["Site menu", "Top bar menu"]);
+  });
+
   it("shows the same row in the bar for the desktop tier", () => {
     renderWeekMasthead();
     reportMasthead(false);
-    expect(linksIn(within(bar()).getByRole("navigation", { name: "Site menu" }))).toEqual([
+    expect(linksIn(within(bar()).getByRole("navigation", { name: "Top bar menu" }))).toEqual([
       ["Home", "/"],
       ["Week 7", "/2026/week-07/"],
       ["Power rankings", "/rankings/"],
