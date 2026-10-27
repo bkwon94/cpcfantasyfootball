@@ -20,6 +20,13 @@ function rows() {
 }
 
 describe("PowerRankings", () => {
+  it("shows the method note above the first team row", () => {
+    render(<PowerRankings week={lastWeek} avatars={week6.avatars} />);
+    const note = screen.getByText(/head-to-head record/);
+    expect(note.textContent).toContain("head-to-head record");
+    expect(note.compareDocumentPosition(rows()[0]) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  });
+
   it("shows twelve rows in rank order", () => {
     render(<PowerRankings week={lastWeek} avatars={week6.avatars} />);
     expect(rows()).toHaveLength(12);
