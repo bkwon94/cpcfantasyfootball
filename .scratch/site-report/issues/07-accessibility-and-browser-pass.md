@@ -6,10 +6,10 @@
 
 **Status:** ready-for-agent
 
-- [ ] The web interface guidelines review of the rail, the footer, the hero, and the card chapters lists no open issue. Fixes land in this ticket.
-- [ ] Keyboard only: Tab reaches each rail link and each footer link, and Enter follows it.
-- [ ] A screen reader hears the rail's landmark label, each chapter label, and the current state on the in-view chapter.
-- [ ] The browser pass with agent-browser at 390 by 844, 768 by 1024, and 1280 by 800, with reduced motion on, covers the week 7 and week 6 reports with a screenshot per chapter per width. The measure, the type step, the cards, the hero, the grids, the wide chapters, the rail, and the footer match the PRD. No sideways scroll at any width.
-- [ ] A browser pass with motion on at 1280 confirms the rail mark moves on a scroll and the reveals still play.
-- [ ] The tests pass, the typecheck passes, the build passes, and the export check passes.
+- [x] The web interface guidelines review of the rail, the footer, the hero, and the card chapters lists no open issue. Fixes land in this ticket.
+- [x] Keyboard only: Tab reaches each rail link and each footer link, and Enter follows it.
+- [x] A screen reader hears the rail's landmark label, each chapter label, and the current state on the in-view chapter.
+- [x] The browser pass with agent-browser at 390 by 844, 768 by 1024, and 1280 by 800, with reduced motion on, covers the week 7 and week 6 reports with a screenshot per chapter per width. The measure, the type step, the cards, the hero, the grids, the wide chapters, the rail, and the footer match the PRD. No sideways scroll at any width.
+- [x] A browser pass with motion on at 1280 confirms the rail mark moves on a scroll and the reveals still play.
+- [x] The tests pass, the typecheck passes, the build passes, and the export check passes.
 - [ ] The branch rebases onto main with no edit under the public folder, and merges. The deploy shows the report per tier on the live site.
