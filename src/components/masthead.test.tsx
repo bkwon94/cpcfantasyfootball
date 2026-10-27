@@ -19,10 +19,16 @@ function renderWeekMasthead(props: Partial<Parameters<typeof Masthead>[0]> = {})
   render(<Masthead subtitle="League Weekly" weeks={WEEKS} pageHref="/2026/week-07/" waiverHref={null} {...props} />);
 }
 
+/* The list of the open sheet. The row shares its name, so the query stays inside the dialog. */
+async function findSheetMenu() {
+  const dialog = await screen.findByRole("dialog", { name: "Menu" });
+  return within(dialog).getByRole("navigation", { name: "Site menu" });
+}
+
 /* Taps the menu button and returns the open menu. */
 async function openMenu() {
   fireEvent.click(menuButton());
-  return screen.findByRole("navigation", { name: "Menu" });
+  return findSheetMenu();
 }
 
 /* The label and the href of each link in a part of the page, in order. */
@@ -167,8 +173,9 @@ describe("Masthead menu", () => {
     renderWeekMasthead();
     // The open menu is modal, so it hides the page and the button from the screen reader. The test keeps the button it found first.
     const button = menuButton();
+    expect(button.getAttribute("aria-controls")).toBeNull();
     fireEvent.click(button);
-    const menu = await screen.findByRole("navigation", { name: "Menu" });
+    const menu = await findSheetMenu();
     expect(button.getAttribute("aria-expanded")).toBe("true");
     expect(button.getAttribute("aria-controls")).toBe(menu.id);
   });
@@ -218,7 +225,7 @@ describe("Masthead menu", () => {
     const button = menuButton();
     const menu = await openMenu();
     fireEvent.keyDown(menu, { key: "Escape" });
-    await waitFor(() => expect(screen.queryByRole("navigation", { name: "Menu" })).toBeNull());
+    await waitFor(() => expect(screen.queryByRole("dialog", { name: "Menu" })).toBeNull());
     expect(button.getAttribute("aria-expanded")).toBe("false");
     await waitFor(() => expect(document.activeElement).toBe(button));
   });
@@ -229,7 +236,7 @@ describe("Masthead menu", () => {
     fireEvent.pointerDown(document.body);
     fireEvent.mouseDown(document.body);
     fireEvent.click(document.body);
-    await waitFor(() => expect(screen.queryByRole("navigation", { name: "Menu" })).toBeNull());
+    await waitFor(() => expect(screen.queryByRole("dialog", { name: "Menu" })).toBeNull());
   });
 
   it("closes on a second tap of the button", async () => {
@@ -237,7 +244,7 @@ describe("Masthead menu", () => {
     const button = menuButton();
     await openMenu();
     fireEvent.click(button);
-    await waitFor(() => expect(screen.queryByRole("navigation", { name: "Menu" })).toBeNull());
+    await waitFor(() => expect(screen.queryByRole("dialog", { name: "Menu" })).toBeNull());
     expect(button.getAttribute("aria-expanded")).toBe("false");
   });
 
@@ -264,7 +271,7 @@ describe("Masthead menu", () => {
     // With motion off the items take no drop and no stagger, so each one is in place on the tap.
     expect(linksIn(menu)).toHaveLength(6);
     fireEvent.keyDown(menu, { key: "Escape" });
-    await waitFor(() => expect(screen.queryByRole("navigation", { name: "Menu" })).toBeNull());
+    await waitFor(() => expect(screen.queryByRole("dialog", { name: "Menu" })).toBeNull());
     await waitFor(() => expect(document.activeElement).toBe(button));
   });
 });
@@ -396,8 +403,9 @@ describe("Masthead compact bar", () => {
     reportMasthead(false);
     // The open menu is modal, so the test keeps the bar button it found first.
     const button = within(bar()).getByRole("button", { name: "Menu" });
+    expect(button.getAttribute("aria-controls")).toBeNull();
     fireEvent.click(button);
-    const menu = await screen.findByRole("navigation", { name: "Menu" });
+    const menu = await findSheetMenu();
     expect(button.getAttribute("aria-expanded")).toBe("true");
     expect(button.getAttribute("aria-controls")).toBe(menu.id);
     expect(linksIn(menu).map(([label]) => label)).toEqual([
@@ -409,7 +417,7 @@ describe("Masthead compact bar", () => {
       "Week 5",
     ]);
     fireEvent.keyDown(menu, { key: "Escape" });
-    await waitFor(() => expect(screen.queryByRole("navigation", { name: "Menu" })).toBeNull());
+    await waitFor(() => expect(screen.queryByRole("dialog", { name: "Menu" })).toBeNull());
     await waitFor(() => expect(document.activeElement).toBe(button));
   });
 
@@ -436,7 +444,7 @@ describe("Masthead compact bar", () => {
     renderWeekMasthead();
     reportMasthead(false);
     // A screen reader lists both rows while the bar shows, so each landmark takes its own name.
-    const names = screen.getAllByRole("navigation").map((nav) => nav.getAttribute("aria-label"));
+    const names = screen.getAllByRole("navigation").map((landmark) => landmark.getAttribute("aria-label"));
     expect(names).toEqual(["Site menu", "Top bar menu"]);
   });
 

@@ -251,7 +251,8 @@ export function Menu({ destinations, pageHref, title }: MenuIslandProps) {
         <DialogTrigger
           ref={buttonRef}
           aria-label="Menu"
-          aria-controls={listId}
+          // The list lives in a portal that exists only while the sheet is open, so the reference exists only then.
+          aria-controls={open ? listId : undefined}
           // With scripts off the button can open nothing, so it hides, and the masthead shows the destinations as plain links.
           // From the desktop tier up the row shows the destinations, so the button hides.
           className="press -mr-sp-3 flex size-touch flex-none items-center justify-center text-on-dark hover-fine:text-red-lt desktop:hidden [@media(scripting:none)]:hidden"
@@ -265,7 +266,8 @@ export function Menu({ destinations, pageHref, title }: MenuIslandProps) {
               {/* A second trigger of the same dialog. Base UI marks the trigger that opened the sheet, so focus returns to it on close. */}
               <DialogTrigger
                 aria-label="Menu"
-                aria-controls={listId}
+                // The list lives in a portal that exists only while the sheet is open, so the reference exists only then.
+                aria-controls={open ? listId : undefined}
                 className="press -mr-sp-3 flex size-touch flex-none items-center justify-center text-on-dark hover-fine:text-red-lt desktop:hidden"
               >
                 <MenuIcon open={open} off={off} />
@@ -290,7 +292,7 @@ export function Menu({ destinations, pageHref, title }: MenuIslandProps) {
                 style={{ top, maxHeight: `calc(100dvh - ${top}px)` }}
                 render={<motion.div {...sheet} />}
               >
-                <nav id={listId} aria-label="Menu" className="mx-auto max-w-page px-gutter pb-sp-6">
+                <nav id={listId} aria-label="Site menu" className="mx-auto max-w-page px-gutter pb-sp-6">
                   <ul className="m-0 list-none p-0">
                     {destinations.pages.map((destination, index) => (
                       <Item key={destination.href} destination={destination} pageHref={pageHref} index={index} off={off} />

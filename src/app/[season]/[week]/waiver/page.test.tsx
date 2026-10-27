@@ -67,7 +67,8 @@ describe("WaiverPage", () => {
     expect(within(banner).getAllByRole("link", { name: "Waiver wire" })).toEqual([rowItem]);
     expect(rowItem.getAttribute("aria-current")).toBe("page");
     fireEvent.click(within(banner).getByRole("button", { name: "Menu" }));
-    const menu = await screen.findByRole("navigation", { name: "Menu" });
+    const dialog = await screen.findByRole("dialog", { name: "Menu" });
+    const menu = within(dialog).getByRole("navigation", { name: "Site menu" });
     expect(within(menu).getByRole("link", { name: "Waiver wire" }).getAttribute("aria-current")).toBe("page");
   });
 

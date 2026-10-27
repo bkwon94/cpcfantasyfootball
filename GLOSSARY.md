@@ -25,5 +25,5 @@ The list of the weekly report's chapters that sits beside the content on a deskt
 _Avoid_: Sidebar, table of contents, TOC, outline
 
 **Compact bar**:
-The short black bar that shows at the top of the viewport once the masthead scrolls out, with the brand mark and the menu.
+The short black bar that shows at the top of the viewport once the masthead scrolls out, with the brand mark and the menu. Readers and screen readers know it as "Top bar".
 _Avoid_: Sticky header, mini header, app bar, toolbar
