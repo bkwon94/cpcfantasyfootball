@@ -101,6 +101,11 @@ type RowProps = MenuProps & {
 /* The menu as a row of links for the desktop tier. It renders the same destinations as the sheet, so an item lives in one place. */
 function Row({ destinations, pageHref, label }: RowProps) {
   const off = useMotionOff();
+  const [pastOpen, setPastOpen] = useState(false);
+  // The popover leaves faster than it enters, along the same path. With motion off it leaves at once.
+  const popoverExit = off
+    ? { opacity: 0, transition: INSTANT }
+    : { opacity: 0, scale: POPOVER_SCALE, transition: { duration: DURATION.popoverExit, ease: EASE_OUT } };
   return (
     // The row shows from the desktop tier up, where the menu button hides. With scripts off the noscript row of the masthead takes its place.
     <nav
@@ -111,38 +116,45 @@ function Row({ destinations, pageHref, label }: RowProps) {
         <RowLink key={destination.href} destination={destination} pageHref={pageHref} />
       ))}
       {destinations.pastWeeks.length > 0 && (
-        <Popover>
+        <Popover open={pastOpen} onOpenChange={setPastOpen}>
           <PopoverTrigger className="press inline-flex min-h-touch items-center text-label font-bold tracking-caps whitespace-nowrap text-on-dark uppercase hover-fine:text-red-lt">
             Past weeks
           </PopoverTrigger>
           {/* Framer Motion owns the scale and the fade, so the CSS keyframes of the primitive are off.
-              The primitive sets transform-origin to Base UI's --transform-origin, so the popover grows from the trigger. */}
-          <PopoverContent
-            aria-label="Past weeks"
-            align="end"
-            className="w-48 gap-0 rounded-none p-0 px-sp-4 py-sp-1 data-open:animate-none data-closed:animate-none"
-            render={
-              <motion.div
-                initial={off ? false : { opacity: 0, scale: POPOVER_SCALE }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={off ? INSTANT : { duration: DURATION.popover, ease: EASE_OUT }}
-              />
-            }
-          >
-            <ul className="m-0 list-none p-0">
-              {destinations.pastWeeks.map((destination) => (
-                <li key={destination.href} className="border-b border-rule last:border-b-0">
-                  <a
-                    href={destination.href}
-                    aria-current={destination.href === pageHref ? "page" : undefined}
-                    className="press flex min-h-touch items-center text-lead font-bold text-ink no-underline hover-fine:text-red aria-[current=page]:text-red"
-                  >
-                    {destination.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </PopoverContent>
+              The primitive sets transform-origin to Base UI's --transform-origin, so the popover grows from the trigger.
+              Base UI keeps the portal while the exit plays, and AnimatePresence removes it after, as the sheet does. */}
+          <AnimatePresence>
+            {pastOpen && (
+              <PopoverContent
+                keepMounted
+                aria-label="Past weeks"
+                align="end"
+                className="w-48 gap-0 rounded-none p-0 px-sp-4 py-sp-1 data-open:animate-none data-closed:animate-none"
+                render={
+                  <motion.div
+                    initial={off ? false : { opacity: 0, scale: POPOVER_SCALE }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={popoverExit}
+                    transition={off ? INSTANT : { duration: DURATION.popover, ease: EASE_OUT }}
+                  />
+                }
+              >
+                <ul className="m-0 list-none p-0">
+                  {destinations.pastWeeks.map((destination) => (
+                    <li key={destination.href} className="border-b border-rule last:border-b-0">
+                      <a
+                        href={destination.href}
+                        aria-current={destination.href === pageHref ? "page" : undefined}
+                        className="press flex min-h-touch items-center text-lead font-bold text-ink no-underline hover-fine:text-red aria-[current=page]:text-red"
+                      >
+                        {destination.label}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </PopoverContent>
+            )}
+          </AnimatePresence>
         </Popover>
       )}
     </nav>

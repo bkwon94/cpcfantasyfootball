@@ -39,6 +39,8 @@ export const DURATION = {
   iconMorph: 0.16,
   // The Past weeks popover scales in from its trigger. It is short, because the reader asked for it with a click.
   popover: 0.16,
+  // The Past weeks popover leaves. It is faster than its entry, so a back-out feels instant, as the sheet exit does.
+  popoverExit: 0.1,
   // The compact bar slides in from above or leaves. It takes the press timing, so the bar answers the scroll at once.
   bar: 0.14,
   // The decision word lands. It is a little slower than the rest, so the call lands with a beat.
