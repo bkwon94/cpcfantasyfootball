@@ -157,8 +157,8 @@ describe("Masthead", () => {
   it("shows no waiver link in the masthead, because the waiver page lives in the menu", () => {
     renderWeekMasthead({ waiverHref: "/2026/week-06/waiver/" });
     // The desktop row renders the menu, so the one waiver link on the page is the item of the row.
-    expect(screen.getAllByRole("link", { name: "Waiver wire" })).toEqual([
-      within(row()).getByRole("link", { name: "Waiver wire" }),
+    expect(screen.getAllByRole("link", { name: "Waiver Wire" })).toEqual([
+      within(row()).getByRole("link", { name: "Waiver Wire" }),
     ]);
   });
 });
@@ -186,18 +186,18 @@ describe("Masthead menu", () => {
     expect(linksIn(menu)).toEqual([
       ["Home", "/"],
       ["Week 7", "/2026/week-07/"],
-      ["Power rankings", "/rankings/"],
-      ["Trade analyzer", "/analyze/"],
+      ["Power Rankings", "/rankings/"],
+      ["Trade Analyzer", "/analyze/"],
       ["Week 6", "/2026/week-06/"],
       ["Week 5", "/2026/week-05/"],
     ]);
   });
 
-  it("puts the past weeks under a Past weeks heading", async () => {
+  it("puts the past weeks under a Past Weeks heading", async () => {
     renderWeekMasthead();
     const menu = await openMenu();
-    const past = within(menu).getByRole("list", { name: "Past weeks" });
-    expect(within(menu).getByRole("heading", { name: "Past weeks" })).toBeTruthy();
+    const past = within(menu).getByRole("list", { name: "Past Weeks" });
+    expect(within(menu).getByRole("heading", { name: "Past Weeks" })).toBeTruthy();
     expect(linksIn(past)).toEqual([
       ["Week 6", "/2026/week-06/"],
       ["Week 5", "/2026/week-05/"],
@@ -210,7 +210,7 @@ describe("Masthead menu", () => {
     const current = within(menu)
       .getAllByRole("link")
       .filter((link) => link.getAttribute("aria-current") === "page");
-    expect(current.map((link) => link.textContent)).toEqual(["Power rankings"]);
+    expect(current.map((link) => link.textContent)).toEqual(["Power Rankings"]);
   });
 
   it("marks a past week as the current page on its report", async () => {
@@ -252,15 +252,15 @@ describe("Masthead menu", () => {
     renderWeekMasthead({ waiverHref: "/2026/week-06/waiver/" });
     const menu = await openMenu();
     expect(linksIn(menu).slice(3, 5)).toEqual([
-      ["Trade analyzer", "/analyze/"],
-      ["Waiver wire", "/2026/week-06/waiver/"],
+      ["Trade Analyzer", "/analyze/"],
+      ["Waiver Wire", "/2026/week-06/waiver/"],
     ]);
   });
 
   it("lists no waiver page when the flag is off", async () => {
     renderWeekMasthead({ waiverHref: null });
     const menu = await openMenu();
-    expect(within(menu).queryByRole("link", { name: "Waiver wire" })).toBeNull();
+    expect(within(menu).queryByRole("link", { name: "Waiver Wire" })).toBeNull();
   });
 
   it("opens the menu at rest and closes it with motion off", async () => {
@@ -281,10 +281,10 @@ function row() {
   return screen.getByRole("navigation", { name: "Site menu" });
 }
 
-/* Taps the Past weeks trigger of the row and returns the open popover. */
+/* Taps the Past Weeks trigger of the row and returns the open popover. */
 async function openPastWeeks() {
-  fireEvent.click(within(row()).getByRole("button", { name: "Past weeks" }));
-  return screen.findByRole("dialog", { name: "Past weeks" });
+  fireEvent.click(within(row()).getByRole("button", { name: "Past Weeks" }));
+  return screen.findByRole("dialog", { name: "Past Weeks" });
 }
 
 describe("Masthead row", () => {
@@ -293,20 +293,20 @@ describe("Masthead row", () => {
     expect(linksIn(row())).toEqual([
       ["Home", "/"],
       ["Week 7", "/2026/week-07/"],
-      ["Power rankings", "/rankings/"],
-      ["Trade analyzer", "/analyze/"],
+      ["Power Rankings", "/rankings/"],
+      ["Trade Analyzer", "/analyze/"],
     ]);
   });
 
-  it("ends with a closed Past weeks trigger", () => {
+  it("ends with a closed Past Weeks trigger", () => {
     renderWeekMasthead();
-    const trigger = within(row()).getByRole("button", { name: "Past weeks" });
+    const trigger = within(row()).getByRole("button", { name: "Past Weeks" });
     expect(trigger.getAttribute("aria-expanded")).toBe("false");
   });
 
   it("opens the past weeks newest first on a tap of the trigger", async () => {
     renderWeekMasthead();
-    const trigger = within(row()).getByRole("button", { name: "Past weeks" });
+    const trigger = within(row()).getByRole("button", { name: "Past Weeks" });
     const popover = await openPastWeeks();
     expect(trigger.getAttribute("aria-expanded")).toBe("true");
     expect(linksIn(popover)).toEqual([
@@ -317,16 +317,16 @@ describe("Masthead row", () => {
 
   it("closes the popover on Escape", async () => {
     renderWeekMasthead();
-    const trigger = within(row()).getByRole("button", { name: "Past weeks" });
+    const trigger = within(row()).getByRole("button", { name: "Past Weeks" });
     const popover = await openPastWeeks();
     fireEvent.keyDown(popover, { key: "Escape" });
-    await waitFor(() => expect(screen.queryByRole("dialog", { name: "Past weeks" })).toBeNull());
+    await waitFor(() => expect(screen.queryByRole("dialog", { name: "Past Weeks" })).toBeNull());
     expect(trigger.getAttribute("aria-expanded")).toBe("false");
   });
 
-  it("returns focus to the Past weeks trigger when the popover closes on Escape", async () => {
+  it("returns focus to the Past Weeks trigger when the popover closes on Escape", async () => {
     renderWeekMasthead();
-    const trigger = within(row()).getByRole("button", { name: "Past weeks" });
+    const trigger = within(row()).getByRole("button", { name: "Past Weeks" });
     const popover = await openPastWeeks();
     fireEvent.keyDown(popover, { key: "Escape" });
     await waitFor(() => expect(document.activeElement).toBe(trigger));
@@ -336,8 +336,8 @@ describe("Masthead row", () => {
     renderWeekMasthead();
     const popover = await openPastWeeks();
     // The popover keeps focus inside, so a touch screen reader needs a control to leave it.
-    fireEvent.click(within(popover).getByRole("button", { name: "Close past weeks" }));
-    await waitFor(() => expect(screen.queryByRole("dialog", { name: "Past weeks" })).toBeNull());
+    fireEvent.click(within(popover).getByRole("button", { name: "Close Past Weeks" }));
+    await waitFor(() => expect(screen.queryByRole("dialog", { name: "Past Weeks" })).toBeNull());
   });
 
   it("closes the popover on a click outside", async () => {
@@ -346,7 +346,7 @@ describe("Masthead row", () => {
     fireEvent.pointerDown(document.body);
     fireEvent.mouseDown(document.body);
     fireEvent.click(document.body);
-    await waitFor(() => expect(screen.queryByRole("dialog", { name: "Past weeks" })).toBeNull());
+    await waitFor(() => expect(screen.queryByRole("dialog", { name: "Past Weeks" })).toBeNull());
   });
 
   it("marks the row link of the open page as the current page", () => {
@@ -354,7 +354,7 @@ describe("Masthead row", () => {
     const current = within(row())
       .getAllByRole("link")
       .filter((link) => link.getAttribute("aria-current") === "page");
-    expect(current.map((link) => link.textContent)).toEqual(["Power rankings"]);
+    expect(current.map((link) => link.textContent)).toEqual(["Power Rankings"]);
   });
 
   it("marks a past week in the popover as the current page on its report", async () => {
@@ -371,7 +371,7 @@ describe("Masthead row", () => {
     // With motion off the popover takes no scale and no fade, so each week is in place on the tap.
     expect(linksIn(popover)).toHaveLength(2);
     fireEvent.keyDown(popover, { key: "Escape" });
-    await waitFor(() => expect(screen.queryByRole("dialog", { name: "Past weeks" })).toBeNull());
+    await waitFor(() => expect(screen.queryByRole("dialog", { name: "Past Weeks" })).toBeNull());
   });
 });
 
@@ -411,8 +411,8 @@ describe("Masthead compact bar", () => {
     expect(linksIn(menu).map(([label]) => label)).toEqual([
       "Home",
       "Week 7",
-      "Power rankings",
-      "Trade analyzer",
+      "Power Rankings",
+      "Trade Analyzer",
       "Week 6",
       "Week 5",
     ]);
@@ -454,8 +454,8 @@ describe("Masthead compact bar", () => {
     expect(linksIn(within(bar()).getByRole("navigation", { name: "Top bar menu" }))).toEqual([
       ["Home", "/"],
       ["Week 7", "/2026/week-07/"],
-      ["Power rankings", "/rankings/"],
-      ["Trade analyzer", "/analyze/"],
+      ["Power Rankings", "/rankings/"],
+      ["Trade Analyzer", "/analyze/"],
     ]);
   });
 });

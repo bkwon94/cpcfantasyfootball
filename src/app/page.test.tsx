@@ -49,13 +49,13 @@ describe("HomePage", () => {
 
   it("links the trade analyzer", () => {
     render(<HomePage />);
-    const link = screen.getByRole("link", { name: /Trade Analyzer/ });
+    const link = within(screen.getByRole("main")).getByRole("link", { name: /Trade Analyzer/ });
     expect(link.getAttribute("href")).toMatch(/\/analyze\/$/);
   });
 
   it("puts the trade analyzer before the weeks", () => {
     render(<HomePage />);
-    const analyzer = screen.getByRole("link", { name: /Trade Analyzer/ });
+    const analyzer = within(screen.getByRole("main")).getByRole("link", { name: /Trade Analyzer/ });
     const week = screen.getAllByRole("link").find((item) => item.getAttribute("href") === "/2026/week-06/")!;
     expect(analyzer.compareDocumentPosition(week) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
   });
