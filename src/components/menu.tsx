@@ -139,7 +139,9 @@ function Row({ destinations, pageHref, label }: RowProps) {
           <PopoverTrigger className="press inline-flex min-h-touch items-center text-label font-bold tracking-caps whitespace-nowrap text-on-dark uppercase hover-fine:text-red-lt">
             Past weeks
           </PopoverTrigger>
-          {/* Framer Motion owns the scale and the fade, so the CSS keyframes of the primitive are off.
+          {/* Framer Motion owns the scale and the fade, so the CSS keyframes and the CSS transition of the primitive are off.
+              The duration-100 of the primitive gives a transition on every property. Framer writes the end opacity and scale
+              when its animation ends, and WebKit then runs them from the start values again, so the popover blinks.
               The primitive sets transform-origin to Base UI's --transform-origin, so the popover grows from the trigger.
               Base UI keeps the portal while the exit plays, and AnimatePresence removes it after, as the sheet does. */}
           <AnimatePresence>
@@ -148,7 +150,7 @@ function Row({ destinations, pageHref, label }: RowProps) {
                 keepMounted
                 aria-label="Past weeks"
                 align="end"
-                className="w-48 gap-0 rounded-none p-0 px-sp-4 py-sp-1 data-open:animate-none data-closed:animate-none"
+                className="w-48 gap-0 rounded-none p-0 px-sp-4 py-sp-1 transition-none data-open:animate-none data-closed:animate-none"
                 render={
                   <motion.div
                     initial={off ? false : { opacity: 0, scale: POPOVER_SCALE }}
