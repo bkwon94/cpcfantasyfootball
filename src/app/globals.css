@@ -352,7 +352,8 @@
 }
 
 /* The game changer stage. Two layered gradients cannot be Tailwind classes cleanly, so they live here.
-   The image and the text share one grid cell; the image sets the stage height. */
+   On a phone the image and the text share one grid cell, so the taller of the two, most often the image, sets the stage height.
+   From the tablet tier up the text and the image are two columns, and the hero height token sets the stage height. */
 @layer components {
     /* The red glow sits behind the head, so the cutout lifts off the black card.
        The glow is an element and not a pseudo-element, so the hero can fade it in on its own. */

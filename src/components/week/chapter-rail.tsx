@@ -64,7 +64,8 @@ export function ChapterRail({ chapters }: { chapters: RailChapter[] }) {
         {chapters.map(({ id, label }) => (
           <li key={id}>
             {/* A plain fragment anchor jumps with scripts off. The scroll padding on html keeps the label clear of the bar.
-                No smooth scroll is set, so the jump is instant with motion on or off. */}
+                No smooth scroll is set, so the jump is instant with motion on or off.
+                The mark is "location", the ARIA value for the reader's place in the page. "page" is for a link to the page in view. */}
             <a
               href={`#${id}`}
               aria-current={current === id ? "location" : undefined}
