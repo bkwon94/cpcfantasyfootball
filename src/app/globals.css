@@ -74,6 +74,8 @@
     --spacing-divider: 28px;
     --spacing-avatar: 28px;
     --spacing-touch: 44px;
+    /* The smallest pointer target that WCAG 2.2 AA allows, for a link in a list that a mouse or a trackpad reaches. */
+    --spacing-target: 24px;
     /* The player cutout on a trade chip. 64px keeps a column of chips short at 390. */
     --spacing-headshot: 64px;
     /* The headshot on an award tile: two steps of sp-5, as the stylesheet sets it. */
@@ -92,10 +94,22 @@
        score column starts, so the median line and the bars share one percent scale. */
     --spacing-median-bar: 14px;
     --spacing-val-col: 52px;
+    /* The median bar from the tablet tier up. A bar that spans a 640px column reads as a thin line at 14px,
+       so a taller bar keeps each team's bar easy to tell apart from the next. */
+    --spacing-median-bar-wide: 20px;
     /* The standings columns: rank, W-L, and points. The points column fits 000.00 at the row size. */
     --spacing-standings-rank: 24px;
     --spacing-standings-record: 44px;
     --spacing-standings-points: 56px;
+    /* The chapter rail on a desktop and the gap between it and the page column. 184px fits the longest chapter label,
+       Matchup of the Week at the desktop label size, on one line. */
+    --spacing-rail: 184px;
+    --spacing-rail-gap: var(--spacing-sp-6);
+    /* The standings columns from the tablet tier up. The phone tokens pack the numbers against the names,
+       so the wide row gives each number column more room and the eye can follow a row across the width. */
+    --spacing-standings-rank-wide: 40px;
+    --spacing-standings-record-wide: 72px;
+    --spacing-standings-points-wide: 96px;
     /* The power rankings columns for movement, the record, the playoff odds, and each component rank. 40px fits a five-letter column name in caps. */
     --spacing-rankings-col: 40px;
 
@@ -104,6 +118,9 @@
     --breakpoint-phone: 0rem;
     --breakpoint-tablet: 40rem;
     --breakpoint-desktop: 64rem;
+    /* The chapter rail sits in the margin left of the page column, so the margin must hold the rail plus the gap on each side:
+       720 + 2 × (184 + 24) = 1136px. 72rem is 1152px, the first round value past it. Under it the rail is hidden. */
+    --breakpoint-rail: 72rem;
 
     /* The page column per tier. A phone column fills the viewport and the content keeps the gutter inside it.
        The desktop width is the content measure; a wider tier adds space beside the column, not inside it. */
@@ -115,9 +132,19 @@
     /* The viewport where a wide table has room for every column. Under it, a wide table folds part of each row under the row.
        480px is the narrowest width that fits every column of the unfolded tables. */
     --breakpoint-page: 480px;
+    /* The measure: the widest line of prose. About 68 characters keeps the eye on the next line at every tier.
+       It is in ch, so the cap grows with the body size of the tier. Tables, grids, and score rows take no cap. */
+    --container-measure: 68ch;
+    /* The gap between two chapter cards on the grey body, from the tablet tier up. */
+    --spacing-card-gap: var(--spacing-sp-4);
+    /* The game changer hero height from the tablet tier up. A set height lets a long name and a short name give the same hero,
+       and the cutout fills it without a push. The desktop hero is taller, because its points and its column are bigger. */
+    --spacing-hero-tablet: 360px;
+    --spacing-hero-desktop: 420px;
 
     /* Type scale: label, meta, row, body, lead, stat, score, headline. Row is for dense lists,
-       so names and scores stay on one line. A size sets no line height, so text keeps the inherited body leading. */
+       so names and scores stay on one line. A size sets no line height, so text keeps the inherited body leading.
+       These are the phone sizes, the print scale. A rule in the base layer steps each size up per tier. */
     --text-label: 10px;
     --text-meta: 12px;
     --text-row: 13px;
@@ -129,14 +156,17 @@
     /* The game changer's points: the biggest number on the page, 1.8 times the headline. */
     --text-hero: calc(var(--text-headline) * 1.8);
 
-    /* Line heights: body copy, tight labels and names, and big stat numbers. */
+    /* Line heights: body copy, tight labels and names, and big stat numbers.
+       They are ratios of the size, so they stay in step with the type scale at every tier. */
     --leading-body: 1.4;
     --leading-tight: 1.15;
     --leading-stat: 1.1;
     /* The hero points sit tighter than a stat, so the giant digits do not push the projection line down. */
     --leading-hero: 0.9;
 
-    /* Letter spacing for uppercase labels. Wide is for titles, caps is for small subtitles and tags. */
+    /* Letter spacing for uppercase labels. Wide is for titles, caps is for small subtitles and tags.
+       Each token is in em and belongs to one size role: small caps open, big bold numbers tight. So the
+       spacing scales with its size at every tier and stays specific to the size. */
     --tracking-wide: 0.16em;
     --tracking-caps: 0.1em;
     /* Negative spacing for bold text: snug for a player name on a chip, tight for the big week number,
@@ -288,6 +318,31 @@
       --container-page: var(--container-page-desktop);
     }
     }
+  /* The type scale steps up one size per tier. A tablet or a laptop sits farther from the eye than a phone,
+     so the print sizes read small there. Body is 14px, 15px, and 16px. Each other size keeps its ratio to
+     the body, rounded to a whole pixel, so the hierarchy of the print scale holds. The hero points follow the headline. */
+  :root {
+    @variant tablet {
+      --text-label: 11px;
+      --text-meta: 13px;
+      --text-row: 14px;
+      --text-body: 15px;
+      --text-lead: 17px;
+      --text-stat: 21px;
+      --text-score: 26px;
+      --text-headline: 43px;
+    }
+    @variant desktop {
+      --text-label: 12px;
+      --text-meta: 14px;
+      --text-row: 15px;
+      --text-body: 16px;
+      --text-lead: 18px;
+      --text-stat: 23px;
+      --text-score: 27px;
+      --text-headline: 46px;
+    }
+    }
   /* The compact bar is fixed over the top 44px of the viewport. The padding keeps a focused element or an anchor target clear of it. */
   html {
     @apply font-sans;
@@ -300,7 +355,8 @@
 }
 
 /* The game changer stage. Two layered gradients cannot be Tailwind classes cleanly, so they live here.
-   The image and the text share one grid cell; the image sets the stage height. */
+   On a phone the image and the text share one grid cell, so the taller of the two, most often the image, sets the stage height.
+   From the tablet tier up the text and the image are two columns, and the hero height token sets the stage height. */
 @layer components {
     /* The red glow sits behind the head, so the cutout lifts off the black card.
        The glow is an element and not a pseudo-element, so the hero can fade it in on its own. */

@@ -7,12 +7,13 @@ import { cn } from "@/lib/utils";
 import type { AvatarMap, MatchupSide, Pick } from "@/lib/week-types";
 import { Avatar, avatarSrc, Blurb, Chapter, Label, Tag } from "./parts";
 
-/* A flex item cannot shrink below its longest word by default, so min-w-0 and hyphens keep a long team name inside a phone. */
+/* A flex item cannot shrink below its longest word by default, so min-w-0 and hyphens keep a long team name inside a phone.
+   From the tablet tier the cell fills its grid column, so each team sits at its edge of the row. */
 function TeamCell({ side, avatars, right }: { side: MatchupSide; avatars: AvatarMap; right?: boolean }) {
   return (
     <div
       className={cn(
-        "flex w-[36%] min-w-0 items-center gap-sp-2 text-lead leading-tight font-extrabold hyphens-auto",
+        "flex w-[36%] min-w-0 tablet:w-auto items-center gap-sp-2 text-lead leading-tight font-extrabold hyphens-auto",
         right && "flex-row-reverse text-right",
       )}
     >
@@ -34,10 +35,11 @@ export function MatchupOfTheWeek({ pick, avatars, blurb }: { pick: Pick; avatars
   const [first, second] = pick.sides;
   return (
     <Chapter id="motw">
-      <Label>
+      <Label heading>
         Matchup of the Week <Tag>{pick.reason}</Tag>
       </Label>
-      <div className="mb-sp-3 flex items-center justify-between gap-sp-2">
+      {/* From the tablet tier two equal outer columns hold the teams, so the score sits in the exact center of the row. */}
+      <div className="mb-sp-3 flex items-center justify-between gap-sp-2 tablet:grid tablet:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] tablet:gap-sp-4">
         <TeamCell side={first} avatars={avatars} />
         {/* Flex centers the small dash on the big numbers. Inline text would sit it on the baseline. */}
         <div className="flex items-center gap-sp-1 whitespace-nowrap">

@@ -10,45 +10,70 @@ import { avatarSrc, Blurb, Chapter, Label, Who } from "./parts";
 /* Six teams make the playoffs, so the dashed cut line sits under the sixth row. */
 const PLAYOFF_SPOTS = 6;
 
+/* From the tablet tier the wide column tokens and a wider gap spread the numbers across the row. */
 const GRID =
-  "grid grid-cols-[var(--spacing-standings-rank)_1fr_var(--spacing-standings-record)_var(--spacing-standings-points)] items-center gap-sp-2 border-b border-rule-dark text-row leading-tight tabular-nums";
+  "grid grid-cols-[var(--spacing-standings-rank)_1fr_var(--spacing-standings-record)_var(--spacing-standings-points)] tablet:grid-cols-[var(--spacing-standings-rank-wide)_1fr_var(--spacing-standings-record-wide)_var(--spacing-standings-points-wide)] items-center gap-sp-2 tablet:gap-sp-4 border-b border-rule-dark text-row leading-tight tabular-nums";
 
-/* The W-L and points columns align right, so the numbers line up on the last digit. */
-function Line({ cells, className }: { cells: [ReactNode, ReactNode, ReactNode, ReactNode]; className?: string }) {
+/* The W-L and points columns align right, so the numbers line up on the last digit.
+   The grid draws the table, so the roles tell a screen reader it is one: a row of cells, or of column headers for the header. */
+function Line({
+  cells,
+  header,
+  className,
+}: {
+  cells: [ReactNode, ReactNode, ReactNode, ReactNode];
+  header?: boolean;
+  className?: string;
+}) {
   const [rank, team, record, points] = cells;
+  const role = header ? "columnheader" : "cell";
   return (
-    <div className={cn(GRID, className)}>
-      <span>{rank}</span>
-      <span>{team}</span>
-      <span className="text-right">{record}</span>
-      <span className="text-right">{points}</span>
+    <div role="row" className={cn(GRID, className)}>
+      <span role={role}>{rank}</span>
+      <span role={role}>{team}</span>
+      <span role={role} className="text-right">
+        {record}
+      </span>
+      <span role={role} className="text-right">
+        {points}
+      </span>
     </div>
   );
 }
 
 export function Standings({ table, avatars }: { table: TableRow[]; avatars: AvatarMap }) {
   return (
-    <Chapter dark reveal>
-      <Label dark>Standings</Label>
-      <Line
-        cells={["#", "Team", "W-L", "Pts"]}
-        // cn drops the leading of the grid when a new text size follows, so the header sets it again.
-        className="pt-0 pb-sp-2 text-label leading-tight tracking-caps text-on-dark-muted uppercase"
-      />
-      {table.map((row, i) => (
-        <Fragment key={row.team.roster_id}>
-          <Line
-            className="py-sp-1"
-            cells={[
-              row.standing.rank,
-              <Who key="team" src={avatarSrc(avatars, row.team.roster_id)} name={row.team.name} />,
-              `${row.standing.wins}-${row.standing.losses}`,
-              row.standing.points_for.toFixed(2),
-            ]}
-          />
-          {i + 1 === PLAYOFF_SPOTS && <div role="separator" className={cn(GRID, "border-b-2 border-dashed border-red p-0")} />}
-        </Fragment>
-      ))}
+    <Chapter dark reveal id="standings">
+      <Label dark heading>Standings</Label>
+      {/* A table holds only rows, so the cut line is a row too. Its one cell names the cut for a screen reader and shows to no one. */}
+      <div role="table" aria-label="Standings">
+        <Line
+          header
+          cells={["#", "Team", "W-L", "Pts"]}
+          // cn drops the leading of the grid when a new text size follows, so the header sets it again.
+          className="pt-0 pb-sp-2 text-label leading-tight tracking-caps text-on-dark-muted uppercase"
+        />
+        {table.map((row, i) => (
+          <Fragment key={row.team.roster_id}>
+            <Line
+              className="py-sp-1"
+              cells={[
+                row.standing.rank,
+                <Who key="team" src={avatarSrc(avatars, row.team.roster_id)} name={row.team.name} />,
+                `${row.standing.wins}-${row.standing.losses}`,
+                row.standing.points_for.toFixed(2),
+              ]}
+            />
+            {i + 1 === PLAYOFF_SPOTS && (
+              <div role="row" className={cn(GRID, "border-b-2 border-dashed border-red p-0")}>
+                <span role="cell" className="sr-only">
+                  Playoff cut
+                </span>
+              </div>
+            )}
+          </Fragment>
+        ))}
+      </div>
       <Blurb dark className="mt-sp-3 text-meta">
         Records include the weekly median game: every team plays its opponent and the league median each week.
       </Blurb>

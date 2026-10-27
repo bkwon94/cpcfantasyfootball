@@ -78,7 +78,9 @@ function Row({ matchup, avatars, index }: { matchup: Matchup; avatars: AvatarMap
     // The label is the first step of the stagger, so the first row is the second.
     <Reveal className="border-b border-rule last:border-b-0" delay={stagger(index + 1)}>
       {/* minmax(0,1fr) keeps both columns equal, even when one name has a long word.
-          The chapter label already gives the first row its top space. */}
+          The chapter label already gives the first row its top space.
+          From the tablet tier each half has room for the longest name and score, so the text keeps to one line.
+          The truncate style ends a name that is still too long with an ellipsis, so it cannot push the row wide. */}
       <div
         className={cn(
           "grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)] items-center gap-sp-2 pb-sp-2 tabular-nums",
@@ -87,17 +89,18 @@ function Row({ matchup, avatars, index }: { matchup: Matchup; avatars: AvatarMap
       >
         <div className="flex min-w-0 items-center gap-sp-2 text-row leading-tight font-semibold hyphens-auto">
           <Avatar src={avatarSrc(avatars, winner.team.roster_id)} />
-          <span>
+          <span className="min-w-0 tablet:truncate">
             <span className={bold}>{winner.team.name}</span> <span className={bold}>{num(winner.score)}</span>
           </span>
         </div>
         <div className="flex min-w-0 items-center justify-end gap-sp-2 text-right text-row leading-tight font-semibold hyphens-auto">
           {/* One string, so React writes one text node, as the old page did. */}
-          <span>{`${num(loser.score)} ${loser.team.name}`}</span>
+          <span className="min-w-0 tablet:truncate">{`${num(loser.score)} ${loser.team.name}`}</span>
           <Avatar src={avatarSrc(avatars, loser.team.roster_id)} />
         </div>
       </div>
-      {/* 44px is the smallest comfortable touch target. The color change on open is instant, so only the press animates. */}
+      {/* 44px is the smallest comfortable touch target. The color change on open is instant, so only the press animates.
+          The label is in title case, as every button label of the site is. The caps style does not change what a screen reader hears. */}
       <button
         type="button"
         aria-expanded={open}
@@ -109,7 +112,7 @@ function Row({ matchup, avatars, index }: { matchup: Matchup; avatars: AvatarMap
           open ? "bg-blk text-on-dark" : "bg-gry text-red hover:bg-rule",
         )}
       >
-        <span>{open ? "Hide recap" : "Read recap"}</span>
+        <span>{open ? "Hide Recap" : "Read Recap"}</span>
         {/* A turned square sits low in the line, so a small lift centers it on the text. */}
         <span
           aria-hidden
@@ -127,9 +130,9 @@ function Row({ matchup, avatars, index }: { matchup: Matchup; avatars: AvatarMap
 /* The label and the rows stagger in one by one, so the chapter itself has no reveal. */
 export function AllMatchups({ matchups, avatars }: { matchups: Matchup[]; avatars: AvatarMap }) {
   return (
-    <Chapter>
+    <Chapter id="matchups">
       <Reveal delay={stagger(0)}>
-        <Label>All Matchups</Label>
+        <Label heading>All Matchups</Label>
       </Reveal>
       {matchups.map((matchup, i) => (
         <Row key={matchup.id} matchup={matchup} avatars={avatars} index={i} />

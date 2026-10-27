@@ -1,5 +1,6 @@
 /**
- * The awards chapter: a two-column grid of tiles, one per award, then the blurb.
+ * The awards chapter: a grid of tiles, one per award, then the blurb.
+ * A phone has two tiles per row; the tablet tier and up have three, so six awards sit in two rows.
  * A tile with no projections this week shows a note in place of the player.
  */
 import { Reveal } from "@/components/reveal";
@@ -19,8 +20,8 @@ function Tile({ award, headshots, index }: { award: Award; headshots: HeadshotMa
         <div className="mt-sp-1 text-meta text-mute tabular-nums">Projections unavailable this week</div>
       ) : (
         <>
-          {/* The headshot has no background, so the cutout sits on the card grey. */}
-          <Headshot playerId={award.player_id} headshots={headshots} className="mb-sp-2 block size-award rounded-full" />
+          {/* The headshot has no background, so the cutout sits on the card grey. The awards sit below the fold, so the headshot is lazy. */}
+          <Headshot playerId={award.player_id} headshots={headshots} lazy className="mb-sp-2 block size-award rounded-full" />
           <div className="text-body leading-tight font-extrabold">{award.player}</div>
           <div className="mt-sp-1 text-stat leading-stat font-black tabular-nums">{num(award.points)}</div>
           <div className="mt-sp-1 text-meta text-mute tabular-nums">
@@ -35,11 +36,12 @@ function Tile({ award, headshots, index }: { award: Award; headshots: HeadshotMa
 /* The label, the tiles, and the blurb stagger in one by one, so the chapter itself has no reveal. */
 export function Awards({ awards, headshots, blurb }: { awards: Award[]; headshots: HeadshotMap; blurb: string }) {
   return (
-    <Chapter>
+    <Chapter id="awards">
       <Reveal delay={stagger(0)}>
-        <Label>Awards</Label>
+        <Label heading>Awards</Label>
       </Reveal>
-      <div className="grid grid-cols-[1fr_1fr] gap-sp-2">
+      {/* The grid fills a row before the next, so the stagger index still reveals each row left to right. */}
+      <div className="grid grid-cols-[1fr_1fr] gap-sp-2 tablet:grid-cols-[1fr_1fr_1fr]">
         {awards.map((award, i) => (
           <Tile key={award.title} award={award} headshots={headshots} index={i} />
         ))}

@@ -1,6 +1,6 @@
 /**
  * The position leaders: one card per position with the top started players, then the blurb.
- * At phone width each row keeps one line; a wide screen puts two cards per row.
+ * At phone width each row keeps one line; the tablet tier and up put two cards per row.
  */
 import { num } from "@/lib/format";
 import { cn } from "@/lib/utils";
@@ -15,14 +15,14 @@ function Row({ row, headshots, wide }: { row: LeaderRow; headshots: HeadshotMap;
     <li
       className={cn(
         "flex items-baseline gap-sp-2 border-t border-rule py-sp-1 tabular-nums first:border-t-0",
-        wide && "md:grid md:grid-cols-[auto_minmax(0,1fr)_auto] md:gap-x-sp-2 md:gap-y-sp-0",
+        wide && "tablet:grid tablet:grid-cols-[auto_minmax(0,1fr)_auto] tablet:gap-x-sp-2 tablet:gap-y-sp-0",
       )}
     >
       <span className="flex-none text-meta font-bold text-mute">{row.rank}</span>
       <span
         className={cn(
           "min-w-0 flex-[0_1_auto] overflow-hidden text-ellipsis whitespace-nowrap",
-          wide && "md:col-start-2 md:row-start-1",
+          wide && "tablet:col-start-2 tablet:row-start-1",
         )}
       >
         {/* The row headshot stays near the text height, so the row keeps about the height of a plain text row. */}
@@ -38,13 +38,13 @@ function Row({ row, headshots, wide }: { row: LeaderRow; headshots: HeadshotMap;
       <span
         className={cn(
           "min-w-0 flex-[1_1_0] overflow-hidden text-meta text-ellipsis whitespace-nowrap text-mute",
-          wide && "md:col-start-2 md:row-start-2",
+          wide && "tablet:col-start-2 tablet:row-start-2",
         )}
       >
         {row.team}
       </span>
       {/* The points are the stat a reader scans for, so they take the body size and the heaviest weight in the row. */}
-      <span className={cn("flex-none text-body font-extrabold", wide && "md:col-start-3 md:row-start-1")}>
+      <span className={cn("flex-none text-body font-extrabold", wide && "tablet:col-start-3 tablet:row-start-1")}>
         {num(row.points)}
       </span>
     </li>
@@ -54,7 +54,7 @@ function Row({ row, headshots, wide }: { row: LeaderRow; headshots: HeadshotMap;
 /* A lone last card on a wide screen spans the row, so the row has no empty half. */
 function Board({ board, headshots, spans }: { board: LeaderBoard; headshots: HeadshotMap; spans: boolean }) {
   return (
-    <div className={cn("rounded-card bg-gry p-sp-3", spans && "md:col-span-full")}>
+    <div className={cn("rounded-card bg-gry p-sp-3", spans && "tablet:col-span-full")}>
       <Label className="mb-sp-1">{board.position}</Label>
       {board.rows.length > 0 ? (
         <ol className="m-0 list-none p-0 text-row leading-tight">
@@ -81,9 +81,9 @@ export function PositionLeaders({
   const lastSpans = leaders.length % 2 === 1;
   return (
     <Chapter id="leaders" reveal>
-      <Label>Position Leaders</Label>
+      <Label heading>Position Leaders</Label>
       {/* minmax(0,1fr) caps the column at the section width, so a one-line row cannot grow past the gutter. */}
-      <div className="grid grid-cols-[minmax(0,1fr)] gap-sp-2 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+      <div className="grid grid-cols-[minmax(0,1fr)] gap-sp-2 tablet:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
         {leaders.map((board, i) => (
           <Board
             key={board.position}

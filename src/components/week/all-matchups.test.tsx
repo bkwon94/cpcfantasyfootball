@@ -28,7 +28,7 @@ describe("AllMatchups", () => {
 
   it("shows one closed recap button per matchup", () => {
     renderMatchups();
-    const buttons = screen.getAllByRole("button", { name: "Read recap" });
+    const buttons = screen.getAllByRole("button", { name: "Read Recap" });
     expect(buttons.length).toBe(6);
     expect(buttons[0].getAttribute("aria-expanded")).toBe("false");
     expect(buttons[0].getAttribute("aria-controls")).toBeTruthy();
@@ -41,28 +41,28 @@ describe("AllMatchups", () => {
 
   it("opens the recap with the top scorers, then closes it", () => {
     renderMatchups();
-    const button = screen.getAllByRole("button", { name: "Read recap" })[0];
+    const button = screen.getAllByRole("button", { name: "Read Recap" })[0];
     const panel = document.getElementById(button.getAttribute("aria-controls") ?? "");
     expect(screen.getByText(recapText, { exact: false })).toBeTruthy();
     expect(button.getAttribute("aria-expanded")).toBe("false");
     expect(panel?.getAttribute("aria-hidden")).toBe("true");
     fireEvent.click(button);
     expect(panel?.getAttribute("aria-hidden")).toBe("false");
-    expect(button.textContent).toBe("Hide recap");
+    expect(button.textContent).toBe("Hide Recap");
     expect(button.getAttribute("aria-expanded")).toBe("true");
     expect(screen.getByText("Top · Lil Fridge")).toBeTruthy();
     expect(screen.getByText("C. McCaffrey 26.2")).toBeTruthy();
     expect(screen.getByText("B. Purdy 17.36")).toBeTruthy();
     expect(screen.getByText(recapText, { exact: false })).toBeTruthy();
     fireEvent.click(button);
-    expect(button.textContent).toBe("Read recap");
+    expect(button.textContent).toBe("Read Recap");
     expect(button.getAttribute("aria-expanded")).toBe("false");
     expect(panel?.getAttribute("aria-hidden")).toBe("true");
   });
 
   it("points the matchup of the week to the top story", () => {
     renderMatchups();
-    fireEvent.click(screen.getAllByRole("button", { name: "Read recap" })[3]);
+    fireEvent.click(screen.getAllByRole("button", { name: "Read Recap" })[3]);
     expect(screen.getByText(/This is the Matchup of the Week. Read the full story at the top./)).toBeTruthy();
     expect(screen.getByRole("link", { name: "Go to the top story" }).getAttribute("href")).toBe("#motw");
   });
@@ -71,7 +71,7 @@ describe("AllMatchups", () => {
     const [winner, loser] = week6.matchups[0].sides;
     const matchup = { ...week6.matchups[0], sides: [winner, { ...loser, top: null }] as typeof week6.matchups[0]["sides"] };
     render(<AllMatchups matchups={[matchup]} avatars={week6.avatars} />);
-    fireEvent.click(screen.getByRole("button", { name: "Read recap" }));
+    fireEvent.click(screen.getByRole("button", { name: "Read Recap" }));
     expect(screen.getByText("—")).toBeTruthy();
   });
 });

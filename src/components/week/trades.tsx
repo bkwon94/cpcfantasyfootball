@@ -1,6 +1,7 @@
 /**
  * The trades chapter: one grey card per trade, with a column per side that lists what the side gets.
  * Two sides face each other across a red For tag; three or four sides wrap two per row with no tag.
+ * A phone stacks the cards; the tablet tier and up put two cards per row, so two trades compare side by side.
  */
 import { Fragment } from "react";
 import { Reveal } from "@/components/reveal";
@@ -65,7 +66,7 @@ function TradeCard({ trade, avatars, index }: { trade: Trade; avatars: AvatarMap
   const pair = trade.sides.length === 2;
   return (
     // The label is the first step of the stagger, so the first card is the second.
-    <Reveal className={cn("rounded-card bg-gry p-sp-3", index > 0 && "mt-sp-2")} delay={stagger(index + 1)}>
+    <Reveal className={cn("rounded-card bg-gry p-sp-3", index > 0 && "mt-sp-2 tablet:mt-0")} delay={stagger(index + 1)}>
       <div
         className={cn(
           "grid gap-x-sp-2 gap-y-sp-4",
@@ -90,11 +91,15 @@ export function Trades({ trades, avatars }: { trades: Trade[]; avatars: AvatarMa
   return (
     <Chapter id="trades">
       <Reveal delay={stagger(0)}>
-        <Label>Trades</Label>
+        <Label heading>Trades</Label>
       </Reveal>
-      {trades.map((trade, i) => (
-        <TradeCard key={i} trade={trade} avatars={avatars} index={i} />
-      ))}
+      {/* The grid gap takes the place of the card margin. The grid fills a row before the next,
+          so the stagger index still reveals each row left to right. A lone last card keeps its column width. */}
+      <div className="tablet:grid tablet:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] tablet:gap-sp-2">
+        {trades.map((trade, i) => (
+          <TradeCard key={i} trade={trade} avatars={avatars} index={i} />
+        ))}
+      </div>
     </Chapter>
   );
 }
