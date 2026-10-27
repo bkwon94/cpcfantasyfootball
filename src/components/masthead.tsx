@@ -3,6 +3,7 @@
  * It matches the masthead of the source stylesheet, so a reader cannot tell the two apart.
  */
 import type { ReactNode } from "react";
+import { currentPage } from "@/components/current-page";
 import { Menu, type Destinations } from "@/components/menu";
 import { basePath } from "@/lib/config";
 import { currentWaiverHref } from "@/lib/waiver-data";
@@ -83,7 +84,7 @@ export function Masthead({
               <a
                 key={destination.href}
                 href={destination.href}
-                aria-current={destination.href === pageHref ? "page" : undefined}
+                aria-current={currentPage(destination, pageHref)}
                 className="inline-flex min-h-touch items-center text-label font-bold tracking-caps text-on-dark uppercase no-underline aria-[current=page]:text-red-lt"
               >
                 {destination.label}

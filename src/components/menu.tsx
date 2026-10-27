@@ -6,6 +6,7 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useId, useRef, useState, type ReactNode, type Ref } from "react";
+import { currentPage } from "@/components/current-page";
 import { Dialog, DialogOverlay, DialogPopup, DialogPortal, DialogTrigger } from "@/components/ui/dialog";
 import { Popover, PopoverClose, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { basePath } from "@/lib/config";
@@ -54,6 +55,23 @@ function MenuIcon({ open, off }: { open: boolean; off: boolean }) {
   );
 }
 
+type MenuButtonProps = { open: boolean; off: boolean; listId: string; className: string; ref?: Ref<HTMLButtonElement> };
+
+/* The menu button, shared by the masthead and the compact bar, so both keep the same name, state, and look. */
+function MenuButton({ open, off, listId, className, ref }: MenuButtonProps) {
+  return (
+    <DialogTrigger
+      ref={ref}
+      aria-label="Menu"
+      // The list lives in a portal that exists only while the sheet is open, so the reference exists only then.
+      aria-controls={open ? listId : undefined}
+      className={`press -mr-sp-3 flex size-touch flex-none items-center justify-center text-on-dark hover-fine:text-red-lt ${className}`}
+    >
+      <MenuIcon open={open} off={off} />
+    </DialogTrigger>
+  );
+}
+
 type ItemProps = { destination: Destination; pageHref?: string; index: number; off: boolean };
 
 /* One link of the menu. A plain anchor, so the static export navigates with scripts off and with no client router. */
@@ -67,7 +85,7 @@ function Item({ destination, pageHref, index, off }: ItemProps) {
       {/* The current-page state sets the red accent too, so the mark a reader sees and the state a screen reader speaks never differ. */}
       <a
         href={destination.href}
-        aria-current={destination.href === pageHref ? "page" : undefined}
+        aria-current={currentPage(destination, pageHref)}
         className="press flex min-h-touch items-center border-b border-rule text-lead font-bold text-ink no-underline hover-fine:text-red aria-[current=page]:text-red"
       >
         {destination.label}
@@ -82,7 +100,7 @@ function RowLink({ destination, pageHref }: { destination: Destination; pageHref
   return (
     <a
       href={destination.href}
-      aria-current={destination.href === pageHref ? "page" : undefined}
+      aria-current={currentPage(destination, pageHref)}
       className="press inline-flex min-h-touch items-center text-label font-bold tracking-caps whitespace-nowrap text-on-dark uppercase no-underline hover-fine:text-red-lt aria-[current=page]:text-red-lt"
     >
       {destination.label}
@@ -145,7 +163,7 @@ function Row({ destinations, pageHref, label }: RowProps) {
                     <li key={destination.href} className="border-b border-rule last:border-b-0">
                       <a
                         href={destination.href}
-                        aria-current={destination.href === pageHref ? "page" : undefined}
+                        aria-current={currentPage(destination, pageHref)}
                         className="press flex min-h-touch items-center text-lead font-bold text-ink no-underline hover-fine:text-red aria-[current=page]:text-red"
                       >
                         {destination.label}
@@ -248,30 +266,21 @@ export function Menu({ destinations, pageHref, title }: MenuIslandProps) {
     <>
       <Row destinations={destinations} pageHref={pageHref} label="Site menu" />
       <Dialog open={open} onOpenChange={openChange}>
-        <DialogTrigger
+        {/* With scripts off the button can open nothing, so it hides, and the masthead shows the destinations as plain links.
+            From the desktop tier up the row shows the destinations, so the button hides. */}
+        <MenuButton
           ref={buttonRef}
-          aria-label="Menu"
-          // The list lives in a portal that exists only while the sheet is open, so the reference exists only then.
-          aria-controls={open ? listId : undefined}
-          // With scripts off the button can open nothing, so it hides, and the masthead shows the destinations as plain links.
-          // From the desktop tier up the row shows the destinations, so the button hides.
-          className="press -mr-sp-3 flex size-touch flex-none items-center justify-center text-on-dark hover-fine:text-red-lt desktop:hidden [@media(scripting:none)]:hidden"
-        >
-          <MenuIcon open={open} off={off} />
-        </DialogTrigger>
+          open={open}
+          off={off}
+          listId={listId}
+          className="desktop:hidden [@media(scripting:none)]:hidden"
+        />
         <AnimatePresence>
           {barShown && (
             <CompactBar ref={barRef} title={title} off={off}>
               <Row destinations={destinations} pageHref={pageHref} label="Top bar menu" />
               {/* A second trigger of the same dialog. Base UI marks the trigger that opened the sheet, so focus returns to it on close. */}
-              <DialogTrigger
-                aria-label="Menu"
-                // The list lives in a portal that exists only while the sheet is open, so the reference exists only then.
-                aria-controls={open ? listId : undefined}
-                className="press -mr-sp-3 flex size-touch flex-none items-center justify-center text-on-dark hover-fine:text-red-lt desktop:hidden"
-              >
-                <MenuIcon open={open} off={off} />
-              </DialogTrigger>
+              <MenuButton open={open} off={off} listId={listId} className="desktop:hidden" />
             </CompactBar>
           )}
         </AnimatePresence>
