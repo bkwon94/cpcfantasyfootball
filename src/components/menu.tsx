@@ -265,10 +265,7 @@ export function Menu({ destinations, pageHref, title }: MenuIslandProps) {
   return (
     <>
       <Row destinations={destinations} pageHref={pageHref} label="Site menu" />
-      {/* The default modal mode locks the page scroll with overflow hidden on the body about one frame after the open.
-          On iOS WebKit that lock pulls the collapsed toolbar back into view, so a light band blinks at the bottom.
-          trap-focus keeps the focus trap, Escape, the tap outside, and focus return, and drops the lock. */}
-      <Dialog modal="trap-focus" open={open} onOpenChange={openChange}>
+      <Dialog open={open} onOpenChange={openChange}>
         {/* With scripts off the button can open nothing, so it hides, and the masthead shows the destinations as plain links.
             From the desktop tier up the row shows the destinations, so the button hides. */}
         <MenuButton
