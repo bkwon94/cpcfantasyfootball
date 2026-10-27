@@ -5,6 +5,7 @@
 import type { Metadata } from "next";
 import { Masthead, WeekLine } from "@/components/masthead";
 import { AllMatchups } from "@/components/week/all-matchups";
+import { ChapterRail, type RailChapter } from "@/components/week/chapter-rail";
 import { Awards } from "@/components/week/awards";
 import { GameChanger } from "@/components/week/game-changer";
 import { MatchupOfTheWeek } from "@/components/week/matchup-of-the-week";
@@ -39,6 +40,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function WeekPage({ params }: Props) {
   const { season, week } = await params;
   const page = loadWeek(season, week);
+  // The rail lists the chapters the page renders, in the same order, with the ids the chapters set.
+  // The labels use the words of each chapter's own label.
+  const chapters: RailChapter[] = [
+    { id: "motw", label: "Matchup of the Week" },
+    ...(page.game_changer ? [{ id: "game-changer", label: "Game Changer" }] : []),
+    { id: "awards", label: "Awards" },
+    ...(page.leaders.length > 0 ? [{ id: "leaders", label: "Position Leaders" }] : []),
+    { id: "trades", label: "Trades" },
+    { id: "matchups", label: "All Matchups" },
+    { id: "median", label: "Median Game" },
+    { id: "standings", label: "Standings" },
+    { id: "next-week", label: "Next Week" },
+  ];
   return (
     <>
       <Masthead subtitle="League Weekly" pageHref={`${basePath}/${season}/${week}/`}>
@@ -48,23 +62,42 @@ export default async function WeekPage({ params }: Props) {
           {`${page.dates} · Published ${page.publish_date}`}
         </div>
       </Masthead>
-      <main className="mx-auto max-w-page bg-wht">
-        {/* The masthead and the top story show at once. The hero plays its own motion on load.
-            Each chapter below reveals once as it enters the view, as a unit or card by card. */}
-        <MatchupOfTheWeek pick={page.pick} avatars={page.avatars} blurb={page.blurbs.motw} />
-        {page.game_changer && (
-          <GameChanger gameChanger={page.game_changer} headshots={page.headshots} blurb={page.blurbs.game_changer} />
-        )}
-        <Awards awards={page.awards} headshots={page.headshots} blurb={page.blurbs.awards} />
-        {page.leaders.length > 0 && (
-          <PositionLeaders leaders={page.leaders} headshots={page.headshots} blurb={page.blurbs.position_leaders} />
-        )}
-        <Trades trades={page.trades} avatars={page.avatars} />
-        <AllMatchups matchups={page.matchups} avatars={page.avatars} />
-        <MedianGame median={page.median} blurb={page.blurbs.median} />
-        <Standings table={page.table} avatars={page.avatars} />
-        <NextWeek week={page.week} games={page.next} avatars={page.avatars} blurb={page.blurbs.next_week} />
-      </main>
+      {/* From the desktop tier the rail and the page column form one centered grid, the rail left of the column.
+          Under it the grid is one column, the rail is hidden, and the column centers as before. */}
+      <div className="desktop:grid desktop:grid-cols-[var(--spacing-rail)_var(--container-page)] desktop:justify-center desktop:gap-x-rail-gap">
+        <ChapterRail chapters={chapters} />
+        <main className="mx-auto max-w-page bg-wht">
+          {/* The masthead and the top story show at once. The hero plays its own motion on load.
+              Each chapter below reveals once as it enters the view, as a unit or card by card. */}
+          <MatchupOfTheWeek pick={page.pick} avatars={page.avatars} blurb={page.blurbs.motw} />
+          {/* Six chapter components set no id, so the page gives each an anchor box with the id the rail links to.
+              The box adds no style, so each chapter looks the same with or without it. */}
+          {page.game_changer && (
+            <div id="game-changer">
+              <GameChanger gameChanger={page.game_changer} headshots={page.headshots} blurb={page.blurbs.game_changer} />
+            </div>
+          )}
+          <div id="awards">
+            <Awards awards={page.awards} headshots={page.headshots} blurb={page.blurbs.awards} />
+          </div>
+          {page.leaders.length > 0 && (
+            <PositionLeaders leaders={page.leaders} headshots={page.headshots} blurb={page.blurbs.position_leaders} />
+          )}
+          <Trades trades={page.trades} avatars={page.avatars} />
+          <div id="matchups">
+            <AllMatchups matchups={page.matchups} avatars={page.avatars} />
+          </div>
+          <div id="median">
+            <MedianGame median={page.median} blurb={page.blurbs.median} />
+          </div>
+          <div id="standings">
+            <Standings table={page.table} avatars={page.avatars} />
+          </div>
+          <div id="next-week">
+            <NextWeek week={page.week} games={page.next} avatars={page.avatars} blurb={page.blurbs.next_week} />
+          </div>
+        </main>
+      </div>
     </>
   );
 }
