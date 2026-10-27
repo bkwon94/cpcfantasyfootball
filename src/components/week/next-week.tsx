@@ -1,6 +1,7 @@
 /**
  * Next week: one grey card per game with both teams and their records, the Must Watch tag, and the blurb.
  * The week number comes from the page, so the label reads the week after the one on the page.
+ * A phone stacks the cards; a tablet puts two per row and a desktop three, so the slate fits the width.
  */
 import { cn } from "@/lib/utils";
 import type { AvatarMap, NextGame, Team } from "@/lib/week-types";
@@ -19,7 +20,7 @@ function Side({ team, avatars }: { team: Team; avatars: AvatarMap }) {
 
 function Game({ game, avatars, first }: { game: NextGame; avatars: AvatarMap; first: boolean }) {
   return (
-    <div className={cn("rounded-card bg-gry p-sp-3", !first && "mt-sp-2")}>
+    <div className={cn("rounded-card bg-gry p-sp-3", !first && "mt-sp-2 tablet:mt-0")}>
       <div className="text-body leading-body font-extrabold">
         <Side team={game.a} avatars={avatars} />
         {/* The "vs" lines up under the names, past the avatar column. */}
@@ -52,9 +53,13 @@ export function NextWeek({
   return (
     <Chapter reveal>
       <Label>{`Next Week · Week ${week + 1}`}</Label>
-      {games.map((game, i) => (
-        <Game key={game.a.roster_id} game={game} avatars={avatars} first={i === 0} />
-      ))}
+      {/* The grid gap takes the place of the card margin. minmax(0,1fr) lets a long team name truncate in its column.
+          A lone last card keeps its column width. */}
+      <div className="tablet:grid tablet:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] tablet:gap-sp-2 desktop:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)]">
+        {games.map((game, i) => (
+          <Game key={game.a.roster_id} game={game} avatars={avatars} first={i === 0} />
+        ))}
+      </div>
       {blurb && <Blurb className="mt-sp-3">{blurb}</Blurb>}
     </Chapter>
   );
