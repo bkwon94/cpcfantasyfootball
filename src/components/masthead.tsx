@@ -6,6 +6,9 @@ import type { ReactNode } from "react";
 import { basePath } from "@/lib/config";
 import { currentWaiverHref } from "@/lib/waiver-data";
 
+/* The week line lives in its own file, so a client component can import it. The pages import it from here. */
+export { WeekLine } from "@/components/week-line";
+
 type MastheadProps = {
   // The brand line. It defaults to the league name, which every page shows.
   title?: string;
@@ -47,22 +50,5 @@ export function Masthead({
         </a>
       )}
     </header>
-  );
-}
-
-/* The big week line in the masthead. The number, when given, takes the red accent. */
-export function WeekLine({ label, number }: { label: string; number?: number }) {
-  return (
-    <div className="text-headline leading-none font-black tracking-tight">
-      {number === undefined ? (
-        label
-      ) : (
-        <>
-          {/* One string, so React writes one text node and the browser kerns the label as one run. */}
-          {`${label} `}
-          <span className="text-red">{number}</span>
-        </>
-      )}
-    </div>
   );
 }

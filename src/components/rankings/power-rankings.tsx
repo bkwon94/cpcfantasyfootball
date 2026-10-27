@@ -1,8 +1,8 @@
 /**
- * The power rankings table: the dark chapter with one row per team for one week, in rank order.
+ * The power rankings table: the dark chapter with one row per team for the chosen week, in rank order, and a chip per week to choose it.
  * Each row shows the rank, the movement, the team, the record, the playoff odds, and the four component ranks.
  * Every component number is a rank, never a score.
- * The row button opens the blurb, and it holds open state, so this file is a client component.
+ * The row button opens the blurb, and the chips choose the week. Both hold state, so this file is a client component.
  */
 "use client";
 
@@ -14,6 +14,7 @@ import { DURATION, EASE_OUT, INSTANT, stagger, useMotionOff } from "@/lib/motion
 import type { Components, Odds, RankingsRow, RankingsWeek } from "@/lib/rankings-types";
 import { cn } from "@/lib/utils";
 import type { AvatarMap } from "@/lib/week-types";
+import { useSharedWeekChoice, useWeekChoice } from "./week-choice";
 
 /* The order and the column names of the four component ranks. */
 const COMPONENTS: { key: keyof Components; name: string }[] = [
@@ -63,9 +64,16 @@ export function Movement({ movement }: { movement: number | null }) {
 }
 
 /* The playoff cell reads the number while the race is open, and a word once the team has clinched or is out.
-   A row from a week before the odds engine ran has no odds, so its cell stays blank. */
-function playoffCell(row: RankingsRow): string {
-  if (!row.odds) return "";
+   A row from a week before the odds engine ran has no odds, so its cell shows a dash, as a row with no movement does. */
+function playoffCell(row: RankingsRow): ReactNode {
+  if (!row.odds) {
+    return (
+      <>
+        <span aria-hidden>–</span>
+        <span className="sr-only">No odds</span>
+      </>
+    );
+  }
   if (row.odds.status === "in") return "In";
   if (row.odds.status === "out") return "Out";
   return String(row.odds.playoff);
@@ -170,13 +178,44 @@ function Row({ row, avatars, index }: { row: RankingsRow; avatars: AvatarMap; in
   );
 }
 
-export function PowerRankings({ week, avatars }: { week: RankingsWeek; avatars: AvatarMap }) {
+/* One chip per week in the file. The chosen chip takes the dark fill on the light chip, as the chosen team of the team picker does,
+   turned over for the dark chapter. aria-pressed names the chosen chip, so the fill is never the only sign. */
+function WeekChips({ weeks, chosen, choose }: { weeks: RankingsWeek[]; chosen: number; choose: (week: number) => void }) {
+  return (
+    <div role="group" aria-label="Week" className="mb-sp-3 flex flex-wrap gap-sp-1">
+      {weeks.map(({ week }) => (
+        <button
+          key={week}
+          type="button"
+          aria-pressed={week === chosen}
+          aria-label={`Week ${week}`}
+          onClick={() => choose(week)}
+          className={cn(
+            "press min-h-touch min-w-touch cursor-pointer rounded-card border-0 px-sp-3 text-row font-extrabold tabular-nums",
+            "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red",
+            week === chosen ? "bg-wht text-blk" : "bg-rule-dark text-on-dark",
+          )}
+        >
+          {week}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+/* The table reads the shared choice of the page when a provider holds one, so the masthead week line follows the chips.
+   Outside a provider it keeps a choice of its own. Both hooks run on every render, as the rules of hooks ask. */
+export function PowerRankings({ weeks, avatars }: { weeks: RankingsWeek[]; avatars: AvatarMap }) {
+  const shared = useSharedWeekChoice();
+  const own = useWeekChoice(weeks);
+  const { week, choose } = shared ?? own;
   return (
     <Chapter dark>
       {/* The label, the method note, and the header reveal first, then the rows stagger in after them, as the trades chapter does.
           The note sits above the table, so a reader knows what each column ranks before the first row. */}
       <Reveal delay={stagger(0)}>
         <Label dark>Power rankings</Label>
+        <WeekChips weeks={weeks} chosen={week.week} choose={choose} />
         <Blurb dark className="mb-sp-3 text-meta">
           Each column ranks the team from 1 to 12: standing, recent form, schedule played, and scoring. Form reads the last 3 weeks: the head-to-head record and streak, the median game at half the weight, and the all-play record, and it carries 60 percent of the score. Pts ranks scoring: points for and the all-play record.
         </Blurb>
@@ -201,7 +240,8 @@ export function PowerRankings({ week, avatars }: { week: RankingsWeek; avatars: 
           <span />
         </div>
       </Reveal>
-      <ol className="m-0 list-none p-0">
+      {/* The key starts each week with closed rows, so an open row of one week never carries into the next. */}
+      <ol key={week.week} className="m-0 list-none p-0">
         {week.rows.map((row, index) => (
           <li key={row.roster_id}>
             <Row row={row} avatars={avatars} index={index} />

@@ -89,7 +89,7 @@ describe("Reduced motion", () => {
 
 describe("Reduced motion on the power rankings", () => {
   it("opens a row at once, with no transition class on the open state", async () => {
-    render(<PowerRankings week={rankings.weeks.at(-1)!} avatars={week6.avatars} />);
+    render(<PowerRankings weeks={rankings.weeks} avatars={week6.avatars} />);
     const button = screen.getByRole("button", { name: "More on Lil Fridge" });
     fireEvent.click(button);
     expect(button.getAttribute("aria-expanded")).toBe("true");
