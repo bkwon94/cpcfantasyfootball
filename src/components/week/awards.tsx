@@ -1,5 +1,6 @@
 /**
- * The awards chapter: a two-column grid of tiles, one per award, then the blurb.
+ * The awards chapter: a grid of tiles, one per award, then the blurb.
+ * A phone has two tiles per row; the tablet tier and up have three, so six awards sit in two rows.
  * A tile with no projections this week shows a note in place of the player.
  */
 import { Reveal } from "@/components/reveal";
@@ -39,7 +40,8 @@ export function Awards({ awards, headshots, blurb }: { awards: Award[]; headshot
       <Reveal delay={stagger(0)}>
         <Label>Awards</Label>
       </Reveal>
-      <div className="grid grid-cols-[1fr_1fr] gap-sp-2">
+      {/* The grid fills a row before the next, so the stagger index still reveals each row left to right. */}
+      <div className="grid grid-cols-[1fr_1fr] gap-sp-2 tablet:grid-cols-[1fr_1fr_1fr]">
         {awards.map((award, i) => (
           <Tile key={award.title} award={award} headshots={headshots} index={i} />
         ))}
