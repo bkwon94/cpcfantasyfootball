@@ -2,7 +2,7 @@
  * Tests for the standings. They render the week 6 JSON and read the rows, the records, and the points.
  * They check what a reader sees, not the class names.
  */
-import { cleanup, render, screen } from "@testing-library/react";
+import { cleanup, render, screen, within } from "@testing-library/react";
 import { afterEach, describe, expect, it } from "vitest";
 import { week6 } from "./fixture";
 import { Standings } from "./standings";
@@ -32,6 +32,14 @@ describe("Standings", () => {
     expect(screen.getByText("12")).toBeTruthy();
   });
 
+  it("is a table with a header row, one row per team, and the cut row", () => {
+    renderStandings();
+    const table = screen.getByRole("table", { name: "Standings" });
+    expect(within(table).getAllByRole("columnheader").map((head) => head.textContent)).toEqual(["#", "Team", "W-L", "Pts"]);
+    expect(within(table).getAllByRole("row")).toHaveLength(week6.table.length + 2);
+    expect(within(table).getByRole("cell", { name: "Lil Fridge" })).toBeTruthy();
+  });
+
   it("always shows the points with two decimals", () => {
     renderStandings();
     expect(screen.getByText("739.67")).toBeTruthy();
@@ -40,7 +48,7 @@ describe("Standings", () => {
 
   it("puts the cut line after the sixth row", () => {
     renderStandings();
-    const cut = screen.getByRole("separator");
+    const cut = screen.getByRole("cell", { name: "Playoff cut" });
     const before = week6.table.filter(
       (row) => screen.getByText(row.team.name).compareDocumentPosition(cut) & Node.DOCUMENT_POSITION_FOLLOWING,
     );

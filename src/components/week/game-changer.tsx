@@ -38,10 +38,10 @@ export function GameChanger({
         />
         {/* The name wraps inside 60 percent of the card, so a long name never runs under the face.
             From the tablet tier up the left part bounds the name, and the text sits on the floor of the hero,
-            so the points and the cutout share one baseline. */}
+            so the points and the cutout share one baseline. A balanced wrap keeps a long name from a one-word last line. */}
         <div className="relative z-3 max-w-[60%] px-gutter pt-sp-5 pb-sp-4 [grid-area:1/1] tablet:flex tablet:max-w-none tablet:flex-col tablet:justify-end tablet:pb-sp-6">
-          <Label dark>Game Changer</Label>
-          <div className="m-0 text-score leading-stat font-black tabular-nums">
+          <Label dark heading>Game Changer</Label>
+          <div className="m-0 text-score leading-stat font-black text-balance tabular-nums">
             {line.name}
             <small className="mt-sp-1 mb-sp-2 block text-meta font-semibold text-on-dark-muted">
               {/* One string, so React writes one text node and the browser kerns the line as one run. */}
@@ -62,14 +62,14 @@ export function GameChanger({
         </div>
         {/* The reveal box takes the grid place of the cutout, so the cutout keeps its size and its bleed.
             From the tablet tier up the box fills the right part, and the cutout fills the hero height with its bottom on the floor.
-            The cover fit crops the sides of the cutout, not the face. */}
+            The cover fit crops the sides of the cutout, not the face. The cutout is the top story's image, so it loads first. */}
         <Reveal
           className="relative z-1 -mr-[28%] w-full self-end justify-self-end [grid-area:1/1] tablet:mr-0 tablet:h-full tablet:[grid-area:1/2]"
           trigger="mount"
           delay={HERO_DELAY.cutout}
           duration={DURATION.hero}
         >
-          <Headshot playerId={line.player_id} headshots={headshots} className="block h-auto w-full tablet:h-full tablet:object-bottom" />
+          <Headshot playerId={line.player_id} headshots={headshots} priority className="block h-auto w-full tablet:h-full tablet:object-bottom" />
         </Reveal>
       </div>
       {blurb && <Blurb dark>{blurb}</Blurb>}

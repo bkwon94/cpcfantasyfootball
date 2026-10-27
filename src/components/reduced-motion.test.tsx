@@ -134,7 +134,7 @@ describe("Reduced motion on the static pages", () => {
     expect(main.getAllByText(week6.awards[0].title).length).toBeGreaterThan(0);
     expect(main.getByText("Position Leaders")).toBeTruthy();
     expect(main.getAllByText(week6.trades[0].sides[0].players[0].name).length).toBeGreaterThan(0);
-    expect(main.getAllByRole("button", { name: /Read recap/ })).toHaveLength(week6.matchups.length);
+    expect(main.getAllByRole("button", { name: /Read Recap/ })).toHaveLength(week6.matchups.length);
     expect(main.getByText("The Median Game")).toBeTruthy();
     expect(main.getByText("Standings")).toBeTruthy();
     expect(main.getByText(`Next Week · Week ${week6.week + 1}`)).toBeTruthy();

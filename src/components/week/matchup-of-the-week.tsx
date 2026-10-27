@@ -35,7 +35,7 @@ export function MatchupOfTheWeek({ pick, avatars, blurb }: { pick: Pick; avatars
   const [first, second] = pick.sides;
   return (
     <Chapter id="motw">
-      <Label>
+      <Label heading>
         Matchup of the Week <Tag>{pick.reason}</Tag>
       </Label>
       {/* From the tablet tier two equal outer columns hold the teams, so the score sits in the exact center of the row. */}

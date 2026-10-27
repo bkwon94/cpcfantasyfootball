@@ -21,7 +21,7 @@ export function MedianGame({ median, blurb }: { median: Median | null; blurb?: s
   if (median === null) return null;
   return (
     <Chapter reveal>
-      <Label>The Median Game</Label>
+      <Label heading>The Median Game</Label>
       <div className="grid grid-cols-[1fr_1fr_1fr] gap-sp-2">
         <Kpi value={num(median.value)} label="Median" />
         <Kpi value={gap(median.above.gap)} label={`${median.above.team.name}, closest win`} />

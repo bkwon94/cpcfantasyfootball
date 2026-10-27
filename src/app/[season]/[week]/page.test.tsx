@@ -133,6 +133,17 @@ describe("WeekPage chapters", () => {
       expect(order & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     }
   });
+
+  it("opens each chapter with a level 2 heading in the report's order", async () => {
+    await renderWeek7();
+    const headings = within(screen.getByRole("main")).getAllByRole("heading", { level: 2 });
+    // The matchup of the week heading also holds its reason tag, so each heading starts with the chapter label.
+    expect(headings).toHaveLength(CHAPTERS.length);
+    headings.forEach((heading, index) => {
+      expect(heading.textContent?.startsWith(CHAPTERS[index].label)).toBe(true);
+      expect(document.getElementById(CHAPTERS[index].id)?.contains(heading)).toBe(true);
+    });
+  });
 });
 
 describe("WeekPage chapter rail", () => {

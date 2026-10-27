@@ -47,10 +47,23 @@ export function Chapter({
   return reveal ? <Reveal>{section}</Reveal> : section;
 }
 
-/* The red uppercase label that opens a chapter or a card. A label inside a card passes mb-sp-1 to sit close to its content. */
-export function Label({ children, dark, className }: { children: ReactNode; dark?: boolean; className?: string }) {
+/* The red uppercase label that opens a chapter or a card. A label inside a card passes mb-sp-1 to sit close to its content.
+   A chapter's own label passes heading, so it is a level 2 heading and a screen reader can jump from chapter to chapter.
+   The base styles reset a heading's size, weight, and margin, so the heading looks the same as the plain label. */
+export function Label({
+  children,
+  dark,
+  heading,
+  className,
+}: {
+  children: ReactNode;
+  dark?: boolean;
+  heading?: boolean;
+  className?: string;
+}) {
+  const Element = heading ? "h2" : "div";
   return (
-    <div
+    <Element
       className={cn(
         "text-label leading-tight font-bold tracking-wide uppercase",
         "mb-sp-3",
@@ -59,7 +72,7 @@ export function Label({ children, dark, className }: { children: ReactNode; dark
       )}
     >
       {children}
-    </div>
+    </Element>
   );
 }
 
@@ -99,16 +112,19 @@ export function Who({ src, name, fill }: { src: string; name: string; fill?: boo
 }
 
 /* The player name sits next to the headshot, so the image is decorative. A className sets the size, the shape, and the layout.
-   A player with no entry in the map gets the default headshot. */
+   A player with no entry in the map gets the default headshot. A headshot below the fold passes lazy.
+   The top story's cutout passes priority, so the browser fetches the biggest image of the first view first. */
 export function Headshot({
   playerId,
   headshots,
   lazy,
+  priority,
   className,
 }: {
   playerId: string;
   headshots: HeadshotMap;
   lazy?: boolean;
+  priority?: boolean;
   className?: string;
 }) {
   return (
@@ -116,6 +132,7 @@ export function Headshot({
       src={headshots[playerId] ?? HEADSHOT_FALLBACK}
       alt=""
       loading={lazy ? "lazy" : undefined}
+      fetchPriority={priority ? "high" : undefined}
       className={cn("flex-none object-cover", className)}
     />
   );

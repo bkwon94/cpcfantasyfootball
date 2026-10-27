@@ -20,8 +20,8 @@ function Tile({ award, headshots, index }: { award: Award; headshots: HeadshotMa
         <div className="mt-sp-1 text-meta text-mute tabular-nums">Projections unavailable this week</div>
       ) : (
         <>
-          {/* The headshot has no background, so the cutout sits on the card grey. */}
-          <Headshot playerId={award.player_id} headshots={headshots} className="mb-sp-2 block size-award rounded-full" />
+          {/* The headshot has no background, so the cutout sits on the card grey. The awards sit below the fold, so the headshot is lazy. */}
+          <Headshot playerId={award.player_id} headshots={headshots} lazy className="mb-sp-2 block size-award rounded-full" />
           <div className="text-body leading-tight font-extrabold">{award.player}</div>
           <div className="mt-sp-1 text-stat leading-stat font-black tabular-nums">{num(award.points)}</div>
           <div className="mt-sp-1 text-meta text-mute tabular-nums">
@@ -38,7 +38,7 @@ export function Awards({ awards, headshots, blurb }: { awards: Award[]; headshot
   return (
     <Chapter>
       <Reveal delay={stagger(0)}>
-        <Label>Awards</Label>
+        <Label heading>Awards</Label>
       </Reveal>
       {/* The grid fills a row before the next, so the stagger index still reveals each row left to right. */}
       <div className="grid grid-cols-[1fr_1fr] gap-sp-2 tablet:grid-cols-[1fr_1fr_1fr]">

@@ -52,7 +52,7 @@ export function NextWeek({
 }) {
   return (
     <Chapter reveal>
-      <Label>{`Next Week · Week ${week + 1}`}</Label>
+      <Label heading>{`Next Week · Week ${week + 1}`}</Label>
       {/* The grid gap takes the place of the card margin. minmax(0,1fr) lets a long team name truncate in its column.
           A lone last card keeps its column width. */}
       <div className="tablet:grid tablet:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] tablet:gap-sp-2 desktop:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)]">

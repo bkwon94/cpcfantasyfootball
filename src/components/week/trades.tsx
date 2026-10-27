@@ -91,7 +91,7 @@ export function Trades({ trades, avatars }: { trades: Trade[]; avatars: AvatarMa
   return (
     <Chapter id="trades">
       <Reveal delay={stagger(0)}>
-        <Label>Trades</Label>
+        <Label heading>Trades</Label>
       </Reveal>
       {/* The grid gap takes the place of the card margin. The grid fills a row before the next,
           so the stagger index still reveals each row left to right. A lone last card keeps its column width. */}
