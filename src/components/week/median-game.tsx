@@ -39,16 +39,17 @@ export function MedianGame({ median, blurb }: { median: Median | null; blurb?: s
         {median.bars.map((bar) => (
           <div
             key={bar.team.roster_id}
-            className="grid grid-cols-[1fr_var(--spacing-val-col)] items-end gap-sp-2 py-sp-1 text-meta tabular-nums"
+            // From the tablet tier a taller bar and more space between bars keep each bar readable across the width.
+            className="grid grid-cols-[1fr_var(--spacing-val-col)] items-end gap-sp-2 py-sp-1 tablet:py-sp-2 text-meta tabular-nums"
           >
             <div>
               <div className="mb-sp-0 text-meta leading-tight text-ink-2">{bar.team.name}</div>
               <div
-                className={cn("h-median-bar rounded-sm", bar.above ? "bg-red" : "bg-bar-off")}
+                className={cn("h-median-bar tablet:h-median-bar-wide rounded-sm", bar.above ? "bg-red" : "bg-bar-off")}
                 style={{ width: `${bar.pct}%` }}
               />
             </div>
-            <b className="text-right leading-(--spacing-median-bar)">{num(bar.score)}</b>
+            <b className="text-right leading-(--spacing-median-bar) tablet:leading-(--spacing-median-bar-wide)">{num(bar.score)}</b>
           </div>
         ))}
       </div>
