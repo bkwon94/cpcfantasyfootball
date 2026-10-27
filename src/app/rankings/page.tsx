@@ -7,6 +7,7 @@ import { Masthead } from "@/components/masthead";
 import { PowerRankings } from "@/components/rankings/power-rankings";
 import { ChosenWeekLine, WeekChoiceProvider } from "@/components/rankings/week-choice";
 import { Blurb, Chapter, Label } from "@/components/week/parts";
+import { basePath } from "@/lib/config";
 import { latestAvatars, loadRankings } from "@/lib/rankings-data";
 
 export const metadata: Metadata = {
@@ -20,7 +21,7 @@ export default function RankingsPage() {
       {rankings && rankings.weeks.length > 0 ? (
         // The provider holds the chosen week, so the masthead week line and the table read the same week.
         <WeekChoiceProvider weeks={rankings.weeks}>
-          <Masthead subtitle="Power Rankings">
+          <Masthead subtitle="Power Rankings" pageHref={`${basePath}/rankings/`}>
             <ChosenWeekLine />
           </Masthead>
           <main className="mx-auto max-w-page bg-wht">
@@ -29,7 +30,7 @@ export default function RankingsPage() {
         </WeekChoiceProvider>
       ) : (
         <>
-          <Masthead subtitle="Power Rankings" />
+          <Masthead subtitle="Power Rankings" pageHref={`${basePath}/rankings/`} />
           <main className="mx-auto max-w-page bg-wht">
             <Chapter>
               <Label>Power rankings</Label>

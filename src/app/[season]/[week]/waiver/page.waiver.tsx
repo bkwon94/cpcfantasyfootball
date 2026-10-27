@@ -49,8 +49,7 @@ export default async function WaiverPage({ params }: Props) {
   const page = loadWeek(season, week);
   return (
     <>
-      {/* This page is the waiver page, so the masthead shows no link to it. */}
-      <Masthead subtitle="Waiver Wire" waiverHref={null}>
+      <Masthead subtitle="Waiver Wire" pageHref={`${basePath}/${season}/${week}/waiver/`}>
         <WeekLine label="WEEK" number={board.week} />
         <div className="mt-sp-1 text-meta text-on-dark-2 tabular-nums">{`Built ${BUILT.format(new Date(board.built))}`}</div>
       </Masthead>

@@ -2,12 +2,77 @@
  * Tests for the masthead. They read the title, the subtitle, and the week line from the screen.
  * They check what a reader sees, not the class names.
  */
-import { cleanup, render, screen } from "@testing-library/react";
-import { afterEach, describe, expect, it } from "vitest";
+import { cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
+import { afterAll, afterEach, describe, expect, it, vi } from "vitest";
+import type { WeekSummary } from "@/lib/week-data";
 import { Masthead } from "./masthead";
+
+/* Three published weeks, newest first, as listWeekSummaries returns them. */
+const WEEKS: WeekSummary[] = [
+  { number: 7, dates: "Oct 22 – Oct 26, 2026", href: "/2026/week-07/" },
+  { number: 6, dates: "Oct 15 – Oct 19, 2026", href: "/2026/week-06/" },
+  { number: 5, dates: "Oct 8 – Oct 12, 2026", href: "/2026/week-05/" },
+];
+
+/* The masthead of the week 7 report, with the waiver flag off. A test overrides a prop to change one value. */
+function renderWeekMasthead(props: Partial<Parameters<typeof Masthead>[0]> = {}) {
+  render(<Masthead subtitle="League Weekly" weeks={WEEKS} pageHref="/2026/week-07/" waiverHref={null} {...props} />);
+}
+
+/* Taps the menu button and returns the open menu. */
+async function openMenu() {
+  fireEvent.click(menuButton());
+  return screen.findByRole("navigation", { name: "Menu" });
+}
+
+/* The label and the href of each link in a part of the page, in order. */
+function linksIn(element: HTMLElement) {
+  return within(element)
+    .getAllByRole("link")
+    .map((link) => [link.textContent, link.getAttribute("href")]);
+}
+
+function menuButton() {
+  return screen.getByRole("button", { name: "Menu" });
+}
+
+/* The reduced-motion setting of the system. A test turns it on, and the stub tells Framer Motion of the change. */
+let reduceMotion = false;
+let motionChange: (() => void) | undefined;
+
+function setReducedMotion(on: boolean) {
+  reduceMotion = on;
+  motionChange?.();
+}
+
+/* jsdom has no matchMedia. Framer Motion reads it once per file and then listens for a change, so the stub runs at the top. */
+vi.stubGlobal(
+  "matchMedia",
+  (query: string) =>
+    ({
+      // Framer Motion asks for "(prefers-reduced-motion)" with no value, so the stub matches the feature name.
+      get matches() {
+        return reduceMotion && query.includes("prefers-reduced-motion");
+      },
+      media: query,
+      onchange: null,
+      addListener: () => {},
+      removeListener: () => {},
+      addEventListener: (_type: string, listener: () => void) => {
+        motionChange = listener;
+      },
+      removeEventListener: () => {},
+      dispatchEvent: () => false,
+    }) as unknown as MediaQueryList,
+);
 
 afterEach(() => {
   cleanup();
+  setReducedMotion(false);
+});
+
+afterAll(() => {
+  vi.unstubAllGlobals();
 });
 
 describe("Masthead", () => {
@@ -46,13 +111,120 @@ describe("Masthead", () => {
     expect(screen.getByRole("link").textContent).toBe("Cornerstone Fantasy Football League");
   });
 
-  it("links the waiver page when a link is given", () => {
-    render(<Masthead subtitle="League Weekly" waiverHref="/2026/week-06/waiver/" />);
-    expect(screen.getByRole("link", { name: "Waiver wire" }).getAttribute("href")).toBe("/2026/week-06/waiver/");
+  it("shows no waiver link in the masthead, because the waiver page lives in the menu", () => {
+    renderWeekMasthead({ waiverHref: "/2026/week-06/waiver/" });
+    expect(screen.queryByRole("link", { name: "Waiver wire" })).toBeNull();
+  });
+});
+
+describe("Masthead menu", () => {
+  it("shows a closed menu button", () => {
+    renderWeekMasthead();
+    expect(menuButton().getAttribute("aria-expanded")).toBe("false");
   });
 
-  it("shows no waiver link when none is given", () => {
-    render(<Masthead subtitle="League Weekly" waiverHref={null} />);
-    expect(screen.queryByRole("link", { name: "Waiver wire" })).toBeNull();
+  it("opens the menu on a tap and names the list it controls", async () => {
+    renderWeekMasthead();
+    // The open menu is modal, so it hides the page and the button from the screen reader. The test keeps the button it found first.
+    const button = menuButton();
+    fireEvent.click(button);
+    const menu = await screen.findByRole("navigation", { name: "Menu" });
+    expect(button.getAttribute("aria-expanded")).toBe("true");
+    expect(button.getAttribute("aria-controls")).toBe(menu.id);
+  });
+
+  it("lists the pages, then the past weeks newest first", async () => {
+    renderWeekMasthead();
+    const menu = await openMenu();
+    expect(linksIn(menu)).toEqual([
+      ["Home", "/"],
+      ["Week 7", "/2026/week-07/"],
+      ["Power rankings", "/rankings/"],
+      ["Trade analyzer", "/analyze/"],
+      ["Week 6", "/2026/week-06/"],
+      ["Week 5", "/2026/week-05/"],
+    ]);
+  });
+
+  it("puts the past weeks under a Past weeks heading", async () => {
+    renderWeekMasthead();
+    const menu = await openMenu();
+    const past = within(menu).getByRole("list", { name: "Past weeks" });
+    expect(within(menu).getByRole("heading", { name: "Past weeks" })).toBeTruthy();
+    expect(linksIn(past)).toEqual([
+      ["Week 6", "/2026/week-06/"],
+      ["Week 5", "/2026/week-05/"],
+    ]);
+  });
+
+  it("marks the item of the open page as the current page", async () => {
+    renderWeekMasthead({ pageHref: "/rankings/" });
+    const menu = await openMenu();
+    const current = within(menu)
+      .getAllByRole("link")
+      .filter((link) => link.getAttribute("aria-current") === "page");
+    expect(current.map((link) => link.textContent)).toEqual(["Power rankings"]);
+  });
+
+  it("marks a past week as the current page on its report", async () => {
+    renderWeekMasthead({ pageHref: "/2026/week-05/" });
+    const menu = await openMenu();
+    expect(within(menu).getByRole("link", { name: "Week 5" }).getAttribute("aria-current")).toBe("page");
+    expect(within(menu).getByRole("link", { name: "Week 7" }).getAttribute("aria-current")).toBeNull();
+  });
+
+  it("closes on Escape and returns focus to the button", async () => {
+    renderWeekMasthead();
+    const button = menuButton();
+    const menu = await openMenu();
+    fireEvent.keyDown(menu, { key: "Escape" });
+    await waitFor(() => expect(screen.queryByRole("navigation", { name: "Menu" })).toBeNull());
+    expect(button.getAttribute("aria-expanded")).toBe("false");
+    await waitFor(() => expect(document.activeElement).toBe(button));
+  });
+
+  it("closes on a tap outside the menu", async () => {
+    renderWeekMasthead();
+    await openMenu();
+    fireEvent.pointerDown(document.body);
+    fireEvent.mouseDown(document.body);
+    fireEvent.click(document.body);
+    await waitFor(() => expect(screen.queryByRole("navigation", { name: "Menu" })).toBeNull());
+  });
+
+  it("closes on a second tap of the button", async () => {
+    renderWeekMasthead();
+    const button = menuButton();
+    await openMenu();
+    fireEvent.click(button);
+    await waitFor(() => expect(screen.queryByRole("navigation", { name: "Menu" })).toBeNull());
+    expect(button.getAttribute("aria-expanded")).toBe("false");
+  });
+
+  it("lists the waiver page after the trade analyzer when the flag is on", async () => {
+    renderWeekMasthead({ waiverHref: "/2026/week-06/waiver/" });
+    const menu = await openMenu();
+    expect(linksIn(menu).slice(3, 5)).toEqual([
+      ["Trade analyzer", "/analyze/"],
+      ["Waiver wire", "/2026/week-06/waiver/"],
+    ]);
+  });
+
+  it("lists no waiver page when the flag is off", async () => {
+    renderWeekMasthead({ waiverHref: null });
+    const menu = await openMenu();
+    expect(within(menu).queryByRole("link", { name: "Waiver wire" })).toBeNull();
+  });
+
+  it("opens the menu at rest and closes it with motion off", async () => {
+    setReducedMotion(true);
+    renderWeekMasthead();
+    const button = menuButton();
+    const menu = await openMenu();
+    // With motion off the items take no drop and no stagger, so each one is in place on the tap.
+    expect(linksIn(menu)).toHaveLength(6);
+    fireEvent.keyDown(menu, { key: "Escape" });
+    await waitFor(() => expect(screen.queryByRole("navigation", { name: "Menu" })).toBeNull());
+    await waitFor(() => expect(document.activeElement).toBe(button));
   });
 });

@@ -46,7 +46,7 @@ export default function HomePage() {
     <>
       {/* A reader who opens the analyzer next sees the pickers at once, because the teams are already in session storage. */}
       <TeamsPrefetch />
-      <Masthead>
+      <Masthead pageHref={`${basePath}/`}>
         <WeekLine label="SEASON" number={season} />
       </Masthead>
       <main className="mx-auto max-w-page bg-wht">
