@@ -139,7 +139,9 @@ function Row({ destinations, pageHref, label }: RowProps) {
           <PopoverTrigger className="press inline-flex min-h-touch items-center text-label font-bold tracking-caps whitespace-nowrap text-on-dark uppercase hover-fine:text-red-lt">
             Past weeks
           </PopoverTrigger>
-          {/* Framer Motion owns the scale and the fade, so the CSS keyframes of the primitive are off.
+          {/* Framer Motion owns the scale and the fade, so the CSS keyframes and the CSS transition of the primitive are off.
+              The duration-100 of the primitive gives a transition on every property. Framer writes the end opacity and scale
+              when its animation ends, and WebKit then runs them from the start values again, so the popover blinks.
               The primitive sets transform-origin to Base UI's --transform-origin, so the popover grows from the trigger.
               Base UI keeps the portal while the exit plays, and AnimatePresence removes it after, as the sheet does. */}
           <AnimatePresence>
@@ -148,7 +150,7 @@ function Row({ destinations, pageHref, label }: RowProps) {
                 keepMounted
                 aria-label="Past weeks"
                 align="end"
-                className="w-48 gap-0 rounded-none p-0 px-sp-4 py-sp-1 data-open:animate-none data-closed:animate-none"
+                className="w-48 gap-0 rounded-none p-0 px-sp-4 py-sp-1 transition-none data-open:animate-none data-closed:animate-none"
                 render={
                   <motion.div
                     initial={off ? false : { opacity: 0, scale: POPOVER_SCALE }}
@@ -289,9 +291,11 @@ export function Menu({ destinations, pageHref, title }: MenuIslandProps) {
           {open && (
             <DialogPortal keepMounted>
               {/* The dimmed page starts under the masthead or the compact bar, so the bar and the cross of the button stay clear.
-                  Framer Motion owns the fade, so the CSS fade and the blur of the primitive are off. */}
+                  Framer Motion owns the fade, so the CSS fade, the CSS transition, and the blur of the primitive are off.
+                  The duration-100 of the primitive gives a transition on every property. Framer writes the end opacity
+                  when its fade ends, and WebKit then fades the overlay from 0 again, so the dimmed page blinks. */}
               <DialogOverlay
-                className="bg-blk/50 data-open:animate-none data-closed:animate-none supports-backdrop-filter:backdrop-blur-none"
+                className="transition-none bg-blk/50 data-open:animate-none data-closed:animate-none supports-backdrop-filter:backdrop-blur-none"
                 style={{ top }}
                 render={<motion.div {...backdrop} />}
               />
