@@ -70,13 +70,14 @@ function Item({ destination, pageHref, index, off }: ItemProps) {
   );
 }
 
-/* One link of the desktop row. The band is black, so the red accent is the light red, as in the noscript row of the masthead. */
+/* One link of the desktop row. The band is black, so the red accent is the light red, as in the noscript row of the masthead.
+   A label never wraps, so the brand title wraps first when the line is short. */
 function RowLink({ destination, pageHref }: { destination: Destination; pageHref?: string }) {
   return (
     <a
       href={destination.href}
       aria-current={destination.href === pageHref ? "page" : undefined}
-      className="press inline-flex min-h-touch items-center text-label font-bold tracking-caps text-on-dark uppercase no-underline hover-fine:text-red-lt aria-[current=page]:text-red-lt"
+      className="press inline-flex min-h-touch items-center text-label font-bold tracking-caps whitespace-nowrap text-on-dark uppercase no-underline hover-fine:text-red-lt aria-[current=page]:text-red-lt"
     >
       {destination.label}
     </a>
@@ -100,7 +101,7 @@ function Row({ destinations, pageHref }: MenuProps) {
       ))}
       {destinations.pastWeeks.length > 0 && (
         <Popover>
-          <PopoverTrigger className="press inline-flex min-h-touch items-center text-label font-bold tracking-caps text-on-dark uppercase hover-fine:text-red-lt">
+          <PopoverTrigger className="press inline-flex min-h-touch items-center text-label font-bold tracking-caps whitespace-nowrap text-on-dark uppercase hover-fine:text-red-lt">
             Past weeks
           </PopoverTrigger>
           {/* Framer Motion owns the scale and the fade, so the CSS keyframes of the primitive are off.
