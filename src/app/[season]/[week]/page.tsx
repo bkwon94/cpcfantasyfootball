@@ -14,8 +14,9 @@ import { NextWeek } from "@/components/week/next-week";
 import { PositionLeaders } from "@/components/week/position-leaders";
 import { Standings } from "@/components/week/standings";
 import { Trades } from "@/components/week/trades";
+import { WeekFooter } from "@/components/week/week-footer";
 import { basePath } from "@/lib/config";
-import { listWeeks, loadWeek, type WeekRef } from "@/lib/week-data";
+import { listWeekSummaries, listWeeks, loadWeek, type WeekRef } from "@/lib/week-data";
 
 type Props = { params: Promise<WeekRef> };
 
@@ -53,6 +54,11 @@ export default async function WeekPage({ params }: Props) {
     { id: "standings", label: "Standings" },
     { id: "next-week", label: "Next Week" },
   ];
+  // The footer links the nearest published weeks of the same season on each side. The list is newest first,
+  // so the first lower number is the prior week and the last higher number is the next week.
+  const seasonWeeks = listWeekSummaries().filter((summary) => summary.href.startsWith(`/${season}/`));
+  const prior = seasonWeeks.find((summary) => summary.number < page.week) ?? null;
+  const next = seasonWeeks.filter((summary) => summary.number > page.week).at(-1) ?? null;
   return (
     <>
       <Masthead subtitle="League Weekly" pageHref={`${basePath}/${season}/${week}/`}>
@@ -101,6 +107,7 @@ export default async function WeekPage({ params }: Props) {
           <div id="next-week">
             <NextWeek week={page.week} games={page.next} avatars={page.avatars} blurb={page.blurbs.next_week} />
           </div>
+          <WeekFooter prior={prior} next={next} />
         </main>
       </div>
     </>
