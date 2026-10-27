@@ -39,6 +39,8 @@ export const DURATION = {
   iconMorph: 0.16,
   // The Past weeks popover scales in from its trigger. It is short, because the reader asked for it with a click.
   popover: 0.16,
+  // The compact bar slides in from above or leaves. It takes the press timing, so the bar answers the scroll at once.
+  bar: 0.14,
   // The decision word lands. It is a little slower than the rest, so the call lands with a beat.
   decision: 0.36,
   // The fairness line lands under the decision. It is a little faster than the decision word, so the decision stays the lead.

@@ -2,7 +2,7 @@
  * Tests for the masthead. They read the title, the subtitle, and the week line from the screen.
  * They check what a reader sees, not the class names.
  */
-import { cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
+import { act, cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { afterAll, afterEach, describe, expect, it, vi } from "vitest";
 import type { WeekSummary } from "@/lib/week-data";
 import { Masthead } from "./masthead";
@@ -70,6 +70,38 @@ vi.stubGlobal(
       dispatchEvent: () => false,
     }) as unknown as MediaQueryList,
 );
+
+/* jsdom has no IntersectionObserver. The stub keeps each observer, so a test reports the masthead in or out of view. */
+const observers = new Set<ObserverStub>();
+
+class ObserverStub {
+  target: Element | undefined;
+  constructor(private callback: IntersectionObserverCallback) {
+    observers.add(this);
+  }
+  observe(target: Element) {
+    this.target = target;
+  }
+  unobserve() {}
+  disconnect() {
+    observers.delete(this);
+  }
+  takeRecords() {
+    return [];
+  }
+}
+
+vi.stubGlobal("IntersectionObserver", ObserverStub);
+
+/* Reports to each observer that the masthead is in view or out of view, as a scroll does. */
+function reportMasthead(inView: boolean) {
+  act(() => {
+    for (const observer of observers) {
+      const entry = { isIntersecting: inView, target: observer.target } as IntersectionObserverEntry;
+      observer["callback"]([entry], observer as unknown as IntersectionObserver);
+    }
+  });
+}
 
 afterEach(() => {
   cleanup();
@@ -317,5 +349,81 @@ describe("Masthead row", () => {
     expect(linksIn(popover)).toHaveLength(2);
     fireEvent.keyDown(popover, { key: "Escape" });
     await waitFor(() => expect(screen.queryByRole("dialog", { name: "Past weeks" })).toBeNull());
+  });
+});
+
+/* The compact bar. It shows once the masthead scrolls out of view. */
+function bar() {
+  return screen.getByRole("region", { name: "Compact bar" });
+}
+
+function queryBar() {
+  return screen.queryByRole("region", { name: "Compact bar" });
+}
+
+describe("Masthead compact bar", () => {
+  it("shows no bar while the masthead is in view", () => {
+    renderWeekMasthead();
+    expect(queryBar()).toBeNull();
+  });
+
+  it("shows the bar with a home link and a menu button once the masthead scrolls out", () => {
+    renderWeekMasthead();
+    reportMasthead(false);
+    const home = within(bar()).getByRole("link", { name: "Cornerstone Fantasy Football League" });
+    expect(home.getAttribute("href")).toBe("/");
+    expect(within(bar()).getByRole("button", { name: "Menu" }).getAttribute("aria-expanded")).toBe("false");
+  });
+
+  it("opens the same menu from the bar button and returns focus to it on Escape", async () => {
+    renderWeekMasthead();
+    reportMasthead(false);
+    // The open menu is modal, so the test keeps the bar button it found first.
+    const button = within(bar()).getByRole("button", { name: "Menu" });
+    fireEvent.click(button);
+    const menu = await screen.findByRole("navigation", { name: "Menu" });
+    expect(button.getAttribute("aria-expanded")).toBe("true");
+    expect(button.getAttribute("aria-controls")).toBe(menu.id);
+    expect(linksIn(menu).map(([label]) => label)).toEqual([
+      "Home",
+      "Week 7",
+      "Power rankings",
+      "Trade analyzer",
+      "Week 6",
+      "Week 5",
+    ]);
+    fireEvent.keyDown(menu, { key: "Escape" });
+    await waitFor(() => expect(screen.queryByRole("navigation", { name: "Menu" })).toBeNull());
+    await waitFor(() => expect(document.activeElement).toBe(button));
+  });
+
+  it("hides the bar once the masthead scrolls back into view", async () => {
+    renderWeekMasthead();
+    reportMasthead(false);
+    expect(bar()).toBeTruthy();
+    reportMasthead(true);
+    await waitFor(() => expect(queryBar()).toBeNull());
+  });
+
+  it("shows the bar at rest and hides it with motion off", async () => {
+    setReducedMotion(true);
+    renderWeekMasthead();
+    reportMasthead(false);
+    // With motion off the bar takes no slide, so its home link and its button are in place at once.
+    expect(within(bar()).getByRole("link", { name: "Cornerstone Fantasy Football League" })).toBeTruthy();
+    expect(within(bar()).getByRole("button", { name: "Menu" })).toBeTruthy();
+    reportMasthead(true);
+    await waitFor(() => expect(queryBar()).toBeNull());
+  });
+
+  it("shows the same row in the bar for the desktop tier", () => {
+    renderWeekMasthead();
+    reportMasthead(false);
+    expect(linksIn(within(bar()).getByRole("navigation", { name: "Site menu" }))).toEqual([
+      ["Home", "/"],
+      ["Week 7", "/2026/week-07/"],
+      ["Power rankings", "/rankings/"],
+      ["Trade analyzer", "/analyze/"],
+    ]);
   });
 });

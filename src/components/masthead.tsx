@@ -70,7 +70,7 @@ export function Masthead({
               {subtitle && <div className="text-label tracking-caps text-on-dark-muted uppercase">{subtitle}</div>}
             </div>
           </a>
-          <Menu destinations={destinations} pageHref={pageHref} />
+          <Menu destinations={destinations} pageHref={pageHref} title={title} />
         </div>
         {/* The menu sheet needs the script, so a reader with scripts off gets the same destinations as a plain row of links. */}
         <noscript>

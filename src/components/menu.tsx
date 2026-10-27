@@ -1,13 +1,14 @@
 /**
- * The menu of the site: the menu button and the sheet it opens, and the desktop row with the Past weeks popover.
+ * The menu of the site: the menu button and the sheet it opens, the desktop row with the Past weeks popover, and the compact bar.
  * It is the client island of the masthead, so the masthead stays a server component and passes the destinations in.
  */
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { useId, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState, type ReactNode, type Ref } from "react";
 import { Dialog, DialogOverlay, DialogPopup, DialogPortal, DialogTrigger } from "@/components/ui/dialog";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { basePath } from "@/lib/config";
 import { DROP, DURATION, EASE_OUT, INSTANT, stagger, useMotionOff } from "@/lib/motion";
 
 /* One place the menu links to. The href carries the base path, because every link is a plain anchor. */
@@ -20,6 +21,11 @@ type MenuProps = {
   destinations: Destinations;
   // The href of the open page. The item with the same href carries the current-page state.
   pageHref?: string;
+};
+
+type MenuIslandProps = MenuProps & {
+  // The brand title of the masthead. It names the home link of the compact bar, where the logo shows with no title.
+  title: string;
 };
 
 /* The distance in px of the top and the bottom line of the icon from its middle line. */
@@ -138,19 +144,62 @@ function Row({ destinations, pageHref }: MenuProps) {
   );
 }
 
-export function Menu({ destinations, pageHref }: MenuProps) {
+type CompactBarProps = { title: string; off: boolean; children: ReactNode; ref: Ref<HTMLDivElement> };
+
+/* The compact bar: a 44px black bar fixed to the top of the viewport, with the brand mark and the menu.
+   It is fixed, so it takes no space in the page flow and the page under it never jumps. */
+function CompactBar({ title, off, children, ref }: CompactBarProps) {
+  // The bar slides down from above the viewport and fades in, and leaves along the same path. With motion off it only cross-fades.
+  const offset = off ? {} : { y: "-100%" };
+  return (
+    <motion.div
+      ref={ref}
+      role="region"
+      aria-label="Compact bar"
+      className="fixed inset-x-0 top-0 z-40 h-touch bg-blk text-on-dark"
+      initial={{ opacity: 0, ...offset }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, ...offset }}
+      transition={{ duration: DURATION.bar, ease: EASE_OUT }}
+    >
+      {/* The same box as the masthead, so the content of the bar lines up with the page column. */}
+      <div className="mx-auto flex h-full max-w-page items-center justify-between gap-sp-3 px-gutter">
+        {/* The bar shows the logo with no title, so the logo names the home link. */}
+        <a href={`${basePath}/`} className="flex flex-none items-center">
+          <img src={`${basePath}/images/logo.png`} alt={title} className="size-logo rounded-full" />
+        </a>
+        {children}
+      </div>
+    </motion.div>
+  );
+}
+
+export function Menu({ destinations, pageHref, title }: MenuIslandProps) {
   const [open, setOpen] = useState(false);
   const off = useMotionOff();
   const listId = useId();
   const pastId = useId();
   const buttonRef = useRef<HTMLButtonElement>(null);
-  // The top of the sheet in the viewport. The sheet hangs from the bottom of the masthead, or from the top once the masthead scrolls out.
+  const barRef = useRef<HTMLDivElement>(null);
+  // The top of the sheet in the viewport. The sheet hangs from the bottom of the compact bar while the bar shows,
+  // else from the bottom of the masthead, or from the top once the masthead scrolls out.
   const [top, setTop] = useState(0);
+  // True while the masthead is out of the viewport. The compact bar shows then. With scripts off it stays false, so the bar never renders.
+  const [barShown, setBarShown] = useState(false);
+
+  // The menu button lives in the masthead, so its header is the masthead. The observer watches it and the bar follows it.
+  useEffect(() => {
+    const masthead = buttonRef.current?.closest("header");
+    if (!masthead || typeof IntersectionObserver === "undefined") return;
+    const observer = new IntersectionObserver(([entry]) => setBarShown(!entry.isIntersecting));
+    observer.observe(masthead);
+    return () => observer.disconnect();
+  }, []);
 
   function openChange(next: boolean) {
     if (next) {
-      const masthead = buttonRef.current?.closest("header");
-      setTop(Math.max(0, masthead?.getBoundingClientRect().bottom ?? 0));
+      const anchor = barShown ? barRef.current : buttonRef.current?.closest("header");
+      setTop(Math.max(0, anchor?.getBoundingClientRect().bottom ?? 0));
     }
     setOpen(next);
   }
@@ -184,11 +233,26 @@ export function Menu({ destinations, pageHref }: MenuProps) {
         >
           <MenuIcon open={open} off={off} />
         </DialogTrigger>
+        <AnimatePresence>
+          {barShown && (
+            <CompactBar ref={barRef} title={title} off={off}>
+              <Row destinations={destinations} pageHref={pageHref} />
+              {/* A second trigger of the same dialog. Base UI marks the trigger that opened the sheet, so focus returns to it on close. */}
+              <DialogTrigger
+                aria-label="Menu"
+                aria-controls={listId}
+                className="press -mr-sp-3 flex size-touch flex-none items-center justify-center text-on-dark desktop:hidden"
+              >
+                <MenuIcon open={open} off={off} />
+              </DialogTrigger>
+            </CompactBar>
+          )}
+        </AnimatePresence>
         {/* Base UI keeps the portal while the exit plays, and AnimatePresence removes it after, as the Base UI docs show for Motion. */}
         <AnimatePresence>
           {open && (
             <DialogPortal keepMounted>
-              {/* The dimmed page starts under the masthead, so the masthead and the cross of the button stay clear.
+              {/* The dimmed page starts under the masthead or the compact bar, so the bar and the cross of the button stay clear.
                   Framer Motion owns the fade, so the CSS fade and the blur of the primitive are off. */}
               <DialogOverlay
                 className="bg-blk/50 data-open:animate-none data-closed:animate-none supports-backdrop-filter:backdrop-blur-none"
