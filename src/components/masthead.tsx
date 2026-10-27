@@ -57,7 +57,8 @@ export function Masthead({
     // The black band spans the viewport at every tier. The inner box takes the page column, so the content lines up with the page below.
     <header className="bg-blk text-on-dark">
       <div className="mx-auto max-w-page px-gutter pt-sp-5 pb-sp-4">
-        {/* The brand line: the home link on the left and the menu button at the right end, where a thumb finds it. */}
+        {/* The brand line: the home link on the left and the menu button at the right end, where a thumb finds it.
+            From the desktop tier up the row of the menu takes the place of the button. */}
         <div className="flex items-center justify-between gap-sp-3">
           {/* A plain anchor, not next/link: the home page is a static page with no shared state, so the client router adds nothing. */}
           <a href={`${basePath}/`} className="flex items-center gap-sp-3 text-inherit no-underline">

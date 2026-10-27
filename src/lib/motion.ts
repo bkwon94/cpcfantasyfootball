@@ -37,6 +37,8 @@ export const DURATION = {
   sheetExit: 0.16,
   // The menu button icon turns from three lines into a cross. It is short, because it only confirms the tap.
   iconMorph: 0.16,
+  // The Past weeks popover scales in from its trigger. It is short, because the reader asked for it with a click.
+  popover: 0.16,
   // The decision word lands. It is a little slower than the rest, so the call lands with a beat.
   decision: 0.36,
   // The fairness line lands under the decision. It is a little faster than the decision word, so the decision stays the lead.

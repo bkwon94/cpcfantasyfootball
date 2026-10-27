@@ -56,12 +56,16 @@ describe("WaiverPage", () => {
   });
 
   it("marks itself as the current page in the menu, with the flag on", async () => {
-    // The flag on puts the waiver page in the menu. The masthead itself shows no waiver link.
+    // The flag on puts the waiver page in the menu. The masthead itself shows no waiver link outside the menu.
     vi.stubEnv("NEXT_PUBLIC_WAIVER", "on");
     const { default: WaiverPage } = await routeOver();
     render(await WaiverPage({ params: Promise.resolve({ season: "2026", week: "week-06" }) }));
     const banner = screen.getByRole("banner");
-    expect(within(banner).queryByRole("link", { name: "Waiver wire" })).toBeNull();
+    // The desktop row renders the menu, so the one waiver link of the banner is the item of the row.
+    const row = within(banner).getByRole("navigation", { name: "Site menu" });
+    const rowItem = within(row).getByRole("link", { name: "Waiver wire" });
+    expect(within(banner).getAllByRole("link", { name: "Waiver wire" })).toEqual([rowItem]);
+    expect(rowItem.getAttribute("aria-current")).toBe("page");
     fireEvent.click(within(banner).getByRole("button", { name: "Menu" }));
     const menu = await screen.findByRole("navigation", { name: "Menu" });
     expect(within(menu).getByRole("link", { name: "Waiver wire" }).getAttribute("aria-current")).toBe("page");
