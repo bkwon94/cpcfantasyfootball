@@ -242,6 +242,12 @@ export function AsOfLine({ doc }: { doc: { as_of: AsOf; stale: string[] } }) {
   );
 }
 
+/* A week with no chart gets one meta line that says so. A document without the flag shows nothing. */
+export function NoChartLine({ asOf }: { asOf: AsOf }) {
+  if (!asOf.no_chart || !asOf.no_chart_note) return null;
+  return <p className="m-0 pt-sp-3 text-meta text-mute">{asOf.no_chart_note}</p>;
+}
+
 export default function AnalyzeResult({ doc }: { doc: AnalyzeResponse }) {
   const sides = joinSides(doc);
   const decisionTeam = sides.find((s) => s.roster_id === doc.decision.for_roster)?.team;
@@ -250,6 +256,7 @@ export default function AnalyzeResult({ doc }: { doc: AnalyzeResponse }) {
     <div>
       <Chapter>
         <DecisionBlock decision={doc.decision} team={decisionTeam} />
+        <NoChartLine asOf={doc.as_of} />
       </Chapter>
 
       {/* The fairness line sits under the decision, so the decision stays the lead. The ticket asks the page to render a document with no block, as a guard, so it shows no line then. */}

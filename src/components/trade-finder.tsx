@@ -5,7 +5,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { AsOfLine, FairnessBlock, SwapCard, type SwapSide } from "@/components/analyze-result";
+import { AsOfLine, FairnessBlock, NoChartLine, SwapCard, type SwapSide } from "@/components/analyze-result";
 import { ErrorLine } from "@/components/error-line";
 import { TeamPicker } from "@/components/team-picker";
 import { Button } from "@/components/ui/button";
@@ -76,6 +76,7 @@ function FinderResult({ doc, onOpen, locked }: { doc: FindResponse; onOpen: (tra
         />
       ))}
       <div className="py-sp-5">
+        <NoChartLine asOf={doc.as_of} />
         <AsOfLine doc={doc} />
       </div>
     </div>

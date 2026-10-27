@@ -155,6 +155,17 @@ describe("AnalyzeResult", () => {
     expect(line.textContent).not.toMatch(/live|partial|current week/i);
   });
 
+  it("shows the no-chart line when the document says the week has no chart", () => {
+    const no_chart_note = "Week 8 has no trade value chart yet, so the chart gives neither side an edge.";
+    render(<AnalyzeResult doc={{ ...fixture, as_of: { ...fixture.as_of, no_chart: true, no_chart_note } }} />);
+    expect(screen.getByText(no_chart_note)).toBeTruthy();
+  });
+
+  it("shows no no-chart line when the document lacks the field", () => {
+    render(<AnalyzeResult doc={fixture} />);
+    expect(screen.queryByText(/no trade value chart/i)).toBeNull();
+  });
+
   it("shows the in-progress count and each pending count as its own segment", () => {
     const known_games = { week: 7, games: 13, in_progress: 2, pending: { snaps: 9 } };
     render(<AnalyzeResult doc={{ ...fixture, as_of: { ...fixture.as_of, stats_through: 7, completed_through: 6, known_games } }} />);
