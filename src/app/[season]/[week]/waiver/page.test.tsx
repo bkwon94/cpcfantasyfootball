@@ -63,13 +63,13 @@ describe("WaiverPage", () => {
     const banner = screen.getByRole("banner");
     // The desktop row renders the menu, so the one waiver link of the banner is the item of the row.
     const row = within(banner).getByRole("navigation", { name: "Site menu" });
-    const rowItem = within(row).getByRole("link", { name: "Waiver wire" });
-    expect(within(banner).getAllByRole("link", { name: "Waiver wire" })).toEqual([rowItem]);
+    const rowItem = within(row).getByRole("link", { name: "Waiver Wire" });
+    expect(within(banner).getAllByRole("link", { name: "Waiver Wire" })).toEqual([rowItem]);
     expect(rowItem.getAttribute("aria-current")).toBe("page");
     fireEvent.click(within(banner).getByRole("button", { name: "Menu" }));
     const dialog = await screen.findByRole("dialog", { name: "Menu" });
     const menu = within(dialog).getByRole("navigation", { name: "Site menu" });
-    expect(within(menu).getByRole("link", { name: "Waiver wire" }).getAttribute("aria-current")).toBe("page");
+    expect(within(menu).getByRole("link", { name: "Waiver Wire" }).getAttribute("aria-current")).toBe("page");
   });
 
   it("shows the budgets with the avatars of the week folder, and the best adds after the top six", async () => {

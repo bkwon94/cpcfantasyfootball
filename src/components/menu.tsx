@@ -137,7 +137,7 @@ function Row({ destinations, pageHref, label }: RowProps) {
         // Focus stays inside the open popover, as it does in the sheet. The page still scrolls and takes a click outside.
         <Popover open={pastOpen} onOpenChange={setPastOpen} modal="trap-focus">
           <PopoverTrigger className="press inline-flex min-h-touch items-center text-label font-bold tracking-caps whitespace-nowrap text-on-dark uppercase hover-fine:text-red-lt">
-            Past weeks
+            Past Weeks
           </PopoverTrigger>
           {/* Framer Motion owns the scale and the fade, so the CSS keyframes and the CSS transition of the primitive are off.
               The duration-100 of the primitive gives a transition on every property. Framer writes the end opacity and scale
@@ -148,7 +148,7 @@ function Row({ destinations, pageHref, label }: RowProps) {
             {pastOpen && (
               <PopoverContent
                 keepMounted
-                aria-label="Past weeks"
+                aria-label="Past Weeks"
                 align="end"
                 className="w-48 gap-0 rounded-none p-0 px-sp-4 py-sp-1 transition-none data-open:animate-none data-closed:animate-none"
                 render={
@@ -176,7 +176,7 @@ function Row({ destinations, pageHref, label }: RowProps) {
                 {/* Base UI asks for a close control in a popover that traps focus, so a touch screen reader can leave it.
                     A keyboard closes the popover with Escape, so Tab skips the control, and it shows to no one. */}
                 <PopoverClose tabIndex={-1} className="sr-only">
-                  Close past weeks
+                  Close Past Weeks
                 </PopoverClose>
               </PopoverContent>
             )}
@@ -317,7 +317,7 @@ export function Menu({ destinations, pageHref, title }: MenuIslandProps) {
                         id={pastId}
                         className="mt-sp-5 mb-0 text-label leading-tight font-bold tracking-wide text-red uppercase"
                       >
-                        Past weeks
+                        Past Weeks
                       </h2>
                       <ul aria-labelledby={pastId} className="m-0 list-none p-0">
                         {destinations.pastWeeks.map((destination, index) => (

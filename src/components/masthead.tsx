@@ -37,9 +37,9 @@ function destinationsOf(weeks: WeekSummary[], waiverHref: string | null): Destin
     pages: [
       { label: "Home", href: `${basePath}/` },
       ...(current ? [week(current)] : []),
-      { label: "Power rankings", href: `${basePath}/rankings/` },
-      { label: "Trade analyzer", href: `${basePath}/analyze/` },
-      ...(waiverHref ? [{ label: "Waiver wire", href: waiverHref }] : []),
+      { label: "Power Rankings", href: `${basePath}/rankings/` },
+      { label: "Trade Analyzer", href: `${basePath}/analyze/` },
+      ...(waiverHref ? [{ label: "Waiver Wire", href: waiverHref }] : []),
     ],
     pastWeeks: past.map(week),
   };
