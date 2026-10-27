@@ -18,6 +18,9 @@ export const INSTANT: Transition = { duration: 0 };
 /* A short rise for content that enters. Framer Motion accepts a CSS variable for y, so the distance comes from the spacing token. */
 export const RISE = "var(--spacing-sp-2)";
 
+/* A short drop for content that enters from above, such as the menu sheet under the masthead. It mirrors the rise. */
+export const DROP = "calc(var(--spacing-sp-2) * -1)";
+
 /* The ease of the loading sweep. The bar travels both ways, so it eases in and out. */
 export const SWEEP_EASE = "easeInOut";
 
@@ -30,6 +33,16 @@ export const DURATION = {
   page: 0.3,
   // A picker list opens or closes. A layout change needs a little more time than a press.
   collapse: 0.24,
+  // The menu sheet leaves. It is faster than its entry, so a back-out feels instant.
+  sheetExit: 0.16,
+  // The menu button icon turns from three lines into a cross. It is short, because it only confirms the tap.
+  iconMorph: 0.16,
+  // The Past weeks popover scales in from its trigger. It is short, because the reader asked for it with a click.
+  popover: 0.16,
+  // The Past weeks popover leaves. It is faster than its entry, so a back-out feels instant, as the sheet exit does.
+  popoverExit: 0.1,
+  // The compact bar slides in from above or leaves. It takes the press timing, so the bar answers the scroll at once.
+  bar: 0.14,
   // The decision word lands. It is a little slower than the rest, so the call lands with a beat.
   decision: 0.36,
   // The fairness line lands under the decision. It is a little faster than the decision word, so the decision stays the lead.

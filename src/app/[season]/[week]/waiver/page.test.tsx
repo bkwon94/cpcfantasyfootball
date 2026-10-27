@@ -1,8 +1,8 @@
 /**
  * Tests for the waiver page route. Each test builds a temp public/ folder with week pages, some with a waiver file.
- * They read the static params and what a reader sees: the masthead line and the lists with the week page avatars.
+ * They read the static params and what a reader sees: the masthead line, the menu, and the lists with the week page avatars.
  */
-import { cleanup, render, screen, within } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
 import { mkdtempSync, mkdirSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -55,12 +55,21 @@ describe("WaiverPage", () => {
     expect(banner.textContent).toContain("Built Fri, Oct 23, 10:05 AM EDT");
   });
 
-  it("shows no link to itself in the masthead, even with the flag on", async () => {
-    // The flag on gives every other page the link, so the test proves this page turns it off.
+  it("marks itself as the current page in the menu, with the flag on", async () => {
+    // The flag on puts the waiver page in the menu. The masthead itself shows no waiver link outside the menu.
     vi.stubEnv("NEXT_PUBLIC_WAIVER", "on");
     const { default: WaiverPage } = await routeOver();
     render(await WaiverPage({ params: Promise.resolve({ season: "2026", week: "week-06" }) }));
-    expect(within(screen.getByRole("banner")).queryByRole("link", { name: "Waiver wire" })).toBeNull();
+    const banner = screen.getByRole("banner");
+    // The desktop row renders the menu, so the one waiver link of the banner is the item of the row.
+    const row = within(banner).getByRole("navigation", { name: "Site menu" });
+    const rowItem = within(row).getByRole("link", { name: "Waiver wire" });
+    expect(within(banner).getAllByRole("link", { name: "Waiver wire" })).toEqual([rowItem]);
+    expect(rowItem.getAttribute("aria-current")).toBe("page");
+    fireEvent.click(within(banner).getByRole("button", { name: "Menu" }));
+    const dialog = await screen.findByRole("dialog", { name: "Menu" });
+    const menu = within(dialog).getByRole("navigation", { name: "Site menu" });
+    expect(within(menu).getByRole("link", { name: "Waiver wire" }).getAttribute("aria-current")).toBe("page");
   });
 
   it("shows the budgets with the avatars of the week folder, and the best adds after the top six", async () => {

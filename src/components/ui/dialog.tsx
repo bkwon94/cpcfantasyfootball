@@ -43,6 +43,11 @@ function DialogOverlay({
   )
 }
 
+// A bare popup with no place, size, or motion of its own. A caller such as the menu sheet sets those itself.
+function DialogPopup({ ...props }: DialogPrimitive.Popup.Props) {
+  return <DialogPrimitive.Popup data-slot="dialog-popup" {...props} />
+}
+
 function DialogContent({
   className,
   children,
@@ -161,6 +166,7 @@ export {
   DialogFooter,
   DialogHeader,
   DialogOverlay,
+  DialogPopup,
   DialogPortal,
   DialogTitle,
   DialogTrigger,

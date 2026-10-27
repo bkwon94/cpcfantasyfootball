@@ -8,6 +8,15 @@
 /*---break---
  */
 @custom-variant dark (&:is(.dark *));
+/* A hover style only for a device with a fine pointer that can hover. Some touch devices report hover,
+   and the color then sticks on a tapped link, so the pointer check keeps the hover to a mouse or a trackpad. */
+@custom-variant hover-fine {
+    @media (hover: hover) and (pointer: fine) {
+        &:hover {
+            @slot;
+        }
+    }
+}
 /*---break---
  */
 /* The brand tokens, ported from the source stylesheet. Static keeps every token on :root,
@@ -90,10 +99,21 @@
     /* The power rankings columns for movement, the record, the playoff odds, and each component rank. 40px fits a five-letter column name in caps. */
     --spacing-rankings-col: 40px;
 
-    /* The page is one centered column, so the same layout serves a phone and a desktop. */
-    --container-page: 480px;
-    /* The viewport where the page column reaches its full width. Under it, a wide table folds part of each row under the row.
-       A media query cannot read a variable, so the value repeats the page width. */
+    /* The three tiers the site designs for, on Tailwind's default sm and lg values. A phone is any width under the tablet tier.
+       The phone token starts at zero, so the set names every tier; max-tablet: is the variant for a phone only. */
+    --breakpoint-phone: 0rem;
+    --breakpoint-tablet: 40rem;
+    --breakpoint-desktop: 64rem;
+
+    /* The page column per tier. A phone column fills the viewport and the content keeps the gutter inside it.
+       The desktop width is the content measure; a wider tier adds space beside the column, not inside it. */
+    --container-page-phone: 100%;
+    --container-page-tablet: 640px;
+    --container-page-desktop: 720px;
+    /* The page column that max-w-page reads. A rule in the base layer switches it to the token of the tier. */
+    --container-page: var(--container-page-phone);
+    /* The viewport where a wide table has room for every column. Under it, a wide table folds part of each row under the row.
+       480px is the narrowest width that fits every column of the unfolded tables. */
     --breakpoint-page: 480px;
 
     /* Type scale: label, meta, row, body, lead, stat, score, headline. Row is for dense lists,
@@ -253,12 +273,25 @@
   * {
     @apply border-border outline-ring/50;
     }
+  /* From the tablet tier up the column is narrower than the viewport. The body takes the softest brand grey,
+     so the white column reads as the report's page. On a phone the column fills the width, so the body stays white. */
   body {
-    @apply bg-background text-foreground text-body leading-body antialiased;
+    @apply bg-background tablet:bg-gry text-foreground text-body leading-body antialiased;
     overflow-wrap: break-word;
     }
+  /* The page column widens per tier. A media query cannot read a variable, so the tier variants carry the widths. */
+  :root {
+    @variant tablet {
+      --container-page: var(--container-page-tablet);
+    }
+    @variant desktop {
+      --container-page: var(--container-page-desktop);
+    }
+    }
+  /* The compact bar is fixed over the top 44px of the viewport. The padding keeps a focused element or an anchor target clear of it. */
   html {
     @apply font-sans;
+    scroll-padding-top: var(--spacing-touch);
     }
   :focus-visible {
     outline: 2px solid var(--color-red);

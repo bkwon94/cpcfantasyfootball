@@ -2,7 +2,7 @@
  * Tests for the home page. Most render the page with the real public/ data and read what a reader sees.
  * The week 6 JSON is the fixture, so these tests break if the publish layout changes. The rankings tests build a temp public/ folder.
  */
-import { cleanup, render, screen, waitFor } from "@testing-library/react";
+import { cleanup, render, screen, waitFor, within } from "@testing-library/react";
 import { mkdtempSync, mkdirSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -104,7 +104,8 @@ describe("HomePage power rankings", () => {
   it("shows the top three, the biggest mover, and the link to the rankings", async () => {
     const Home = await homeOver(fixture);
     render(<Home />);
-    expect(screen.getByText("Power rankings")).toBeTruthy();
+    // The menu row in the banner has a Power rankings link too, so the test reads the chapter in the page content.
+    expect(within(screen.getByRole("main")).getByText("Power rankings")).toBeTruthy();
     const link = screen.getByRole("link", { name: /Top three/ });
     expect(link.getAttribute("href")).toBe("/rankings/");
     const top = Array.from(link.querySelectorAll("li")).map((item) => item.textContent);
@@ -127,9 +128,9 @@ describe("HomePage power rankings", () => {
   it("hides the chapter when the file is missing and still lists the weeks", async () => {
     const Home = await homeOver();
     render(<Home />);
-    expect(screen.queryByText("Power rankings")).toBeNull();
+    expect(within(screen.getByRole("main")).queryByText("Power rankings")).toBeNull();
     expect(screen.queryByRole("link", { name: /Top three/ })).toBeNull();
-    expect(screen.getByRole("link", { name: /Week 6/ })).toBeTruthy();
+    expect(within(screen.getByRole("main")).getByRole("link", { name: /Week 6/ })).toBeTruthy();
   });
 
 });

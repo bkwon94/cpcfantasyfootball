@@ -1,10 +1,13 @@
 /**
- * The black masthead at the top of every page: the brand link, the page subtitle, an optional week line, and the waiver link.
+ * The black masthead at the top of every page: the brand link, the page subtitle, an optional week line, and the menu.
  * It matches the masthead of the source stylesheet, so a reader cannot tell the two apart.
  */
 import type { ReactNode } from "react";
+import { currentPage } from "@/components/current-page";
+import { Menu, type Destinations } from "@/components/menu";
 import { basePath } from "@/lib/config";
 import { currentWaiverHref } from "@/lib/waiver-data";
+import { listWeekSummaries, type WeekSummary } from "@/lib/week-data";
 
 /* The week line lives in its own file, so a client component can import it. The pages import it from here. */
 export { WeekLine } from "@/components/week-line";
@@ -16,39 +19,81 @@ type MastheadProps = {
   subtitle?: string;
   // The week line under the brand. Pages with no week line leave it out.
   children?: ReactNode;
-  // The waiver page link. Left out, the masthead reads the current week from public/, and a build with the flag off gets null.
+  // The waiver page link of the menu. Left out, the masthead reads the current week from public/, and a build with the flag off gets null.
   // A test passes a value to set the link without a temp public/ folder.
   waiverHref?: string | null;
+  // The published weeks, newest first. Left out, the masthead reads them from public/ at build time.
+  // A test passes a list to set the menu without a temp public/ folder.
+  weeks?: WeekSummary[];
+  // The href of the open page, with the base path. A static export cannot read the request path, so each page passes its own.
+  pageHref?: string;
 };
+
+/* The one list of destinations of the menu. The newest week is the current week, and the rest are the past weeks. */
+function destinationsOf(weeks: WeekSummary[], waiverHref: string | null): Destinations {
+  const [current, ...past] = weeks;
+  const week = (summary: WeekSummary) => ({ label: `Week ${summary.number}`, href: `${basePath}${summary.href}` });
+  return {
+    pages: [
+      { label: "Home", href: `${basePath}/` },
+      ...(current ? [week(current)] : []),
+      { label: "Power rankings", href: `${basePath}/rankings/` },
+      { label: "Trade analyzer", href: `${basePath}/analyze/` },
+      ...(waiverHref ? [{ label: "Waiver wire", href: waiverHref }] : []),
+    ],
+    pastWeeks: past.map(week),
+  };
+}
 
 export function Masthead({
   title = "Cornerstone Fantasy Football League",
   subtitle,
   children,
   waiverHref = currentWaiverHref(),
+  weeks = listWeekSummaries(),
+  pageHref,
 }: MastheadProps) {
+  const destinations = destinationsOf(weeks, waiverHref);
   return (
-    <header className="bg-blk px-gutter pt-sp-5 pb-sp-4 text-on-dark">
-      {/* A plain anchor, not next/link: the home page is a static page with no shared state, so the client router adds nothing. */}
-      <a href={`${basePath}/`} className="flex items-center gap-sp-3 text-inherit no-underline">
-        {/* The title next to the logo names the link, so the logo is decorative. */}
-        <img src={`${basePath}/images/logo.png`} alt="" className="size-logo flex-none rounded-full" />
-        <div className="h-divider w-px bg-mute" />
-        <div>
-          <div className="text-meta leading-tight font-bold tracking-wide uppercase">{title}</div>
-          {subtitle && <div className="text-label tracking-caps text-on-dark-muted uppercase">{subtitle}</div>}
+    // The black band spans the viewport at every tier. The inner box takes the page column, so the content lines up with the page below.
+    <header className="bg-blk text-on-dark">
+      <div className="mx-auto max-w-page px-gutter pt-sp-5 pb-sp-4">
+        {/* The brand line: the home link on the left and the menu button at the right end, where a thumb finds it.
+            From the desktop tier up the row of the menu takes the place of the button. */}
+        <div className="flex items-center justify-between gap-sp-3">
+          {/* A plain anchor, not next/link: the home page is a static page with no shared state, so the client router adds nothing. */}
+          {/* The link is at least 44px tall, so it is a comfortable tap target on a phone. */}
+          <a href={`${basePath}/`} className="flex min-h-touch items-center gap-sp-3 text-inherit no-underline">
+            {/* The title next to the logo names the link, so the logo is decorative. */}
+            <img src={`${basePath}/images/logo.png`} alt="" width={30} height={30} className="size-logo flex-none rounded-full" />
+            <div className="h-divider w-px bg-mute" />
+            <div>
+              {/* The brand name stays as it is under a page translator. Where the title must wrap, the balance splits it into even lines. */}
+              <div translate="no" className="text-meta leading-tight font-bold tracking-wide text-balance uppercase">
+                {title}
+              </div>
+              {subtitle && <div className="text-label tracking-caps text-on-dark-muted uppercase">{subtitle}</div>}
+            </div>
+          </a>
+          <Menu destinations={destinations} pageHref={pageHref} title={title} />
         </div>
-      </a>
-      {children && <div className="mt-sp-4">{children}</div>}
-      {/* A plain anchor, as the brand link is. The touch height keeps the small label easy to tap on a phone. */}
-      {waiverHref && (
-        <a
-          href={waiverHref}
-          className="mt-sp-2 inline-flex min-h-touch items-center text-label font-bold tracking-caps text-red-lt uppercase no-underline"
-        >
-          Waiver wire
-        </a>
-      )}
+        {/* The menu sheet needs the script, so a reader with scripts off gets the same destinations as a plain row of links. */}
+        <noscript>
+          <nav aria-label="Menu" className="mt-sp-3 flex flex-wrap gap-x-sp-4">
+            {[...destinations.pages, ...destinations.pastWeeks].map((destination) => (
+              <a
+                key={destination.href}
+                href={destination.href}
+                aria-current={currentPage(destination, pageHref)}
+                className="inline-flex min-h-touch items-center text-label font-bold tracking-caps text-on-dark uppercase no-underline aria-[current=page]:text-red-lt"
+              >
+                {destination.label}
+              </a>
+            ))}
+          </nav>
+        </noscript>
+        {children && <div className="mt-sp-4">{children}</div>}
+      </div>
     </header>
   );
 }
