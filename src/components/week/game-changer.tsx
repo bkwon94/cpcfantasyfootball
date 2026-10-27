@@ -19,7 +19,7 @@ export function GameChanger({
 }) {
   const line = gameChanger.award.line;
   return (
-    <Chapter dark>
+    <Chapter dark id="game-changer">
       {/* The stage spans the card edge to edge. The cutout bleeds off the right and bottom edges,
           so the player reads as part of the card and not as a separate image on top.
           From the tablet tier up the stage is two parts at the hero height: the text on the left and the cutout on the right.

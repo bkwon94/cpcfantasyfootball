@@ -36,7 +36,7 @@ function Tile({ award, headshots, index }: { award: Award; headshots: HeadshotMa
 /* The label, the tiles, and the blurb stagger in one by one, so the chapter itself has no reveal. */
 export function Awards({ awards, headshots, blurb }: { awards: Award[]; headshots: HeadshotMap; blurb: string }) {
   return (
-    <Chapter>
+    <Chapter id="awards">
       <Reveal delay={stagger(0)}>
         <Label heading>Awards</Label>
       </Reveal>

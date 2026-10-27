@@ -43,7 +43,7 @@ function Line({
 
 export function Standings({ table, avatars }: { table: TableRow[]; avatars: AvatarMap }) {
   return (
-    <Chapter dark reveal>
+    <Chapter dark reveal id="standings">
       <Label dark heading>Standings</Label>
       {/* A table holds only rows, so the cut line is a row too. Its one cell names the cut for a screen reader and shows to no one. */}
       <div role="table" aria-label="Standings">

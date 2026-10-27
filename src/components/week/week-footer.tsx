@@ -9,14 +9,14 @@ import { Chapter } from "./parts";
 
 /* A plain anchor in the home row style, like the week rows of the home page. An anchor skips the router, so the base path goes in by hand.
    The touch height keeps a short row a comfortable target. */
-function WeekLink({ week, rel, end }: { week: WeekSummary; rel: "prev" | "next"; end?: boolean }) {
+function WeekLink({ week, rel }: { week: WeekSummary; rel: "prev" | "next" }) {
   return (
     <a
       href={`${basePath}${week.href}`}
       rel={rel}
       className={cn(
         "press group block min-h-touch border-b border-rule pb-sp-3 text-inherit no-underline",
-        end && "text-right",
+        rel === "next" && "text-right",
       )}
     >
       <b className="mb-sp-1 block text-lead leading-tight group-hover:text-red">Week {week.number}</b>
@@ -33,7 +33,7 @@ export function WeekFooter({ prior, next }: { prior: WeekSummary | null; next: W
       <nav aria-label="Weeks">
         <ul className="m-0 grid list-none grid-cols-2 gap-sp-4 p-0">
           <li>{prior && <WeekLink week={prior} rel="prev" />}</li>
-          <li>{next && <WeekLink week={next} rel="next" end />}</li>
+          <li>{next && <WeekLink week={next} rel="next" />}</li>
         </ul>
       </nav>
     </Chapter>

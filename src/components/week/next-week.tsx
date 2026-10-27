@@ -51,7 +51,7 @@ export function NextWeek({
   blurb?: string;
 }) {
   return (
-    <Chapter reveal>
+    <Chapter reveal id="next-week">
       <Label heading>{`Next Week · Week ${week + 1}`}</Label>
       {/* The grid gap takes the place of the card margin. minmax(0,1fr) lets a long team name truncate in its column.
           A lone last card keeps its column width. */}
