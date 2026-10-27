@@ -27,3 +27,11 @@ _Avoid_: Sidebar, table of contents, TOC, outline
 **Compact bar**:
 The short black bar that shows at the top of the viewport once the masthead scrolls out, with the brand mark and the menu. Readers and screen readers know it as "Top bar".
 _Avoid_: Sticky header, mini header, app bar, toolbar
+
+**Chapter**:
+One section of the weekly report, such as the awards or the standings. On a tablet and a desktop each chapter is a card on the grey body.
+_Avoid_: Section, block, panel
+
+**Sheet**:
+The menu as it opens on a phone and a tablet, under the masthead, over the dimmed page.
+_Avoid_: Drawer, modal, overlay
