@@ -289,9 +289,11 @@ export function Menu({ destinations, pageHref, title }: MenuIslandProps) {
           {open && (
             <DialogPortal keepMounted>
               {/* The dimmed page starts under the masthead or the compact bar, so the bar and the cross of the button stay clear.
-                  Framer Motion owns the fade, so the CSS fade and the blur of the primitive are off. */}
+                  Framer Motion owns the fade, so the CSS fade, the CSS transition, and the blur of the primitive are off.
+                  The duration-100 of the primitive gives a transition on every property. Framer writes the end opacity
+                  when its fade ends, and WebKit then fades the overlay from 0 again, so the dimmed page blinks. */}
               <DialogOverlay
-                className="bg-blk/50 data-open:animate-none data-closed:animate-none supports-backdrop-filter:backdrop-blur-none"
+                className="transition-none bg-blk/50 data-open:animate-none data-closed:animate-none supports-backdrop-filter:backdrop-blur-none"
                 style={{ top }}
                 render={<motion.div {...backdrop} />}
               />
