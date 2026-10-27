@@ -115,9 +115,15 @@
     /* The viewport where a wide table has room for every column. Under it, a wide table folds part of each row under the row.
        480px is the narrowest width that fits every column of the unfolded tables. */
     --breakpoint-page: 480px;
+    /* The measure: the widest line of prose. About 68 characters keeps the eye on the next line at every tier.
+       It is in ch, so the cap grows with the body size of the tier. Tables, grids, and score rows take no cap. */
+    --container-measure: 68ch;
+    /* The gap between two chapter cards on the grey body, from the tablet tier up. */
+    --spacing-card-gap: var(--spacing-sp-4);
 
     /* Type scale: label, meta, row, body, lead, stat, score, headline. Row is for dense lists,
-       so names and scores stay on one line. A size sets no line height, so text keeps the inherited body leading. */
+       so names and scores stay on one line. A size sets no line height, so text keeps the inherited body leading.
+       These are the phone sizes, the print scale. A rule in the base layer steps each size up per tier. */
     --text-label: 10px;
     --text-meta: 12px;
     --text-row: 13px;
@@ -129,14 +135,17 @@
     /* The game changer's points: the biggest number on the page, 1.8 times the headline. */
     --text-hero: calc(var(--text-headline) * 1.8);
 
-    /* Line heights: body copy, tight labels and names, and big stat numbers. */
+    /* Line heights: body copy, tight labels and names, and big stat numbers.
+       They are ratios of the size, so they stay in step with the type scale at every tier. */
     --leading-body: 1.4;
     --leading-tight: 1.15;
     --leading-stat: 1.1;
     /* The hero points sit tighter than a stat, so the giant digits do not push the projection line down. */
     --leading-hero: 0.9;
 
-    /* Letter spacing for uppercase labels. Wide is for titles, caps is for small subtitles and tags. */
+    /* Letter spacing for uppercase labels. Wide is for titles, caps is for small subtitles and tags.
+       Each token is in em and belongs to one size role: small caps open, big bold numbers tight. So the
+       spacing scales with its size at every tier and stays specific to the size. */
     --tracking-wide: 0.16em;
     --tracking-caps: 0.1em;
     /* Negative spacing for bold text: snug for a player name on a chip, tight for the big week number,
@@ -286,6 +295,31 @@
     }
     @variant desktop {
       --container-page: var(--container-page-desktop);
+    }
+    }
+  /* The type scale steps up one size per tier. A tablet or a laptop sits farther from the eye than a phone,
+     so the print sizes read small there. Body is 14px, 15px, and 16px. Each other size keeps its ratio to
+     the body, rounded to a whole pixel, so the hierarchy of the print scale holds. The hero points follow the headline. */
+  :root {
+    @variant tablet {
+      --text-label: 11px;
+      --text-meta: 13px;
+      --text-row: 14px;
+      --text-body: 15px;
+      --text-lead: 17px;
+      --text-stat: 21px;
+      --text-score: 26px;
+      --text-headline: 43px;
+    }
+    @variant desktop {
+      --text-label: 12px;
+      --text-meta: 14px;
+      --text-row: 15px;
+      --text-body: 16px;
+      --text-lead: 18px;
+      --text-stat: 23px;
+      --text-score: 27px;
+      --text-headline: 46px;
     }
     }
   /* The compact bar is fixed over the top 44px of the viewport. The padding keeps a focused element or an anchor target clear of it. */

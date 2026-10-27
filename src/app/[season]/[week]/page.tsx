@@ -48,7 +48,9 @@ export default async function WeekPage({ params }: Props) {
           {`${page.dates} · Published ${page.publish_date}`}
         </div>
       </Masthead>
-      <main className="mx-auto max-w-page bg-wht">
+      {/* From the tablet tier up the main turns clear and spaces the chapters, so each chapter reads as a card on the grey body.
+          The data-report attribute scopes the card look of a chapter to the weekly report. */}
+      <main data-report className="mx-auto max-w-page bg-wht tablet:flex tablet:flex-col tablet:gap-card-gap tablet:bg-transparent">
         {/* The masthead and the top story show at once. The hero plays its own motion on load.
             Each chapter below reveals once as it enters the view, as a unit or card by card. */}
         <MatchupOfTheWeek pick={page.pick} avatars={page.avatars} blurb={page.blurbs.motw} />
