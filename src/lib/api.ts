@@ -26,35 +26,41 @@ export class ApiError extends Error {
   readonly status: number;
   // Seconds to wait, from the Retry-After header of a 429.
   readonly retryAfter?: number;
+  // The message from the body of the response. It is unset when the body has none, so the status text in message does not pass as a reason.
+  readonly detail?: string;
 
-  constructor(status: number, message: string, retryAfter?: number) {
+  constructor(status: number, message: string, retryAfter?: number, detail?: string) {
     super(message);
     this.name = "ApiError";
     this.status = status;
     this.retryAfter = retryAfter;
+    this.detail = detail;
   }
 }
 
-/* A 422 body is { detail: string } or { detail: { message } }. Other bodies fall back to the status text. */
-async function errorMessage(response: Response): Promise<string> {
+/* A body is { detail: string } or { detail: { message } }. Any other body gives no detail. */
+async function errorDetail(response: Response): Promise<string | undefined> {
   try {
     const body = await response.json();
     const detail = body?.detail;
     if (typeof detail === "string") return detail;
     if (typeof detail?.message === "string") return detail.message;
   } catch {
-    // The body is not JSON. Use the status text.
+    // The body is not JSON, so it has no detail.
   }
-  return response.statusText || `Request failed with status ${response.status}`;
+  return undefined;
 }
 
 /* Builds the ApiError for a failed response. Every call of the client uses it. */
 export async function toApiError(response: Response): Promise<ApiError> {
   const retryAfter = Number(response.headers.get("Retry-After"));
+  const detail = await errorDetail(response);
   return new ApiError(
     response.status,
-    await errorMessage(response),
+    // Without a detail, the message falls back to the status text.
+    detail ?? (response.statusText || `Request failed with status ${response.status}`),
     Number.isFinite(retryAfter) && retryAfter > 0 ? retryAfter : undefined,
+    detail,
   );
 }
 
@@ -82,7 +88,10 @@ export function toErrorLine(error: unknown, timedOut: boolean, timeoutMessage: s
   if (error instanceof ApiError) {
     if (error.status === 422) return { message: error.message, retry: false };
     if (error.status === 429) return { message: retryText(error.retryAfter), retry: false };
-    if (error.status === 503) return { message: "No grade this week yet. The chart is not on the server.", retry: false };
+    // The API says why it is down in its detail, so the reader sees that reason when it exists.
+    if (error.status === 503) {
+      return { message: error.detail ?? "The analyzer is down for the moment. Try again in a few minutes.", retry: true };
+    }
   }
   return { message: "The API did not answer. Try again.", retry: true };
 }

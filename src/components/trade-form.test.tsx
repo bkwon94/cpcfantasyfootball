@@ -226,11 +226,19 @@ describe("TradeForm", () => {
     expect(await screen.findByText("Too many requests. Try again in 12 seconds.")).toBeTruthy();
   });
 
-  it("shows the no-grade line on a 503", async () => {
-    answer(503, { detail: "no chart" });
+  it("shows the down line and a retry button on a 503 with no detail", async () => {
+    answer(503);
     pickTrade();
     fireEvent.click(submit());
-    expect(await screen.findByText("No grade this week yet. The chart is not on the server.")).toBeTruthy();
+    expect(await screen.findByText("The analyzer is down for the moment. Try again in a few minutes.")).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Try again" })).toBeTruthy();
+  });
+
+  it("shows the API reason on a 503 with a detail", async () => {
+    answer(503, { detail: "The trade value chart is not ready." });
+    pickTrade();
+    fireEvent.click(submit());
+    expect(await screen.findByText("The trade value chart is not ready.")).toBeTruthy();
   });
 
   it("asks for the passphrase again on a 401", async () => {

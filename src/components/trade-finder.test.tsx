@@ -138,10 +138,11 @@ describe("TradeFinder", () => {
     expect(onRostersStale).toHaveBeenCalledTimes(1);
   });
 
-  it("shows the same fixed line as the trade form on a 503", async () => {
-    answer(503, { detail: "The trade value chart for this week is not available." });
+  it("shows the same down line as the trade form on a 503 with no detail", async () => {
+    answer(503);
     find();
-    expect(await screen.findByText("No grade this week yet. The chart is not on the server.")).toBeTruthy();
+    expect(await screen.findByText("The analyzer is down for the moment. Try again in a few minutes.")).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Try again" })).toBeTruthy();
     expect(onRostersStale).not.toHaveBeenCalled();
   });
 
