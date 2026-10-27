@@ -7,7 +7,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useId, useRef, useState, type ReactNode, type Ref } from "react";
 import { Dialog, DialogOverlay, DialogPopup, DialogPortal, DialogTrigger } from "@/components/ui/dialog";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Popover, PopoverClose, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { basePath } from "@/lib/config";
 import { DROP, DURATION, EASE_OUT, INSTANT, stagger, useMotionOff } from "@/lib/motion";
 
@@ -116,7 +116,8 @@ function Row({ destinations, pageHref, label }: RowProps) {
         <RowLink key={destination.href} destination={destination} pageHref={pageHref} />
       ))}
       {destinations.pastWeeks.length > 0 && (
-        <Popover open={pastOpen} onOpenChange={setPastOpen}>
+        // Focus stays inside the open popover, as it does in the sheet. The page still scrolls and takes a click outside.
+        <Popover open={pastOpen} onOpenChange={setPastOpen} modal="trap-focus">
           <PopoverTrigger className="press inline-flex min-h-touch items-center text-label font-bold tracking-caps whitespace-nowrap text-on-dark uppercase hover-fine:text-red-lt">
             Past weeks
           </PopoverTrigger>
@@ -152,6 +153,11 @@ function Row({ destinations, pageHref, label }: RowProps) {
                     </li>
                   ))}
                 </ul>
+                {/* Base UI asks for a close control in a popover that traps focus, so a touch screen reader can leave it.
+                    A keyboard closes the popover with Escape, so Tab skips the control, and it shows to no one. */}
+                <PopoverClose tabIndex={-1} className="sr-only">
+                  Close past weeks
+                </PopoverClose>
               </PopoverContent>
             )}
           </AnimatePresence>
@@ -183,7 +189,8 @@ function CompactBar({ title, off, children, ref }: CompactBarProps) {
       {/* The same box as the masthead, so the content of the bar lines up with the page column. */}
       <div className="mx-auto flex h-full max-w-page items-center justify-between gap-sp-3 px-gutter">
         {/* The bar shows the logo with no title, so the logo names the home link. */}
-        <a href={`${basePath}/`} className="flex flex-none items-center">
+        {/* The link takes the full height of the bar, so it is a 44px tap target around the 30px logo. */}
+        <a href={`${basePath}/`} className="flex h-touch flex-none items-center">
           <img src={`${basePath}/images/logo.png`} alt={title} width={30} height={30} className="size-logo rounded-full" />
         </a>
         {children}

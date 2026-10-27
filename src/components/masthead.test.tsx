@@ -317,6 +317,22 @@ describe("Masthead row", () => {
     expect(trigger.getAttribute("aria-expanded")).toBe("false");
   });
 
+  it("returns focus to the Past weeks trigger when the popover closes on Escape", async () => {
+    renderWeekMasthead();
+    const trigger = within(row()).getByRole("button", { name: "Past weeks" });
+    const popover = await openPastWeeks();
+    fireEvent.keyDown(popover, { key: "Escape" });
+    await waitFor(() => expect(document.activeElement).toBe(trigger));
+  });
+
+  it("gives a screen reader a close button in the popover", async () => {
+    renderWeekMasthead();
+    const popover = await openPastWeeks();
+    // The popover keeps focus inside, so a touch screen reader needs a control to leave it.
+    fireEvent.click(within(popover).getByRole("button", { name: "Close past weeks" }));
+    await waitFor(() => expect(screen.queryByRole("dialog", { name: "Past weeks" })).toBeNull());
+  });
+
   it("closes the popover on a click outside", async () => {
     renderWeekMasthead();
     await openPastWeeks();

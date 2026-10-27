@@ -61,7 +61,8 @@ export function Masthead({
             From the desktop tier up the row of the menu takes the place of the button. */}
         <div className="flex items-center justify-between gap-sp-3">
           {/* A plain anchor, not next/link: the home page is a static page with no shared state, so the client router adds nothing. */}
-          <a href={`${basePath}/`} className="flex items-center gap-sp-3 text-inherit no-underline">
+          {/* The link is at least 44px tall, so it is a comfortable tap target on a phone. */}
+          <a href={`${basePath}/`} className="flex min-h-touch items-center gap-sp-3 text-inherit no-underline">
             {/* The title next to the logo names the link, so the logo is decorative. */}
             <img src={`${basePath}/images/logo.png`} alt="" width={30} height={30} className="size-logo flex-none rounded-full" />
             <div className="h-divider w-px bg-mute" />
