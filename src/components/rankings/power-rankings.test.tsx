@@ -248,7 +248,7 @@ describe("The week chips", () => {
   it("puts the chips under the label and above the method note", () => {
     render(<PowerRankings weeks={rankings.weeks} avatars={week6.avatars} />);
     const group = screen.getByRole("group", { name: "Week" });
-    const label = screen.getByText("Power rankings");
+    const label = screen.getByRole("heading", { level: 2, name: "Power Rankings" });
     const note = screen.getByText(/head-to-head record/);
     expect(label.compareDocumentPosition(group) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     expect(group.compareDocumentPosition(note) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();

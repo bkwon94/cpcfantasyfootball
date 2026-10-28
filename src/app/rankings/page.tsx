@@ -34,7 +34,7 @@ export default function RankingsPage() {
           <Masthead subtitle="Power Rankings" pageHref={`${basePath}/rankings/`} />
           <PageColumn>
             <Chapter>
-              <Label>Power rankings</Label>
+              <Label heading>Power Rankings</Label>
               <Blurb>No power rankings are published yet.</Blurb>
             </Chapter>
           </PageColumn>
