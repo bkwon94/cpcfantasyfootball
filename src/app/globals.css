@@ -119,6 +119,16 @@
     --spacing-standings-points-wide: 96px;
     /* The power rankings columns for movement, the record, the playoff odds, and each component rank. 40px fits a five-letter column name in caps. */
     --spacing-rankings-col: 40px;
+    /* The power rankings columns from the tablet tier up. The rank takes the wide standings rank, and the chevron keeps its 6px.
+       The team track holds the avatar 28px, its gap 8px, and the name. The longest word "Unsolicited" is 70px at the 14px tablet row
+       and 75px at the 15px desktop row, so the track needs 106px and 111px for it. A longer name must also fit on two lines:
+       "Amon-Ra Dawg" is 99px at 14px and 106px at 15px, so the track needs 136px and 143px. The chapter content is the page
+       column minus two 16px gutters, and the row has nine gaps.
+       Tablet: 640 - 32 = 608px. 40 + 6 + 7 × 44 + 9 × 12 = 462px, so the team gets 146px.
+       Desktop: 720 - 32 = 688px. 40 + 6 + 7 × 48 + 9 × 16 = 526px, so the team gets 162px.
+       The tablet values sit between the phone and the desktop values, so the step feels even. */
+    --spacing-rankings-col-tablet: 44px;
+    --spacing-rankings-col-desktop: 48px;
 
     /* The three tiers the site designs for, on Tailwind's default sm and lg values. A phone is any width under the tablet tier.
        The phone token starts at zero, so the set names every tier; max-tablet: is the variant for a phone only. */

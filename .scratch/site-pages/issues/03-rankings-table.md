@@ -6,12 +6,12 @@
 
 **Status:** ready-for-agent
 
-- [ ] Wide tokens for the rankings columns from the tablet tier sit next to the standings wide tokens, with a comment that gives the width the team track needs for the longest word beside the avatar at each tier.
-- [ ] The column gap widens from the tablet tier. The phone grid and the 480px page tier are unchanged.
-- [ ] No row grows taller than the others at 640px or 720px with the longest team name in the file.
-- [ ] The headers stay short at every tier.
-- [ ] The method note and the odds note take the measure.
-- [ ] The label is a level-two heading that reads "Power Rankings", in the table and in the empty state.
-- [ ] The rankings page test checks the "Power Rankings" heading with weeks and in the empty state, and the week line that follows the chips. Tests that read "Power rankings" change with the casing.
-- [ ] A browser check at 768 and 1280 shows the spaced columns and the longest name on one row height. At 390 the table is unchanged.
-- [ ] `pnpm test`, `pnpm typecheck`, and `pnpm build` pass.
+- [x] Wide tokens for the rankings columns from the tablet tier sit next to the standings wide tokens, with a comment that gives the width the team track needs for the longest word beside the avatar at each tier.
+- [x] The column gap widens from the tablet tier. The phone grid and the 480px page tier are unchanged.
+- [x] No row grows taller than the others at 640px or 720px with the longest team name in the file.
+- [x] The headers stay short at every tier.
+- [x] The method note and the odds note take the measure.
+- [x] The label is a level-two heading that reads "Power Rankings", in the table and in the empty state.
+- [x] The rankings page test checks the "Power Rankings" heading with weeks and in the empty state, and the week line that follows the chips. Tests that read "Power rankings" change with the casing.
+- [x] A browser check at 768 and 1280 shows the spaced columns and the longest name on one row height. At 390 the table is unchanged.
+- [x] `pnpm test`, `pnpm typecheck`, and `pnpm build` pass.

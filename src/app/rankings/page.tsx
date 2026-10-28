@@ -33,7 +33,7 @@ export default function RankingsPage() {
           <Masthead subtitle="Power Rankings" pageHref={`${basePath}/rankings/`} />
           <main className="mx-auto max-w-page bg-wht">
             <Chapter>
-              <Label>Power rankings</Label>
+              <Label heading>Power Rankings</Label>
               <Blurb>No power rankings are published yet.</Blurb>
             </Chapter>
           </main>
