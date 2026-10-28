@@ -1,5 +1,5 @@
 /**
- * The power rankings table: the dark chapter with one row per team for the chosen week, in rank order, and a chip per week to choose it.
+ * The power rankings table: a light chapter with one row per team for the chosen week, in rank order, and a chip per week to choose it.
  * Each row shows the rank, the movement, the team, the record, the playoff odds, and the four component ranks.
  * Every component number is a rank, never a score.
  * The row button opens the blurb, and the chips choose the week. Both hold state, so this file is a client component.
@@ -44,10 +44,10 @@ const OPEN_WIDE_COLS =
    From the tablet tier the gap widens to 8px and the component columns widen to hold their headers.
    From the desktop tier the wide rank and the desktop column spread the numbers.
    The team name stays on one line there. The rankings tokens in the stylesheet give the width left for the team at each tier. */
-const GRID = `grid ${PHONE_COLS} page:grid-cols-[var(--spacing-standings-rank)_var(--spacing-rankings-col)_1fr_repeat(6,var(--spacing-rankings-col))_var(--spacing-chevron)] tablet:grid-cols-[var(--spacing-standings-rank)_var(--spacing-rankings-col)_1fr_repeat(2,var(--spacing-rankings-col))_repeat(4,var(--spacing-rankings-col-tablet))_var(--spacing-chevron)] desktop:grid-cols-[var(--spacing-standings-rank-wide)_var(--spacing-rankings-col-desktop)_1fr_repeat(6,var(--spacing-rankings-col-desktop))_var(--spacing-chevron)] items-center gap-x-sp-2 page:gap-x-sp-1 tablet:gap-x-sp-2 border-b border-rule-dark text-row leading-tight tabular-nums`;
+const GRID = `grid ${PHONE_COLS} page:grid-cols-[var(--spacing-standings-rank)_var(--spacing-rankings-col)_1fr_repeat(6,var(--spacing-rankings-col))_var(--spacing-chevron)] tablet:grid-cols-[var(--spacing-standings-rank)_var(--spacing-rankings-col)_1fr_repeat(2,var(--spacing-rankings-col))_repeat(4,var(--spacing-rankings-col-tablet))_var(--spacing-chevron)] desktop:grid-cols-[var(--spacing-standings-rank-wide)_var(--spacing-rankings-col-desktop)_1fr_repeat(6,var(--spacing-rankings-col-desktop))_var(--spacing-chevron)] items-center gap-x-sp-2 page:gap-x-sp-1 tablet:gap-x-sp-2 border-b border-rule text-row leading-tight tabular-nums`;
 
 /* The arrow carries the direction in its shape, and the screen reader text names it, so the color is never the only sign.
-   The count stays in the text color. The arrow sits on two surfaces: the black card #141414 of the table and the white home page #ffffff.
+   The count stays in the text color. The arrow sits on two surfaces: the white page in the light theme and the dark page #141414 in the dark theme.
    On the black card blue is about 5.06 to 1 and red about 5.04 to 1. On white blue is about 3.64 to 1 and red about 3.66 to 1.
    Both pairs pass the 3 to 1 rule for a graphic. No movement, and no last week in week 1, show a dash. */
 export function Movement({ movement }: { movement: number | null }) {
@@ -99,7 +99,7 @@ function ComponentCells({ cells }: { cells: { name: string; value: ReactNode }[]
     <span className="col-span-3 col-start-3 grid grid-cols-4 gap-x-sp-2 pt-sp-1 page:hidden">
       {cells.map(({ name, value }) => (
         <span key={name} className="text-right">
-          <span className="mr-sp-1 text-label tracking-caps text-on-dark-muted uppercase">{name}</span>
+          <span className="mr-sp-1 text-label tracking-caps text-mute uppercase">{name}</span>
           {value}
         </span>
       ))}
@@ -117,7 +117,7 @@ function Row({ row, avatars, index }: { row: RankingsRow; avatars: AvatarMap; in
   return (
     // Each row reveals once with the capped stagger, so a row low in the list never shows late.
     // The row and its open part share the bottom rule, so the rule moves to the reveal box.
-    <Reveal className="border-b border-rule-dark" delay={stagger(index + 1)}>
+    <Reveal className="border-b border-rule" delay={stagger(index + 1)}>
       {/* The grid is the positioned box of the control, so a tap anywhere on the row opens it. 44px is the smallest comfortable touch target. */}
       <div className={cn(GRID, "relative min-h-touch border-b-0 py-sp-1")}>
         <span>{row.rank}</span>
@@ -139,7 +139,7 @@ function Row({ row, avatars, index }: { row: RankingsRow; avatars: AvatarMap; in
           aria-label={`More on ${row.name}`}
           onClick={() => setOpen(!open)}
           className={cn(
-            "flex cursor-pointer justify-end border-0 bg-transparent p-0 text-on-dark-muted after:absolute after:inset-0",
+            "flex cursor-pointer justify-end border-0 bg-transparent p-0 text-mute after:absolute after:inset-0",
             "[-webkit-tap-highlight-color:transparent]",
             !hasBlurb && !row.odds && "page:hidden",
           )}
@@ -171,13 +171,13 @@ function Row({ row, avatars, index }: { row: RankingsRow; avatars: AvatarMap; in
           <ComponentCells cells={COMPONENTS.map(({ key, name }) => ({ name, value: row.components[key] }))} />
           {/* The bye line shows at every width, because the row line has no room for the bye odds and the seed. */}
           {row.odds && (
-            <Blurb dark className="col-[3/-1] text-meta">
+            <Blurb className="col-[3/-1] text-meta">
               {byeLine(row.odds)}
             </Blurb>
           )}
           {/* The sentences join in their order in the file, as plain text. The fact IDs are for the checks, not the reader. */}
           {hasBlurb && (
-            <Blurb dark className="col-[3/-1]">
+            <Blurb className="col-[3/-1]">
               {row.blurb.map((sentence) => sentence.text).join(" ")}
             </Blurb>
           )}
@@ -187,8 +187,9 @@ function Row({ row, avatars, index }: { row: RankingsRow; avatars: AvatarMap; in
   );
 }
 
-/* One chip per week in the file. The chosen chip takes the dark fill on the light chip, as the chosen team of the team picker does,
-   turned over for the dark chapter. aria-pressed names the chosen chip, so the fill is never the only sign. */
+/* One chip per week in the file. The chosen chip paints ink on the page color, so it is black on white in the light theme and white on black in the dark theme.
+   The off chip paints the grey, which re-points one step off the page in the dark theme.
+   aria-pressed names the chosen chip, so the fill is never the only sign. */
 function WeekChips({ weeks, chosen, choose }: { weeks: RankingsWeek[]; chosen: number; choose: (week: number) => void }) {
   return (
     <div role="group" aria-label="Week" className="mb-sp-3 flex flex-wrap gap-sp-1">
@@ -202,8 +203,7 @@ function WeekChips({ weeks, chosen, choose }: { weeks: RankingsWeek[]; chosen: n
           className={cn(
             "press min-h-touch min-w-touch cursor-pointer rounded-card border-0 px-sp-3 text-row font-extrabold tabular-nums",
             "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red",
-            // The chosen chip uses the page and its ink, so it inverts with the theme. Ink inverts with the page, so the chip text shows in both themes.
-            week === chosen ? "bg-wht text-ink" : "bg-rule-dark text-on-dark",
+            week === chosen ? "bg-ink text-wht" : "bg-gry text-ink",
           )}
         >
           {week}
@@ -220,20 +220,20 @@ export function PowerRankings({ weeks, avatars }: { weeks: RankingsWeek[]; avata
   const own = useWeekChoice(weeks);
   const { week, choose } = shared ?? own;
   return (
-    <Chapter dark>
+    <Chapter>
       {/* The label, the method note, and the header reveal first, then the rows stagger in after them, as the trades chapter does.
           The note sits above the table, so a reader knows what each column ranks before the first row. */}
       <Reveal delay={stagger(0)}>
-        <Label dark heading>Power Rankings</Label>
+        <Label heading>Power Rankings</Label>
         <WeekChips weeks={weeks} chosen={week.week} choose={choose} />
-        <Blurb dark className="mb-sp-3 text-meta">
+        <Blurb className="mb-sp-3 text-meta">
           Each column ranks the team from 1 to 12: standing, recent form, schedule played, and scoring. Form reads the last 3 weeks: the head-to-head record and streak, the median game at half the weight, and the all-play record, and it carries 60 percent of the score. Pts ranks scoring: points for and the all-play record.
         </Blurb>
         {/* The header names the component columns only from the page width up. On a phone the component ranks show in the open row, and each cell names itself. */}
         <div
           aria-hidden
           // cn drops the leading of the grid when a new text size follows, so the header sets it again.
-          className={cn(GRID, "pt-0 pb-sp-2 text-label leading-tight tracking-caps text-on-dark-muted uppercase")}
+          className={cn(GRID, "pt-0 pb-sp-2 text-label leading-tight tracking-caps text-mute uppercase")}
         >
           <span>#</span>
           <span>+/-</span>
@@ -258,7 +258,7 @@ export function PowerRankings({ weeks, avatars }: { weeks: RankingsWeek[]; avata
           </li>
         ))}
       </ol>
-      <Blurb dark className="mt-sp-1 text-meta">
+      <Blurb className="mt-sp-1 text-meta">
         Playoff odds from 5,000 simulated seasons.
       </Blurb>
     </Chapter>
