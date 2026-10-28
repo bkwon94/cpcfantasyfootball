@@ -51,6 +51,15 @@ describe("NextWeek", () => {
     expect(screen.getByText("1st vs 7th, near the playoff cut")).toBeTruthy();
   });
 
+  it("puts the Must Watch tag above the first team of its card", () => {
+    renderNext();
+    const game = week6.next.find((g) => g.must_watch);
+    expect(game).toBeDefined();
+    const tag = screen.getAllByText("Must Watch")[0];
+    const firstTeam = screen.getAllByText(game!.a.name)[0];
+    expect(tag.compareDocumentPosition(firstTeam) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  });
+
   it("shows the blurb", () => {
     renderNext();
     expect(screen.getByText(firstSentence(week6.blurbs.next_week), { exact: false })).toBeTruthy();
