@@ -86,7 +86,7 @@ function Item({ destination, pageHref, index, off }: ItemProps) {
       <a
         href={destination.href}
         aria-current={currentPage(destination, pageHref)}
-        className="press flex min-h-touch items-center border-b border-rule text-lead font-bold text-ink no-underline hover-fine:text-red aria-[current=page]:text-red"
+        className="press flex min-h-touch items-center border-b border-rule text-lead font-bold text-ink no-underline hover-fine:text-red-ink aria-[current=page]:text-red-ink"
       >
         {destination.label}
       </a>
@@ -166,7 +166,7 @@ function Row({ destinations, pageHref, label }: RowProps) {
                       <a
                         href={destination.href}
                         aria-current={currentPage(destination, pageHref)}
-                        className="press flex min-h-touch items-center text-lead font-bold text-ink no-underline hover-fine:text-red aria-[current=page]:text-red"
+                        className="press flex min-h-touch items-center text-lead font-bold text-ink no-underline hover-fine:text-red-ink aria-[current=page]:text-red-ink"
                       >
                         {destination.label}
                       </a>
@@ -315,7 +315,7 @@ export function Menu({ destinations, pageHref, title }: MenuIslandProps) {
                     <>
                       <h2
                         id={pastId}
-                        className="mt-sp-5 mb-0 text-label leading-tight font-bold tracking-wide text-red uppercase"
+                        className="mt-sp-5 mb-0 text-label leading-tight font-bold tracking-wide text-red-ink uppercase"
                       >
                         Past Weeks
                       </h2>

@@ -25,7 +25,7 @@ function TeamCell({ side, avatars, right }: { side: MatchupSide; avatars: Avatar
 
 function Points({ side }: { side: MatchupSide }) {
   return (
-    <span className={cn("text-score leading-stat font-black whitespace-nowrap tabular-nums", side.loser && "text-red")}>
+    <span className={cn("text-score leading-stat font-black whitespace-nowrap tabular-nums", side.loser && "text-red-ink")}>
       {num(side.score)}
     </span>
   );

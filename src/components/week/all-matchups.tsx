@@ -37,7 +37,7 @@ function Panel({ matchup }: { matchup: Matchup }) {
         <Blurb>
           This is the Matchup of the Week. Read the full story at the top.{" "}
           {/* An inline link cannot scale, so the link is an inline block for the press. */}
-          <a href="#motw" className="press inline-block text-red underline hover:decoration-2">
+          <a href="#motw" className="press inline-block text-red-ink underline hover:decoration-2">
             Go to the top story
           </a>
         </Blurb>
@@ -55,7 +55,7 @@ function Row({ matchup, avatars, index }: { matchup: Matchup; avatars: AvatarMap
   const panelId = useId();
   // The JSON puts the winner first. A tie has no winner, so neither side is bold.
   const [winner, loser] = matchup.sides;
-  const bold = cn(winner.winner && "font-extrabold text-red");
+  const bold = cn(winner.winner && "font-extrabold text-red-ink");
   // The panel stays in the DOM when closed, so find-in-page still finds the recap text.
   // Height 0 hides it from sight. aria-hidden and inert hide it from assistive tech and the tab order.
   const panel = (
@@ -109,7 +109,7 @@ function Row({ matchup, avatars, index }: { matchup: Matchup; avatars: AvatarMap
         className={cn(
           "press mb-sp-3 flex min-h-touch w-full cursor-pointer items-center justify-center gap-sp-2 rounded-card border-0 px-sp-3",
           "text-meta font-bold tracking-caps uppercase [-webkit-tap-highlight-color:transparent]",
-          open ? "bg-blk text-on-dark" : "bg-gry text-red hover:bg-rule",
+          open ? "bg-blk text-on-dark" : "bg-gry text-red-ink hover:bg-rule",
         )}
       >
         <span>{open ? "Hide Recap" : "Read Recap"}</span>

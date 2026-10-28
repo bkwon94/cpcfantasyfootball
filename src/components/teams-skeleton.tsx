@@ -43,7 +43,7 @@ export function TeamsSkeleton() {
       </p>
       {PICKERS.map((label) => (
         <div key={label} aria-hidden="true">
-          <p className="m-0 mb-sp-2 p-0 text-label font-bold tracking-wide text-red uppercase">{label}</p>
+          <p className="m-0 mb-sp-2 p-0 text-label font-bold tracking-wide text-red-ink uppercase">{label}</p>
           <div className="flex flex-col">
             {Array.from({ length: ROWS }, (_, index) => (
               <SkeletonRow key={index} />

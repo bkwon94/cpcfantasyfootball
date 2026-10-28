@@ -34,7 +34,7 @@ function Chapter({ children }: { children: ReactNode }) {
 
 /* The classes are fixed, so this needs no cn. */
 function Label({ children }: { children: ReactNode }) {
-  return <div className="mb-sp-3 text-label leading-tight font-bold tracking-wide text-red uppercase">{children}</div>;
+  return <div className="mb-sp-3 text-label leading-tight font-bold tracking-wide text-red-ink uppercase">{children}</div>;
 }
 
 /* The small caps style of the table and the swap card. A className adds a color or a layout class. */
@@ -102,7 +102,7 @@ export function SwapCard({ sides }: { sides: SwapSide[] }) {
 
 /* The mark of a factor lean. The symbol is decorative, so a screen reader hears the word. */
 const MARKS = {
-  for: { symbol: "▲", color: "text-red" },
+  for: { symbol: "▲", color: "text-red-ink" },
   against: { symbol: "▼", color: "text-ink" },
   even: { symbol: "–", color: "text-mute" },
 } as const;
@@ -118,7 +118,7 @@ function Mark({ lean }: { lean: Factor["lean"] }) {
 }
 
 const ANSWER_WORD = {
-  yes: { word: "Yes", color: "text-red" },
+  yes: { word: "Yes", color: "text-red-ink" },
   no: { word: "No", color: "text-blk" },
   not_as_is: { word: "Not as is", color: "text-mute" },
 } as const;
@@ -143,7 +143,7 @@ function DecisionBlock({ decision, team }: { decision: Decision; team?: string }
 
 /* The page words of the fairness states. The glossary says "Good for both" on the page, never "win-win". */
 const FAIRNESS_WORD = {
-  win_win: { word: "Good for both", color: "text-red" },
+  win_win: { word: "Good for both", color: "text-red-ink" },
   fair: { word: "Fair", color: "text-mute" },
   lopsided: { word: "Lopsided", color: "text-blk" },
 } as const;
