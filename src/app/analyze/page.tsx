@@ -5,6 +5,7 @@
 import type { Metadata } from "next";
 import { Analyzer } from "@/components/analyzer";
 import { Masthead } from "@/components/masthead";
+import { PageColumn } from "@/components/page-column";
 import { basePath } from "@/lib/config";
 
 export const metadata: Metadata = {
@@ -15,9 +16,9 @@ export default function AnalyzePage() {
   return (
     <>
       <Masthead subtitle="Trade Analyzer" pageHref={`${basePath}/analyze/`} />
-      <main className="mx-auto max-w-page bg-wht">
+      <PageColumn>
         <Analyzer />
-      </main>
+      </PageColumn>
     </>
   );
 }

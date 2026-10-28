@@ -4,6 +4,7 @@
  */
 import type { Metadata } from "next";
 import { Masthead, WeekLine } from "@/components/masthead";
+import { PageColumn } from "@/components/page-column";
 import { AllMatchups } from "@/components/week/all-matchups";
 import { ChapterRail, type RailChapter } from "@/components/week/chapter-rail";
 import { Awards } from "@/components/week/awards";
@@ -69,34 +70,24 @@ export default async function WeekPage({ params }: Props) {
           {`${page.dates} · Published ${page.publish_date}`}
         </div>
       </Masthead>
-      {/* From the tablet tier a three-track grid keeps the page column in the middle track, so it lines up with the masthead
-          and the compact bar. The rail sits in the left margin track. On a phone the column fills the width, so no grid. */}
-      <div className="tablet:grid tablet:grid-cols-[minmax(0,1fr)_var(--container-page)_minmax(0,1fr)]">
-        <ChapterRail chapters={chapters} />
-        {/* From the tablet tier up the main turns clear and spaces the chapters, so each chapter reads as a card on the grey body.
-            The data-report attribute scopes the card look of a chapter to the weekly report. */}
-        <main
-          data-report
-          className="mx-auto max-w-page bg-wht tablet:col-start-2 tablet:flex tablet:flex-col tablet:gap-card-gap tablet:bg-transparent"
-        >
-          {/* The masthead and the top story show at once. The hero plays its own motion on load.
-              Each chapter below reveals once as it enters the view, as a unit or card by card. */}
-          <MatchupOfTheWeek pick={page.pick} avatars={page.avatars} blurb={page.blurbs.motw} />
-          {page.game_changer && (
-            <GameChanger gameChanger={page.game_changer} headshots={page.headshots} blurb={page.blurbs.game_changer} />
-          )}
-          <Awards awards={page.awards} headshots={page.headshots} blurb={page.blurbs.awards} />
-          {page.leaders.length > 0 && (
-            <PositionLeaders leaders={page.leaders} headshots={page.headshots} blurb={page.blurbs.position_leaders} />
-          )}
-          <Trades trades={page.trades} avatars={page.avatars} />
-          <AllMatchups matchups={page.matchups} avatars={page.avatars} />
-          <MedianGame median={page.median} blurb={page.blurbs.median} />
-          <Standings table={page.table} avatars={page.avatars} />
-          <NextWeek week={page.week} games={page.next} avatars={page.avatars} blurb={page.blurbs.next_week} />
-          <WeekFooter prior={prior} next={next} />
-        </main>
-      </div>
+      <PageColumn rail={<ChapterRail chapters={chapters} />}>
+        {/* The masthead and the top story show at once. The hero plays its own motion on load.
+            Each chapter below reveals once as it enters the view, as a unit or card by card. */}
+        <MatchupOfTheWeek pick={page.pick} avatars={page.avatars} blurb={page.blurbs.motw} />
+        {page.game_changer && (
+          <GameChanger gameChanger={page.game_changer} headshots={page.headshots} blurb={page.blurbs.game_changer} />
+        )}
+        <Awards awards={page.awards} headshots={page.headshots} blurb={page.blurbs.awards} />
+        {page.leaders.length > 0 && (
+          <PositionLeaders leaders={page.leaders} headshots={page.headshots} blurb={page.blurbs.position_leaders} />
+        )}
+        <Trades trades={page.trades} avatars={page.avatars} />
+        <AllMatchups matchups={page.matchups} avatars={page.avatars} />
+        <MedianGame median={page.median} blurb={page.blurbs.median} />
+        <Standings table={page.table} avatars={page.avatars} />
+        <NextWeek week={page.week} games={page.next} avatars={page.avatars} blurb={page.blurbs.next_week} />
+        <WeekFooter prior={prior} next={next} />
+      </PageColumn>
     </>
   );
 }

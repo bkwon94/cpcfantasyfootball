@@ -5,6 +5,7 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { Masthead, WeekLine } from "@/components/masthead";
+import { PageColumn } from "@/components/page-column";
 import { Movement } from "@/components/rankings/power-rankings";
 import { Reveal } from "@/components/reveal";
 import { TeamsPrefetch } from "@/components/teams-prefetch";
@@ -49,7 +50,7 @@ export default function HomePage() {
       <Masthead pageHref={`${basePath}/`}>
         <WeekLine label="SEASON" number={season} />
       </Masthead>
-      <main className="mx-auto max-w-page bg-wht">
+      <PageColumn>
         {/* The masthead and the label show at once. Each row reveals as it enters the view. */}
         <Chapter>
           <Label>Tools</Label>
@@ -100,7 +101,7 @@ export default function HomePage() {
             </Reveal>
           ))}
         </Chapter>
-      </main>
+      </PageColumn>
     </>
   );
 }
