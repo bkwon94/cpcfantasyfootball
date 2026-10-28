@@ -79,3 +79,7 @@ _Avoid_: Dropdown, chooser, selector, list
 **Swap card**:
 The chapter of the result that shows what every side gives and gets.
 _Avoid_: Trade summary, exchange, ledger
+
+**Good for both**:
+The page word for the win-win state of the fairness when the trade has two sides. With three or more sides the page word is "Good for all". Use "win_win" in code. The finder shows two-side trades, so it always says "Good for both".
+_Avoid_: win-win on the page

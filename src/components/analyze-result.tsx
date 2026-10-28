@@ -190,11 +190,16 @@ function DecisionBlock({ decision, team }: { decision: Decision; team?: string }
   );
 }
 
-/* The page words of the fairness states. The glossary says "Good for both" on the page, never "win-win". */
+/* The page words of the fairness states. The glossary says "Good for both" on the page, never "win-win".
+   Each state has a short meaning, because one word alone does not tell the reader what it means. */
 const FAIRNESS_WORD = {
-  win_win: { word: "Good for both", color: "text-red-ink" },
-  fair: { word: "Fair", color: "text-mute" },
-  lopsided: { word: "Lopsided", color: "text-ink" },
+  win_win: { word: "Good for both", color: "text-red-ink", meaning: "Every side gets more than it gives." },
+  fair: {
+    word: "Fair",
+    color: "text-mute",
+    meaning: "No side gives much more than it gets, so every side can take it without a loss.",
+  },
+  lopsided: { word: "Lopsided", color: "text-ink", meaning: "It gives more than it gets." },
 } as const;
 
 /* The fairness line rises in like the decision word, so both read as one call. With motion off, it shows at rest at once. */
@@ -202,19 +207,22 @@ export function FairnessBlock({ sides, fairness }: { sides: SwapSide[]; fairness
   const off = useMotionOff();
   const state = FAIRNESS_WORD[fairness.state];
   // A lopsided line names the side that gives more, so the reader knows who loses. The type says a lopsided block always has gives_more, and the pipeline sets it to a side of the trade.
+  // "Both" fits two sides only, so a win-win trade of three or more sides says "Good for all".
+  const word = fairness.state === "win_win" && sides.length > 2 ? "Good for all" : state.word;
   const line =
     fairness.state === "lopsided"
-      ? `${state.word}: ${sides.find((s) => s.roster_id === fairness.gives_more)!.team} gives more.`
-      : state.word;
+      ? `${word}: ${sides.find((s) => s.roster_id === fairness.gives_more)!.team} gives more.`
+      : word;
   return (
     <div>
       <Label>Fairness</Label>
       <motion.p
-        className={cn("mt-0 mb-sp-3 text-row leading-tight font-extrabold tracking-snug", state.color)}
+        className={cn("mt-0 mb-sp-1 text-row leading-tight font-extrabold tracking-snug", state.color)}
         {...rise(off, { duration: DURATION.fairness })}
       >
         {line}
       </motion.p>
+      <p className="mt-0 mb-sp-3 text-meta leading-tight text-mute">{state.meaning}</p>
       <ul className="m-0 flex list-none flex-col gap-sp-2 p-0">
         {/* joinSides puts the asker's side first, so the reasons take that order. A finder card sorts its sides the same way. */}
         {sides.map((side) => (
