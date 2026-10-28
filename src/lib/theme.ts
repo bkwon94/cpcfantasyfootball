@@ -29,3 +29,10 @@ export function storeTheme(theme: Theme): void {
     // The theme still switches for this visit. The next load opens in the default theme.
   }
 }
+
+/*
+ * The boot script is a string because it runs inline in the head, before React loads.
+ * A test runs the same string, so the script that ships is the script that is tested.
+ * It is plain ES5 and built from the two constants above, so the key and the class never drift.
+ */
+export const BOOT_SCRIPT = `try{if(localStorage.getItem(${JSON.stringify(THEME_KEY)})==="dark"){document.documentElement.classList.add(${JSON.stringify(DARK_CLASS)})}}catch(e){}`;
