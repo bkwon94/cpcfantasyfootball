@@ -56,6 +56,9 @@
     /* The raised surface on the black card: a tab that is off and a box of the waiver sheet. It is one step up from the card, so it reads as a layer. */
     --color-chip-dark: #262626;
 
+    /* The paint of the black card. It has its own token because the dark theme lifts the card while the masthead stays black. See ADR 0002. */
+    --color-card-blk: var(--color-blk);
+
     /* The red glow behind a hero cutout on a black card. */
     --color-red-glow: color-mix(in srgb, var(--color-red) 45%, transparent);
 
