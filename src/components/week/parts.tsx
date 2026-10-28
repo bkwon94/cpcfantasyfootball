@@ -38,7 +38,7 @@ export function Chapter({
       id={id}
       className={cn(
         "border-b-(length:--chap-rule) border-gry px-gutter py-sp-5 tablet:in-data-report:border-b-0",
-        dark ? "bg-blk text-on-dark" : "tablet:in-data-report:bg-wht",
+        dark ? "bg-card-blk text-on-dark" : "tablet:in-data-report:bg-wht",
       )}
     >
       {children}
@@ -67,7 +67,7 @@ export function Label({
       className={cn(
         "text-label leading-tight font-bold tracking-wide uppercase",
         "mb-sp-3",
-        dark ? "text-red-lt" : "text-red",
+        dark ? "text-red-lt" : "text-red-ink",
         className,
       )}
     >

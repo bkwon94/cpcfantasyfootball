@@ -31,6 +31,10 @@
     /* Tints of the brand colors. One token per job keeps the greys from drifting apart.
        The stylesheet calls the grey text "muted". Here it is "mute", because shadcn owns "muted". */
     --color-red-lt: #f2a59e;
+    /* Red text on the page. Red text and red fills take different tokens because they sit on different grounds.
+       Brand red on white is 5.9 to 1, so the light theme keeps it. Brand red on black is only 3.1 to 1,
+       so the dark theme re-points this token to light red. White text sits on red fills, so fills keep brand red. */
+    --color-red-ink: var(--color-red);
     --color-ink: #1a1a1a;
     --color-ink-2: #333;
     --color-mute: #666;
@@ -51,6 +55,9 @@
 
     /* The raised surface on the black card: a tab that is off and a box of the waiver sheet. It is one step up from the card, so it reads as a layer. */
     --color-chip-dark: #262626;
+
+    /* The paint of the black card. It has its own token because the dark theme lifts the card while the masthead stays black. See ADR 0002. */
+    --color-card-blk: var(--color-blk);
 
     /* The red glow behind a hero cutout on a black card. */
     --color-red-glow: color-mix(in srgb, var(--color-red) 45%, transparent);

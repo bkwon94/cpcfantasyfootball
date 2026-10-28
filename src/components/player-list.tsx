@@ -20,14 +20,14 @@ type PlayerListProps = {
 export function PlayerList({ team, picked, onToggle, locked = false }: PlayerListProps) {
   return (
     <fieldset className="m-0 min-w-0 border-0 p-0">
-      <legend className="mb-sp-2 p-0 text-label font-bold tracking-wide text-red uppercase">{team.team} gives</legend>
+      <legend className="mb-sp-2 p-0 text-label font-bold tracking-wide text-red-ink uppercase">{team.team} gives</legend>
       <div className="flex flex-col gap-sp-1">
         {team.players.map((player) => (
           <label
             key={player.player_id}
             aria-disabled={locked || undefined}
             className={cn(
-              "group flex min-h-touch items-center gap-sp-3 rounded-card bg-gry px-sp-3 py-sp-1 has-checked:bg-blk has-checked:text-on-dark has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-red",
+              "group flex min-h-touch items-center gap-sp-3 rounded-card bg-gry px-sp-3 py-sp-1 has-checked:bg-card-blk has-checked:text-on-dark has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-red",
               locked ? "cursor-not-allowed opacity-40" : "press cursor-pointer",
             )}
           >

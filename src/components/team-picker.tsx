@@ -74,7 +74,7 @@ export function TeamPicker({ label, teams, value, disabledId, onChange, locked =
         <div className="pb-sp-1">
           <div
             className={cn(
-              "group flex min-h-touch items-center rounded-card bg-gry has-checked:bg-blk has-checked:text-on-dark has-[input:focus-visible]:outline-2 has-[input:focus-visible]:outline-offset-2 has-[input:focus-visible]:outline-red",
+              "group flex min-h-touch items-center rounded-card bg-gry has-checked:bg-card-blk has-checked:text-on-dark has-[input:focus-visible]:outline-2 has-[input:focus-visible]:outline-offset-2 has-[input:focus-visible]:outline-red",
               disabled && "opacity-40",
             )}
           >
@@ -125,7 +125,7 @@ export function TeamPicker({ label, teams, value, disabledId, onChange, locked =
 
   return (
     <fieldset ref={fieldset} className="m-0 min-w-0 border-0 p-0">
-      <legend className="mb-sp-2 p-0 text-label font-bold tracking-wide text-red uppercase">{label}</legend>
+      <legend className="mb-sp-2 p-0 text-label font-bold tracking-wide text-red-ink uppercase">{label}</legend>
       <div className="flex flex-col">
         {/* With motion off, the rows switch at once, with no exit to wait for. initial={false}: the full list shows at once on load. */}
         {off ? rows : <AnimatePresence initial={false}>{rows}</AnimatePresence>}
