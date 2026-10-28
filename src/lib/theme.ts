@@ -1,0 +1,31 @@
+/**
+ * The theme choice of the reader in local storage, so the choice holds across visits.
+ * Every access is guarded, because a private window or blocked site data makes storage throw.
+ */
+
+/* The storage key of the choice. The boot script in the root layout reads the same key before the first paint. */
+export const THEME_KEY = "cpc.theme";
+
+/* The class on the root element that turns on the dark theme. The boot script adds the same class. */
+export const DARK_CLASS = "dark";
+
+export type Theme = "light" | "dark";
+
+/* The stored choice, or null when the reader has not chosen or storage is blocked. */
+export function getStoredTheme(): Theme | null {
+  try {
+    const value = localStorage.getItem(THEME_KEY);
+    // A value from an older or a hand-edited key is not a choice, so the default theme holds.
+    return value === "light" || value === "dark" ? value : null;
+  } catch {
+    return null;
+  }
+}
+
+export function storeTheme(theme: Theme): void {
+  try {
+    localStorage.setItem(THEME_KEY, theme);
+  } catch {
+    // The theme still switches for this visit. The next load opens in the default theme.
+  }
+}
