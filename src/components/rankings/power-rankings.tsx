@@ -31,18 +31,20 @@ const COMPONENTS: { key: keyof Components; name: string }[] = [
 const PHONE_COLS =
   "grid-cols-[var(--spacing-standings-rank)_var(--spacing-rankings-col)_1fr_var(--spacing-rankings-col)_var(--spacing-rankings-col)_var(--spacing-chevron)]";
 
-/* The open row on a tablet and a desktop: the phone tracks with the wide tokens and the gap of the row at each tier. */
+/* The open row on a desktop: the phone tracks with the wide rank and the desktop column, so the blurb starts under the team.
+   On a tablet the row keeps the phone tracks and the 8px gap, so the open row needs no change there. */
 const OPEN_WIDE_COLS =
-  "tablet:grid-cols-[var(--spacing-standings-rank-wide)_var(--spacing-rankings-col-tablet)_1fr_var(--spacing-rankings-col-tablet)_var(--spacing-rankings-col-tablet)_var(--spacing-chevron)] desktop:grid-cols-[var(--spacing-standings-rank-wide)_var(--spacing-rankings-col-desktop)_1fr_var(--spacing-rankings-col-desktop)_var(--spacing-rankings-col-desktop)_var(--spacing-chevron)] tablet:gap-x-sp-3 desktop:gap-x-sp-4";
+  "desktop:grid-cols-[var(--spacing-standings-rank-wide)_var(--spacing-rankings-col-desktop)_1fr_var(--spacing-rankings-col-desktop)_var(--spacing-rankings-col-desktop)_var(--spacing-chevron)]";
 
 /* The same grid style as the standings. On a phone the four component columns do not fit beside the team,
    so the row keeps its phone columns and the component ranks move into the open row. From the page width up, they join the row.
    Ten columns need a tighter gap than the four-column standings, so the longest team name fits on two lines at 800.
    The page grid uses the same plain 1fr team track as the phone grid. At 480 the ten columns leave the team 102px,
    and the avatar, its gap, and the longest word "Unsolicited" need 101px, so no row grows past the others.
-   From the tablet tier the wide column tokens and a wider gap spread the numbers across the row, as the standings do.
-   The rankings tokens in the stylesheet give the width left for the team at each tier. */
-const GRID = `grid ${PHONE_COLS} page:grid-cols-[var(--spacing-standings-rank)_var(--spacing-rankings-col)_1fr_repeat(6,var(--spacing-rankings-col))_var(--spacing-chevron)] tablet:grid-cols-[var(--spacing-standings-rank-wide)_var(--spacing-rankings-col-tablet)_1fr_repeat(6,var(--spacing-rankings-col-tablet))_var(--spacing-chevron)] desktop:grid-cols-[var(--spacing-standings-rank-wide)_var(--spacing-rankings-col-desktop)_1fr_repeat(6,var(--spacing-rankings-col-desktop))_var(--spacing-chevron)] items-center gap-x-sp-2 page:gap-x-sp-1 tablet:gap-x-sp-3 desktop:gap-x-sp-4 border-b border-rule-dark text-row leading-tight tabular-nums`;
+   From the tablet tier the gap widens to 8px and the component columns widen to hold their headers.
+   From the desktop tier the wide rank and the desktop column spread the numbers.
+   The team name stays on one line there. The rankings tokens in the stylesheet give the width left for the team at each tier. */
+const GRID = `grid ${PHONE_COLS} page:grid-cols-[var(--spacing-standings-rank)_var(--spacing-rankings-col)_1fr_repeat(6,var(--spacing-rankings-col))_var(--spacing-chevron)] tablet:grid-cols-[var(--spacing-standings-rank)_var(--spacing-rankings-col)_1fr_repeat(2,var(--spacing-rankings-col))_repeat(4,var(--spacing-rankings-col-tablet))_var(--spacing-chevron)] desktop:grid-cols-[var(--spacing-standings-rank-wide)_var(--spacing-rankings-col-desktop)_1fr_repeat(6,var(--spacing-rankings-col-desktop))_var(--spacing-chevron)] items-center gap-x-sp-2 page:gap-x-sp-1 tablet:gap-x-sp-2 border-b border-rule-dark text-row leading-tight tabular-nums`;
 
 /* The arrow carries the direction in its shape, and the screen reader text names it, so the color is never the only sign.
    The count stays in the text color. The arrow sits on two surfaces: the black card #141414 of the table and the white home page #ffffff.
@@ -164,7 +166,7 @@ function Row({ row, avatars, index }: { row: RankingsRow; avatars: AvatarMap; in
         transition={off ? INSTANT : { duration: DURATION.collapse, ease: EASE_OUT }}
         className="overflow-hidden"
       >
-        {/* From the tablet tier the open row takes the wide rank and movement tracks and the gap of the row, so the blurb still starts under the team. */}
+        {/* From the desktop tier the open row takes the wide rank and movement tracks of the row, so the blurb still starts under the team. */}
         <div className={cn("grid gap-x-sp-2 gap-y-sp-2 pb-sp-2", PHONE_COLS, OPEN_WIDE_COLS)}>
           <ComponentCells cells={COMPONENTS.map(({ key, name }) => ({ name, value: row.components[key] }))} />
           {/* The bye line shows at every width, because the row line has no room for the bye odds and the seed. */}

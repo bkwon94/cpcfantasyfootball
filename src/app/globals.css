@@ -119,14 +119,15 @@
     --spacing-standings-points-wide: 96px;
     /* The power rankings columns for movement, the record, the playoff odds, and each component rank. 40px fits a five-letter column name in caps. */
     --spacing-rankings-col: 40px;
-    /* The power rankings columns from the tablet tier up. The rank takes the wide standings rank, and the chevron keeps its 6px.
-       The team track holds the avatar 28px, its gap 8px, and the name. The longest word "Unsolicited" is 70px at the 14px tablet row
-       and 75px at the 15px desktop row, so the track needs 106px and 111px for it. A longer name must also fit on two lines:
-       "Amon-Ra Dawg" is 99px at 14px and 106px at 15px, so the track needs 136px and 143px. The chapter content is the page
-       column minus two 16px gutters, and the row has nine gaps.
-       Tablet: 640 - 32 = 608px. 40 + 6 + 7 × 44 + 9 × 12 = 462px, so the team gets 146px.
-       Desktop: 720 - 32 = 688px. 40 + 6 + 7 × 48 + 9 × 16 = 526px, so the team gets 162px.
-       The tablet values sit between the phone and the desktop values, so the step feels even. */
+    /* The power rankings columns from the tablet tier up. A team name stays on one line there, so the team track must hold
+       the avatar 28px, its gap 8px, and the longest full name. "Amon-Ra Dawg Your Team" is 168.5px at the 14px tablet row
+       and 180.6px at the 15px desktop row, so the track needs 205px and 217px. The numbers spread only with the width left.
+       The chapter content is the page column minus two 16px gutters, and the row has nine gaps of 8px.
+       A component column must also hold its header on one line: "SCHED" in caps is 43px at the 11px tablet label
+       and 46.9px at the 12px desktop label. On a tablet only the four component columns take 44px; the movement,
+       the record, and the playoff odds keep 40px.
+       Tablet: 640 - 32 = 608px. The phone rank 24 + 6 + 3 × 40 + 4 × 44 + 9 × 8 = 398px, so the team gets 210px.
+       Desktop: 720 - 32 = 688px. The wide rank 40 + 6 + 7 × 48 + 9 × 8 = 454px, so the team gets 234px. */
     --spacing-rankings-col-tablet: 44px;
     --spacing-rankings-col-desktop: 48px;
 
