@@ -16,6 +16,7 @@ import type { AnalyzeResponse, FinderTrade } from "@/lib/analyze-types";
 import { ApiError, postAnalyze, toErrorLine, type Team } from "@/lib/api";
 import { finderOn, season } from "@/lib/config";
 import { DURATION, SWEEP_EASE, useMotionOff } from "@/lib/motion";
+import { countEvent } from "@/lib/usage";
 
 // A cold grade takes about 30 seconds and the server caches the result, so a long wait beats a retry.
 const TIMEOUT_MS = 60_000;
@@ -196,6 +197,7 @@ export function TradeForm({ teams, passphrase, onUnauthorized, onRostersStale, c
       controller.abort();
     }, TIMEOUT_MS);
     setGrade({ status: "grading" });
+    countEvent("analyze-grade");
     try {
       const doc = await postAnalyze(
         passphrase,

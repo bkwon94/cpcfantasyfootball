@@ -21,3 +21,7 @@ export const finderOn = process.env.NEXT_PUBLIC_FINDER === "on";
 // The waiver page stays hidden until the pipeline writes a full week file.
 // A build with NEXT_PUBLIC_WAIVER=on builds the route and the masthead link.
 export const waiverOn = process.env.NEXT_PUBLIC_WAIVER === "on";
+
+// The GoatCounter site code. The count script loads only when it is set.
+// A build with NEXT_PUBLIC_USAGE_CODE="" sends nothing.
+export const usageCode = process.env.NEXT_PUBLIC_USAGE_CODE ?? "cpcfantasy";
