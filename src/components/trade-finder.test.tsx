@@ -30,11 +30,11 @@ function answer(status: number, body: unknown = {}, headers: Record<string, stri
   fetchStub.mockResolvedValueOnce(new Response(JSON.stringify(body), { status, headers }));
 }
 
-const picker = () => screen.getByRole("group", { name: "Trade partner" });
-const findButton = () => screen.getByRole("button", { name: "Find a trade" }) as HTMLButtonElement;
+const picker = () => screen.getByRole("group", { name: "Trade Partner" });
+const findButton = () => screen.getByRole("button", { name: "Find a Trade" }) as HTMLButtonElement;
 const cards = () => screen.queryAllByRole("article");
 
-/* Picks the fixture partner and taps "Find a trade". */
+/* Picks the fixture partner and taps "Find a Trade". */
 function find() {
   fireEvent.click(within(picker()).getByRole("radio", { name: /Lil Fridge/ }));
   fireEvent.click(findButton());
@@ -95,7 +95,7 @@ describe("TradeFinder", () => {
     find();
     await waitFor(() => expect(cards()).toHaveLength(3));
     cards().forEach((card, i) => {
-      fireEvent.click(within(card).getByRole("button", { name: "See the full result" }));
+      fireEvent.click(within(card).getByRole("button", { name: "See the Full Result" }));
       expect(onOpen).toHaveBeenLastCalledWith(fixture.trades[i], fixture.season);
     });
   });
@@ -142,7 +142,7 @@ describe("TradeFinder", () => {
     answer(503);
     find();
     expect(await screen.findByText("The analyzer is down for the moment. Try again in a few minutes.")).toBeTruthy();
-    expect(screen.getByRole("button", { name: "Try again" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Try Again" })).toBeTruthy();
     expect(onRostersStale).not.toHaveBeenCalled();
   });
 

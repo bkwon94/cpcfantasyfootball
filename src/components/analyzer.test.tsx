@@ -1,5 +1,5 @@
 /**
- * Tests for the analyzer: the passphrase dialog, the teams fetch, and the two team pickers.
+ * Tests for the analyzer: the passphrase dialog, the teams fetch, and the two sides of the form.
  * fetch is a test stub. Each test reads the screen, the stored passphrase, and the stored teams.
  */
 import { act, cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
@@ -47,14 +47,49 @@ const ROSTERS = [
   { roster_id: 2, team: "Blitz Bakers", manager: "Ben", avatar: null, players: [player("p3", "Ben One")] },
 ];
 
-const submit = () => screen.getByRole("button", { name: "Grade the trade" }) as HTMLButtonElement;
+const submit = () => screen.getByRole("button", { name: "Grade the Trade" }) as HTMLButtonElement;
+
+/* The team picker of a side is named by the side's heading. */
+const teamTrigger = (side: "Your Team" | "Team Two") => screen.getByRole("combobox", { name: side });
+
+/* Opens a picker and returns its list. The popup renders in a portal, so the test finds it on the screen. */
+async function openPicker(trigger: HTMLElement) {
+  fireEvent.click(trigger);
+  return screen.findByRole("listbox");
+}
+
+async function closePicker(list: HTMLElement) {
+  fireEvent.keyDown(list, { key: "Escape" });
+  await waitFor(() => expect(screen.queryByRole("listbox")).toBeNull());
+}
+
+/* The names in a side's team picker. The test opens the picker, reads the names, and closes it. */
+async function teamNames(side: "Your Team" | "Team Two") {
+  const list = await openPicker(teamTrigger(side));
+  const names = within(list).getAllByRole("option").map((o) => o.textContent);
+  await closePicker(list);
+  return names;
+}
+
+/* Base UI commits a mouse pick only for a press that starts on the item, so the test sends the pointer down first. */
+async function choose(trigger: HTMLElement, name: string) {
+  const list = await openPicker(trigger);
+  const option = within(list).getByRole("option", { name: new RegExp(name) });
+  fireEvent.pointerDown(option, { pointerType: "mouse" });
+  fireEvent.click(option);
+  if (screen.queryByRole("listbox")) await closePicker(list);
+}
 
 /* Picks both teams, then Ana One or Ana Two on my side and Ben One on the other side. */
-function pickTrade() {
-  fireEvent.click(within(screen.getByRole("group", { name: "My team" })).getByRole("radio", { name: /Gridiron Ghosts/ }));
-  fireEvent.click(within(screen.getByRole("group", { name: "The other team" })).getByRole("radio", { name: /Blitz Bakers/ }));
-  fireEvent.click(screen.queryByLabelText(/Ana One/) ?? screen.getByLabelText(/Ana Two/));
-  fireEvent.click(screen.getByLabelText(/Ben One/));
+async function pickTrade() {
+  await choose(teamTrigger("Your Team"), "Gridiron Ghosts");
+  await choose(teamTrigger("Team Two"), "Blitz Bakers");
+  const mine = screen.getByRole("combobox", { name: "Gridiron Ghosts Gives" });
+  const list = await openPicker(mine);
+  const hasAnaOne = within(list).queryByRole("option", { name: /Ana One/ }) !== null;
+  await closePicker(list);
+  await choose(mine, hasAnaOne ? "Ana One" : "Ana Two");
+  await choose(screen.getByRole("combobox", { name: "Blitz Bakers Gives" }), "Ben One");
 }
 
 beforeEach(() => {
@@ -78,7 +113,7 @@ describe("Analyzer", () => {
   it("shows the dialog and no pickers on first load", async () => {
     render(<Analyzer />);
     expect(await screen.findByRole("dialog")).toBeTruthy();
-    expect(screen.queryByText("My team")).toBeNull();
+    expect(screen.queryByText("Your Team")).toBeNull();
     expect(fetchStub).not.toHaveBeenCalled();
   });
 
@@ -92,9 +127,9 @@ describe("Analyzer", () => {
     expect(url).toContain("/teams?season=2026");
     expect(init.headers["X-League-Passphrase"]).toBe("localtest");
     expect(localStorage.getItem("cpc.passphrase")).toBe("localtest");
-    expect(screen.getByRole("group", { name: "My team" })).toBeTruthy();
-    expect(screen.getByRole("group", { name: "The other team" })).toBeTruthy();
-    expect(screen.getAllByText("Gridiron Ghosts")).toHaveLength(2);
+    expect(teamTrigger("Your Team").textContent).toContain("Pick a Team");
+    expect(teamTrigger("Team Two").textContent).toContain("Pick a Team");
+    expect(await teamNames("Your Team")).toEqual(["Gridiron GhostsAna", "Blitz BakersBen", "Punt PunksCy"]);
     expect(screen.queryByRole("dialog")).toBeNull();
   });
 
@@ -159,14 +194,13 @@ describe("Analyzer", () => {
 
     // The fetch has not answered, so the pickers come from the store.
     expect(await screen.findByText("Pick the Teams")).toBeTruthy();
-    expect(screen.getAllByText("Stored Sliders")).toHaveLength(2);
+    expect(await teamNames("Your Team")).toEqual(["Stored SlidersDee"]);
     expect(screen.queryByRole("status", { name: "Loading teams" })).toBeNull();
     expect(fetchStub).toHaveBeenCalledTimes(1);
 
     release();
-    expect(await screen.findAllByText("Gridiron Ghosts")).toHaveLength(2);
-    // The old rows leave with the exit animation of the picker, so the test waits for them to go.
-    await waitFor(() => expect(screen.queryByText("Stored Sliders")).toBeNull());
+    await waitFor(() => expect(JSON.parse(sessionStorage.getItem(STORE_KEY)!).teams).toHaveLength(3));
+    expect(await teamNames("Your Team")).toEqual(["Gridiron GhostsAna", "Blitz BakersBen", "Punt PunksCy"]);
     expect(JSON.parse(sessionStorage.getItem(STORE_KEY)!).teams[0].team).toBe("Gridiron Ghosts");
   });
 
@@ -194,9 +228,9 @@ describe("Analyzer", () => {
     await waitFor(() => expect(fetchStub).toHaveBeenCalledTimes(1));
     // The failed answer settles in a later task, so the test lets it land before it reads the screen.
     await act(() => new Promise((resolve) => setTimeout(resolve, 0)));
-    expect(screen.getAllByText("Stored Sliders")).toHaveLength(2);
+    expect(await teamNames("Team Two")).toEqual(["Stored SlidersDee"]);
     expect(screen.queryByText("The API did not answer. Try again.")).toBeNull();
-    expect(screen.queryByRole("button", { name: "Try again" })).toBeNull();
+    expect(screen.queryByRole("button", { name: "Try Again" })).toBeNull();
   });
 
   it("asks for the passphrase again on a 401 during the background fetch", async () => {
@@ -223,14 +257,15 @@ describe("Analyzer", () => {
     render(<Analyzer />);
     await screen.findByText("Pick the Teams");
 
-    pickTrade();
+    await pickTrade();
+    expect(screen.getByRole("button", { name: "Remove Ana One" })).toBeTruthy();
     expect(submit().disabled).toBe(false);
 
     // The fresh roster lost Ana One in a trade.
     release();
-    await waitFor(() => expect(screen.queryByLabelText(/Ana One/)).toBeNull());
-    expect((screen.getByLabelText(/Ana Two/) as HTMLInputElement).checked).toBe(false);
-    expect((screen.getByLabelText(/Ben One/) as HTMLInputElement).checked).toBe(true);
+    await waitFor(() => expect(screen.queryByRole("button", { name: "Remove Ana One" })).toBeNull());
+    expect(screen.queryByRole("button", { name: "Remove Ana Two" })).toBeNull();
+    expect(screen.getByRole("button", { name: "Remove Ben One" })).toBeTruthy();
     // My side gives nobody now, so the form cannot submit.
     expect(submit().disabled).toBe(true);
   });
@@ -242,7 +277,7 @@ describe("Analyzer", () => {
     await screen.findByText("Pick the Teams");
     expect(sessionStorage.getItem(STORE_KEY)).not.toBeNull();
 
-    pickTrade();
+    await pickTrade();
     answer(422, { detail: { message: "Ana Two is not on that roster.", player_id: "p2" } });
     const release = answerLater({ teams: ROSTERS });
     fireEvent.click(submit());
@@ -265,24 +300,26 @@ describe("Analyzer", () => {
     expect(await screen.findByText("The API did not answer. Try again.")).toBeTruthy();
 
     answer(200, TEAMS);
-    fireEvent.click(screen.getByRole("button", { name: "Try again" }));
+    fireEvent.click(screen.getByRole("button", { name: "Try Again" }));
     expect(await screen.findByText("Pick the Teams")).toBeTruthy();
   });
 
-  it("puts both pickers before both lists and the grade button after the lists", async () => {
+  it("puts the sides in order, each with its pickers, and the grade button after the sides", async () => {
     localStorage.setItem("cpc.passphrase", "localtest");
     answer(200, { teams: ROSTERS });
     render(<Analyzer />);
     await screen.findByText("Pick the Teams");
-    fireEvent.click(within(screen.getByRole("group", { name: "My team" })).getByRole("radio", { name: /Gridiron Ghosts/ }));
-    fireEvent.click(within(screen.getByRole("group", { name: "The other team" })).getByRole("radio", { name: /Blitz Bakers/ }));
+    await choose(teamTrigger("Your Team"), "Gridiron Ghosts");
+    await choose(teamTrigger("Team Two"), "Blitz Bakers");
 
-    // The two-column grid of the tablet tier places each part, so the document order stays the phone order.
+    // The two-column grid of the tablet tier places one side per column, so the document order stays the phone order.
     const parts = [
-      screen.getByRole("group", { name: "My team" }),
-      screen.getByRole("group", { name: "The other team" }),
-      screen.getByRole("group", { name: "Gridiron Ghosts gives" }),
-      screen.getByRole("group", { name: "Blitz Bakers gives" }),
+      screen.getByRole("group", { name: "Your Team" }),
+      teamTrigger("Your Team"),
+      screen.getByRole("combobox", { name: "Gridiron Ghosts Gives" }),
+      screen.getByRole("group", { name: "Team Two" }),
+      teamTrigger("Team Two"),
+      screen.getByRole("combobox", { name: "Blitz Bakers Gives" }),
       submit(),
     ];
     for (let i = 1; i < parts.length; i++) {
@@ -290,25 +327,16 @@ describe("Analyzer", () => {
     }
   });
 
-  it("disables the team that the other picker holds", async () => {
+  it("leaves the team that the other side holds out of its picker", async () => {
     localStorage.setItem("cpc.passphrase", "localtest");
     answer(200, TEAMS);
     render(<Analyzer />);
     await screen.findByText("Pick the Teams");
 
-    const mine = screen.getByRole("group", { name: "My team" });
-    const other = screen.getByRole("group", { name: "The other team" });
-    const radio = (group: HTMLElement, name: string) =>
-      Array.from(group.querySelectorAll<HTMLInputElement>("input")).find((i) => i.closest("label")?.textContent?.includes(name))!;
+    await choose(teamTrigger("Your Team"), "Gridiron Ghosts");
+    expect(await teamNames("Team Two")).toEqual(["Blitz BakersBen", "Punt PunksCy"]);
 
-    fireEvent.click(radio(mine, "Gridiron Ghosts"));
-    await waitFor(() => expect(radio(other, "Gridiron Ghosts").disabled).toBe(true));
-    expect(radio(other, "Blitz Bakers").disabled).toBe(false);
-
-    fireEvent.click(radio(other, "Blitz Bakers"));
-    // A pick collapses my picker to one row, so the test opens it again to see the other rows.
-    fireEvent.click(screen.getByRole("button", { name: "Change my team" }));
-    await waitFor(() => expect(radio(mine, "Blitz Bakers").disabled).toBe(true));
-    expect(radio(mine, "Gridiron Ghosts").disabled).toBe(false);
+    await choose(teamTrigger("Team Two"), "Blitz Bakers");
+    expect(await teamNames("Your Team")).toEqual(["Gridiron GhostsAna", "Punt PunksCy"]);
   });
 });

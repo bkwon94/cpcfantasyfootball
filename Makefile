@@ -1,17 +1,22 @@
 # Makefile for the Cornerstone League Weekly site.
 # Each target wraps a pnpm script or a deploy step. Run "make" to list them.
 
-.PHONY: help install dev build test typecheck check serve deploy
+.PHONY: help install dev dev-local build test typecheck check serve deploy
 .DEFAULT_GOAL := help
 
 help: ## List the targets
-	@grep -E '^[a-z]+:.*## ' $(MAKEFILE_LIST) | awk -F':.*## ' '{printf "  %-10s %s\n", $$1, $$2}'
+	@grep -E '^[a-z-]+:.*## ' $(MAKEFILE_LIST) | awk -F':.*## ' '{printf "  %-10s %s\n", $$1, $$2}'
 
 install: ## Install the dependencies from the lockfile
 	pnpm install --frozen-lockfile
 
 dev: ## Start the dev server
 	pnpm dev
+
+# Local test of the analyzer against the API on this machine. First run "make api" in the pipeline repo,
+# which serves port 8080 with the passphrase "localtest". Then run this, open the analyzer, and enter that passphrase.
+dev-local: ## Start the dev server against the local API on port 8080
+	NEXT_PUBLIC_API_URL=http://localhost:8080 pnpm dev
 
 build: ## Build the static site into out/
 	pnpm build

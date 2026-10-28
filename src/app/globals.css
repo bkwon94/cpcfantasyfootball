@@ -59,6 +59,10 @@
     /* The paint of the black card. It has its own token because the dark theme lifts the card while the masthead stays black. See ADR 0002. */
     --color-card-blk: var(--color-blk);
 
+    /* The fill of a picked player row in the trade analyzer: a light wash of brand red, so a pick reads as red without red text on red.
+       Ink text on it is 14.9 to 1, mute 4.9, and brand red 5.1. The dark theme re-points it. See ADR 0002. */
+    --color-pick: color-mix(in srgb, var(--color-red) 10%, var(--color-wht));
+
     /* The red glow behind a hero cutout on a black card. */
     --color-red-glow: color-mix(in srgb, var(--color-red) 45%, transparent);
 
@@ -303,7 +307,8 @@
     /* The page rule: 1.5 to 1 on the page, 1.2 to 1 on the raised surface. A rule is a soft line, as #e3e3e3 is 1.3 to 1 on white. */
     --color-rule: #333;
     /* The light grey sits one step between the page and the lifted black card: the grey card, the body from the tablet tier up, and the grey chip.
-       A checked row in the player list and the team picker goes from this grey to the lifted black card, so the grey must not equal the card.
+       A checked row in the team picker goes from this grey to the lifted black card, so the grey must not equal the card.
+       A picked player row does not paint this grey or the card. It paints the red wash of --color-pick.
        #1f1f1f is 1.1 to 1 on the page and 1.1 to 1 under the lifted black card. On it white is 16.5 to 1, #ccc 10.3, #999 5.8, and light red 8.4. */
     --color-gry: #1f1f1f;
     /* The black card lifts to the raised surface, 1.2 to 1 on the page. White text on it is 15.1 to 1, #ccc 9.4, #999 5.3, light red 7.7,
@@ -311,6 +316,9 @@
     --color-card-blk: #262626;
     /* Red text on the page: light red is 9.3 to 1 on the page and 7.7 to 1 on the raised surface. */
     --color-red-ink: var(--color-red-lt);
+    /* The picked player row: a dark wash of brand red on the grey, #412421. White text on it is 14.1 to 1, #999 4.9, and light red 7.1.
+       Brand red never carries text here, as the left rule of the row is only a graphic. */
+    --color-pick: color-mix(in srgb, var(--color-red) 22%, var(--color-gry));
     /* The dark rule, one step lighter, because #333 is only 1.2 to 1 on the lifted black card. #444 is 1.9 to 1 on the page and 1.6 to 1 on the raised surface. */
     --color-rule-dark: #444;
     /* The thin rule between two columns: 2.5 to 1 on the page and 2.0 to 1 on the raised surface. The light #cfcfcf is 1.6 to 1 on white. */
@@ -345,11 +353,12 @@
 }
 /*---break---
  */
-/* A pressable element scales down a little on tap, so the reader sees the page heard the tap. */
+/* A pressable element scales down a little on tap, so the reader sees the page heard the tap.
+   The scale is small because a wide control, such as a picker, moves each edge by its full width times the scale. */
 @utility press {
     transition: var(--press);
     &:active {
-        transform: scale(0.97);
+        transform: scale(0.985);
     }
     @media (prefers-reduced-motion: reduce) {
         transition: none;

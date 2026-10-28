@@ -1,5 +1,5 @@
 /**
- * The trade finder: the partner picker, the "Find a trade" button, and up to three cards of trades that are good for both.
+ * The trade finder: the partner picker, the "Find a Trade" button, and up to three cards of trades that are good for both.
  * It posts the pair to the find route. A card hands its trade to the trade form, which grades it through the analyze route.
  */
 "use client";
@@ -24,7 +24,7 @@ type FindState =
 
 type TradeFinderProps = {
   teams: Team[];
-  // The roster id of the team that asks. The trade form's "My team" sets it.
+  // The roster id of the team that asks. The first side of the trade form, "Your Team", sets it.
   asker: number;
   passphrase: string;
   // The passphrase is wrong, so the page clears it and asks again.
@@ -37,7 +37,7 @@ type TradeFinderProps = {
   locked?: boolean;
 };
 
-/* The asker's side goes first, as on the analyze result, so "You get" always leads the card. */
+/* The asker's side goes first, as on the analyze result, so "You Get" always leads the card. */
 function swapSides(trade: FinderTrade, asker: number): SwapSide[] {
   const sides = trade.sides.map((side) => ({ ...side, mine: side.roster_id === asker }));
   return sides.sort((a, b) => Number(b.mine) - Number(a.mine));
@@ -52,7 +52,7 @@ function FinderCard({ trade, asker, index, onOpen, locked }: { trade: FinderTrad
       <FairnessBlock sides={sides} fairness={trade.fairness} />
       {trade.reason !== null && <p className="m-0 text-body text-ink-2">{trade.reason}</p>}
       <Button className="press h-touch w-full rounded-card px-sp-4 text-lead font-bold" disabled={locked} onClick={onOpen}>
-        See the full result
+        See the Full Result
       </Button>
     </article>
   );
@@ -142,14 +142,14 @@ export function TradeFinder({ teams, asker, passphrase, onUnauthorized, onRoster
       <h2 id="find-trade" className="m-0 text-stat leading-stat font-black uppercase">
         Find a Trade
       </h2>
-      <TeamPicker label="Trade partner" teams={partners} value={partner} disabledId={null} onChange={pickPartner} locked={locked || finding} />
+      <TeamPicker label="Trade Partner" teams={partners} value={partner} disabledId={null} onChange={pickPartner} locked={locked || finding} />
       <Button
         className="press h-touch w-full rounded-card px-sp-4 text-lead font-bold"
         disabled={partner === null || finding || locked}
         aria-busy={finding || undefined}
         onClick={submit}
       >
-        {finding ? "Finding…" : "Find a trade"}
+        {finding ? "Finding…" : "Find a Trade"}
       </Button>
       {finding && (
         <p role="status" className="m-0 text-meta text-mute">
@@ -161,7 +161,7 @@ export function TradeFinder({ teams, asker, passphrase, onUnauthorized, onRoster
           <ErrorLine>{find.message}</ErrorLine>
           {find.retry && (
             <Button className="press h-touch w-full rounded-card px-sp-4 text-lead font-bold" onClick={submit}>
-              Try again
+              Try Again
             </Button>
           )}
         </div>

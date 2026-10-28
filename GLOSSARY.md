@@ -55,3 +55,27 @@ _Avoid_: Mode, scheme, skin, color mode
 **Theme button**:
 The control in the masthead and the compact bar that switches the theme.
 _Avoid_: Toggle, switch, mode button, dark mode toggle
+
+**Trade**:
+A proposed swap of players between two to four teams that the analyzer grades before it happens.
+_Avoid_: Deal, proposal, swap
+
+**Side**:
+One team in a trade, with the players it gives and the players it gets.
+_Avoid_: Party, team slot, leg, participant
+
+**Asker**:
+The side that asks for the grade. The decision is for the asker. On the form the asker is the first side, "Your Team".
+_Avoid_: My team, owner, requester, user
+
+**Destination**:
+The side that a given player goes to. With two sides it is the other side. With three or more sides the reader picks it per player.
+_Avoid_: Target, recipient, receiver
+
+**Picker**:
+A select control on the trade form: one per side for the team, and one per side for the players it gives.
+_Avoid_: Dropdown, chooser, selector, list
+
+**Swap card**:
+The chapter of the result that shows what every side gives and gets.
+_Avoid_: Trade summary, exchange, ledger

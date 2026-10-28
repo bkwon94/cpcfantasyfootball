@@ -42,7 +42,7 @@ export function PassphraseDialog({ open, error, onSubmit }: PassphraseDialogProp
         className={cn("gap-sp-4 rounded-card p-gutter", stillClass)}
       >
         <DialogHeader>
-          <DialogTitle className="text-stat leading-stat font-black uppercase">League passphrase</DialogTitle>
+          <DialogTitle className="text-stat leading-stat font-black uppercase">League Passphrase</DialogTitle>
           <DialogDescription className="text-body text-mute">The league passphrase. Ask a league member.</DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="flex flex-col gap-sp-3">

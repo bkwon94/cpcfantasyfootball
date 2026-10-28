@@ -69,6 +69,21 @@ export function stagger(index: number): number {
 /* The delays of the three hero parts, in seconds. The glow comes first, the cutout next, and the points last. */
 export const HERO_DELAY = { glow: 0, cutout: 0.08, points: 0.24 } as const;
 
+/* A side or a picked row enters and leaves in about 200 ms with the brand ease-out. The exit is faster, so a remove feels instant.
+   No spring, because an overshoot on a form reads as a wobble. */
+const ENTER: Transition = { duration: 0.2, ease: EASE_OUT };
+const EXIT: Transition = { duration: 0.15, ease: EASE_OUT };
+
+/* The props of a list item that rises in and fades out. With motion off, the item shows at rest and leaves at once. */
+export function enterExit(off: boolean) {
+  return {
+    initial: off ? (false as const) : { opacity: 0, y: RISE },
+    animate: { opacity: 1, y: 0 } satisfies TargetAndTransition,
+    exit: { opacity: 0, transition: off ? INSTANT : EXIT } satisfies TargetAndTransition,
+    transition: off ? INSTANT : ENTER,
+  };
+}
+
 /* The props of content that fades and rises in once. With motion off, the content shows at rest and the transition is instant. */
 export function rise(off: boolean, { duration, delay = 0 }: { duration: number; delay?: number }) {
   return {

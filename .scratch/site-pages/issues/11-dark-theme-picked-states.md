@@ -4,7 +4,11 @@
 
 **Blocked by:** None
 
-**Status:** triage
+**Status:** done
 
 - [ ] A ticked player row in the dark theme has a fill a reader sees at once.
 - [ ] The chosen week chip in the dark theme is the lightest chip.
+
+## Comments
+
+2026-10-28, Truckasaurus Tina: Moot. The multi-team analyzer feature replaced the radio and tick-box lists with Select pickers, and the picked row has its own fill token in both themes.

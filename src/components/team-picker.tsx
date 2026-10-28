@@ -5,21 +5,11 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { useEffect, useRef, useState, type SyntheticEvent } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { Team } from "@/lib/api";
-import { basePath } from "@/lib/config";
+import { AVATAR_FALLBACK, swapAvatarToDefault } from "@/lib/avatar";
 import { DURATION, EASE_OUT, INSTANT, useMotionOff } from "@/lib/motion";
 import { cn } from "@/lib/utils";
-
-const AVATAR_FALLBACK = `${basePath}/images/avatar-default.svg`;
-
-/* An avatar that fails to load swaps to the default once. The guard stops a loop if that file fails too. */
-function swapToDefault(event: SyntheticEvent<HTMLImageElement>) {
-  const img = event.currentTarget;
-  if (img.dataset.fallback) return;
-  img.dataset.fallback = "1";
-  img.src = AVATAR_FALLBACK;
-}
 
 type TeamPickerProps = {
   // Also the name of the radio group, so two pickers on one page stay apart.
@@ -98,7 +88,7 @@ export function TeamPicker({ label, teams, value, disabledId, onChange, locked =
               <img
                 src={team.avatar ?? AVATAR_FALLBACK}
                 alt=""
-                onError={swapToDefault}
+                onError={swapAvatarToDefault}
                 className="size-avatar flex-none rounded-full bg-wht object-cover"
               />
               <span className="flex min-w-0 flex-col">
