@@ -1,6 +1,6 @@
 /**
  * The default headshot, the image error handler that swaps to it, and the Sleeper CDN headshot URL.
- * The player list, the analyzer result, and the waiver list share them, so a missing CDN image looks the same in all.
+ * The player picker, the analyzer result, and the waiver list share them, so a missing CDN image looks the same in all.
  */
 import type { SyntheticEvent } from "react";
 import { basePath } from "@/lib/config";

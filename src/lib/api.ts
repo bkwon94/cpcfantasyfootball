@@ -105,15 +105,18 @@ export async function fetchTeams(passphrase: string): Promise<Team[]> {
   return body.teams.map((team) => ({ ...team, avatar: team.avatar ?? null }));
 }
 
-/* One side of the trade: a roster and the player ids it gives. */
-export type AnalyzeSide = { roster_id: number; gives: string[] };
+/* A given player and the roster id of the side he goes to. See ADR 0003. */
+export type AnalyzeGive = { player_id: string; to: number };
+
+/* One side of the trade: a roster and the players it gives. */
+export type AnalyzeSide = { roster_id: number; gives: AnalyzeGive[] };
 
 export type AnalyzeRequest = {
   season: number;
-  // The asker's side comes first.
-  sides: [AnalyzeSide, AnalyzeSide];
   // The roster id of the team that asks for the grade.
   asker: number;
+  // The asker's side comes first.
+  sides: AnalyzeSide[];
 };
 
 /* Posts a JSON body with the passphrase and reads the JSON answer. The caller owns the AbortSignal and sets the timeout. */

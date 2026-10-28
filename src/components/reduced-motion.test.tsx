@@ -47,6 +47,17 @@ const TEAMS: Team[] = [
   { roster_id: 12, team: "Blitz Bakers", manager: "Ben", avatar: null, players: [player("p3", "Ben One")] },
 ];
 
+/* Opens a picker with a click on its trigger and picks one item. Base UI commits a mouse pick only for a press that starts on the item. */
+async function choose(trigger: HTMLElement, name: string) {
+  fireEvent.click(trigger);
+  const list = await screen.findByRole("listbox");
+  const option = within(list).getByRole("option", { name: new RegExp(name) });
+  fireEvent.pointerDown(option, { pointerType: "mouse" });
+  fireEvent.click(option);
+  if (screen.queryByRole("listbox")) fireEvent.keyDown(list, { key: "Escape" });
+  await waitFor(() => expect(screen.queryByRole("listbox")).toBeNull());
+}
+
 afterEach(cleanup);
 afterAll(() => {
   vi.unstubAllGlobals();
@@ -65,20 +76,19 @@ describe("Reduced motion", () => {
     expect(screen.getByText("Fair")).toBeTruthy();
   });
 
-  it("collapses a picked team at once", () => {
+  it("shows the picked team in the trigger at once", async () => {
     render(<TradeForm teams={TEAMS} passphrase="localtest" onUnauthorized={() => {}} />);
-    const mine = screen.getByRole("group", { name: "My team" });
-    fireEvent.click(within(mine).getByRole("radio", { name: /Pukancun on 3/ }));
-    expect(within(mine).getAllByRole("radio")).toHaveLength(1);
+    await choose(screen.getByRole("combobox", { name: "Your Team" }), "Pukancun on 3");
+    expect(screen.getByRole("combobox", { name: "Your Team" }).textContent).toContain("Pukancun on 3");
   });
 
-  it("shows no sweep while the grade runs", () => {
+  it("shows no sweep while the grade runs", async () => {
     vi.stubGlobal("fetch", vi.fn(() => new Promise(() => {})));
     render(<TradeForm teams={TEAMS} passphrase="localtest" onUnauthorized={() => {}} />);
-    fireEvent.click(within(screen.getByRole("group", { name: "My team" })).getByRole("radio", { name: /Pukancun on 3/ }));
-    fireEvent.click(within(screen.getByRole("group", { name: "The other team" })).getByRole("radio", { name: /Blitz Bakers/ }));
-    fireEvent.click(screen.getByLabelText(/Ana One/));
-    fireEvent.click(screen.getByLabelText(/Ben One/));
+    await choose(screen.getByRole("combobox", { name: "Your Team" }), "Pukancun on 3");
+    await choose(screen.getByRole("combobox", { name: "Team Two" }), "Blitz Bakers");
+    await choose(screen.getByRole("combobox", { name: "Pukancun on 3 Gives" }), "Ana One");
+    await choose(screen.getByRole("combobox", { name: "Blitz Bakers Gives" }), "Ben One");
     fireEvent.click(screen.getByRole("button", { name: "Grade the trade" }));
     const status = screen.getByRole("status");
     expect(status.getAttribute("aria-busy")).toBe("true");

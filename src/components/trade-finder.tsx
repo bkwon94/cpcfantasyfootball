@@ -24,7 +24,7 @@ type FindState =
 
 type TradeFinderProps = {
   teams: Team[];
-  // The roster id of the team that asks. The trade form's "My team" sets it.
+  // The roster id of the team that asks. The first side of the trade form, "Your Team", sets it.
   asker: number;
   passphrase: string;
   // The passphrase is wrong, so the page clears it and asks again.
