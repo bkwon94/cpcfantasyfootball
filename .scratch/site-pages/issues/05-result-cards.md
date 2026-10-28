@@ -6,10 +6,10 @@
 
 **Status:** ready-for-agent
 
-- [ ] The result renders five chapters for a two-team trade: the decision with the fairness line and the no-chart line, the swap, one per side, and the counters with the as-of line.
-- [ ] A document with no fairness block shows the decision card with no fairness line.
-- [ ] The result uses the shared chapter, label, and blurb parts. No private copy remains in the result.
-- [ ] The labels read "The Trade" and "Suggested Counters".
-- [ ] The result test checks the labels, the decision text before the fairness text, and the as-of line last. Tests that read "The trade" or "Suggested counters" change with the casing.
+- [x] The result renders five chapters for a two-team trade: the decision with the fairness line and the no-chart line, the swap, one per side, and the counters with the as-of line.
+- [x] A document with no fairness block shows the decision card with no fairness line.
+- [x] The result uses the shared chapter, label, and blurb parts. No private copy remains in the result.
+- [x] The labels read "The Trade" and "Suggested Counters".
+- [x] The result test checks the labels, the decision text before the fairness text, and the as-of line last. Tests that read "The trade" or "Suggested counters" change with the casing.
 - [ ] A browser check at 768 and 1280 shows the five cards under the form card. At 390 the result is one column with the rules.
-- [ ] `pnpm test`, `pnpm typecheck`, and `pnpm build` pass.
+- [x] `pnpm test`, `pnpm typecheck`, and `pnpm build` pass.
