@@ -109,7 +109,7 @@ function Row({ matchup, avatars, index }: { matchup: Matchup; avatars: AvatarMap
         className={cn(
           "press mb-sp-3 flex min-h-touch w-full cursor-pointer items-center justify-center gap-sp-2 rounded-card border-0 px-sp-3",
           "text-meta font-bold tracking-caps uppercase [-webkit-tap-highlight-color:transparent]",
-          open ? "bg-blk text-on-dark" : "bg-gry text-red hover:bg-rule",
+          open ? "bg-card-blk text-on-dark" : "bg-gry text-red hover:bg-rule",
         )}
       >
         <span>{open ? "Hide Recap" : "Read Recap"}</span>

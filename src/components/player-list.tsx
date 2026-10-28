@@ -27,7 +27,7 @@ export function PlayerList({ team, picked, onToggle, locked = false }: PlayerLis
             key={player.player_id}
             aria-disabled={locked || undefined}
             className={cn(
-              "group flex min-h-touch items-center gap-sp-3 rounded-card bg-gry px-sp-3 py-sp-1 has-checked:bg-blk has-checked:text-on-dark has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-red",
+              "group flex min-h-touch items-center gap-sp-3 rounded-card bg-gry px-sp-3 py-sp-1 has-checked:bg-card-blk has-checked:text-on-dark has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-red",
               locked ? "cursor-not-allowed opacity-40" : "press cursor-pointer",
             )}
           >
