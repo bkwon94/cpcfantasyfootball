@@ -6,14 +6,15 @@
 
 **Blocked by:** 04 (The upside adjuster), 06 (Add a third and a fourth side), 07 (The swap card with three sides)
 
-**Status:** ready-for-agent
+**Status:** done
 
 - [x] `make analyze` in the pipeline repo takes two to four `SIDE` values with a destination per player and grades without the Claude call
 - [x] `make dev-local` in the site repo runs the dev server against the local API on port 8080
 - [x] `make help` lists both targets with one-line help
-- [ ] Brian grades a two-team trade and a three-team trade in the local form and sees the result
-- [ ] Brian says the feature is good, in a comment on this ticket
+- [x] Brian grades a two-team trade and a three-team trade in the local form and sees the result
+- [x] Brian says the feature is good, in a comment on this ticket
 
 ## Comments
 
 - 2026-10-27, Truckasaurus Tina: Both make targets are in. A three-team ring trade graded from the CLI on live rosters with the upside factor. The graded run in the form with the Claude call is Brian's step.
+- 2026-10-28, Homie B-Rex: "its good". He asked for a red picked row in place of black, a chevron that rotates with the open state, and a check of how a list closes. Commit cef6271 did all three. He then said "i like whats live right now on localhost", the tint.
