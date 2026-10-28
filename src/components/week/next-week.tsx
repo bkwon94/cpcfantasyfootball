@@ -7,25 +7,24 @@ import { cn } from "@/lib/utils";
 import type { AvatarMap, ByePlayer, NextGame, Team } from "@/lib/week-types";
 import { avatarSrc, Blurb, Chapter, Label, Tag, Who } from "./parts";
 
-/* The "vs" line and the bye line share one indent, so both line up under the team names, past the avatar column. */
+/* The "vs" line and the bye subtitle share one indent, so both line up under the team names, past the avatar column. */
 const PAST_AVATAR = "pl-[calc(var(--spacing-avatar)+var(--spacing-sp-2))]";
 
-/* The players on bye next week, key starters first and in bold. The line wraps and never truncates, so a long list stays whole.
-   It sets normal weight, because the game div around it is extra bold. A key starter takes the ink color to stand out from the mute text. */
+/* The players on bye next week, as a subtitle in secondary text under the team row, key starters first.
+   It uses no tag and no red, so the Must Watch tag stays the one red signal in the card.
+   The key starter's name in ink is the one emphasis; every other word stays mute and normal weight.
+   It sets normal weight, because the game div around it is extra bold. The line wraps and never truncates, so a long list stays whole. */
 function ByeLine({ byes }: { byes: ByePlayer[] }) {
   return (
-    <div className={cn("mt-sp-1 text-meta leading-body font-normal text-mute", PAST_AVATAR)}>
-      <Tag className="ml-0 mr-sp-1">Bye</Tag>
-      {byes.map((player, i) => {
-        const Name = player.key ? "strong" : "span";
-        return (
-          <span key={player.player_id}>
-            {i > 0 && ", "}
-            <Name className={player.key ? "text-ink" : undefined}>{player.name}</Name>
-            {` ${player.position}`}
-          </span>
-        );
-      })}
+    <div className={cn("mt-sp-0 text-meta leading-body font-normal text-mute", PAST_AVATAR)}>
+      <span className="mr-sp-2 text-label font-bold tracking-caps uppercase text-mute">On bye</span>
+      {byes.map((player, i) => (
+        <span key={player.player_id}>
+          {i > 0 && " · "}
+          {player.key ? <strong className="font-semibold text-ink">{player.name}</strong> : <span>{player.name}</span>}
+          {` ${player.position}`}
+        </span>
+      ))}
     </div>
   );
 }
@@ -50,14 +49,15 @@ function Game({ game, avatars, first }: { game: NextGame; avatars: AvatarMap; fi
       <div className="text-body leading-body font-extrabold">
         <Side team={game.a} avatars={avatars} />
         {/* The "vs" lines up under the names, past the avatar column. */}
-        <div className={cn("my-sp-1 text-meta leading-none font-semibold text-mute", PAST_AVATAR)}>
+        <div className={cn("my-sp-2 text-meta leading-none font-semibold text-mute", PAST_AVATAR)}>
           vs
         </div>
         <Side team={game.b} avatars={avatars} />
       </div>
       {game.must_watch && (
         <div>
-          <Tag className="mt-sp-2 ml-0">Must Watch</Tag>
+          {/* A bye subtitle under the second team takes more room above the tag, so the tag does not crowd it. */}
+          <Tag className={cn("ml-0", game.b.byes?.length ? "mt-sp-3" : "mt-sp-2")}>Must Watch</Tag>
         </div>
       )}
       {game.must_watch && game.reason && <div className="mt-sp-1 text-meta text-mute">{game.reason}</div>}

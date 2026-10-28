@@ -1,5 +1,5 @@
 /**
- * Tests for next week. They render the week 6 JSON and read the label, the teams, the records, and the tags.
+ * Tests for next week. They render the week 6 JSON and read the label, the teams, the records, the tags, and the bye lines.
  * They check what a reader sees, not the class names.
  */
 import { cleanup, render, screen } from "@testing-library/react";
@@ -56,11 +56,31 @@ describe("NextWeek", () => {
     expect(screen.getByText(firstSentence(week6.blurbs.next_week), { exact: false })).toBeTruthy();
   });
 
-  it("tags each side with players on bye and none with an empty list", () => {
+  it("labels each side with players on bye and none with an empty list", () => {
     renderNext(gamesWithByes);
     const sidesWithByes = gamesWithByes.flatMap((game) => [game.a, game.b]).filter((team) => team.byes?.length);
     expect(sidesWithByes.length).toBeGreaterThanOrEqual(2);
-    expect(screen.getAllByText("Bye").length).toBe(sidesWithByes.length);
+    expect(screen.getAllByText("On bye").length).toBe(sidesWithByes.length);
+    expect(screen.queryAllByText("Bye").length).toBe(0);
+  });
+
+  it("puts a middle dot between two players on bye on one side", () => {
+    renderNext(gamesWithByes);
+    const line = screen.getByText("Josh Allen").parentElement?.parentElement;
+    expect(line?.textContent).toContain("Josh Allen QB · Dalton Kincaid TE");
+    expect(line?.textContent).not.toContain(",");
+  });
+
+  it("still shows the Must Watch tag and the reason when the second team has players on bye", () => {
+    const games = week6.next.map((game) =>
+      game.must_watch
+        ? { ...game, b: { ...game.b, byes: [{ player_id: "8183", name: "Jayden Daniels", position: "QB", key: true }] } }
+        : game,
+    );
+    renderNext(games);
+    expect(screen.getAllByText("Must Watch").length).toBe(2);
+    expect(screen.getByText("1st vs 7th, near the playoff cut")).toBeTruthy();
+    expect(screen.getAllByText("On bye").length).toBe(2);
   });
 
   it("lists each player on bye with his position and bolds the key starter", () => {
@@ -75,11 +95,11 @@ describe("NextWeek", () => {
     expect(byes.some((player) => !player.key)).toBe(true);
   });
 
-  it("shows no Bye tag for a side with an empty list or no list", () => {
+  it("shows no bye label for a side with an empty list or no list", () => {
     renderNext(gamesWithByes);
     const sides = gamesWithByes.flatMap((game) => [game.a, game.b]);
     expect(sides.some((team) => team.byes?.length === 0)).toBe(true);
     expect(sides.some((team) => team.byes === undefined)).toBe(true);
-    expect(screen.getAllByText("Bye").length).toBe(sides.filter((team) => team.byes?.length).length);
+    expect(screen.getAllByText("On bye").length).toBe(sides.filter((team) => team.byes?.length).length);
   });
 });
