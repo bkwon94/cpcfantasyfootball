@@ -308,9 +308,10 @@ export function Menu({ destinations, pageHref, title }: MenuIslandProps) {
                 style={{ top }}
                 render={<motion.div {...backdrop} />}
               />
+              {/* The bottom rule marks the end of the sheet. In the dark theme the sheet and the dimmed page are both black, so the edge is lost without it. */}
               <DialogPopup
                 aria-label="Menu"
-                className="fixed inset-x-0 z-50 overflow-y-auto overscroll-contain bg-wht text-ink outline-none"
+                className="fixed inset-x-0 z-50 overflow-y-auto overscroll-contain border-b border-rule bg-wht text-ink outline-none"
                 style={{ top, maxHeight: `calc(100dvh - ${top}px)` }}
                 render={<motion.div {...sheet} />}
               >
