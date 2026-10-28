@@ -7,6 +7,7 @@
 import { MoonIcon, SunIcon } from "lucide-react";
 import { useSyncExternalStore } from "react";
 import { DARK_CLASS, storeTheme } from "@/lib/theme";
+import { countEvent } from "@/lib/usage";
 import { cn } from "@/lib/utils";
 
 /* The copies of the button on the page. A press tells each copy, so the masthead, the bar, and the row never disagree. */
@@ -30,6 +31,8 @@ function serverIsDark() {
 function switchTheme() {
   const dark = document.documentElement.classList.toggle(DARK_CLASS);
   storeTheme(dark ? "dark" : "light");
+  // The event names the theme the press gives, so the count reads as "presses to dark" and "presses to light".
+  countEvent(dark ? "theme-dark" : "theme-light");
   for (const listener of listeners) listener();
 }
 
