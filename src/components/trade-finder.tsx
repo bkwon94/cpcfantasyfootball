@@ -140,7 +140,7 @@ export function TradeFinder({ teams, asker, passphrase, onUnauthorized, onRoster
   return (
     <section aria-labelledby="find-trade" className="flex flex-col gap-sp-5">
       <h2 id="find-trade" className="m-0 text-stat leading-stat font-black uppercase">
-        Find a trade
+        Find a Trade
       </h2>
       <TeamPicker label="Trade partner" teams={partners} value={partner} disabledId={null} onChange={pickPartner} locked={locked || finding} />
       <Button

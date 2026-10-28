@@ -1,6 +1,7 @@
 /**
  * The trade analyzer route at /analyze/.
  * It renders the masthead above the client analyzer, which sits in the centered page column on the white page background.
+ * From the tablet tier that white is the form's chapter, a card on the grey body.
  */
 import type { Metadata } from "next";
 import { Analyzer } from "@/components/analyzer";
