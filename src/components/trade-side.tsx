@@ -1,15 +1,18 @@
 /**
  * One side of the trade form: a heading, the team picker, the player picker, and the picked players as rows.
+ * At three or four sides each row has a To picker, and the third and fourth sides have a remove control.
  * The form owns the sides, so this part only reads its side and reports each change.
  */
 "use client";
 
+import { AnimatePresence, motion } from "framer-motion";
 import { useId } from "react";
 import { XIcon } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import type { Team, TeamPlayer } from "@/lib/api";
 import { AVATAR_FALLBACK, swapAvatarToDefault } from "@/lib/avatar";
 import { HEADSHOT_FALLBACK, swapToDefault } from "@/lib/headshot";
+import { EASE_OUT, INSTANT, RISE, useMotionOff } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
 type TradeSideProps = {
@@ -19,13 +22,25 @@ type TradeSideProps = {
   teams: Team[];
   // The picked team of this side, or undefined before a pick.
   team: Team | undefined;
-  // The ids of the players this side gives, in the order of the pick.
-  picks: string[];
+  // The players this side gives, in the order of the pick, each with the id of its destination side.
+  picks: { playerId: string; to: number }[];
+  // The other sides a player can go to, or null at two sides, where the destination is the other side and no To picker shows.
+  destinations: Destination[] | null;
   onPickTeam: (rosterId: number) => void;
   onPickPlayers: (playerIds: string[]) => void;
+  onPickDestination: (playerId: string, to: number) => void;
+  // Set only for the third and fourth sides. The heading then shows a remove control.
+  onRemove?: () => void;
   // A grade runs, so no picker or remove control may change the trade that the grade reads.
   locked: boolean;
 };
+
+/* Another side of the trade, by its id, with its team once picked. */
+type Destination = { id: number; team: Team | undefined };
+
+/* A picked row enters and leaves as a side does: about 200 ms in, a faster exit, the brand ease-out, and no spring. */
+const ROW_ENTER = { duration: 0.2, ease: EASE_OUT };
+const ROW_EXIT = { duration: 0.15, ease: EASE_OUT };
 
 /* The trigger of both pickers: a grey row as tall as a touch target, with a hover fill and a red focus ring. */
 const TRIGGER =
@@ -74,16 +89,98 @@ function countText(count: number): string {
   return `${count} ${count === 1 ? "Player" : "Players"}`;
 }
 
-export function TradeSide({ title, teams, team, picks, onPickTeam, onPickPlayers, locked }: TradeSideProps) {
+/* The small To picker of a picked row. It sits in the meta line, so the row reads "Name", then "WR NYJ · To <Team>". */
+function DestinationPicker({
+  value,
+  destinations,
+  onPick,
+  locked,
+}: {
+  value: number;
+  destinations: Destination[];
+  onPick: (to: number) => void;
+  locked: boolean;
+}) {
+  const labelId = useId();
+  const current = destinations.find((d) => d.id === value);
+  return (
+    <span className="flex min-w-0 items-center gap-sp-1">
+      <span aria-hidden="true">·</span>
+      <span id={labelId}>To</span>
+      <Select<number>
+        value={value}
+        onValueChange={(to) => {
+          if (to !== null) onPick(to);
+        }}
+        disabled={locked}
+      >
+        {/* The trigger is short to fit the meta line. The negative margin and the padding give it a taller hit area. */}
+        <SelectTrigger
+          aria-labelledby={labelId}
+          className="press -my-sp-1 h-auto min-w-0 gap-sp-1 rounded-sm border-0 bg-transparent px-sp-1 py-sp-1 text-meta font-bold text-on-dark underline decoration-on-dark-muted underline-offset-2 hover:bg-on-dark/10 focus-visible:outline-2 focus-visible:outline-red focus-visible:ring-0 disabled:opacity-40 data-[size=default]:h-auto dark:bg-transparent dark:hover:bg-on-dark/10 [&>[data-slot=select-value]]:min-w-0 [&_svg]:text-on-dark-muted"
+        >
+          <SelectValue>{() => <span className="truncate">{current?.team?.team ?? "Pick a Team"}</span>}</SelectValue>
+        </SelectTrigger>
+        {/* The trigger is narrow, so the popup takes the width of its longest team, capped by the room on the screen. */}
+        <SelectContent
+          alignItemWithTrigger={false}
+          align="start"
+          className="w-max max-w-[min(20rem,var(--available-width))] min-w-48 p-sp-1 motion-reduce:animate-none"
+        >
+          {destinations.map((d) => (
+            <SelectItem key={d.id} value={d.id} className={ITEM}>
+              {d.team && <TeamAvatar team={d.team} />}
+              <b className="min-w-0 truncate leading-tight font-extrabold">{d.team?.team ?? "Pick a Team"}</b>
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+    </span>
+  );
+}
+
+export function TradeSide({
+  title,
+  teams,
+  team,
+  picks,
+  destinations,
+  onPickTeam,
+  onPickPlayers,
+  onPickDestination,
+  onRemove,
+  locked,
+}: TradeSideProps) {
   const headingId = useId();
   const playersLabelId = useId();
-  const picked = team ? picks.map((id) => team.players.find((p) => p.player_id === id)).filter((p) => p !== undefined) : [];
+  const off = useMotionOff();
+  const ids = picks.map((p) => p.playerId);
+  const picked = team
+    ? picks.flatMap((pick) => {
+        const player = team.players.find((p) => p.player_id === pick.playerId);
+        return player ? [{ player, to: pick.to }] : [];
+      })
+    : [];
 
   return (
     <div role="group" aria-labelledby={headingId} className="flex min-w-0 flex-col gap-sp-3">
-      <h3 id={headingId} className={LABEL}>
-        {title}
-      </h3>
+      <div className="flex min-h-sp-5 items-center justify-between gap-sp-2">
+        <h3 id={headingId} className={LABEL}>
+          {title}
+        </h3>
+        {onRemove && (
+          // The control is as tall as the heading line, and the negative margin gives it a touch-size hit area.
+          <button
+            type="button"
+            aria-label={`Remove ${title}`}
+            disabled={locked}
+            onClick={onRemove}
+            className="press -my-sp-3 -mr-sp-2 grid size-touch flex-none cursor-pointer place-items-center rounded-card text-mute hover:text-ink focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-red disabled:cursor-not-allowed disabled:opacity-40"
+          >
+            <XIcon aria-hidden="true" className="size-4" />
+          </button>
+        )}
+      </div>
       <Select<number>
         value={team?.roster_id ?? null}
         onValueChange={(rosterId) => {
@@ -123,7 +220,7 @@ export function TradeSide({ title, teams, team, picks, onPickTeam, onPickPlayers
           <span id={playersLabelId} className={LABEL}>
             {`${team.team} Gives`}
           </span>
-          <Select<string, true> multiple value={picks} onValueChange={(ids) => onPickPlayers(ids)} disabled={locked}>
+          <Select<string, true> multiple value={ids} onValueChange={(next) => onPickPlayers(next)} disabled={locked}>
             <SelectTrigger aria-labelledby={playersLabelId} className={TRIGGER}>
               <SelectValue>
                 {(ids: string[]) => (
@@ -140,33 +237,50 @@ export function TradeSide({ title, teams, team, picks, onPickTeam, onPickPlayers
               ))}
             </SelectContent>
           </Select>
-          {picked.length > 0 && (
-            <ul aria-label={`Players ${team.team} Gives`} className="m-0 flex list-none flex-col gap-sp-1 p-0">
-              {picked.map((player) => (
-                <li
+          {/* The list stays in the page while a team is picked, so the last row can animate out. empty:hidden drops the empty
+              list from the layout and from the accessibility tree. relative holds a removed row that popLayout lifts out. */}
+          <ul aria-label={`Players ${team.team} Gives`} className="relative m-0 flex list-none flex-col gap-sp-1 p-0 empty:hidden">
+            <AnimatePresence initial={false} mode="popLayout">
+              {picked.map(({ player, to }) => (
+                <motion.li
                   key={player.player_id}
-                  className="flex min-h-touch items-center gap-sp-3 rounded-card bg-card-blk py-sp-1 pl-sp-3 text-on-dark"
+                  layout={!off}
+                  initial={off ? false : { opacity: 0, y: RISE }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={off ? { opacity: 0, transition: INSTANT } : { opacity: 0, transition: ROW_EXIT }}
+                  transition={off ? INSTANT : ROW_ENTER}
+                  className="flex min-h-touch w-full items-center gap-sp-3 rounded-card bg-card-blk py-sp-1 pl-sp-3 text-on-dark"
                 >
                   <Headshot player={player} />
                   <span className="flex min-w-0 flex-1 flex-col">
                     <b className="truncate text-row leading-tight font-extrabold">{player.name}</b>
-                    <span className="text-meta text-on-dark-muted">
-                      {player.position} {player.nfl_team}
+                    <span className="flex min-w-0 items-center gap-sp-1 text-meta whitespace-nowrap text-on-dark-muted">
+                      <span className="flex-none">
+                        {player.position} {player.nfl_team}
+                      </span>
+                      {destinations && (
+                        <DestinationPicker
+                          value={to}
+                          destinations={destinations}
+                          onPick={(next) => onPickDestination(player.player_id, next)}
+                          locked={locked}
+                        />
+                      )}
                     </span>
                   </span>
                   <button
                     type="button"
                     aria-label={`Remove ${player.name}`}
                     disabled={locked}
-                    onClick={() => onPickPlayers(picks.filter((id) => id !== player.player_id))}
+                    onClick={() => onPickPlayers(ids.filter((id) => id !== player.player_id))}
                     className="press grid size-touch flex-none cursor-pointer place-items-center rounded-card text-on-dark-muted hover:text-on-dark focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-red disabled:cursor-not-allowed disabled:opacity-40"
                   >
                     <XIcon aria-hidden="true" className="size-4" />
                   </button>
-                </li>
+                </motion.li>
               ))}
-            </ul>
-          )}
+            </AnimatePresence>
+          </ul>
         </div>
       )}
     </div>

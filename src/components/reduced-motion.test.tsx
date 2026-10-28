@@ -45,7 +45,16 @@ const player = (id: string, name: string) => ({
 const TEAMS: Team[] = [
   { roster_id: 4, team: "Pukancun on 3", manager: "Ana", avatar: null, players: [player("p1", "Ana One")] },
   { roster_id: 12, team: "Blitz Bakers", manager: "Ben", avatar: null, players: [player("p3", "Ben One")] },
+  { roster_id: 7, team: "Punt Punks", manager: "Cy", avatar: null, players: [player("p5", "Cy One")] },
 ];
+
+/* No box from the element up to the page root fades or moves. A motion box at its start state carries opacity 0 or a translate. */
+function expectAtRest(element: HTMLElement) {
+  for (let box: HTMLElement | null = element; box; box = box.parentElement) {
+    expect(box.style.opacity).not.toBe("0");
+    expect(box.style.transform).not.toMatch(/translate/);
+  }
+}
 
 /* Opens a picker with a click on its trigger and picks one item. Base UI commits a mouse pick only for a press that starts on the item. */
 async function choose(trigger: HTMLElement, name: string) {
@@ -94,6 +103,24 @@ describe("Reduced motion", () => {
     expect(status.getAttribute("aria-busy")).toBe("true");
     // The track is aria-hidden, so the query must include hidden elements to find the sweep if it existed.
     expect(within(status).queryByRole("presentation", { hidden: true })).toBeNull();
+  });
+});
+
+describe("Reduced motion on the trade form", () => {
+  it("adds a side and a picked row at rest, and removes a side at once", async () => {
+    render(<TradeForm teams={TEAMS} passphrase="localtest" onUnauthorized={() => {}} />);
+    await choose(screen.getByRole("combobox", { name: "Your Team" }), "Pukancun on 3");
+    await choose(screen.getByRole("combobox", { name: "Team Two" }), "Blitz Bakers");
+    fireEvent.click(screen.getByRole("button", { name: "Add a Team" }));
+    expectAtRest(screen.getByRole("group", { name: "Team Three" }));
+
+    await choose(screen.getByRole("combobox", { name: "Team Three" }), "Punt Punks");
+    await choose(screen.getByRole("combobox", { name: "Punt Punks Gives" }), "Cy One");
+    expectAtRest(within(screen.getByRole("list", { name: "Players Punt Punks Gives" })).getByRole("listitem"));
+
+    fireEvent.click(screen.getByRole("button", { name: "Remove Team Three" }));
+    // The exit takes the instant transition, so the side leaves by the next frame. A real exit fails the short wait.
+    await waitFor(() => expect(screen.queryByRole("group", { name: "Team Three" })).toBeNull(), { timeout: 50 });
   });
 });
 

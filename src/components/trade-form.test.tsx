@@ -40,7 +40,7 @@ function answer(status: number, body: unknown = {}, headers: Record<string, stri
 }
 
 const group = (name: string) => screen.getByRole("group", { name });
-type SideTitle = "Your Team" | "Team Two";
+type SideTitle = "Your Team" | "Team Two" | "Team Three" | "Team Four";
 /* The team picker of a side is named by the side's heading. */
 const teamTrigger = (side: SideTitle) => screen.getByRole("combobox", { name: side });
 const playerTrigger = (team: string) => screen.getByRole("combobox", { name: `${team} Gives` });
@@ -76,6 +76,15 @@ async function pickPlayers(team: string, ...names: string[]) {
 }
 
 const removeButton = (name: string) => screen.getByRole("button", { name: `Remove ${name}` }) as HTMLButtonElement;
+
+const addButton = () => screen.queryByRole("button", { name: "Add a Team" });
+
+/* The row of a picked player, found by the list of the team that gives him. */
+const row = (team: string, name: string) =>
+  within(screen.getByRole("list", { name: `Players ${team} Gives` }))
+    .getAllByRole("listitem")
+    .find((item) => item.textContent!.includes(name))!;
+const toTrigger = (team: string, name: string) => within(row(team, name)).getByRole("combobox", { name: "To" });
 
 /* Picks my team and the other team, then one player on each side. */
 async function pickTrade() {
@@ -164,7 +173,8 @@ describe("TradeForm", () => {
     expect(rows[0].querySelector("img")!.getAttribute("src")).toBe("https://cdn.test/p2.png");
 
     fireEvent.click(removeButton("Ana Two"));
-    expect(screen.queryByRole("button", { name: "Remove Ana Two" })).toBeNull();
+    // The row animates out, so it leaves the page a moment after the click.
+    await waitFor(() => expect(screen.queryByRole("button", { name: "Remove Ana Two" })).toBeNull());
     expect(playerTrigger("Pukancun on 3").textContent).toContain("1 Player");
   });
 
@@ -184,7 +194,7 @@ describe("TradeForm", () => {
     await pickTrade();
     await pickTeam("Team Two", "Punt Punks");
     expect(submit().disabled).toBe(true);
-    expect(screen.queryByRole("button", { name: "Remove Ben Two" })).toBeNull();
+    await waitFor(() => expect(screen.queryByRole("button", { name: "Remove Ben Two" })).toBeNull());
     expect(playerTrigger("Punt Punks").textContent).toContain("Pick Players");
     expect(removeButton("Ana One")).toBeTruthy();
   });
@@ -286,7 +296,7 @@ describe("TradeForm", () => {
     await screen.findByText("Player p1 is not on the giving roster.");
     expect(removeButton("Ana One").disabled).toBe(false);
     fireEvent.click(removeButton("Ana One"));
-    expect(screen.queryByRole("button", { name: "Remove Ana One" })).toBeNull();
+    await waitFor(() => expect(screen.queryByRole("button", { name: "Remove Ana One" })).toBeNull());
     expect((teamTrigger("Team Two") as HTMLButtonElement).disabled).toBe(false);
   });
 
@@ -361,7 +371,8 @@ describe("TradeForm", () => {
 
   it("aborts after 60 seconds, shows the timeout line, and the retry posts again", async () => {
     await pickTrade();
-    vi.useFakeTimers();
+    // Only the timeout is fake. A fake clock for frames would leave Framer Motion on a stale time, so a later exit would stall.
+    vi.useFakeTimers({ toFake: ["setTimeout", "clearTimeout"] });
     fetchStub.mockImplementationOnce(
       (_url: string, init: RequestInit) =>
         new Promise((_resolve, reject) => {
@@ -398,6 +409,146 @@ describe("TradeForm", () => {
     expect(signal!.aborted).toBe(true);
     expect(errorSpy).not.toHaveBeenCalled();
     errorSpy.mockRestore();
+  });
+});
+
+/* A trade of three or four sides. A fourth team lets the trade fill every side. */
+describe("TradeForm with three or four sides", () => {
+  const FOUR_TEAMS: Team[] = [
+    ...TEAMS,
+    { roster_id: 9, team: "Draft Dodgers", manager: "Dee", avatar: null, players: [player("p6", "Dee One")] },
+  ];
+
+  beforeEach(() => {
+    cleanup();
+    render(<TradeForm teams={FOUR_TEAMS} passphrase="localtest" onUnauthorized={onUnauthorized} />);
+  });
+
+  /* Picks a team on each of the first three sides and one player on each. */
+  async function pickThreeSides() {
+    await pickTeam("Your Team", "Pukancun on 3");
+    await pickTeam("Team Two", "Blitz Bakers");
+    fireEvent.click(addButton()!);
+    await pickTeam("Team Three", "Punt Punks");
+    await pickPlayers("Pukancun on 3", "Ana One");
+    await pickPlayers("Blitz Bakers", "Ben Two");
+    await pickPlayers("Punt Punks", "Cy One");
+  }
+
+  async function pickDestination(team: string, name: string, destination: string) {
+    const list = await openPicker(toTrigger(team, name));
+    choose(within(list).getByRole("option", { name: new RegExp(destination) }));
+    await waitFor(() => expect(screen.queryByRole("listbox")).toBeNull());
+  }
+
+  it("shows Add a Team only when every side has a team and the trade has fewer than four sides", async () => {
+    expect(addButton()).toBeNull();
+    await pickTeam("Your Team", "Pukancun on 3");
+    expect(addButton()).toBeNull();
+    await pickTeam("Team Two", "Blitz Bakers");
+    fireEvent.click(addButton()!);
+    expect(group("Team Three")).toBeTruthy();
+    expect(addButton()).toBeNull();
+    await pickTeam("Team Three", "Punt Punks");
+    fireEvent.click(addButton()!);
+    expect(group("Team Four")).toBeTruthy();
+    await pickTeam("Team Four", "Draft Dodgers");
+    expect(addButton()).toBeNull();
+    const headings = screen.getAllByRole("heading", { level: 3 }).map((h) => h.textContent);
+    expect(headings).toEqual(["Your Team", "Team Two", "Team Three", "Team Four"]);
+  });
+
+  it("gives a remove control to the third and fourth sides only", async () => {
+    await pickTeam("Your Team", "Pukancun on 3");
+    await pickTeam("Team Two", "Blitz Bakers");
+    fireEvent.click(addButton()!);
+    await pickTeam("Team Three", "Punt Punks");
+    fireEvent.click(addButton()!);
+    expect(removeButton("Team Three")).toBeTruthy();
+    expect(removeButton("Team Four")).toBeTruthy();
+    expect(screen.queryByRole("button", { name: "Remove Your Team" })).toBeNull();
+    expect(screen.queryByRole("button", { name: "Remove Team Two" })).toBeNull();
+
+    fireEvent.click(removeButton("Team Four"));
+    await waitFor(() => expect(screen.queryByRole("group", { name: "Team Four" })).toBeNull());
+    expect(addButton()).toBeTruthy();
+  });
+
+  it("shows no To picker at two sides", async () => {
+    await pickTrade();
+    expect(screen.queryByRole("combobox", { name: "To" })).toBeNull();
+  });
+
+  it("shows a To picker on each row at three sides, with the next side as the default", async () => {
+    await pickThreeSides();
+    expect(toTrigger("Pukancun on 3", "Ana One").textContent).toContain("Blitz Bakers");
+    expect(toTrigger("Blitz Bakers", "Ben Two").textContent).toContain("Punt Punks");
+    // The last side sends to the first side.
+    expect(toTrigger("Punt Punks", "Cy One").textContent).toContain("Pukancun on 3");
+    expect(row("Pukancun on 3", "Ana One").textContent).toContain("To");
+
+    const list = await openPicker(toTrigger("Pukancun on 3", "Ana One"));
+    expect(within(list).getAllByRole("option").map((o) => o.textContent)).toEqual(["Blitz Bakers", "Punt Punks"]);
+  });
+
+  it("keeps a destination when that side changes its team", async () => {
+    await pickThreeSides();
+    await pickDestination("Pukancun on 3", "Ana One", "Punt Punks");
+    await pickTeam("Team Three", "Draft Dodgers");
+    expect(toTrigger("Pukancun on 3", "Ana One").textContent).toContain("Draft Dodgers");
+  });
+
+  it("drops a removed side's players and sends the players bound for it to the default", async () => {
+    await pickTeam("Your Team", "Pukancun on 3");
+    await pickTeam("Team Two", "Blitz Bakers");
+    fireEvent.click(addButton()!);
+    await pickTeam("Team Three", "Punt Punks");
+    fireEvent.click(addButton()!);
+    await pickTeam("Team Four", "Draft Dodgers");
+    await pickPlayers("Pukancun on 3", "Ana One");
+    await pickPlayers("Punt Punks", "Cy One");
+    await pickPlayers("Draft Dodgers", "Dee One");
+    await pickDestination("Pukancun on 3", "Ana One", "Draft Dodgers");
+    // Team Three sends to Team Four by default.
+    expect(toTrigger("Punt Punks", "Cy One").textContent).toContain("Draft Dodgers");
+
+    fireEvent.click(removeButton("Team Four"));
+    await waitFor(() => expect(screen.queryByRole("button", { name: "Remove Dee One" })).toBeNull());
+    expect(toTrigger("Pukancun on 3", "Ana One").textContent).toContain("Blitz Bakers");
+    expect(toTrigger("Punt Punks", "Cy One").textContent).toContain("Pukancun on 3");
+  });
+
+  it("keeps the grade button off until every side gives and gets a player", async () => {
+    await pickTeam("Your Team", "Pukancun on 3");
+    await pickTeam("Team Two", "Blitz Bakers");
+    fireEvent.click(addButton()!);
+    await pickTeam("Team Three", "Punt Punks");
+    await pickPlayers("Pukancun on 3", "Ana One");
+    await pickPlayers("Blitz Bakers", "Ben Two");
+    expect(submit().disabled).toBe(true);
+    await pickPlayers("Punt Punks", "Cy One");
+    expect(submit().disabled).toBe(false);
+    // Punt Punks now gets no player.
+    await pickDestination("Blitz Bakers", "Ben Two", "Pukancun on 3");
+    expect(submit().disabled).toBe(true);
+  });
+
+  it("posts every side in order with the destination of each player", async () => {
+    answer(200, fixtureJson);
+    await pickThreeSides();
+    await pickPlayers("Pukancun on 3", "Ana Two");
+    await pickDestination("Pukancun on 3", "Ana Two", "Punt Punks");
+    fireEvent.click(submit());
+    await screen.findByText("Not as is");
+    expect(JSON.parse(fetchStub.mock.calls[0][1].body)).toEqual({
+      season: 2026,
+      asker: 4,
+      sides: [
+        { roster_id: 4, gives: [{ player_id: "p1", to: 12 }, { player_id: "p2", to: 7 }] },
+        { roster_id: 12, gives: [{ player_id: "p4", to: 7 }] },
+        { roster_id: 7, gives: [{ player_id: "p5", to: 4 }] },
+      ],
+    });
   });
 });
 
@@ -441,6 +592,15 @@ describe("TradeForm with the finder", () => {
     render(<TradeForm teams={pairTeams} passphrase="localtest" onUnauthorized={onUnauthorized} />);
     await pickTeam("Your Team", "All You Need Is Love");
     expect(screen.queryByRole("group", { name: "Trade partner" })).toBeNull();
+  });
+
+  it("hides the finder once the trade has a third side, and shows it again at two", async () => {
+    await pickTeam("Your Team", "All You Need Is Love");
+    await pickTeam("Team Two", "Lil Fridge");
+    fireEvent.click(screen.getByRole("button", { name: "Add a Team" }));
+    expect(screen.queryByRole("group", { name: "Trade partner" })).toBeNull();
+    fireEvent.click(screen.getByRole("button", { name: "Remove Team Three" }));
+    await waitFor(() => expect(screen.getByRole("group", { name: "Trade partner" })).toBeTruthy());
   });
 
   it("shows no finder until my team is picked", async () => {
