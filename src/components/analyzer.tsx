@@ -11,6 +11,7 @@ import { Reveal } from "@/components/reveal";
 import { TeamsSkeleton } from "@/components/teams-skeleton";
 import { TradeForm } from "@/components/trade-form";
 import { Button } from "@/components/ui/button";
+import { Chapter } from "@/components/week/parts";
 import { ApiError, retryText, type Team } from "@/lib/api";
 import { DURATION } from "@/lib/motion";
 import { clearPassphrase, getPassphrase, setPassphrase } from "@/lib/passphrase";
@@ -98,8 +99,10 @@ export function Analyzer() {
     setPassphraseState(value);
   }
 
-  return (
-    <div className="px-gutter py-sp-5">
+  /* The form and every state of the fetch sit in one chapter, so from the tablet tier they read as one white card.
+     The chapter carries the gutter and the vertical padding. */
+  const states = (
+    <>
       <PassphraseDialog open={passphrase === null} error={authError} onSubmit={handleSubmit} />
       {teams.status === "loading" && <TeamsSkeleton />}
       {teams.status === "rate-limited" && <ErrorLine>{retryText(teams.retryAfter)}</ErrorLine>}
@@ -111,17 +114,26 @@ export function Analyzer() {
           </Button>
         </div>
       )}
-      {teams.status === "ready" && passphrase && (
-        // The form is the content of the route, so it fades and rises in once when it first shows. With motion off it shows at rest.
-        <Reveal trigger="mount" duration={DURATION.page}>
-          <TradeForm
-            teams={teams.teams}
-            passphrase={passphrase}
-            onUnauthorized={handleUnauthorized}
-            onRostersStale={handleStaleRosters}
-          />
-        </Reveal>
+    </>
+  );
+
+  if (teams.status !== "ready" || !passphrase) return <Chapter>{states}</Chapter>;
+
+  return (
+    <TradeForm teams={teams.teams} passphrase={passphrase} onUnauthorized={handleUnauthorized} onRostersStale={handleStaleRosters}>
+      {/* The result sits after the chapter, not inside it, so its own chapters read as cards under the form card. */}
+      {({ form, result }) => (
+        <>
+          <Chapter>
+            {states}
+            {/* The form is the content of the route, so it fades and rises in once when it first shows. With motion off it shows at rest. */}
+            <Reveal trigger="mount" duration={DURATION.page}>
+              {form}
+            </Reveal>
+          </Chapter>
+          {result}
+        </>
       )}
-    </div>
+    </TradeForm>
   );
 }

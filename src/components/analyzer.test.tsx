@@ -87,7 +87,7 @@ describe("Analyzer", () => {
     render(<Analyzer />);
     await submitPassphrase("localtest");
 
-    expect(await screen.findByText("Pick the teams")).toBeTruthy();
+    expect(await screen.findByText("Pick the Teams")).toBeTruthy();
     const [url, init] = fetchStub.mock.calls[0];
     expect(url).toContain("/teams?season=2026");
     expect(init.headers["X-League-Passphrase"]).toBe("localtest");
@@ -103,7 +103,7 @@ describe("Analyzer", () => {
     answer(200, TEAMS);
     render(<Analyzer />);
 
-    expect(await screen.findByText("Pick the teams")).toBeTruthy();
+    expect(await screen.findByText("Pick the Teams")).toBeTruthy();
     expect(screen.queryByRole("dialog")).toBeNull();
     expect(fetchStub.mock.calls[0][1].headers["X-League-Passphrase"]).toBe("localtest");
   });
@@ -119,7 +119,7 @@ describe("Analyzer", () => {
 
     answer(200, TEAMS);
     await submitPassphrase("localtest");
-    expect(await screen.findByText("Pick the teams")).toBeTruthy();
+    expect(await screen.findByText("Pick the Teams")).toBeTruthy();
     expect(fetchStub).toHaveBeenCalledTimes(2);
   });
 
@@ -143,10 +143,10 @@ describe("Analyzer", () => {
     render(<Analyzer />);
 
     expect(await screen.findByRole("status", { name: "Loading teams" })).toBeTruthy();
-    expect(screen.queryByText("Pick the teams")).toBeNull();
+    expect(screen.queryByText("Pick the Teams")).toBeNull();
 
     release();
-    expect(await screen.findByText("Pick the teams")).toBeTruthy();
+    expect(await screen.findByText("Pick the Teams")).toBeTruthy();
     expect(screen.queryByRole("status", { name: "Loading teams" })).toBeNull();
     expect(JSON.parse(sessionStorage.getItem(STORE_KEY)!).teams).toHaveLength(3);
   });
@@ -158,7 +158,7 @@ describe("Analyzer", () => {
     render(<Analyzer />);
 
     // The fetch has not answered, so the pickers come from the store.
-    expect(await screen.findByText("Pick the teams")).toBeTruthy();
+    expect(await screen.findByText("Pick the Teams")).toBeTruthy();
     expect(screen.getAllByText("Stored Sliders")).toHaveLength(2);
     expect(screen.queryByRole("status", { name: "Loading teams" })).toBeNull();
     expect(fetchStub).toHaveBeenCalledTimes(1);
@@ -180,7 +180,7 @@ describe("Analyzer", () => {
     expect(screen.queryByText("Stored Sliders")).toBeNull();
 
     release();
-    expect(await screen.findByText("Pick the teams")).toBeTruthy();
+    expect(await screen.findByText("Pick the Teams")).toBeTruthy();
     expect(screen.queryByText("Stored Sliders")).toBeNull();
   });
 
@@ -190,7 +190,7 @@ describe("Analyzer", () => {
     answer(500);
     render(<Analyzer />);
 
-    expect(await screen.findByText("Pick the teams")).toBeTruthy();
+    expect(await screen.findByText("Pick the Teams")).toBeTruthy();
     await waitFor(() => expect(fetchStub).toHaveBeenCalledTimes(1));
     // The failed answer settles in a later task, so the test lets it land before it reads the screen.
     await act(() => new Promise((resolve) => setTimeout(resolve, 0)));
@@ -221,7 +221,7 @@ describe("Analyzer", () => {
     );
     const release = answerLater({ teams: ROSTERS });
     render(<Analyzer />);
-    await screen.findByText("Pick the teams");
+    await screen.findByText("Pick the Teams");
 
     pickTrade();
     expect(submit().disabled).toBe(false);
@@ -239,7 +239,7 @@ describe("Analyzer", () => {
     localStorage.setItem("cpc.passphrase", "localtest");
     answer(200, { teams: ROSTERS });
     render(<Analyzer />);
-    await screen.findByText("Pick the teams");
+    await screen.findByText("Pick the Teams");
     expect(sessionStorage.getItem(STORE_KEY)).not.toBeNull();
 
     pickTrade();
@@ -266,14 +266,35 @@ describe("Analyzer", () => {
 
     answer(200, TEAMS);
     fireEvent.click(screen.getByRole("button", { name: "Try again" }));
-    expect(await screen.findByText("Pick the teams")).toBeTruthy();
+    expect(await screen.findByText("Pick the Teams")).toBeTruthy();
+  });
+
+  it("puts both pickers before both lists and the grade button after the lists", async () => {
+    localStorage.setItem("cpc.passphrase", "localtest");
+    answer(200, { teams: ROSTERS });
+    render(<Analyzer />);
+    await screen.findByText("Pick the Teams");
+    fireEvent.click(within(screen.getByRole("group", { name: "My team" })).getByRole("radio", { name: /Gridiron Ghosts/ }));
+    fireEvent.click(within(screen.getByRole("group", { name: "The other team" })).getByRole("radio", { name: /Blitz Bakers/ }));
+
+    // The two-column grid of the tablet tier places each part, so the document order stays the phone order.
+    const parts = [
+      screen.getByRole("group", { name: "My team" }),
+      screen.getByRole("group", { name: "The other team" }),
+      screen.getByRole("group", { name: "Gridiron Ghosts gives" }),
+      screen.getByRole("group", { name: "Blitz Bakers gives" }),
+      submit(),
+    ];
+    for (let i = 1; i < parts.length; i++) {
+      expect(parts[i - 1].compareDocumentPosition(parts[i]) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    }
   });
 
   it("disables the team that the other picker holds", async () => {
     localStorage.setItem("cpc.passphrase", "localtest");
     answer(200, TEAMS);
     render(<Analyzer />);
-    await screen.findByText("Pick the teams");
+    await screen.findByText("Pick the Teams");
 
     const mine = screen.getByRole("group", { name: "My team" });
     const other = screen.getByRole("group", { name: "The other team" });
