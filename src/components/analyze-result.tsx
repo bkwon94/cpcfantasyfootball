@@ -2,6 +2,7 @@
  * The analyzer result: the decision for the asker first, the fairness line, the swap card, then the analysis, the data, and the reasoning per side.
  * It reads one analyze document. No letter grade shows anywhere.
  * The trade finder reuses SwapCard, FairnessBlock, and AsOfLine for its cards and its as-of line.
+ * Two sides show the arrow swap card. Three or more show one row per side, with each player tagged by the team he goes to or comes from.
  */
 "use client";
 
@@ -34,7 +35,8 @@ function Caps({ children, className }: { children: ReactNode; className?: string
   return <span className={cn("text-label font-bold tracking-caps text-mute uppercase", className)}>{children}</span>;
 }
 
-function PlayerChip({ player }: { player: Player }) {
+/* tag names the team the player goes to or comes from. Only the swap card with three or more sides passes one. */
+function PlayerChip({ player, tag }: { player: Player; tag?: string }) {
   return (
     <li className="flex flex-col items-center overflow-hidden rounded-card bg-wht px-sp-2 pt-sp-2 pb-sp-3 text-center">
       {/* The cutout fills the chip edge to edge, so the chip reads as a card for that player. The name names it, so the image is decorative. */}
@@ -49,6 +51,8 @@ function PlayerChip({ player }: { player: Player }) {
       <span className="py-sp-1 text-meta text-mute">
         {player.position} · {player.nfl_team}
       </span>
+      {/* A long team name wraps under the name, so the tag never clips at the phone width. */}
+      {tag && <span className="text-label leading-tight font-bold tracking-wide break-words text-red-ink uppercase">{tag}</span>}
     </li>
   );
 }
@@ -70,7 +74,53 @@ function SwapColumn({ side }: { side: SwapSide }) {
   );
 }
 
+/* The team name of a roster id, or none when the document lacks the id or the id names no side. An old document has no to and no from, so its chips show no tag. */
+function teamOf(sides: SwapSide[], rosterId: number | undefined): string | undefined {
+  return rosterId === undefined ? undefined : sides.find((s) => s.roster_id === rosterId)?.team;
+}
+
+/* The chips of one half of a row. They wrap into as many columns as fit, so a row never scrolls sideways at the phone width. */
+function ChipGroup({ label, children }: { label: string; children: ReactNode }) {
+  return (
+    <div className="min-w-0">
+      <span className="mb-sp-1 block text-label font-bold tracking-wide text-mute uppercase">{label}</span>
+      <ul className="m-0 grid list-none grid-cols-[repeat(auto-fill,minmax(9rem,1fr))] gap-sp-2 p-0">{children}</ul>
+    </div>
+  );
+}
+
+/* One row of the swap card with three or more sides: the team, what it gives, and what it gets. */
+function SwapRow({ side, sides }: { side: SwapSide; sides: SwapSide[] }) {
+  return (
+    <div role="group" aria-label={side.team} className="flex flex-col gap-sp-3 border-b border-divider pb-sp-4 last:border-b-0 last:pb-0">
+      <div className="text-meta leading-tight font-extrabold hyphens-auto">{side.team}</div>
+      <ChipGroup label={side.mine ? "You Give" : "Gives"}>
+        {side.gives.map((player) => {
+          const team = teamOf(sides, player.to);
+          return <PlayerChip key={player.player_id} player={player} tag={team && `To ${team}`} />;
+        })}
+      </ChipGroup>
+      <ChipGroup label={side.mine ? "You Get" : "Gets"}>
+        {side.gets.map((player) => {
+          const team = teamOf(sides, player.from);
+          return <PlayerChip key={player.player_id} player={player} tag={team && `From ${team}`} />;
+        })}
+      </ChipGroup>
+    </div>
+  );
+}
+
 export function SwapCard({ sides }: { sides: SwapSide[] }) {
+  // An arrow fits two sides only, so three or more sides read as one row per side, in the order given.
+  if (sides.length > 2) {
+    return (
+      <div className="flex flex-col gap-sp-4 rounded-card bg-gry p-sp-3">
+        {sides.map((side) => (
+          <SwapRow key={side.roster_id} side={side} sides={sides} />
+        ))}
+      </div>
+    );
+  }
   const [left, right] = sides;
   return (
     <div className="rounded-card bg-gry p-sp-3">
