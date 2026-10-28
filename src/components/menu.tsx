@@ -8,6 +8,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useId, useRef, useState, type ReactNode, type Ref } from "react";
 import { currentPage } from "@/components/current-page";
 import { Dialog, DialogOverlay, DialogPopup, DialogPortal, DialogTrigger } from "@/components/ui/dialog";
+import { ThemeButton } from "@/components/theme-button";
 import { Popover, PopoverClose, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { basePath } from "@/lib/config";
 import { DROP, DURATION, EASE_OUT, INSTANT, stagger, useMotionOff } from "@/lib/motion";
@@ -86,7 +87,7 @@ function Item({ destination, pageHref, index, off }: ItemProps) {
       <a
         href={destination.href}
         aria-current={currentPage(destination, pageHref)}
-        className="press flex min-h-touch items-center border-b border-rule text-lead font-bold text-ink no-underline hover-fine:text-red aria-[current=page]:text-red"
+        className="press flex min-h-touch items-center border-b border-rule text-lead font-bold text-ink no-underline hover-fine:text-red-ink aria-[current=page]:text-red-ink"
       >
         {destination.label}
       </a>
@@ -166,7 +167,7 @@ function Row({ destinations, pageHref, label }: RowProps) {
                       <a
                         href={destination.href}
                         aria-current={currentPage(destination, pageHref)}
-                        className="press flex min-h-touch items-center text-lead font-bold text-ink no-underline hover-fine:text-red aria-[current=page]:text-red"
+                        className="press flex min-h-touch items-center text-lead font-bold text-ink no-underline hover-fine:text-red-ink aria-[current=page]:text-red-ink"
                       >
                         {destination.label}
                       </a>
@@ -183,6 +184,9 @@ function Row({ destinations, pageHref, label }: RowProps) {
           </AnimatePresence>
         </Popover>
       )}
+      {/* The row ends with the theme button, where the menu button sits below the desktop tier.
+          The negative margin lines the icon up with the page edge, as the menu button does. */}
+      <ThemeButton className="-mr-sp-3" />
     </nav>
   );
 }
@@ -270,6 +274,9 @@ export function Menu({ destinations, pageHref, title }: MenuIslandProps) {
       <Dialog open={open} onOpenChange={openChange}>
         {/* With scripts off the button can open nothing, so it hides, and the masthead shows the destinations as plain links.
             From the desktop tier up the row shows the destinations, so the button hides. */}
+        {/* The theme button sits left of the menu button and hides with it. The auto margin takes the free space of the row,
+            so the two buttons stay together at the right end and the brand link stays at the left. */}
+        <ThemeButton className="ml-auto desktop:hidden [@media(scripting:none)]:hidden" />
         <MenuButton
           ref={buttonRef}
           open={open}
@@ -281,6 +288,8 @@ export function Menu({ destinations, pageHref, title }: MenuIslandProps) {
           {barShown && (
             <CompactBar ref={barRef} title={title} off={off}>
               <Row destinations={destinations} pageHref={pageHref} label="Top bar menu" />
+              {/* The bar never renders with scripts off, so the theme button here needs no scripting rule. */}
+              <ThemeButton className="ml-auto desktop:hidden" />
               {/* A second trigger of the same dialog. Base UI marks the trigger that opened the sheet, so focus returns to it on close. */}
               <MenuButton open={open} off={off} listId={listId} className="desktop:hidden" />
             </CompactBar>
@@ -299,9 +308,10 @@ export function Menu({ destinations, pageHref, title }: MenuIslandProps) {
                 style={{ top }}
                 render={<motion.div {...backdrop} />}
               />
+              {/* The bottom rule marks the end of the sheet. In the dark theme the sheet and the dimmed page are both black, so the edge is lost without it. */}
               <DialogPopup
                 aria-label="Menu"
-                className="fixed inset-x-0 z-50 overflow-y-auto overscroll-contain bg-wht text-ink outline-none"
+                className="fixed inset-x-0 z-50 overflow-y-auto overscroll-contain border-b border-rule bg-wht text-ink outline-none"
                 style={{ top, maxHeight: `calc(100dvh - ${top}px)` }}
                 render={<motion.div {...sheet} />}
               >
@@ -315,7 +325,7 @@ export function Menu({ destinations, pageHref, title }: MenuIslandProps) {
                     <>
                       <h2
                         id={pastId}
-                        className="mt-sp-5 mb-0 text-label leading-tight font-bold tracking-wide text-red uppercase"
+                        className="mt-sp-5 mb-0 text-label leading-tight font-bold tracking-wide text-red-ink uppercase"
                       >
                         Past Weeks
                       </h2>

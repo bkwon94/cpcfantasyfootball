@@ -34,7 +34,7 @@ function Chapter({ children }: { children: ReactNode }) {
 
 /* The classes are fixed, so this needs no cn. */
 function Label({ children }: { children: ReactNode }) {
-  return <div className="mb-sp-3 text-label leading-tight font-bold tracking-wide text-red uppercase">{children}</div>;
+  return <div className="mb-sp-3 text-label leading-tight font-bold tracking-wide text-red-ink uppercase">{children}</div>;
 }
 
 /* The small caps style of the table and the swap card. A className adds a color or a layout class. */
@@ -102,7 +102,7 @@ export function SwapCard({ sides }: { sides: SwapSide[] }) {
 
 /* The mark of a factor lean. The symbol is decorative, so a screen reader hears the word. */
 const MARKS = {
-  for: { symbol: "▲", color: "text-red" },
+  for: { symbol: "▲", color: "text-red-ink" },
   against: { symbol: "▼", color: "text-ink" },
   even: { symbol: "–", color: "text-mute" },
 } as const;
@@ -118,8 +118,8 @@ function Mark({ lean }: { lean: Factor["lean"] }) {
 }
 
 const ANSWER_WORD = {
-  yes: { word: "Yes", color: "text-red" },
-  no: { word: "No", color: "text-blk" },
+  yes: { word: "Yes", color: "text-red-ink" },
+  no: { word: "No", color: "text-ink" },
   not_as_is: { word: "Not as is", color: "text-mute" },
 } as const;
 
@@ -143,9 +143,9 @@ function DecisionBlock({ decision, team }: { decision: Decision; team?: string }
 
 /* The page words of the fairness states. The glossary says "Good for both" on the page, never "win-win". */
 const FAIRNESS_WORD = {
-  win_win: { word: "Good for both", color: "text-red" },
+  win_win: { word: "Good for both", color: "text-red-ink" },
   fair: { word: "Fair", color: "text-mute" },
-  lopsided: { word: "Lopsided", color: "text-blk" },
+  lopsided: { word: "Lopsided", color: "text-ink" },
 } as const;
 
 /* The fairness line rises in like the decision word, so both read as one call. With motion off, it shows at rest at once. */
@@ -202,7 +202,7 @@ function SideRead({ side }: { side: Side }) {
       <p className="m-0 text-meta leading-tight text-ink-2">{side.chart.reason}</p>
 
       <Part>The reasoning</Part>
-      <ul className="m-0 list-none border-y-2 border-blk p-0 text-meta leading-tight">
+      <ul className="m-0 list-none border-y-2 border-ink p-0 text-meta leading-tight">
         {side.factors.map((f) => (
           <li
             key={f.name}

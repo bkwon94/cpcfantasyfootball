@@ -4,11 +4,11 @@
 
 **Blocked by:** None (can start immediately).
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] The theme button is in the masthead, the compact bar, and the desktop row, next to the menu button, and at least 44px.
-- [ ] A press adds the class on the root element and stores dark. A second press removes the class and stores light.
-- [ ] The accessible name says the action of a press and flips with the theme.
-- [ ] A blocked storage still flips the class for this visit, with no error.
-- [ ] Tests through the masthead render cover the masthead button, the compact bar button, the desktop row button, a stored dark choice on mount, and blocked storage.
-- [ ] Typecheck, test, and build pass.
+- [x] The theme button is in the masthead, the compact bar, and the desktop row, next to the menu button, and at least 44px.
+- [x] A press adds the class on the root element and stores dark. A second press removes the class and stores light.
+- [x] The accessible name says the action of a press and flips with the theme.
+- [x] A blocked storage still flips the class for this visit, with no error.
+- [x] Tests through the masthead render cover the masthead button, the compact bar button, the desktop row button, a stored dark choice on mount, and blocked storage.
+- [x] Typecheck, test, and build pass.

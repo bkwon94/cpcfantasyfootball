@@ -87,14 +87,16 @@ function Orb({
               onError={swapToDefault}
               style={{ width: slot.size, height: slot.size }}
               className={cn(
-                "block rounded-full border-2 bg-ink-2 object-cover object-top shadow-orb",
+                // The fill is the dark rule, so it stays one step off the black card in both themes. Ink-2 turns light grey in the dark theme.
+                "block rounded-full border-2 bg-rule-dark object-cover object-top shadow-orb",
                 open ? "border-on-dark" : "border-red",
               )}
             />
             {price && (
               <span
                 style={{ top: -TAG.up * scale, right: -TAG.out * scale }}
-                className="absolute rounded-full bg-wht px-sp-1 py-sp-0 text-label leading-tight font-bold text-blk tabular-nums"
+                // The price tag uses the page and its ink, so it inverts with the theme. Ink inverts with the page, so the chip text shows in both themes.
+                className="absolute rounded-full bg-wht px-sp-1 py-sp-0 text-label leading-tight font-bold text-ink tabular-nums"
               >
                 {price}
               </span>

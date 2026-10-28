@@ -4,9 +4,9 @@
 
 **Blocked by:** None (can start immediately).
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] A new color token carries red text on the page. Its comment says why red text and red fills take different tokens.
-- [ ] No component paints text on the page with the brand red token.
-- [ ] Fills, borders, the glow, and light red text on a black card are unchanged.
-- [ ] Typecheck, test, and build pass. The light site looks the same at 390 and desktop.
+- [x] A new color token carries red text on the page. Its comment says why red text and red fills take different tokens.
+- [x] No component paints text on the page with the brand red token.
+- [x] Fills, borders, the glow, and light red text on a black card are unchanged.
+- [x] Typecheck, test, and build pass. The light site looks the same at 390 and desktop.

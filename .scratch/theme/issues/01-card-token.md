@@ -4,9 +4,9 @@
 
 **Blocked by:** None (can start immediately).
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] A new color token paints the black card. Its comment says why the card has its own token.
-- [ ] Every black card component uses the new token. No card component uses the brand black token for its surface.
-- [ ] The masthead, the compact bar, and the menu still use the brand black token.
-- [ ] Typecheck, test, and build pass. The light site looks the same at 390 and desktop.
+- [x] A new color token paints the black card. Its comment says why the card has its own token.
+- [x] Every black card component uses the new token. No card component uses the brand black token for its surface.
+- [x] The masthead, the compact bar, and the menu still use the brand black token.
+- [x] Typecheck, test, and build pass. The light site looks the same at 390 and desktop.

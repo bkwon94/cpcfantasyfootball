@@ -4,11 +4,12 @@
 
 **Blocked by:** 03 (override block), 04 (theme button), 05 (boot script).
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] Every page at 390 and desktop reads as dark, with no white surface outside an image.
-- [ ] The menu sheet, the passphrase dialog, and the popover take the dark theme.
-- [ ] The movement arrows, the trade grades, and the waiver drift field hold their colors and pass the graphic rule.
-- [ ] Images show as the pipeline made them.
-- [ ] Captures of each page in the dark theme sit in the scratch folder of the feature.
-- [ ] Typecheck, test, build, and the export check pass.
+- [x] Every page at 390 and desktop reads as dark, with no white surface outside an image.
+- [x] The menu sheet, the passphrase dialog, and the popover take the dark theme.
+- [x] The movement arrows, the trade grades, and the waiver drift field hold their colors and pass the graphic rule.
+  Not checked in a browser: no published week has waiver data. Checked by ratio only.
+- [x] Images show as the pipeline made them.
+- [x] Captures of each page in the dark theme sit in the scratch folder of the feature.
+- [x] Typecheck, test, build, and the export check pass.
