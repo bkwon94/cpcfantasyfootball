@@ -6,13 +6,17 @@
 
 **Blocked by:** 01 (A given player names its destination, two sides)
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] A fifth side is an input error, tested at the API seam
-- [ ] A three-side trade gets one start letter per side from its own gets and gives, tested at the rubric seam
-- [ ] A three-side fairness reads win-win, fair, and lopsided with the right `gives_more`, tested at the rubric seam
-- [ ] The analysis check passes a three-side output and fails a two-side output for a three-side trade
-- [ ] The prompt names the source and destination of each player
-- [ ] A three-side request grades end to end at the API seam with every side in order
-- [ ] The three-side fixture lands in the site repo and matches the live response shape
-- [ ] The pipeline test suite passes
+- [x] A fifth side is an input error, tested at the API seam
+- [x] A three-side trade gets one start letter per side from its own gets and gives, tested at the rubric seam
+- [x] A three-side fairness reads win-win, fair, and lopsided with the right `gives_more`, tested at the rubric seam
+- [x] The analysis check passes a three-side output and fails a two-side output for a three-side trade
+- [x] The prompt names the source and destination of each player
+- [x] A three-side request grades end to end at the API seam with every side in order
+- [x] The three-side fixture lands in the site repo and matches the live response shape
+- [x] The pipeline test suite passes
+
+## Comments
+
+- 2026-10-27, Truckasaurus Tina: Done in the pipeline commit c7ff17c. The CLI takes `--side ROSTER:PLAYER@TO,PLAYER@TO` two to four times. The three-side fixture is in the site repo.

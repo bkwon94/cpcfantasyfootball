@@ -6,14 +6,18 @@
 
 **Blocked by:** 02 (Three and four sides graded as one), 05 (Select pickers for a two-side trade)
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] "Add a Team" shows only when every side has a team and there are fewer than four sides, tested at the form seam
-- [ ] The third and fourth sides have a remove control and the first two do not, tested at the form seam
-- [ ] The To picker shows at three sides with the default destination, and not at two, tested at the form seam
-- [ ] A removed side's players leave and the players sent to it fall back, tested at the form seam
-- [ ] The grade button stays off until every side gives and gets a player, tested at the form seam
-- [ ] The posted body for a three-side trade carries every side in order with its destinations, tested at the form seam
-- [ ] The finder is hidden at three sides, tested at the form seam
-- [ ] Reduced motion renders no movement, tested at the form seam
-- [ ] `pnpm test`, `pnpm typecheck`, `pnpm build`, and `pnpm check:export` pass
+- [x] "Add a Team" shows only when every side has a team and there are fewer than four sides, tested at the form seam
+- [x] The third and fourth sides have a remove control and the first two do not, tested at the form seam
+- [x] The To picker shows at three sides with the default destination, and not at two, tested at the form seam
+- [x] A removed side's players leave and the players sent to it fall back, tested at the form seam
+- [x] The grade button stays off until every side gives and gets a player, tested at the form seam
+- [x] The posted body for a three-side trade carries every side in order with its destinations, tested at the form seam
+- [x] The finder is hidden at three sides, tested at the form seam
+- [x] Reduced motion renders no movement, tested at the form seam
+- [x] `pnpm test`, `pnpm typecheck`, `pnpm build`, and `pnpm check:export` pass
+
+## Comments
+
+- 2026-10-27, Truckasaurus Tina: Done in commit cb6718f. A pick's `to` holds the side id, not the roster id, so a destination holds when that side changes its team.

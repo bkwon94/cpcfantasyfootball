@@ -6,11 +6,15 @@
 
 **Blocked by:** None (can start immediately)
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] The returns loader reads `season` and the snapshot exposes the players out for the season
-- [ ] A player out for the season counts zero chart value for the side that gets him only, tested at the rubric seam
-- [ ] The injury adjuster steps that side down with the plain reason, tested at the rubric seam
-- [ ] A player on IR with no mark is not out for the season, tested at the rubric seam
-- [ ] ADR 0005 and the glossary terms are committed
-- [ ] The pipeline test suite passes
+- [x] The returns loader reads `season` and the snapshot exposes the players out for the season
+- [x] A player out for the season counts zero chart value for the side that gets him only, tested at the rubric seam
+- [x] The injury adjuster steps that side down with the plain reason, tested at the rubric seam
+- [x] A player on IR with no mark is not out for the season, tested at the rubric seam
+- [x] ADR 0005 and the glossary terms are committed
+- [x] The pipeline test suite passes
+
+## Comments
+
+- 2026-10-27, Truckasaurus Tina: Done in the pipeline commit 69b851b, merged in dc02eb2. `Snapshot.out_for_season` holds the set. A season player's lineup value is zero too, per ADR 0005.

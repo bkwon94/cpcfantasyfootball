@@ -6,14 +6,18 @@
 
 **Blocked by:** 01 (A given player names its destination, two sides)
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] The shadcn Select on Base UI is in the ui folder and no other new shadcn part is
-- [ ] The team picker shows each team with its avatar, and a team picked on one side is absent from the other, tested at the form seam
-- [ ] The player picker shows the team's players and the picked ones render as rows with a remove control, tested at the form seam
-- [ ] The grade button stays off until each side gives a player, tested at the form seam
-- [ ] The posted body sends the asker first and `to` on each player, tested at the form seam
-- [ ] A new team clears the side's picks and the result, tested at the form seam
-- [ ] A finder card still opens its trade into the form, tested at the form seam
+- [x] The shadcn Select on Base UI is in the ui folder and no other new shadcn part is
+- [x] The team picker shows each team with its avatar, and a team picked on one side is absent from the other, tested at the form seam
+- [x] The player picker shows the team's players and the picked ones render as rows with a remove control, tested at the form seam
+- [x] The grade button stays off until each side gives a player, tested at the form seam
+- [x] The posted body sends the asker first and `to` on each player, tested at the form seam
+- [x] A new team clears the side's picks and the result, tested at the form seam
+- [x] A finder card still opens its trade into the form, tested at the form seam
 - [ ] The old picker and list components and their test are gone
-- [ ] `pnpm test`, `pnpm typecheck`, `pnpm build`, and `pnpm check:export` pass
+- [x] `pnpm test`, `pnpm typecheck`, `pnpm build`, and `pnpm check:export` pass
+
+## Comments
+
+- 2026-10-27, Truckasaurus Tina: Done in commit 0f6fc70. One box stays open: `TeamPicker` and its test stay, because the finder and the waiver page use them. `PlayerList` is gone. A move of those two pages to the Select is out of scope.

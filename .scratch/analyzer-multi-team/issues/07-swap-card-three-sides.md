@@ -6,10 +6,14 @@
 
 **Blocked by:** 02 (Three and four sides graded as one)
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] The two-side fixture renders the arrow swap card, tested at the result seam
-- [ ] The three-side fixture renders one row per side with from and to tags, tested at the result seam
-- [ ] A document with no `to` and `from` renders the two-side card, tested at the result seam
-- [ ] The side reads render one per side in order, tested at the result seam
-- [ ] `pnpm test`, `pnpm typecheck`, `pnpm build`, and `pnpm check:export` pass
+- [x] The two-side fixture renders the arrow swap card, tested at the result seam
+- [x] The three-side fixture renders one row per side with from and to tags, tested at the result seam
+- [x] A document with no `to` and `from` renders the two-side card, tested at the result seam
+- [x] The side reads render one per side in order, tested at the result seam
+- [x] `pnpm test`, `pnpm typecheck`, `pnpm build`, and `pnpm check:export` pass
+
+## Comments
+
+- 2026-10-27, Truckasaurus Tina: Done in commit bad4122, merged in e51b23a.

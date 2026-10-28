@@ -8,8 +8,12 @@
 
 **Status:** ready-for-agent
 
-- [ ] `make analyze` in the pipeline repo takes two to four `SIDE` values with a destination per player and grades without the Claude call
-- [ ] `make dev-local` in the site repo runs the dev server against the local API on port 8080
-- [ ] `make help` lists both targets with one-line help
+- [x] `make analyze` in the pipeline repo takes two to four `SIDE` values with a destination per player and grades without the Claude call
+- [x] `make dev-local` in the site repo runs the dev server against the local API on port 8080
+- [x] `make help` lists both targets with one-line help
 - [ ] Brian grades a two-team trade and a three-team trade in the local form and sees the result
 - [ ] Brian says the feature is good, in a comment on this ticket
+
+## Comments
+
+- 2026-10-27, Truckasaurus Tina: Both make targets are in. A three-team ring trade graded from the CLI on live rosters with the upside factor. The graded run in the form with the Claude call is Brian's step.

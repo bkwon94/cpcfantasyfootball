@@ -6,14 +6,18 @@
 
 **Blocked by:** 03 (Out for the season)
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] A side that gets a star out now with no return week steps up, and the injury adjuster leaves him alone, tested at the rubric seam
-- [ ] A side that gets a star out for the season gets no upside, tested at the rubric seam
-- [ ] A side that gets a player whose teammate is out and whose use points up steps up, tested at the rubric seam
-- [ ] A QB with a flat target share and WOPR gets no upside from snaps, tested at the rubric seam
-- [ ] A side that gives a star return bet gets no upside for him, tested at the rubric seam
-- [ ] The upside reason names the player and the signal
-- [ ] The prompt names the upside
-- [ ] A graded trade at the API seam carries an upside factor per side
-- [ ] The pipeline test suite passes
+- [x] A side that gets a star out now with no return week steps up, and the injury adjuster leaves him alone, tested at the rubric seam
+- [x] A side that gets a star out for the season gets no upside, tested at the rubric seam
+- [x] A side that gets a player whose teammate is out and whose use points up steps up, tested at the rubric seam
+- [x] A QB with a flat target share and WOPR gets no upside from snaps, tested at the rubric seam
+- [x] A side that gives a star return bet gets no upside for him, tested at the rubric seam
+- [x] The upside reason names the player and the signal
+- [x] The prompt names the upside
+- [x] A graded trade at the API seam carries an upside factor per side
+- [x] The pipeline test suite passes
+
+## Comments
+
+- 2026-10-27, Truckasaurus Tina: Done in the pipeline commit 8c50b70, merged on the feature branch. The API sends the factor as `upside`. Air yards share is in. `STAR_RANK = 24`. The finder fixture in the pipeline tests changed; the site copy did not need it.
