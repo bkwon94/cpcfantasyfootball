@@ -48,8 +48,9 @@ export function PlayerSheet({
   const outbid = price && viewerBudget !== null ? price.outbid[String(viewerBudget)] : undefined;
   // The engine counts the rivals over the lower of the bid and the viewer's budget, so the line names that amount.
   const outbidOver = price && viewerBudget !== null ? Math.min(price.bid, viewerBudget) : null;
+  // The sheet is a black card. The dark theme turns ink into a text color, so ink would paint it white.
   return (
-    <section aria-label="Player sheet" className="mt-sp-3 rounded-card border border-rule-dark bg-ink px-sp-4 py-sp-3">
+    <section aria-label="Player sheet" className="mt-sp-3 rounded-card border border-rule-dark bg-card-blk px-sp-4 py-sp-3">
       {/* A screen reader reads this one short line after a tap, and not the whole sheet. */}
       <p aria-live="polite" className="sr-only">
         {player ? `Sheet: ${player.name}` : ""}
