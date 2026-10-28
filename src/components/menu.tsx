@@ -115,10 +115,14 @@ const POPOVER_SCALE = 0.95;
 type RowProps = MenuProps & {
   // The name of the landmark. The compact bar holds a second row, so each row takes its own name and a screen reader tells them apart.
   label: string;
+  // The placement of the row in its parent.
+  className: string;
+  // True for the row of the compact bar, which ends with the theme button. The masthead shows its theme button on the brand line.
+  withThemeButton: boolean;
 };
 
 /* The menu as a row of links for the desktop tier. It renders the same destinations as the sheet, so an item lives in one place. */
-function Row({ destinations, pageHref, label }: RowProps) {
+function Row({ destinations, pageHref, label, className, withThemeButton }: RowProps) {
   const off = useMotionOff();
   const [pastOpen, setPastOpen] = useState(false);
   // The popover leaves faster than it enters, along the same path. With motion off it leaves at once.
@@ -129,7 +133,7 @@ function Row({ destinations, pageHref, label }: RowProps) {
     // The row shows from the desktop tier up, where the menu button hides. With scripts off the noscript row of the masthead takes its place.
     <nav
       aria-label={label}
-      className="hidden items-center gap-x-sp-4 desktop:flex [@media(scripting:none)]:hidden"
+      className={`hidden items-center gap-x-sp-4 desktop:flex [@media(scripting:none)]:hidden ${className}`}
     >
       {destinations.pages.map((destination) => (
         <RowLink key={destination.href} destination={destination} pageHref={pageHref} />
@@ -184,9 +188,9 @@ function Row({ destinations, pageHref, label }: RowProps) {
           </AnimatePresence>
         </Popover>
       )}
-      {/* The row ends with the theme button, where the menu button sits below the desktop tier.
+      {/* The row of the compact bar ends with the theme button, where the menu button sits below the desktop tier.
           The negative margin lines the icon up with the page edge, as the menu button does. */}
-      <ThemeButton className="-mr-sp-3" />
+      {withThemeButton && <ThemeButton className="-mr-sp-3" />}
     </nav>
   );
 }
@@ -270,13 +274,24 @@ export function Menu({ destinations, pageHref, title }: MenuIslandProps) {
 
   return (
     <>
-      <Row destinations={destinations} pageHref={pageHref} label="Site menu" />
+      {/* From the desktop tier the masthead row takes its own line under the brand line, across the full column.
+          The desktop type step made the links wider than the column holds beside a two-line brand title,
+          so on one line the title wrapped to one word per line. The brand row is a grid at the desktop tier, and this is its second row. */}
+      <Row
+        destinations={destinations}
+        pageHref={pageHref}
+        label="Site menu"
+        className="desktop:col-span-2 desktop:row-start-2"
+        withThemeButton={false}
+      />
       <Dialog open={open} onOpenChange={openChange}>
         {/* With scripts off the button can open nothing, so it hides, and the masthead shows the destinations as plain links.
             From the desktop tier up the row shows the destinations, so the button hides. */}
-        {/* The theme button sits left of the menu button and hides with it. The auto margin takes the free space of the row,
-            so the two buttons stay together at the right end and the brand link stays at the left. */}
-        <ThemeButton className="ml-auto desktop:hidden [@media(scripting:none)]:hidden" />
+        {/* The theme button sits left of the menu button. The auto margin takes the free space of the row,
+            so the two buttons stay together at the right end and the brand link stays at the left.
+            From the desktop tier the menu button hides, and the theme button stays at the right end of the brand line, in the second cell of the grid.
+            The negative margin there lines the icon up with the page edge, as the menu button does below the desktop tier. */}
+        <ThemeButton className="ml-auto desktop:col-start-2 desktop:row-start-1 desktop:-mr-sp-3 [@media(scripting:none)]:hidden" />
         <MenuButton
           ref={buttonRef}
           open={open}
@@ -287,7 +302,7 @@ export function Menu({ destinations, pageHref, title }: MenuIslandProps) {
         <AnimatePresence>
           {barShown && (
             <CompactBar ref={barRef} title={title} off={off}>
-              <Row destinations={destinations} pageHref={pageHref} label="Top bar menu" />
+              <Row destinations={destinations} pageHref={pageHref} label="Top bar menu" className="" withThemeButton />
               {/* The bar never renders with scripts off, so the theme button here needs no scripting rule. */}
               <ThemeButton className="ml-auto desktop:hidden" />
               {/* A second trigger of the same dialog. Base UI marks the trigger that opened the sheet, so focus returns to it on close. */}

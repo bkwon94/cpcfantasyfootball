@@ -59,11 +59,13 @@ export function Masthead({
     <header className="bg-blk text-on-dark">
       <div className="mx-auto max-w-page px-gutter pt-sp-5 pb-sp-4">
         {/* The brand line: the home link on the left and the menu button at the right end, where a thumb finds it.
-            From the desktop tier up the row of the menu takes the place of the button. */}
-        <div className="flex items-center justify-between gap-sp-3">
+            From the desktop tier up the row of the menu takes the place of the button, on its own line under the brand line.
+            The grid holds the brand link and the theme button in the first row and the row of the menu in the second. */}
+        <div className="flex items-center justify-between gap-sp-3 desktop:grid desktop:grid-cols-[minmax(0,1fr)_auto] desktop:gap-y-sp-4">
           {/* A plain anchor, not next/link: the home page is a static page with no shared state, so the client router adds nothing. */}
           {/* The link is at least 44px tall, so it is a comfortable tap target on a phone. */}
-          <a href={`${basePath}/`} className="flex min-h-touch items-center gap-sp-3 text-inherit no-underline">
+          {/* In the grid of the desktop tier the link keeps the width of its content, so the empty space of the cell is no link. */}
+          <a href={`${basePath}/`} className="flex min-h-touch items-center gap-sp-3 text-inherit no-underline desktop:justify-self-start">
             {/* The title next to the logo names the link, so the logo is decorative. */}
             <img src={`${basePath}/images/logo.png`} alt="" width={30} height={30} className="size-logo flex-none rounded-full" />
             <div className="h-divider w-px bg-mute" />
