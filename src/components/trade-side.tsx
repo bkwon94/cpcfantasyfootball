@@ -117,7 +117,7 @@ function DestinationPicker({
         {/* The trigger is short to fit the meta line. The negative margin and the padding give it a taller hit area. */}
         <SelectTrigger
           aria-labelledby={labelId}
-          className="press -my-sp-1 h-auto min-w-0 gap-sp-1 rounded-sm border-0 bg-transparent px-sp-1 py-sp-1 text-meta font-bold text-on-dark underline decoration-on-dark-muted underline-offset-2 hover:bg-on-dark/10 focus-visible:outline-2 focus-visible:outline-red focus-visible:ring-0 disabled:opacity-40 data-[size=default]:h-auto dark:bg-transparent dark:hover:bg-on-dark/10 [&>[data-slot=select-value]]:min-w-0 [&_svg]:text-on-dark-muted"
+          className="press -my-sp-1 h-auto min-w-0 gap-sp-1 rounded-sm border-0 bg-transparent px-sp-1 py-sp-1 text-meta font-bold text-red-ink underline decoration-red-ink/50 underline-offset-2 hover:bg-red/10 focus-visible:outline-2 focus-visible:outline-red focus-visible:ring-0 disabled:opacity-40 data-[size=default]:h-auto dark:bg-transparent dark:hover:bg-red/10 [&>[data-slot=select-value]]:min-w-0 [&_svg]:text-red-ink"
         >
           <SelectValue>{() => <span className="truncate">{current?.team?.team ?? "Pick a Team"}</span>}</SelectValue>
         </SelectTrigger>
@@ -249,12 +249,12 @@ export function TradeSide({
                   animate={{ opacity: 1, y: 0 }}
                   exit={off ? { opacity: 0, transition: INSTANT } : { opacity: 0, transition: ROW_EXIT }}
                   transition={off ? INSTANT : ROW_ENTER}
-                  className="flex min-h-touch w-full items-center gap-sp-3 rounded-card bg-card-blk py-sp-1 pl-sp-3 text-on-dark"
+                  className="flex min-h-touch w-full items-center gap-sp-3 rounded-card bg-pick py-sp-1 pl-sp-3 text-ink shadow-[inset_3px_0_0_var(--color-red)]"
                 >
                   <Headshot player={player} />
                   <span className="flex min-w-0 flex-1 flex-col">
                     <b className="truncate text-row leading-tight font-extrabold">{player.name}</b>
-                    <span className="flex min-w-0 items-center gap-sp-1 text-meta whitespace-nowrap text-on-dark-muted">
+                    <span className="flex min-w-0 items-center gap-sp-1 text-meta whitespace-nowrap text-mute">
                       <span className="flex-none">
                         {player.position} {player.nfl_team}
                       </span>
@@ -273,7 +273,7 @@ export function TradeSide({
                     aria-label={`Remove ${player.name}`}
                     disabled={locked}
                     onClick={() => onPickPlayers(ids.filter((id) => id !== player.player_id))}
-                    className="press grid size-touch flex-none cursor-pointer place-items-center rounded-card text-on-dark-muted hover:text-on-dark focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-red disabled:cursor-not-allowed disabled:opacity-40"
+                    className="press grid size-touch flex-none cursor-pointer place-items-center rounded-card text-mute hover:text-red-ink focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-red disabled:cursor-not-allowed disabled:opacity-40"
                   >
                     <XIcon aria-hidden="true" className="size-4" />
                   </button>

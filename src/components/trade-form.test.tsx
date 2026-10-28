@@ -125,6 +125,20 @@ describe("TradeForm", () => {
     expect(trigger.querySelector("img")!.getAttribute("src")).toBe("https://cdn.test/ana.png");
   });
 
+  it("closes the player list on Escape and keeps the picks", async () => {
+    await pickTeam("Your Team", "Pukancun on 3");
+    const list = await openPicker(playerTrigger("Pukancun on 3"));
+    choose(within(list).getByRole("option", { name: /Ana One/ }));
+    choose(within(list).getByRole("option", { name: /Ana Two/ }));
+    // A pick keeps the multi-select open, so Escape is one way out.
+    expect(screen.getByRole("listbox")).toBeTruthy();
+    fireEvent.keyDown(list, { key: "Escape" });
+    await waitFor(() => expect(screen.queryByRole("listbox")).toBeNull());
+    expect(playerTrigger("Pukancun on 3").textContent).toContain("2 Players");
+    expect(row("Pukancun on 3", "Ana One")).toBeTruthy();
+    expect(row("Pukancun on 3", "Ana Two")).toBeTruthy();
+  });
+
   it("swaps a failed avatar to the default image once", async () => {
     await pickTeam("Your Team", "Pukancun on 3");
     const img = teamTrigger("Your Team").querySelector("img")!;
