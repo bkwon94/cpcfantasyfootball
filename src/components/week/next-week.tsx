@@ -7,11 +7,14 @@ import { cn } from "@/lib/utils";
 import type { AvatarMap, ByePlayer, NextGame, Team } from "@/lib/week-types";
 import { avatarSrc, Blurb, Chapter, Label, Tag, Who } from "./parts";
 
-/* The players on bye next week, key starters first and in bold. The line wraps and never truncates,
-   so a long list stays whole. A key starter takes the ink color so the bold stands out from the mute text. It indents past the avatar like the "vs". */
+/* The "vs" line and the bye line share one indent, so both line up under the team names, past the avatar column. */
+const PAST_AVATAR = "pl-[calc(var(--spacing-avatar)+var(--spacing-sp-2))]";
+
+/* The players on bye next week, key starters first and in bold. The line wraps and never truncates, so a long list stays whole.
+   It sets normal weight, because the game div around it is extra bold. A key starter takes the ink color to stand out from the mute text. */
 function ByeLine({ byes }: { byes: ByePlayer[] }) {
   return (
-    <div className="mt-sp-1 pl-[calc(var(--spacing-avatar)+var(--spacing-sp-2))] text-meta text-mute">
+    <div className={cn("mt-sp-1 text-meta leading-body font-normal text-mute", PAST_AVATAR)}>
       <Tag className="ml-0 mr-sp-1">Bye</Tag>
       {byes.map((player, i) => {
         const Name = player.key ? "strong" : "span";
@@ -47,7 +50,7 @@ function Game({ game, avatars, first }: { game: NextGame; avatars: AvatarMap; fi
       <div className="text-body leading-body font-extrabold">
         <Side team={game.a} avatars={avatars} />
         {/* The "vs" lines up under the names, past the avatar column. */}
-        <div className="my-sp-1 pl-[calc(var(--spacing-avatar)+var(--spacing-sp-2))] text-meta leading-none font-semibold text-mute">
+        <div className={cn("my-sp-1 text-meta leading-none font-semibold text-mute", PAST_AVATAR)}>
           vs
         </div>
         <Side team={game.b} avatars={avatars} />

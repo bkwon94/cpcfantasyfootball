@@ -11,7 +11,7 @@ afterEach(() => {
   cleanup();
 });
 
-/* The published week 6 JSON has no byes, so the bye tests add them to copies of three games.
+/* The published week 6 JSON has no byes, so the bye tests add them to three sides of two games.
    One side has a key starter and a player who is not, one has an empty list, and the rest have none. */
 const gamesWithByes = week6.next.map((game, i) => {
   if (i === 0) {
