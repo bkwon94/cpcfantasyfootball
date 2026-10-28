@@ -11,8 +11,24 @@ afterEach(() => {
   cleanup();
 });
 
-function renderNext() {
-  return render(<NextWeek week={week6.week} games={week6.next} avatars={week6.avatars} blurb={week6.blurbs.next_week} />);
+/* The published week 6 JSON has no byes, so the bye tests add them to copies of three games.
+   One side has a key starter and a player who is not, one has an empty list, and the rest have none. */
+const gamesWithByes = week6.next.map((game, i) => {
+  if (i === 0) {
+    const byes = [
+      { player_id: "4984", name: "Josh Allen", position: "QB", key: true },
+      { player_id: "7525", name: "Dalton Kincaid", position: "TE", key: false },
+    ];
+    return { ...game, a: { ...game.a, byes }, b: { ...game.b, byes: [] } };
+  }
+  if (i === 2) {
+    return { ...game, a: { ...game.a, byes: [{ player_id: "8183", name: "Jayden Daniels", position: "QB", key: true }] } };
+  }
+  return game;
+});
+
+function renderNext(games = week6.next) {
+  return render(<NextWeek week={week6.week} games={games} avatars={week6.avatars} blurb={week6.blurbs.next_week} />);
 }
 
 describe("NextWeek", () => {
@@ -38,5 +54,32 @@ describe("NextWeek", () => {
   it("shows the blurb", () => {
     renderNext();
     expect(screen.getByText(firstSentence(week6.blurbs.next_week), { exact: false })).toBeTruthy();
+  });
+
+  it("tags each side with players on bye and none with an empty list", () => {
+    renderNext(gamesWithByes);
+    const sidesWithByes = gamesWithByes.flatMap((game) => [game.a, game.b]).filter((team) => team.byes?.length);
+    expect(sidesWithByes.length).toBeGreaterThanOrEqual(2);
+    expect(screen.getAllByText("Bye").length).toBe(sidesWithByes.length);
+  });
+
+  it("lists each player on bye with his position and bolds the key starter", () => {
+    renderNext(gamesWithByes);
+    const byes = gamesWithByes.flatMap((game) => [game.a, game.b]).flatMap((team) => team.byes ?? []);
+    for (const player of byes) {
+      const name = screen.getByText(player.name);
+      expect(name.parentElement?.textContent).toContain(`${player.name} ${player.position}`);
+      expect(name.tagName === "STRONG").toBe(player.key);
+    }
+    expect(byes.some((player) => player.key)).toBe(true);
+    expect(byes.some((player) => !player.key)).toBe(true);
+  });
+
+  it("shows no Bye tag for a side with an empty list or no list", () => {
+    renderNext(gamesWithByes);
+    const sides = gamesWithByes.flatMap((game) => [game.a, game.b]);
+    expect(sides.some((team) => team.byes?.length === 0)).toBe(true);
+    expect(sides.some((team) => team.byes === undefined)).toBe(true);
+    expect(screen.getAllByText("Bye").length).toBe(sides.filter((team) => team.byes?.length).length);
   });
 });

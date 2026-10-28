@@ -3,6 +3,9 @@
  * They cover the keys the week route reads. The JSON turns int keys into strings, so maps take string roster ids.
  */
 
+/* A player on bye next week. A key starter is a player the team started in 3 of its last 4 weeks. */
+export type ByePlayer = { player_id: string; name: string; position: string; key: boolean };
+
 export type Team = {
   roster_id: number;
   name: string;
@@ -12,6 +15,8 @@ export type Team = {
   losses: number;
   points_for: number;
   is_brian: boolean;
+  /* Only a next-week side has this list. Key starters come first. Older page JSON has none, which reads as empty. */
+  byes?: ByePlayer[];
 };
 
 /* One player's line for the week. A defense has its team code as the player id. */

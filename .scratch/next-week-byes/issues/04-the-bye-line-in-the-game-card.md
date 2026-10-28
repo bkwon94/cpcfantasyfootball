@@ -11,10 +11,10 @@ an empty or missing list renders as today.
 
 **Status:** ready-for-agent
 
-- [ ] The week types gain an optional `byes` list on each side of a next-week game. A missing list reads as empty.
-- [ ] The card renders the bye line under a side with players on bye, in list order, with the "Bye" tag before the names. Title case for the tag.
-- [ ] A key starter's name is bold. The bold reads in both themes on the grey card.
-- [ ] The line is indented past the avatar, wraps at 390px, and never truncates.
-- [ ] A side with an empty list has no tag and no line. The Must Watch tag and reason render as today.
-- [ ] The fixture week JSON gains byes for at least two sides, one with a key starter and one with none. The tests read the tag count, the names, the bold key starter, and the absence on an empty side. No test reads a class name.
-- [ ] `pnpm test`, `pnpm typecheck`, `pnpm build`, and `pnpm check:export` pass.
+- [x] The week types gain an optional `byes` list on each side of a next-week game. A missing list reads as empty.
+- [x] The card renders the bye line under a side with players on bye, in list order, with the "Bye" tag before the names. Title case for the tag.
+- [x] A key starter's name is bold. The bold reads in both themes on the grey card.
+- [x] The line is indented past the avatar, wraps at 390px, and never truncates.
+- [x] A side with an empty list has no tag and no line. The Must Watch tag and reason render as today.
+- [x] The fixture week JSON gains byes for at least two sides, one with a key starter and one with none. The tests read the tag count, the names, the bold key starter, and the absence on an empty side. No test reads a class name.
+- [x] `pnpm test`, `pnpm typecheck`, `pnpm build`, and `pnpm check:export` pass.

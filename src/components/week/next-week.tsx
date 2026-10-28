@@ -4,17 +4,40 @@
  * A phone stacks the cards; a tablet puts two per row and a desktop three, so the slate fits the width.
  */
 import { cn } from "@/lib/utils";
-import type { AvatarMap, NextGame, Team } from "@/lib/week-types";
+import type { AvatarMap, ByePlayer, NextGame, Team } from "@/lib/week-types";
 import { avatarSrc, Blurb, Chapter, Label, Tag, Who } from "./parts";
+
+/* The players on bye next week, key starters first and in bold. The line wraps and never truncates,
+   so a long list stays whole. A key starter takes the ink color so the bold stands out from the mute text. It indents past the avatar like the "vs". */
+function ByeLine({ byes }: { byes: ByePlayer[] }) {
+  return (
+    <div className="mt-sp-1 pl-[calc(var(--spacing-avatar)+var(--spacing-sp-2))] text-meta text-mute">
+      <Tag className="ml-0 mr-sp-1">Bye</Tag>
+      {byes.map((player, i) => {
+        const Name = player.key ? "strong" : "span";
+        return (
+          <span key={player.player_id}>
+            {i > 0 && ", "}
+            <Name className={player.key ? "text-ink" : undefined}>{player.name}</Name>
+            {` ${player.position}`}
+          </span>
+        );
+      })}
+    </div>
+  );
+}
 
 /* One team per row. The name takes the free width and the record stays whole on the right,
    so a long name never pushes a record or the other team onto a new line. */
 function Side({ team, avatars }: { team: Team; avatars: AvatarMap }) {
   return (
-    <div className="flex min-w-0 items-center gap-sp-2">
-      <Who src={avatarSrc(avatars, team.roster_id)} name={team.name} fill />
-      <span className="flex-none font-semibold whitespace-nowrap text-mute tabular-nums">{`${team.wins}-${team.losses}`}</span>
-    </div>
+    <>
+      <div className="flex min-w-0 items-center gap-sp-2">
+        <Who src={avatarSrc(avatars, team.roster_id)} name={team.name} fill />
+        <span className="flex-none font-semibold whitespace-nowrap text-mute tabular-nums">{`${team.wins}-${team.losses}`}</span>
+      </div>
+      {team.byes && team.byes.length > 0 && <ByeLine byes={team.byes} />}
+    </>
   );
 }
 
