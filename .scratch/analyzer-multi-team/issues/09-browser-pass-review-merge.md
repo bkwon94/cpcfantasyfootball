@@ -6,12 +6,16 @@
 
 **Blocked by:** 08 (Local test by Brian)
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] Shots of the form with two sides and with four sides at three widths and both themes
-- [ ] Shots of a three-side result at three widths and both themes
-- [ ] No horizontal scroll and no clipped picker at any width
-- [ ] The code review against `main` has no open finding
-- [ ] Issue 11 of site-pages is closed as moot with a comment
-- [ ] The pipeline `main` holds its merge, is pushed, and the API is deployed
-- [ ] The site `main` holds its merge, is level with origin, and is pushed right after
+- [x] Shots of the form with two sides and with four sides at three widths and both themes
+- [x] Shots of a three-side result at three widths and both themes
+- [x] No horizontal scroll and no clipped picker at any width
+- [x] The code review against `main` has no open finding
+- [x] Issue 11 of site-pages is closed as moot with a comment
+- [x] The pipeline `main` holds its merge, is pushed, and the API is deployed
+- [x] The site `main` holds its merge, is level with origin, and is pushed right after
+
+## Comments
+
+- 2026-10-28, Truckasaurus Tina: Done. Browser pass of 21 shots, four reviews, the fixes in site 7a9d2aa and pipeline 172d8dd. Pipeline main 51397b3 deployed to Fly. Site main e382d19 pushed. Leftovers are issues 10 to 13.
