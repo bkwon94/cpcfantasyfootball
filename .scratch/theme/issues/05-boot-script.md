@@ -4,10 +4,10 @@
 
 **Blocked by:** 04 (the storage key and helper).
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] A stored dark choice paints dark before React runs. No flash of the light theme on load.
-- [ ] No choice, blocked storage, or scripts off gives the light theme and no class.
-- [ ] A test runs the script string against jsdom with a stored dark choice and reads the class. Tests cover no choice and blocked storage.
-- [ ] The export check still passes.
-- [ ] Typecheck, test, and build pass.
+- [x] A stored dark choice paints dark before React runs. No flash of the light theme on load.
+- [x] No choice, blocked storage, or scripts off gives the light theme and no class.
+- [x] A test runs the script string against jsdom with a stored dark choice and reads the class. Tests cover no choice and blocked storage.
+- [x] The export check still passes.
+- [x] Typecheck, test, and build pass.

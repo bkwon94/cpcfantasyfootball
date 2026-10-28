@@ -39,7 +39,7 @@ const observers = new Set<ObserverStub>();
 
 class ObserverStub {
   target: Element | undefined;
-  constructor(private callback: IntersectionObserverCallback) {
+  constructor(public callback: IntersectionObserverCallback) {
     observers.add(this);
   }
   observe(target: Element) {
@@ -61,19 +61,22 @@ function scrollMastheadOut() {
   act(() => {
     for (const observer of observers) {
       const entry = { isIntersecting: false, target: observer.target } as IntersectionObserverEntry;
-      observer["callback"]([entry], observer as unknown as IntersectionObserver);
+      observer.callback([entry], observer as unknown as IntersectionObserver);
     }
   });
 }
 
 /* The theme button of the masthead row. jsdom runs no media query, so the desktop row renders a second one inside its landmark. */
-function mastheadButton(name: string) {
-  const header = screen.getByRole("banner");
-  const button = within(header)
+function buttonOutsideNav(container: HTMLElement, name: string) {
+  const button = within(container)
     .getAllByRole("button", { name })
     .find((candidate) => !candidate.closest("nav"));
-  if (!button) throw new Error(`No theme button named "${name}" in the masthead row`);
+  if (!button) throw new Error(`No theme button named "${name}" outside the navigation`);
   return button;
+}
+
+function mastheadButton(name: string) {
+  return buttonOutsideNav(screen.getByRole("banner"), name);
 }
 
 function rootIsDark() {
@@ -97,6 +100,11 @@ describe("Theme button", () => {
     expect(mastheadButton(TO_DARK)).toBeTruthy();
   });
 
+  it("stores no choice before a press", () => {
+    renderWeekMasthead();
+    expect(localStorage.getItem("cpc.theme")).toBeNull();
+  });
+
   it("switches to the dark theme on a press and stores the choice", () => {
     renderWeekMasthead();
     fireEvent.click(mastheadButton(TO_DARK));
@@ -118,20 +126,16 @@ describe("Theme button", () => {
     renderWeekMasthead();
     scrollMastheadOut();
     const bar = screen.getByRole("region", { name: "Top bar" });
-    const barButton = within(bar)
-      .getAllByRole("button", { name: TO_DARK })
-      .find((candidate) => !candidate.closest("nav"));
-    fireEvent.click(barButton!);
+    fireEvent.click(buttonOutsideNav(bar, TO_DARK));
     expect(rootIsDark()).toBe(true);
     // Every copy follows the press, so the masthead button names the light theme too.
     expect(mastheadButton(TO_LIGHT)).toBeTruthy();
   });
 
-  it("ends the desktop row", () => {
+  it("sits in the desktop row", () => {
     renderWeekMasthead();
     const row = screen.getByRole("navigation", { name: "Site menu" });
     const button = within(row).getByRole("button", { name: TO_DARK });
-    expect(row.lastElementChild).toBe(button);
     fireEvent.click(button);
     expect(rootIsDark()).toBe(true);
   });

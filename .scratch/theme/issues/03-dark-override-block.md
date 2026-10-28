@@ -4,11 +4,11 @@
 
 **Blocked by:** 01 (card token), 02 (red text token).
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] With the class on the root element the page is black, the card is the raised dark surface, and the masthead and the compact bar are flush brand black.
-- [ ] Every text pair on the dark surfaces meets 4.5 to 1. Every graphic pair meets 3 to 1. The ratios sit in the token comments.
-- [ ] Brand red carries no text on a dark surface. Red fills, borders, and the glow stay brand red.
-- [ ] The rules and dividers are visible on the lifted card and on the dark page.
-- [ ] The dark color scheme is on under the class. The old light-scheme comment is gone.
-- [ ] Typecheck, test, and build pass. The light site looks the same without the class.
+- [x] With the class on the root element the page is black, the card is the raised dark surface, and the masthead and the compact bar are flush brand black.
+- [x] Every text pair on the dark surfaces meets 4.5 to 1. Every graphic pair meets 3 to 1. The ratios sit in the token comments.
+- [x] Brand red carries no text on a dark surface. Red fills, borders, and the glow stay brand red.
+- [x] The rules and dividers are visible on the lifted card and on the dark page.
+- [x] The dark color scheme is on under the class. The old light-scheme comment is gone.
+- [x] Typecheck, test, and build pass. The light site looks the same without the class.

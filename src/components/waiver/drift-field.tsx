@@ -95,7 +95,7 @@ function Orb({
             {price && (
               <span
                 style={{ top: -TAG.up * scale, right: -TAG.out * scale }}
-                // The price tag uses the page and its ink, so it inverts with the theme. Black text stays black and vanishes on the dark page.
+                // The price tag uses the page and its ink, so it inverts with the theme. Ink inverts with the page, so the chip text shows in both themes.
                 className="absolute rounded-full bg-wht px-sp-1 py-sp-0 text-label leading-tight font-bold text-ink tabular-nums"
               >
                 {price}

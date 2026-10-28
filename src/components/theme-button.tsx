@@ -7,6 +7,7 @@
 import { MoonIcon, SunIcon } from "lucide-react";
 import { useSyncExternalStore } from "react";
 import { DARK_CLASS, storeTheme } from "@/lib/theme";
+import { cn } from "@/lib/utils";
 
 /* The copies of the button on the page. A press tells each copy, so the masthead, the bar, and the row never disagree. */
 const listeners = new Set<() => void>();
@@ -33,7 +34,8 @@ function switchTheme() {
 }
 
 /* The theme button. The name says what a press does, so a screen reader user knows the result before the press.
-   It is a plain button and not a switch, because the name already says the action, and a switch adds an on or off state to it.
+   It is a plain button and not a switch, because the name already says the action.
+   A switch adds an on or off state to it.
    It has no transition, so the theme switches at once. */
 export function ThemeButton({ className }: { className: string }) {
   const dark = useSyncExternalStore(subscribe, rootIsDark, serverIsDark);
@@ -44,7 +46,7 @@ export function ThemeButton({ className }: { className: string }) {
       type="button"
       aria-label={dark ? "Switch to light theme" : "Switch to dark theme"}
       onClick={switchTheme}
-      className={`press flex size-touch flex-none items-center justify-center text-on-dark hover-fine:text-red-lt ${className}`}
+      className={cn("press flex size-touch flex-none items-center justify-center text-on-dark hover-fine:text-red-lt", className)}
     >
       <Icon aria-hidden className="size-sp-5" />
     </button>

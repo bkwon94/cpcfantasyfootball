@@ -193,7 +193,7 @@ function WeekChips({ weeks, chosen, choose }: { weeks: RankingsWeek[]; chosen: n
           className={cn(
             "press min-h-touch min-w-touch cursor-pointer rounded-card border-0 px-sp-3 text-row font-extrabold tabular-nums",
             "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red",
-            // The chosen chip uses the page and its ink, so it inverts with the theme. Black text stays black and vanishes on the dark page.
+            // The chosen chip uses the page and its ink, so it inverts with the theme. Ink inverts with the page, so the chip text shows in both themes.
             week === chosen ? "bg-wht text-ink" : "bg-rule-dark text-on-dark",
           )}
         >

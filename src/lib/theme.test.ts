@@ -1,5 +1,6 @@
 /**
  * Tests for the boot script. They run the same string the root layout inlines, against jsdom.
+ * They read the class on the root element, with a stored dark choice, no choice, and blocked storage.
  */
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { BOOT_SCRIPT, DARK_CLASS, THEME_KEY } from "./theme";
