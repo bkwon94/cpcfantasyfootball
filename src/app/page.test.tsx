@@ -31,7 +31,7 @@ describe("HomePage", () => {
     // The label and the red season number are separate text nodes.
     expect(screen.getByText("SEASON")).toBeTruthy();
     expect(screen.getByText(String(season)).className).toContain("text-red");
-    expect(screen.getByText("Weekly reports")).toBeTruthy();
+    expect(screen.getByText("Weekly Reports")).toBeTruthy();
   });
 
   it("links week 6 with its dates", () => {
@@ -101,12 +101,21 @@ async function homeOver(rankings?: unknown) {
 }
 
 describe("HomePage power rankings", () => {
+  it("opens each chapter with a level-two heading, in order", async () => {
+    const Home = await homeOver(fixture);
+    render(<Home />);
+    const headings = within(screen.getByRole("main"))
+      .getAllByRole("heading", { level: 2 })
+      .map((heading) => heading.textContent);
+    expect(headings).toEqual(["Tools", "Power Rankings", "Weekly Reports"]);
+  });
+
   it("shows the top three, the biggest mover, and the link to the rankings", async () => {
     const Home = await homeOver(fixture);
     render(<Home />);
-    // The menu row in the banner has a Power rankings link too, so the test reads the chapter in the page content.
-    expect(within(screen.getByRole("main")).getByText("Power rankings")).toBeTruthy();
-    const link = screen.getByRole("link", { name: /Top three/ });
+    // The menu row in the banner has a Power Rankings link too, so the test reads the chapter in the page content.
+    expect(within(screen.getByRole("main")).getByText("Power Rankings")).toBeTruthy();
+    const link = screen.getByRole("link", { name: /Top Three/ });
     expect(link.getAttribute("href")).toBe("/rankings/");
     const top = Array.from(link.querySelectorAll("li")).map((item) => item.textContent);
     expect(top).toEqual(["1London Cooking", "2Lil Fridge", "3Bo Girds"]);
@@ -128,8 +137,12 @@ describe("HomePage power rankings", () => {
   it("hides the chapter when the file is missing and still lists the weeks", async () => {
     const Home = await homeOver();
     render(<Home />);
-    expect(within(screen.getByRole("main")).queryByText("Power rankings")).toBeNull();
-    expect(screen.queryByRole("link", { name: /Top three/ })).toBeNull();
+    expect(within(screen.getByRole("main")).queryByText("Power Rankings")).toBeNull();
+    const headings = within(screen.getByRole("main"))
+      .getAllByRole("heading", { level: 2 })
+      .map((heading) => heading.textContent);
+    expect(headings).toEqual(["Tools", "Weekly Reports"]);
+    expect(screen.queryByRole("link", { name: /Top Three/ })).toBeNull();
     expect(within(screen.getByRole("main")).getByRole("link", { name: /Week 6/ })).toBeTruthy();
   });
 

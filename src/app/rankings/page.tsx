@@ -4,6 +4,7 @@
  */
 import type { Metadata } from "next";
 import { Masthead } from "@/components/masthead";
+import { PageColumn } from "@/components/page-column";
 import { PowerRankings } from "@/components/rankings/power-rankings";
 import { ChosenWeekLine, WeekChoiceProvider } from "@/components/rankings/week-choice";
 import { Blurb, Chapter, Label } from "@/components/week/parts";
@@ -24,19 +25,19 @@ export default function RankingsPage() {
           <Masthead subtitle="Power Rankings" pageHref={`${basePath}/rankings/`}>
             <ChosenWeekLine />
           </Masthead>
-          <main className="mx-auto max-w-page bg-wht">
+          <PageColumn>
             <PowerRankings weeks={rankings.weeks} avatars={latestAvatars(rankings.season)} />
-          </main>
+          </PageColumn>
         </WeekChoiceProvider>
       ) : (
         <>
           <Masthead subtitle="Power Rankings" pageHref={`${basePath}/rankings/`} />
-          <main className="mx-auto max-w-page bg-wht">
+          <PageColumn>
             <Chapter>
-              <Label>Power rankings</Label>
+              <Label heading>Power Rankings</Label>
               <Blurb>No power rankings are published yet.</Blurb>
             </Chapter>
-          </main>
+          </PageColumn>
         </>
       )}
     </>

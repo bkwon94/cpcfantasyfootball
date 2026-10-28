@@ -33,19 +33,19 @@ The short black bar that shows at the top of the viewport once the masthead scro
 _Avoid_: Sticky header, mini header, app bar, toolbar
 
 **Chapter**:
-One part of the weekly report, such as the awards or the standings. On a tablet and a desktop each chapter is a card on the grey body.
+One part of a page, such as the awards of the weekly report or the tools of the home page. On a tablet and a desktop each chapter is a card on the grey body. "Card" names that look and nothing else.
 _Avoid_: Section, block, panel
 
 **Sheet**:
 The menu as it opens on a phone and a tablet, under the masthead, over the dimmed page.
 _Avoid_: Drawer, modal, overlay
 
-**Black card**:
-A section of a page that sits on the brand black. It keeps the name in the dark theme, where it lifts one step to grey.
-_Avoid_: Dark section, panel, block, card
+**Dark chapter**:
+A chapter that sits on the brand black, such as the standings or the rankings table. It keeps the name in the dark theme, where it lifts one step to grey.
+_Avoid_: Black card, dark section, dark card, panel, block
 
 **Page**:
-The surface behind the black cards. It is white in the light theme and black in the dark theme.
+The surface behind the dark chapters. It is white in the light theme and black in the dark theme.
 _Avoid_: Background, canvas, body
 
 **Theme**:

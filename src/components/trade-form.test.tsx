@@ -329,6 +329,13 @@ describe("TradeForm with the finder", () => {
     expect(screen.getByRole("group", { name: "Trade partner" })).toBeTruthy();
   });
 
+  it("titles the finder in title case and puts it after the grade button", () => {
+    fireEvent.click(radio("My team", "All You Need Is Love"));
+    const heading = screen.getByRole("heading", { level: 2, name: "Find a Trade" });
+    const grade = screen.getByRole("button", { name: "Grade the trade" });
+    expect(grade.compareDocumentPosition(heading) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  });
+
   it("hides the finder when the flag is off, with my team picked", () => {
     flags.finderOn = false;
     cleanup();

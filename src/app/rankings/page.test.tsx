@@ -2,7 +2,7 @@
  * Tests for the power rankings page. Each test builds a temp public/ folder, with or without the rankings file.
  * They read what a reader sees: the empty state, or the last week of the file with the week page avatars.
  */
-import { cleanup, render, screen } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
 import { mkdtempSync, mkdirSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -35,6 +35,7 @@ describe("RankingsPage", () => {
   it("shows the empty state when the file is missing", async () => {
     const RankingsPage = await pageOver();
     render(<RankingsPage />);
+    expect(screen.getByRole("heading", { level: 2, name: "Power Rankings" })).toBeTruthy();
     expect(screen.getByText("No power rankings are published yet.")).toBeTruthy();
     expect(screen.queryAllByRole("listitem")).toHaveLength(0);
   });
@@ -47,5 +48,24 @@ describe("RankingsPage", () => {
     const rows = screen.getAllByRole("listitem");
     expect(rows).toHaveLength(12);
     expect(rows[0].querySelector("img")?.getAttribute("src")).toBe("/2026/week-06/avatars/5.jpg");
+  });
+
+  it("labels the table with a level-two heading that reads Power Rankings", async () => {
+    const RankingsPage = await pageOver(fixture);
+    render(<RankingsPage />);
+    const main = screen.getByRole("main");
+    expect(within(main).getByRole("heading", { level: 2, name: "Power Rankings" })).toBeTruthy();
+  });
+
+  it("moves the masthead week line with the chosen chip", async () => {
+    const RankingsPage = await pageOver(fixture);
+    render(<RankingsPage />);
+    const banner = screen.getByRole("banner");
+    const chip = (week: number) =>
+      within(screen.getByRole("group", { name: "Week" })).getByRole("button", { name: `Week ${week}` });
+    expect(banner.textContent).toContain("WEEK 6");
+    fireEvent.click(chip(1));
+    expect(banner.textContent).toContain("WEEK 1");
+    expect(banner.textContent).not.toContain("WEEK 6");
   });
 });

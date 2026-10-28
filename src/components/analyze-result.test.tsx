@@ -50,10 +50,17 @@ describe("AnalyzeResult", () => {
   it("puts the decision above the swap card and the sides", () => {
     render(<AnalyzeResult doc={fixture} />);
     const decision = screen.getByText("Not as is");
-    const trade = screen.getByText("The trade");
+    const trade = screen.getByRole("heading", { level: 2, name: "The Trade" });
     const side = screen.getByText("Pukancun on 3 · your side");
     expect(decision.compareDocumentPosition(trade) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     expect(trade.compareDocumentPosition(side) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  });
+
+  it("opens the decision chapter with a level-two heading", () => {
+    render(<AnalyzeResult doc={fixture} />);
+    const heading = screen.getByRole("heading", { level: 2, name: "Decision for Pukancun on 3" });
+    const trade = screen.getByRole("heading", { level: 2, name: "The Trade" });
+    expect(heading.compareDocumentPosition(trade) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
   });
 
   it("shows no letter grade anywhere in the result", () => {
@@ -136,7 +143,7 @@ describe("AnalyzeResult", () => {
 
   it("shows the counters placeholder", () => {
     render(<AnalyzeResult doc={fixture} />);
-    expect(screen.getByText("Suggested counters")).toBeTruthy();
+    expect(screen.getByRole("heading", { level: 2, name: "Suggested Counters" })).toBeTruthy();
     expect(screen.getByText("No counters yet.")).toBeTruthy();
   });
 
@@ -213,9 +220,30 @@ describe("AnalyzeResult", () => {
     render(<AnalyzeResult doc={withFairness("fair")} />);
     const decision = screen.getByText("Not as is");
     const line = screen.getByText("Fair");
-    const trade = screen.getByText("The trade");
+    const trade = screen.getByRole("heading", { level: 2, name: "The Trade" });
     expect(decision.compareDocumentPosition(line) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     expect(line.compareDocumentPosition(trade) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  });
+
+  it("puts the decision text before the fairness text in the same chapter", () => {
+    render(<AnalyzeResult doc={withFairness("fair")} />);
+    const reason = screen.getByText(fixture.decision.reason);
+    const line = screen.getByText("Fair");
+    expect(reason.compareDocumentPosition(line) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(reason.closest("section")).toBe(line.closest("section"));
+  });
+
+  it("renders five chapters for a two-team trade", () => {
+    const { container } = render(<AnalyzeResult doc={withFairness("fair")} />);
+    expect(container.querySelectorAll("section")).toHaveLength(5);
+  });
+
+  it("puts the as-of line last, in the counters chapter", () => {
+    const { container } = render(<AnalyzeResult doc={fixture} />);
+    const line = screen.getByText(/ · rosters fetched/);
+    const counters = screen.getByRole("heading", { level: 2, name: "Suggested Counters" });
+    expect(container.textContent?.trimEnd().endsWith(line.textContent ?? "")).toBe(true);
+    expect(line.closest("section")).toBe(counters.closest("section"));
   });
 
   it("shows the two fairness reasons under the line, the asker's side first", () => {
@@ -241,5 +269,7 @@ describe("AnalyzeResult", () => {
     expect(screen.queryByText("Fair")).toBeNull();
     expect(screen.queryByText(MY_REASON)).toBeNull();
     expect(screen.queryByText(THEIR_REASON)).toBeNull();
+    expect(screen.queryByText("Fairness")).toBeNull();
+    expect(screen.getByText(fixture.decision.reason)).toBeTruthy();
   });
 });

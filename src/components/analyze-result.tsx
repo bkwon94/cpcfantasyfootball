@@ -11,6 +11,7 @@ import type { AnalyzeResponse, AsOf, DecidedSide, Decision, Factor, Fairness, Pl
 import { swapToDefault } from "@/lib/headshot";
 import { knownGamesSegments } from "@/lib/known-games-segments";
 import { DURATION, rise, useMotionOff } from "@/lib/motion";
+import { Blurb, Chapter, Label } from "@/components/week/parts";
 import { cn } from "@/lib/utils";
 
 /* A trade side with the asker flag. The swap card and the fairness line need no more, so the finder cards reuse them with a side that has no read. */
@@ -28,22 +29,9 @@ function joinSides(doc: AnalyzeResponse): Side[] {
   return sides.sort((a, b) => Number(b.mine) - Number(a.mine));
 }
 
-function Chapter({ children }: { children: ReactNode }) {
-  return <section className="border-b-(length:--chap-rule) border-gry px-gutter py-sp-5">{children}</section>;
-}
-
-/* The classes are fixed, so this needs no cn. */
-function Label({ children }: { children: ReactNode }) {
-  return <div className="mb-sp-3 text-label leading-tight font-bold tracking-wide text-red-ink uppercase">{children}</div>;
-}
-
 /* The small caps style of the table and the swap card. A className adds a color or a layout class. */
 function Caps({ children, className }: { children: ReactNode; className?: string }) {
   return <span className={cn("text-label font-bold tracking-caps text-mute uppercase", className)}>{children}</span>;
-}
-
-function Blurb({ children }: { children: ReactNode }) {
-  return <p className="m-0 text-body text-ink-2">{children}</p>;
 }
 
 function PlayerChip({ player }: { player: Player }) {
@@ -129,7 +117,8 @@ function DecisionBlock({ decision, team }: { decision: Decision; team?: string }
   const answer = ANSWER_WORD[decision.answer];
   return (
     <div className="border-l-(length:--chap-rule) border-red py-sp-1 pl-sp-4">
-      <Label>Decision for {team ?? "your side"}</Label>
+      {/* Each chapter of the result opens with a level-two heading, and the decision chapter opens with this label. */}
+      <Label heading>Decision for {team ?? "your side"}</Label>
       <motion.p
         className={cn("mt-0 mb-sp-2 text-headline leading-none font-black tracking-grade", answer.color)}
         {...rise(off, { duration: DURATION.decision })}
@@ -252,22 +241,23 @@ export default function AnalyzeResult({ doc }: { doc: AnalyzeResponse }) {
   const sides = joinSides(doc);
   const decisionTeam = sides.find((s) => s.roster_id === doc.decision.for_roster)?.team;
 
+  /* From the tablet tier a chapter is a card, and a one-line card looks odd. So the short parts join the chapter they belong to, and the result has five chapters.
+     The result sits in one wrapper inside the main, so it sets the card gap between its own chapters. */
   return (
-    <div>
+    <div className="tablet:flex tablet:flex-col tablet:gap-card-gap">
       <Chapter>
         <DecisionBlock decision={doc.decision} team={decisionTeam} />
         <NoChartLine asOf={doc.as_of} />
+        {/* The fairness line sits under the decision, so the decision stays the lead. The ticket asks the page to render a document with no block, as a guard, so it shows no line then. */}
+        {doc.fairness && (
+          <div className="mt-sp-5">
+            <FairnessBlock sides={sides} fairness={doc.fairness} />
+          </div>
+        )}
       </Chapter>
 
-      {/* The fairness line sits under the decision, so the decision stays the lead. The ticket asks the page to render a document with no block, as a guard, so it shows no line then. */}
-      {doc.fairness && (
-        <Chapter>
-          <FairnessBlock sides={sides} fairness={doc.fairness} />
-        </Chapter>
-      )}
-
       <Chapter>
-        <Label>The trade</Label>
+        <Label heading>The Trade</Label>
         <SwapCard sides={sides} />
       </Chapter>
 
@@ -279,12 +269,11 @@ export default function AnalyzeResult({ doc }: { doc: AnalyzeResponse }) {
 
       {/* The API returns no counters yet. The slot holds their place under the sides. */}
       <Chapter>
-        <Label>Suggested counters</Label>
+        <Label heading>Suggested Counters</Label>
         <Blurb>No counters yet.</Blurb>
-      </Chapter>
-
-      <Chapter>
-        <AsOfLine doc={doc} />
+        <div className="mt-sp-4">
+          <AsOfLine doc={doc} />
+        </div>
       </Chapter>
     </div>
   );

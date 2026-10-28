@@ -16,11 +16,11 @@ export function avatarSrc(avatars: AvatarMap, rosterId: number): string {
   return avatars[String(rosterId)] ?? AVATAR_FALLBACK;
 }
 
-/* A dark chapter is the black card. Its label and blurb take the dark prop for their on-dark colors.
+/* A dark chapter sits on the brand black. Its label and blurb take the dark prop for their on-dark colors.
    A chapter with reveal fades and rises in once as a unit, when it enters the view. A chapter with its own
    card stagger or hero motion leaves reveal off, so no element sits inside two reveals.
-   In the weekly report, from the tablet tier up, a chapter is a card on the grey body.
-   The report's main sets the gap, so the chapter drops its rule and takes the white of the page itself.
+   On every page, from the tablet tier up, a chapter is a card on the grey body.
+   The page column's main sets the gap, so the chapter drops its rule and takes the white of the page itself.
    The edge stays square, as the print is. */
 export function Chapter({
   dark,
@@ -37,8 +37,8 @@ export function Chapter({
     <section
       id={id}
       className={cn(
-        "border-b-(length:--chap-rule) border-gry px-gutter py-sp-5 tablet:in-data-report:border-b-0",
-        dark ? "bg-card-blk text-on-dark" : "tablet:in-data-report:bg-wht",
+        "border-b-(length:--chap-rule) border-gry px-gutter py-sp-5 tablet:border-b-0",
+        dark ? "bg-card-blk text-on-dark" : "tablet:bg-wht",
       )}
     >
       {children}

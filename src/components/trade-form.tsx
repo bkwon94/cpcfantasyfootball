@@ -5,7 +5,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import AnalyzeResult from "@/components/analyze-result";
 import { ErrorLine } from "@/components/error-line";
 import { PlayerList } from "@/components/player-list";
@@ -33,7 +33,21 @@ type TradeFormProps = {
   onUnauthorized: () => void;
   // Analyze answered 422, so the page fetches the current rosters.
   onRostersStale?: () => void;
+  /* The page places the two parts. The result goes after the form's chapter and not inside it, so its own chapters
+     read as cards under the form card. The form keeps the grade state, so it hands the parts out and does not lift the state. */
+  children?: (parts: FormParts) => ReactNode;
 };
+
+/* The form with the finder, and the result of a done grade. */
+type FormParts = { form: ReactNode; result: ReactNode };
+
+/* With no layout from the page, the result follows the form. */
+const stackParts = ({ form, result }: FormParts) => (
+  <>
+    {form}
+    {result}
+  </>
+);
 
 /* One side of the trade: the picked roster and the player ids it gives. */
 type Side = { rosterId: number | null; picks: string[] };
@@ -84,7 +98,7 @@ function GradingStatus() {
   );
 }
 
-export function TradeForm({ teams, passphrase, onUnauthorized, onRostersStale }: TradeFormProps) {
+export function TradeForm({ teams, passphrase, onUnauthorized, onRostersStale, children = stackParts }: TradeFormProps) {
   const [sides, setSides] = useState<Sides>({
     mine: { rosterId: null, picks: [] },
     other: { rosterId: null, picks: [] },
@@ -207,18 +221,33 @@ export function TradeForm({ teams, passphrase, onUnauthorized, onRostersStale }:
     }
   }
 
-  return (
+  const form = (
     <>
-      <section aria-labelledby="pick-teams" className="flex flex-col gap-sp-5">
-        <h2 id="pick-teams" className="m-0 text-stat leading-stat font-black uppercase">
-          Pick the teams
+      {/* From the tablet tier the form is a two-column grid, one team per column: the pickers in row two, the lists in row three.
+          The rows and the columns are explicit, so the document order stays picker, picker, list, list.
+          A phone and a screen reader get the same order as the one-column flow. Every other part spans both columns. */}
+      <section aria-labelledby="pick-teams" className="flex flex-col gap-sp-5 tablet:grid tablet:grid-cols-2">
+        <h2 id="pick-teams" className="m-0 text-stat leading-stat font-black uppercase tablet:col-span-2 tablet:row-start-1">
+          Pick the Teams
         </h2>
-        <TeamPicker label="My team" teams={teams} value={mine.rosterId} disabledId={other.rosterId} onChange={(id) => pickTeam("mine", id)} locked={grading} />
-        <TeamPicker label="The other team" teams={teams} value={other.rosterId} disabledId={mine.rosterId} onChange={(id) => pickTeam("other", id)} locked={grading} />
-        {myTeam && <PlayerList team={myTeam} picked={mine.picks} onToggle={(p) => togglePick("mine", p)} locked={grading} />}
-        {otherTeam && <PlayerList team={otherTeam} picked={other.picks} onToggle={(p) => togglePick("other", p)} locked={grading} />}
+        <div className="min-w-0 tablet:col-start-1 tablet:row-start-2">
+          <TeamPicker label="My team" teams={teams} value={mine.rosterId} disabledId={other.rosterId} onChange={(id) => pickTeam("mine", id)} locked={grading} />
+        </div>
+        <div className="min-w-0 tablet:col-start-2 tablet:row-start-2">
+          <TeamPicker label="The other team" teams={teams} value={other.rosterId} disabledId={mine.rosterId} onChange={(id) => pickTeam("other", id)} locked={grading} />
+        </div>
+        {myTeam && (
+          <div className="min-w-0 tablet:col-start-1 tablet:row-start-3">
+            <PlayerList team={myTeam} picked={mine.picks} onToggle={(p) => togglePick("mine", p)} locked={grading} />
+          </div>
+        )}
+        {otherTeam && (
+          <div className="min-w-0 tablet:col-start-2 tablet:row-start-3">
+            <PlayerList team={otherTeam} picked={other.picks} onToggle={(p) => togglePick("other", p)} locked={grading} />
+          </div>
+        )}
         <Button
-          className="press h-touch w-full rounded-card px-sp-4 text-lead font-bold"
+          className="press h-touch w-full rounded-card px-sp-4 text-lead font-bold tablet:col-span-2"
           disabled={!ready || grading}
           aria-busy={grading || undefined}
           // The arrow drops the click event, so submit reads the trade from the state.
@@ -226,9 +255,13 @@ export function TradeForm({ teams, passphrase, onUnauthorized, onRostersStale }:
         >
           {grading ? "Grading…" : "Grade the trade"}
         </Button>
-        {grading && <GradingStatus />}
+        {grading && (
+          <div className="tablet:col-span-2">
+            <GradingStatus />
+          </div>
+        )}
         {grade.status === "error" && (
-          <div className="flex flex-col gap-sp-3">
+          <div className="flex flex-col gap-sp-3 tablet:col-span-2">
             <ErrorLine>{grade.message}</ErrorLine>
             {grade.retry && (
               <Button className="press h-touch w-full rounded-card px-sp-4 text-lead font-bold" onClick={() => submit()}>
@@ -254,11 +287,14 @@ export function TradeForm({ teams, passphrase, onUnauthorized, onRostersStale }:
           />
         </div>
       )}
-      {grade.status === "done" && (
-        <div ref={resultRef}>
-          <AnalyzeResult doc={grade.doc} />
-        </div>
-      )}
     </>
   );
+
+  const result = grade.status === "done" && (
+    <div ref={resultRef}>
+      <AnalyzeResult doc={grade.doc} />
+    </div>
+  );
+
+  return children({ form, result });
 }
