@@ -17,7 +17,7 @@ A league member opens the home page on a laptop and gets three short chapters st
 column. The first two hold one row each, so most of the column is blank. The gaps between them
 come from the thick grey chapter rule, not from the card gap the report uses, so the home page
 almost looks like the report and not quite. The power rankings table on a laptop packs ten columns
-at the phone widths, with 40px columns and an 8px gap, while the standings on the same screen use
+at the phone widths, with 40px columns and a 4px gap, while the standings on the same screen use
 wide tokens. The trade analyzer on a laptop stacks two team pickers and two player lists in one
 720px column, so the pick of two teams is a long scroll past rows that use a third of the width.
 The result of a trade renders seven thin chapters, two of them one line each. The chapter labels

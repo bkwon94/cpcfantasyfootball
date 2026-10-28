@@ -240,7 +240,7 @@ export default function AnalyzeResult({ doc }: { doc: AnalyzeResponse }) {
   const sides = joinSides(doc);
   const decisionTeam = sides.find((s) => s.roster_id === doc.decision.for_roster)?.team;
 
-  /* From the tablet tier a chapter is a card, and a one-line card looks odd. So the short blocks join the chapter they belong to, and the result has five chapters.
+  /* From the tablet tier a chapter is a card, and a one-line card looks odd. So the short parts join the chapter they belong to, and the result has five chapters.
      The result sits in one wrapper inside the main, so it sets the card gap between its own chapters. */
   return (
     <div className="tablet:flex tablet:flex-col tablet:gap-card-gap">
