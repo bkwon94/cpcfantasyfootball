@@ -11,12 +11,18 @@ export type Player = {
   headshot: string;
 };
 
+/* A player a side gives. to is the roster id of the side he goes to. An old document lacks it, so it is optional. */
+export type GivenPlayer = Player & { to?: number };
+
+/* A player a side gets. from is the roster id of the side he comes from. An old document lacks it, so it is optional. */
+export type GotPlayer = Player & { from?: number };
+
 /* One team in the trade: the players it gives and the players it gets. */
 export type TradeSide = {
   roster_id: number;
   team: string;
-  gives: Player[];
-  gets: Player[];
+  gives: GivenPlayer[];
+  gets: GotPlayer[];
 };
 
 /* The call for the asker's side. differs is true when the call goes against the chart. The reason then says why. */

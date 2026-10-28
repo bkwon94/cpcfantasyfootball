@@ -2,13 +2,31 @@
  * Tests for the analyzer result. The API fixture document is the one input, and each test reads the screen.
  * They check what a reader sees, not the class names.
  */
-import { cleanup, render, screen } from "@testing-library/react";
+import { cleanup, render, screen, within } from "@testing-library/react";
 import { afterEach, describe, expect, it } from "vitest";
 import fixtureJson from "../../.scratch/site-react/fixtures/analyze-response.json";
+import threeJson from "../../.scratch/site-react/fixtures/analyze-response-three.json";
 import type { AnalyzeResponse, Decision, Fairness } from "@/lib/analyze-types";
 import AnalyzeResult from "./analyze-result";
 
 const fixture = fixtureJson as AnalyzeResponse;
+const three = threeJson as AnalyzeResponse;
+/* An old document has no to and no from, so the strip drops both from every player. */
+const stripMoves = (doc: AnalyzeResponse): AnalyzeResponse => ({
+  ...doc,
+  trade: {
+    ...doc.trade,
+    sides: doc.trade.sides.map((side) => ({
+      ...side,
+      gives: side.gives.map(({ to: _to, ...player }) => player),
+      gets: side.gets.map(({ from: _from, ...player }) => player),
+    })),
+  },
+});
+/* The swap card is the chapter under The Trade heading. */
+const tradeChapter = () => screen.getByRole("heading", { level: 2, name: "The Trade" }).closest("section") as HTMLElement;
+/* Every tag the three-side fixture can show, so a test can check that none shows. */
+const THREE_TAGS = three.trade.sides.flatMap((side) => [`To ${side.team}`, `From ${side.team}`]);
 const withAnswer = (answer: Decision["answer"]): AnalyzeResponse => ({ ...fixture, decision: { ...fixture.decision, answer } });
 const ANALYSIS = "Nico Collins leads the trade in points per game.";
 /* A single letter on its own is a grade. A letter in an initial such as "A.J." is a name, so the scan skips it. */
@@ -271,5 +289,86 @@ describe("AnalyzeResult", () => {
     expect(screen.queryByText(THEIR_REASON)).toBeNull();
     expect(screen.queryByText("Fairness")).toBeNull();
     expect(screen.getByText(fixture.decision.reason)).toBeTruthy();
+  });
+
+  it("renders the arrow swap card for the two-side fixture", () => {
+    render(<AnalyzeResult doc={fixture} />);
+    const trade = within(tradeChapter());
+    expect(trade.getByText("For")).toBeTruthy();
+    expect(trade.getByText("You get")).toBeTruthy();
+    expect(trade.queryAllByRole("group")).toHaveLength(0);
+    expect(trade.queryByText(/^(To|From) /)).toBeNull();
+  });
+
+  it("renders one row per side for the three-side fixture, the asker first, with the From and To tags", () => {
+    render(<AnalyzeResult doc={three} />);
+    const trade = within(tradeChapter());
+    expect(trade.queryByText("For")).toBeNull();
+    const rows = trade.getAllByRole("group");
+    expect(rows.map((row) => row.getAttribute("aria-label"))).toEqual([
+      "Pukancun on 3",
+      "Amon-Ra Dawg Your Team",
+      "To Infinity and Bijan",
+    ]);
+
+    const [mine, middle, last] = rows.map((row) => within(row));
+    expect(mine.getByText("You Give")).toBeTruthy();
+    expect(mine.getByText("You Get")).toBeTruthy();
+    expect(mine.getByText("Nico Collins")).toBeTruthy();
+    expect(mine.getByText("To Amon-Ra Dawg Your Team")).toBeTruthy();
+    expect(mine.getByText("From Amon-Ra Dawg Your Team")).toBeTruthy();
+    expect(mine.getByText("From To Infinity and Bijan")).toBeTruthy();
+
+    expect(middle.getByText("Gives")).toBeTruthy();
+    expect(middle.getByText("Gets")).toBeTruthy();
+    expect(middle.getByText("To Pukancun on 3")).toBeTruthy();
+    expect(middle.getByText("To To Infinity and Bijan")).toBeTruthy();
+    expect(middle.getByText("From Pukancun on 3")).toBeTruthy();
+
+    expect(last.getByText("Marvin Harrison")).toBeTruthy();
+    expect(last.getByText("To Pukancun on 3")).toBeTruthy();
+    expect(last.getByText("Garrett Wilson")).toBeTruthy();
+    expect(last.getByText("From Amon-Ra Dawg Your Team")).toBeTruthy();
+  });
+
+  it("puts each player in gives before the players in gets within a row", () => {
+    render(<AnalyzeResult doc={three} />);
+    const mine = within(within(tradeChapter()).getAllByRole("group")[0]);
+    const gives = mine.getByText("You Give");
+    const gets = mine.getByText("You Get");
+    expect(gives.compareDocumentPosition(mine.getByText("Nico Collins")) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(mine.getByText("Nico Collins").compareDocumentPosition(gets) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(gets.compareDocumentPosition(mine.getByText("Marvin Harrison")) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  });
+
+  it("renders the rows without tags for a three-side document with no to and from", () => {
+    render(<AnalyzeResult doc={stripMoves(three)} />);
+    const trade = within(tradeChapter());
+    expect(trade.getAllByRole("group")).toHaveLength(3);
+    expect(trade.getAllByText("Marvin Harrison")).toHaveLength(2);
+    for (const tag of THREE_TAGS) {
+      expect(trade.queryByText(tag)).toBeNull();
+    }
+  });
+
+  it("renders the arrow swap card for a two-side document with no to and from", () => {
+    render(<AnalyzeResult doc={stripMoves(fixture)} />);
+    const trade = within(tradeChapter());
+    expect(trade.getByText("For")).toBeTruthy();
+    expect(trade.getByText("You get")).toBeTruthy();
+    expect(trade.queryAllByRole("group")).toHaveLength(0);
+  });
+
+  it("renders one side read per side of the three-side fixture, in order", () => {
+    render(<AnalyzeResult doc={three} />);
+    expect(screen.getByText(three.decision.reason)).toBeTruthy();
+    expect(screen.getAllByText("The data")).toHaveLength(3);
+    expect(screen.getAllByText("The reasoning")).toHaveLength(3);
+    const mine = screen.getByText("Pukancun on 3 · your side");
+    // The swap card and the fairness reasons name each team first, so the side label is the last match.
+    const middle = screen.getAllByText("Amon-Ra Dawg Your Team").at(-1) as HTMLElement;
+    const last = screen.getAllByText("To Infinity and Bijan").at(-1) as HTMLElement;
+    expect(mine.compareDocumentPosition(middle) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(middle.compareDocumentPosition(last) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
   });
 });
