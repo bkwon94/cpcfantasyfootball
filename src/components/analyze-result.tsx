@@ -119,7 +119,7 @@ function Mark({ lean }: { lean: Factor["lean"] }) {
 
 const ANSWER_WORD = {
   yes: { word: "Yes", color: "text-red-ink" },
-  no: { word: "No", color: "text-blk" },
+  no: { word: "No", color: "text-ink" },
   not_as_is: { word: "Not as is", color: "text-mute" },
 } as const;
 
@@ -145,7 +145,7 @@ function DecisionBlock({ decision, team }: { decision: Decision; team?: string }
 const FAIRNESS_WORD = {
   win_win: { word: "Good for both", color: "text-red-ink" },
   fair: { word: "Fair", color: "text-mute" },
-  lopsided: { word: "Lopsided", color: "text-blk" },
+  lopsided: { word: "Lopsided", color: "text-ink" },
 } as const;
 
 /* The fairness line rises in like the decision word, so both read as one call. With motion off, it shows at rest at once. */
@@ -202,7 +202,7 @@ function SideRead({ side }: { side: Side }) {
       <p className="m-0 text-meta leading-tight text-ink-2">{side.chart.reason}</p>
 
       <Part>The reasoning</Part>
-      <ul className="m-0 list-none border-y-2 border-blk p-0 text-meta leading-tight">
+      <ul className="m-0 list-none border-y-2 border-ink p-0 text-meta leading-tight">
         {side.factors.map((f) => (
           <li
             key={f.name}
