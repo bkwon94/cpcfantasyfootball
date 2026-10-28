@@ -51,45 +51,51 @@ export default function HomePage() {
         <WeekLine label="SEASON" number={season} />
       </Masthead>
       <PageColumn>
-        {/* The masthead and the label show at once. Each row reveals as it enters the view. */}
-        <Chapter>
-          <Label>Tools</Label>
-          {/* The row reveals first, so a new week never pushes it down or delays it. */}
-          <Reveal delay={stagger(0)}>
-            <HomeRow href={`${basePath}/analyze/`} first>
-              <b className="mb-sp-1 block text-lead leading-tight group-hover:text-red-ink">Trade Analyzer</b>
-              <span className="block text-meta text-mute">Grade a trade offer before you send it.</span>
-              <span className="block text-meta text-mute">League passphrase needed.</span>
-            </HomeRow>
-          </Reveal>
-        </Chapter>
-        {/* A missing season file hides the chapter, so the page ships before the pipeline writes the file. */}
-        {rankings && (
+        {/* The Tools chapter and the Power Rankings chapter each hold one row, so side by side they fill the column.
+            The row is one child of the main, so the main's card gap sits above and below it. On a phone the row is a plain
+            block, so the chapters stack with the chapter rule. With no rankings file the grid has one column, so the Tools
+            chapter takes the full width and the row has no empty half. */}
+        <div className={cn("tablet:grid tablet:gap-card-gap", rankings ? "tablet:grid-cols-2" : "tablet:grid-cols-1")}>
+          {/* The masthead and the label show at once. Each row reveals as it enters the view. */}
           <Chapter>
-            <Label>Power rankings</Label>
-            <Reveal delay={stagger(1)}>
-              <HomeRow href={`${basePath}/rankings/`} first>
-                <b className="mb-sp-1 block text-lead leading-tight group-hover:text-red-ink">Top three</b>
-                <ol className="m-0 mb-sp-1 list-none p-0">
-                  {rankings.rows.slice(0, 3).map((row) => (
-                    <li key={row.roster_id} className="text-meta text-ink-2 tabular-nums">
-                      <span className="mr-sp-1 text-mute">{row.rank}</span>
-                      {row.name}
-                    </li>
-                  ))}
-                </ol>
-                {mover && (
-                  <span className="block text-meta text-mute tabular-nums">
-                    Biggest mover: <Movement movement={mover.movement} /> {mover.name}
-                  </span>
-                )}
-                <span className="block text-meta text-mute">See all twelve teams.</span>
+            <Label heading>Tools</Label>
+            {/* The row reveals first, so a new week never pushes it down or delays it. */}
+            <Reveal delay={stagger(0)}>
+              <HomeRow href={`${basePath}/analyze/`} first>
+                <b className="mb-sp-1 block text-lead leading-tight group-hover:text-red-ink">Trade Analyzer</b>
+                <span className="block text-meta text-mute">Grade a trade offer before you send it.</span>
+                <span className="block text-meta text-mute">League passphrase needed.</span>
               </HomeRow>
             </Reveal>
           </Chapter>
-        )}
+          {/* A missing season file hides the chapter, so the page ships before the pipeline writes the file. */}
+          {rankings && (
+            <Chapter>
+              <Label heading>Power Rankings</Label>
+              <Reveal delay={stagger(1)}>
+                <HomeRow href={`${basePath}/rankings/`} first>
+                  <b className="mb-sp-1 block text-lead leading-tight group-hover:text-red-ink">Top Three</b>
+                  <ol className="m-0 mb-sp-1 list-none p-0">
+                    {rankings.rows.slice(0, 3).map((row) => (
+                      <li key={row.roster_id} className="text-meta text-ink-2 tabular-nums">
+                        <span className="mr-sp-1 text-mute">{row.rank}</span>
+                        {row.name}
+                      </li>
+                    ))}
+                  </ol>
+                  {mover && (
+                    <span className="block text-meta text-mute tabular-nums">
+                      Biggest mover: <Movement movement={mover.movement} /> {mover.name}
+                    </span>
+                  )}
+                  <span className="block text-meta text-mute">See all twelve teams.</span>
+                </HomeRow>
+              </Reveal>
+            </Chapter>
+          )}
+        </div>
         <Chapter>
-          <Label>Weekly reports</Label>
+          <Label heading>Weekly Reports</Label>
           {weeks.length === 0 && <Blurb>No weeks are published yet.</Blurb>}
           {weeks.map((week, index) => (
             // Each row reveals once after the rows above it, with a short, capped stagger, so a row in a long season list never shows late.
