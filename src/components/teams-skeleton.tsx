@@ -4,10 +4,12 @@
  */
 "use client";
 
+import { SIDE_TITLES } from "@/components/trade-form";
 import { useMotionOff } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
-const SIDES = ["Your Team", "Team Two"] as const;
+/* The form starts with two sides, so the placeholder shows their titles. */
+const SIDES = SIDE_TITLES.slice(0, 2);
 
 /* One row in the shape of a team picker: the avatar circle and the team name line. */
 function SkeletonRow() {

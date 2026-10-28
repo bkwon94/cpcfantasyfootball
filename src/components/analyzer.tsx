@@ -110,7 +110,7 @@ export function Analyzer() {
         <div className="flex flex-col gap-sp-3">
           <ErrorLine>The API did not answer. Try again.</ErrorLine>
           <Button className="press h-touch w-full rounded-card px-sp-4 text-lead font-bold" onClick={() => setAttempt((n) => n + 1)}>
-            Try again
+            Try Again
           </Button>
         </div>
       )}

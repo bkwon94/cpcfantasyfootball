@@ -47,7 +47,7 @@ const ROSTERS = [
   { roster_id: 2, team: "Blitz Bakers", manager: "Ben", avatar: null, players: [player("p3", "Ben One")] },
 ];
 
-const submit = () => screen.getByRole("button", { name: "Grade the trade" }) as HTMLButtonElement;
+const submit = () => screen.getByRole("button", { name: "Grade the Trade" }) as HTMLButtonElement;
 
 /* The team picker of a side is named by the side's heading. */
 const teamTrigger = (side: "Your Team" | "Team Two") => screen.getByRole("combobox", { name: side });
@@ -230,7 +230,7 @@ describe("Analyzer", () => {
     await act(() => new Promise((resolve) => setTimeout(resolve, 0)));
     expect(await teamNames("Team Two")).toEqual(["Stored SlidersDee"]);
     expect(screen.queryByText("The API did not answer. Try again.")).toBeNull();
-    expect(screen.queryByRole("button", { name: "Try again" })).toBeNull();
+    expect(screen.queryByRole("button", { name: "Try Again" })).toBeNull();
   });
 
   it("asks for the passphrase again on a 401 during the background fetch", async () => {
@@ -300,7 +300,7 @@ describe("Analyzer", () => {
     expect(await screen.findByText("The API did not answer. Try again.")).toBeTruthy();
 
     answer(200, TEAMS);
-    fireEvent.click(screen.getByRole("button", { name: "Try again" }));
+    fireEvent.click(screen.getByRole("button", { name: "Try Again" }));
     expect(await screen.findByText("Pick the Teams")).toBeTruthy();
   });
 

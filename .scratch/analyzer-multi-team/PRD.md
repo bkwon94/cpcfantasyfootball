@@ -169,6 +169,7 @@ The returns file marks him with `season`.
 - The letter per side is the ratio of the chart value it gets over the chart value it gives, as today. The adjusters read a side's gets and gives as flat lists, with no care for the source, as today. A side's "other" for the lineup reads is the union of the other sides.
 - The fairness runs the same rule over every side: win-win when every letter is at or above the bar, lopsided when any letter is at or below the floor with `gives_more` the one lowest side by the same tie rule, else fair. The state names do not change.
 - The decision is for the asker only, as today.
+- The decision for the asker with three or more sides compares the asker's letter with the best other side. The reason then reads 'Another side does better, so ask for more.'
 - The model output check asks for exactly N sides, one per roster, in the order of the user message. The prompt says the same, names each side's gives and gets with the source and destination of each player, and names the upside among what to cover.
 
 ### The upside adjuster
@@ -186,11 +187,12 @@ The returns file marks him with `season`.
 - A player out for the season counts zero chart value for the side that gets him, in the start letter only. The side that gives him counts his full value.
 - The injury adjuster steps the side that gets him down, with the reason "Name is out for the season." This check runs before the no-near-return check.
 - Upside never credits a player out for the season.
+- A player out for the season also counts zero lineup value on every side, because he cannot play.
 - The Sleeper IR status alone is not the mark.
 
 ### The form
 
-- The form state is a list of sides in order, each `{ rosterId, picks }`, a pick `{ playerId, to }`. The first side is the asker.
+- The form state is a list of sides in order, each `{ rosterId, picks }`, a pick `{ playerId, toSide }`, where `toSide` is the id of the destination side. The first side is the asker.
 - Each side renders as one group with a heading: the team picker, then the player picker once the side has a team, then the picked rows. From the tablet tier the sides sit in a two-column grid and wrap. The grid stays two columns at the desktop tier. The document order is side by side.
 - The team picker is the shadcn Select on Base UI, added with the shadcn CLI, with the avatar and the team name in each row and in the trigger. A team picked on one side is absent from the other sides' lists. The first side's label is "Your Team". Later sides' labels are "Team Two", "Team Three", and "Team Four".
 - The player picker is the same Select with `multiple`, labeled "<Team> Gives". The trigger reads "Pick Players" when empty and the count when not. Each row shows the headshot, the name, the position, and the NFL team. The picked players render as rows under the trigger with a remove control.

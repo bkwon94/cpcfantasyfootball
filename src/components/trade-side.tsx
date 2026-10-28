@@ -1,6 +1,5 @@
 /**
- * One side of the trade form: a heading, the team picker, the player picker, and the picked players as rows.
- * At three or four sides each row has a To picker, and the third and fourth sides have a remove control.
+ * One side of the trade form: the heading, the team and player pickers, and a row per picked player with its To picker.
  * The form owns the sides, so this part only reads its side and reports each change.
  */
 "use client";
@@ -8,11 +7,12 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useId } from "react";
 import { XIcon } from "lucide-react";
+import type { Pick } from "@/components/trade-form";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import type { Team, TeamPlayer } from "@/lib/api";
 import { AVATAR_FALLBACK, swapAvatarToDefault } from "@/lib/avatar";
 import { HEADSHOT_FALLBACK, swapToDefault } from "@/lib/headshot";
-import { EASE_OUT, INSTANT, RISE, useMotionOff } from "@/lib/motion";
+import { enterExit, useMotionOff } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
 type TradeSideProps = {
@@ -23,12 +23,12 @@ type TradeSideProps = {
   // The picked team of this side, or undefined before a pick.
   team: Team | undefined;
   // The players this side gives, in the order of the pick, each with the id of its destination side.
-  picks: { playerId: string; to: number }[];
+  picks: Pick[];
   // The other sides a player can go to, or null at two sides, where the destination is the other side and no To picker shows.
   destinations: Destination[] | null;
   onPickTeam: (rosterId: number) => void;
   onPickPlayers: (playerIds: string[]) => void;
-  onPickDestination: (playerId: string, to: number) => void;
+  onPickDestination: (playerId: string, toSide: number) => void;
   // Set only for the third and fourth sides. The heading then shows a remove control.
   onRemove?: () => void;
   // A grade runs, so no picker or remove control may change the trade that the grade reads.
@@ -38,13 +38,9 @@ type TradeSideProps = {
 /* Another side of the trade, by its id, with its team once picked. */
 type Destination = { id: number; team: Team | undefined };
 
-/* A picked row enters and leaves as a side does: about 200 ms in, a faster exit, the brand ease-out, and no spring. */
-const ROW_ENTER = { duration: 0.2, ease: EASE_OUT };
-const ROW_EXIT = { duration: 0.15, ease: EASE_OUT };
-
 /* The trigger of both pickers: a grey row as tall as a touch target, with a hover fill and a red focus ring. */
 const TRIGGER =
-  "press w-full min-w-0 justify-start gap-sp-3 rounded-card border-0 bg-gry px-sp-3 py-sp-1 text-left text-row text-ink data-[size=default]:h-auto min-h-touch hover:bg-rule focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red focus-visible:ring-0 disabled:opacity-40 dark:bg-gry dark:hover:bg-rule [&>[data-slot=select-value]]:min-w-0 [&>[data-slot=select-value]]:flex-1";
+  "press w-full min-w-0 justify-start gap-sp-3 rounded-card border-0 bg-gry px-sp-3 py-sp-1 text-left text-row text-ink data-[size=default]:h-auto min-h-touch hover:bg-rule focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red focus-visible:ring-0 disabled:opacity-40 [&>[data-slot=select-value]]:min-w-0 [&>[data-slot=select-value]]:flex-1";
 
 /* An item of a picker popup: a touch-tall row that fills on hover and on keyboard focus. */
 const ITEM = "min-h-touch gap-sp-3 rounded-sm px-sp-2 pr-sp-6 text-row text-ink data-highlighted:bg-gry focus:bg-gry";
@@ -117,7 +113,7 @@ function DestinationPicker({
         {/* The trigger is short to fit the meta line. The negative margin and the padding give it a taller hit area. */}
         <SelectTrigger
           aria-labelledby={labelId}
-          className="press -my-sp-1 h-auto min-w-0 gap-sp-1 rounded-sm border-0 bg-transparent px-sp-1 py-sp-1 text-meta font-bold text-red-ink underline decoration-red-ink/50 underline-offset-2 hover:bg-red/10 focus-visible:outline-2 focus-visible:outline-red focus-visible:ring-0 disabled:opacity-40 data-[size=default]:h-auto dark:bg-transparent dark:hover:bg-red/10 [&>[data-slot=select-value]]:min-w-0 [&_svg]:text-red-ink"
+          className="press -my-sp-1 h-auto min-w-0 gap-sp-1 rounded-sm border-0 bg-transparent px-sp-1 py-sp-1 text-meta font-bold text-red-ink underline decoration-red-ink/50 underline-offset-2 hover:bg-red/10 focus-visible:outline-2 focus-visible:outline-red focus-visible:ring-0 disabled:opacity-40 data-[size=default]:h-auto [&>[data-slot=select-value]]:min-w-0 [&_svg]:text-red-ink"
         >
           <SelectValue>{() => <span className="truncate">{current?.team?.team ?? "Pick a Team"}</span>}</SelectValue>
         </SelectTrigger>
@@ -158,7 +154,7 @@ export function TradeSide({
   const picked = team
     ? picks.flatMap((pick) => {
         const player = team.players.find((p) => p.player_id === pick.playerId);
-        return player ? [{ player, to: pick.to }] : [];
+        return player ? [{ player, toSide: pick.toSide }] : [];
       })
     : [];
 
@@ -241,14 +237,12 @@ export function TradeSide({
               list from the layout and from the accessibility tree. relative holds a removed row that popLayout lifts out. */}
           <ul aria-label={`Players ${team.team} Gives`} className="relative m-0 flex list-none flex-col gap-sp-1 p-0 empty:hidden">
             <AnimatePresence initial={false} mode="popLayout">
-              {picked.map(({ player, to }) => (
+              {picked.map(({ player, toSide }) => (
                 <motion.li
                   key={player.player_id}
                   layout={!off}
-                  initial={off ? false : { opacity: 0, y: RISE }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={off ? { opacity: 0, transition: INSTANT } : { opacity: 0, transition: ROW_EXIT }}
-                  transition={off ? INSTANT : ROW_ENTER}
+                  // A picked row enters and leaves as a side does.
+                  {...enterExit(off)}
                   className="flex min-h-touch w-full items-center gap-sp-3 rounded-card bg-pick py-sp-1 pl-sp-3 text-ink shadow-[inset_3px_0_0_var(--color-red)]"
                 >
                   <Headshot player={player} />
@@ -260,7 +254,7 @@ export function TradeSide({
                       </span>
                       {destinations && (
                         <DestinationPicker
-                          value={to}
+                          value={toSide}
                           destinations={destinations}
                           onPick={(next) => onPickDestination(player.player_id, next)}
                           locked={locked}

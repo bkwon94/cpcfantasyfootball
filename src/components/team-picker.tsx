@@ -7,7 +7,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import type { Team } from "@/lib/api";
-import { AVATAR_FALLBACK, swapAvatarToDefault as swapToDefault } from "@/lib/avatar";
+import { AVATAR_FALLBACK, swapAvatarToDefault } from "@/lib/avatar";
 import { DURATION, EASE_OUT, INSTANT, useMotionOff } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
@@ -88,7 +88,7 @@ export function TeamPicker({ label, teams, value, disabledId, onChange, locked =
               <img
                 src={team.avatar ?? AVATAR_FALLBACK}
                 alt=""
-                onError={swapToDefault}
+                onError={swapAvatarToDefault}
                 className="size-avatar flex-none rounded-full bg-wht object-cover"
               />
               <span className="flex min-w-0 flex-col">

@@ -44,7 +44,7 @@ type SideTitle = "Your Team" | "Team Two" | "Team Three" | "Team Four";
 /* The team picker of a side is named by the side's heading. */
 const teamTrigger = (side: SideTitle) => screen.getByRole("combobox", { name: side });
 const playerTrigger = (team: string) => screen.getByRole("combobox", { name: `${team} Gives` });
-const submit = () => screen.getByRole("button", { name: "Grade the trade" }) as HTMLButtonElement;
+const submit = () => screen.getByRole("button", { name: "Grade the Trade" }) as HTMLButtonElement;
 
 /* Opens a picker and returns its list. The popup renders in a portal, so the test finds it on the screen. */
 async function openPicker(trigger: HTMLElement) {
@@ -273,7 +273,7 @@ describe("TradeForm", () => {
     fetchStub.mockReturnValueOnce(new Promise(() => {}));
     await pickTrade();
     fireEvent.click(submit());
-    expect(await screen.findByText("Grading the trade")).toBeTruthy();
+    expect(await screen.findByText("Grading the Trade")).toBeTruthy();
     expect(screen.getByText("This can take up to a minute on a new chart week.")).toBeTruthy();
     const busy = screen.getByRole("button", { name: "Grading…" }) as HTMLButtonElement;
     expect(busy.disabled).toBe(true);
@@ -285,7 +285,7 @@ describe("TradeForm", () => {
     fetchStub.mockReturnValueOnce(new Promise<Response>((resolve) => (finish = resolve)));
     await pickTrade();
     fireEvent.click(submit());
-    await screen.findByText("Grading the trade");
+    await screen.findByText("Grading the Trade");
 
     const triggers = [teamTrigger("Your Team"), teamTrigger("Team Two"), playerTrigger("Pukancun on 3"), playerTrigger("Blitz Bakers")];
     expect(triggers.every((t) => (t as HTMLButtonElement).disabled)).toBe(true);
@@ -331,7 +331,7 @@ describe("TradeForm", () => {
 
     fetchStub.mockReturnValueOnce(new Promise(() => {}));
     fireEvent.click(submit());
-    await screen.findByText("Grading the trade");
+    await screen.findByText("Grading the Trade");
     expect(screen.queryByText("Not as is")).toBeNull();
   });
 
@@ -354,7 +354,7 @@ describe("TradeForm", () => {
     await pickTrade();
     fireEvent.click(submit());
     expect(await screen.findByText("The analyzer is down for the moment. Try again in a few minutes.")).toBeTruthy();
-    expect(screen.getByRole("button", { name: "Try again" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Try Again" })).toBeTruthy();
   });
 
   it("shows the API reason on a 503 with a detail", async () => {
@@ -378,7 +378,7 @@ describe("TradeForm", () => {
     expect(await screen.findByText("The API did not answer. Try again.")).toBeTruthy();
 
     answer(200, fixtureJson);
-    fireEvent.click(screen.getByRole("button", { name: "Try again" }));
+    fireEvent.click(screen.getByRole("button", { name: "Try Again" }));
     await screen.findByText("Not as is");
     expect(fetchStub).toHaveBeenCalledTimes(2);
   });
@@ -398,7 +398,7 @@ describe("TradeForm", () => {
 
     expect(screen.getByText("The grade took too long.")).toBeTruthy();
     fetchStub.mockReturnValueOnce(new Promise(() => {}));
-    fireEvent.click(screen.getByRole("button", { name: "Try again" }));
+    fireEvent.click(screen.getByRole("button", { name: "Try Again" }));
     expect(fetchStub).toHaveBeenCalledTimes(2);
     expect(fetchStub.mock.calls[1][1].body).toBe(fetchStub.mock.calls[0][1].body);
   });
@@ -415,7 +415,7 @@ describe("TradeForm", () => {
     );
     await pickTrade();
     fireEvent.click(submit());
-    await screen.findByText("Grading the trade");
+    await screen.findByText("Grading the Trade");
 
     cleanup();
     await new Promise((resolve) => setTimeout(resolve, 0));
@@ -505,6 +505,17 @@ describe("TradeForm with three or four sides", () => {
     expect(within(list).getAllByRole("option").map((o) => o.textContent)).toEqual(["Blitz Bakers", "Punt Punks"]);
   });
 
+  it("points every pick at the next side when a third side joins, so the grade button turns on", async () => {
+    await pickTrade();
+    fireEvent.click(addButton()!);
+    await pickTeam("Team Three", "Punt Punks");
+    expect(toTrigger("Pukancun on 3", "Ana One").textContent).toContain("Blitz Bakers");
+    expect(toTrigger("Blitz Bakers", "Ben Two").textContent).toContain("Punt Punks");
+    expect(submit().disabled).toBe(true);
+    await pickPlayers("Punt Punks", "Cy One");
+    expect(submit().disabled).toBe(false);
+  });
+
   it("keeps a destination when that side changes its team", async () => {
     await pickThreeSides();
     await pickDestination("Pukancun on 3", "Ana One", "Punt Punks");
@@ -590,13 +601,13 @@ describe("TradeForm with the finder", () => {
 
   it("shows the finder when the flag is on", async () => {
     await pickTeam("Your Team", "All You Need Is Love");
-    expect(screen.getByRole("group", { name: "Trade partner" })).toBeTruthy();
+    expect(screen.getByRole("group", { name: "Trade Partner" })).toBeTruthy();
   });
 
   it("titles the finder in title case and puts it after the grade button", async () => {
     await pickTeam("Your Team", "All You Need Is Love");
     const heading = screen.getByRole("heading", { level: 2, name: "Find a Trade" });
-    const grade = screen.getByRole("button", { name: "Grade the trade" });
+    const grade = screen.getByRole("button", { name: "Grade the Trade" });
     expect(grade.compareDocumentPosition(heading) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
   });
 
@@ -605,48 +616,48 @@ describe("TradeForm with the finder", () => {
     cleanup();
     render(<TradeForm teams={pairTeams} passphrase="localtest" onUnauthorized={onUnauthorized} />);
     await pickTeam("Your Team", "All You Need Is Love");
-    expect(screen.queryByRole("group", { name: "Trade partner" })).toBeNull();
+    expect(screen.queryByRole("group", { name: "Trade Partner" })).toBeNull();
   });
 
   it("hides the finder once the trade has a third side, and shows it again at two", async () => {
     await pickTeam("Your Team", "All You Need Is Love");
     await pickTeam("Team Two", "Lil Fridge");
     fireEvent.click(screen.getByRole("button", { name: "Add a Team" }));
-    expect(screen.queryByRole("group", { name: "Trade partner" })).toBeNull();
+    expect(screen.queryByRole("group", { name: "Trade Partner" })).toBeNull();
     fireEvent.click(screen.getByRole("button", { name: "Remove Team Three" }));
-    await waitFor(() => expect(screen.getByRole("group", { name: "Trade partner" })).toBeTruthy());
+    await waitFor(() => expect(screen.getByRole("group", { name: "Trade Partner" })).toBeTruthy());
   });
 
   it("shows no finder until my team is picked", async () => {
-    expect(screen.queryByRole("group", { name: "Trade partner" })).toBeNull();
+    expect(screen.queryByRole("group", { name: "Trade Partner" })).toBeNull();
     await pickTeam("Your Team", "All You Need Is Love");
-    expect(screen.getByRole("group", { name: "Trade partner" })).toBeTruthy();
+    expect(screen.getByRole("group", { name: "Trade Partner" })).toBeTruthy();
   });
 
-  /* Finds with the fixture partner and taps "See the full result" on a card. */
+  /* Finds with the fixture partner and taps "See the Full Result" on a card. */
   async function openCard(finderDoc: unknown, index: number) {
     await pickTeam("Your Team", "All You Need Is Love");
     answer(200, finderDoc);
-    fireEvent.click(within(group("Trade partner")).getByRole("radio", { name: /Lil Fridge/ }));
-    fireEvent.click(screen.getByRole("button", { name: "Find a trade" }));
+    fireEvent.click(within(group("Trade Partner")).getByRole("radio", { name: /Lil Fridge/ }));
+    fireEvent.click(screen.getByRole("button", { name: "Find a Trade" }));
     const cards = await screen.findAllByRole("article");
     answer(200, fixtureJson);
-    fireEvent.click(within(cards[index]).getByRole("button", { name: "See the full result" }));
+    fireEvent.click(within(cards[index]).getByRole("button", { name: "See the Full Result" }));
     await screen.findByText("Not as is");
   }
 
   it("resets the partner and the cards when my team changes", async () => {
     await pickTeam("Your Team", "All You Need Is Love");
     answer(200, findJson);
-    fireEvent.click(within(group("Trade partner")).getByRole("radio", { name: /Lil Fridge/ }));
-    fireEvent.click(screen.getByRole("button", { name: "Find a trade" }));
+    fireEvent.click(within(group("Trade Partner")).getByRole("radio", { name: /Lil Fridge/ }));
+    fireEvent.click(screen.getByRole("button", { name: "Find a Trade" }));
     await screen.findAllByRole("article");
 
     await pickTeam("Your Team", "Lil Fridge");
     expect(screen.queryAllByRole("article")).toHaveLength(0);
-    const partners = within(group("Trade partner")).getAllByRole("radio") as HTMLInputElement[];
+    const partners = within(group("Trade Partner")).getAllByRole("radio") as HTMLInputElement[];
     expect(partners.every((p) => !p.checked)).toBe(true);
-    expect((screen.getByRole("button", { name: "Find a trade" }) as HTMLButtonElement).disabled).toBe(true);
+    expect((screen.getByRole("button", { name: "Find a Trade" }) as HTMLButtonElement).disabled).toBe(true);
   });
 
   it("scrolls the result into view after a card opens its full result", async () => {
@@ -668,13 +679,13 @@ describe("TradeForm with the finder", () => {
     Element.prototype.scrollIntoView = vi.fn();
     await pickTeam("Your Team", "All You Need Is Love");
     answer(200, findJson);
-    fireEvent.click(within(group("Trade partner")).getByRole("radio", { name: /Lil Fridge/ }));
-    fireEvent.click(screen.getByRole("button", { name: "Find a trade" }));
+    fireEvent.click(within(group("Trade Partner")).getByRole("radio", { name: /Lil Fridge/ }));
+    fireEvent.click(screen.getByRole("button", { name: "Find a Trade" }));
     const cards = await screen.findAllByRole("article");
     expect(cards).toHaveLength(3);
 
     answer(200, fixtureJson);
-    fireEvent.click(within(cards[1]).getByRole("button", { name: "See the full result" }));
+    fireEvent.click(within(cards[1]).getByRole("button", { name: "See the Full Result" }));
     await screen.findByText("Not as is");
 
     const [url, init] = fetchStub.mock.calls[1];

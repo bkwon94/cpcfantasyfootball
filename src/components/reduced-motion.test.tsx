@@ -98,7 +98,7 @@ describe("Reduced motion", () => {
     await choose(screen.getByRole("combobox", { name: "Team Two" }), "Blitz Bakers");
     await choose(screen.getByRole("combobox", { name: "Pukancun on 3 Gives" }), "Ana One");
     await choose(screen.getByRole("combobox", { name: "Blitz Bakers Gives" }), "Ben One");
-    fireEvent.click(screen.getByRole("button", { name: "Grade the trade" }));
+    fireEvent.click(screen.getByRole("button", { name: "Grade the Trade" }));
     const status = screen.getByRole("status");
     expect(status.getAttribute("aria-busy")).toBe("true");
     // The track is aria-hidden, so the query must include hidden elements to find the sweep if it existed.
