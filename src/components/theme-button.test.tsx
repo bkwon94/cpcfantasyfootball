@@ -122,6 +122,17 @@ describe("Theme button", () => {
     expect(mastheadButton(TO_DARK)).toBeTruthy();
   });
 
+  it("counts each press as an event named for the theme it gives", () => {
+    const count = vi.fn();
+    window.goatcounter = { count };
+    renderWeekMasthead();
+    fireEvent.click(mastheadButton(TO_DARK));
+    expect(count).toHaveBeenLastCalledWith({ path: "theme-dark", event: true });
+    fireEvent.click(mastheadButton(TO_LIGHT));
+    expect(count).toHaveBeenLastCalledWith({ path: "theme-light", event: true });
+    delete window.goatcounter;
+  });
+
   it("sits in the compact bar once the masthead is out of view", () => {
     renderWeekMasthead();
     scrollMastheadOut();
