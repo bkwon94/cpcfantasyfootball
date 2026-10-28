@@ -272,8 +272,41 @@
     --sidebar-border: var(--color-rule);
     --sidebar-ring: var(--color-red);
 
-    /* The brand is black, red, and white in both themes, so the page stays in the light scheme. */
+    /* The light theme is the report look and the default. The .dark block below holds the dark theme. See ADR 0002. */
     color-scheme: light;
+}
+/* The dark theme: the .dark class on <html> re-points the light tokens to dark partners, so no component changes a class. See ADR 0002.
+   The page goes brand black, and the black card lifts one step to #262626, so it keeps its edge. The masthead and the compact bar
+   keep --color-blk, so they sit flush with the page. Red, the on-dark tokens, the chip, the glow, and the arrows do not re-point.
+   Brand red is 3.1 to 1 on #141414 and 2.6 to 1 on #262626, so it never carries text on a dark surface.
+   The two dark surfaces are the page #141414 and the raised surface #262626. Each ratio below is on those two, in that order. */
+.dark {
+    /* The page. White text on it is 18.4 to 1. */
+    --color-wht: #141414;
+    /* Body text: 18.4 to 1 on the page, 15.1 to 1 on the raised surface. */
+    --color-ink: #fff;
+    /* Second text: 11.5 to 1 on the page, 9.4 to 1 on the raised surface. */
+    --color-ink-2: #ccc;
+    /* Muted text: 6.5 to 1 on the page, 5.3 to 1 on the raised surface. */
+    --color-mute: #999;
+    /* The page rule: 1.5 to 1 on the page, 1.2 to 1 on the raised surface. A rule is a soft line, as #e3e3e3 is 1.3 to 1 on white. */
+    --color-rule: #333;
+    /* The light grey turns to the raised surface: the grey card, the body from the tablet tier up, and the grey chip. 1.2 to 1 on the page. */
+    --color-gry: #262626;
+    /* The black card lifts to the raised surface, 1.2 to 1 on the page. White text on it is 15.1 to 1, #ccc 9.4, #999 5.3, light red 7.7,
+       the blue arrow 4.2, and the red arrow 4.1. Each text pair passes 4.5 to 1, and each arrow passes the 3 to 1 rule for a graphic. */
+    --color-card-blk: #262626;
+    /* Red text on the page: light red is 9.3 to 1 on the page and 7.7 to 1 on the raised surface. */
+    --color-red-ink: var(--color-red-lt);
+    /* The dark rule, one step lighter, because #333 is only 1.2 to 1 on the lifted card. #444 is 1.9 to 1 on the page and 1.6 to 1 on the raised surface. */
+    --color-rule-dark: #444;
+    /* The thin rule between two columns: 2.5 to 1 on the page and 2.0 to 1 on the raised surface. The light #cfcfcf is 1.6 to 1 on white. */
+    --color-divider: #555;
+    /* The off bar of a chart: 4.1 to 1 on the page and 3.4 to 1 on the raised surface, so it passes the 3 to 1 rule for a graphic.
+       In the waiver ring it sits in a #444 track at 2.2 to 1; the light theme puts it in a #333 track. */
+    --color-bar-off: #777;
+
+    color-scheme: dark;
 }
 /* Component values: the chapter rule width and the press transition. */
 :root {
@@ -384,14 +417,16 @@
     }
     /* The left-to-right gradient darkens the face under the text, so the name and points stay legible.
        The bottom fade turns the cut edge of the chest crop into the card color. */
+    /* The stage sits on the black card, so both gradients read --color-card-blk. In the dark theme the card lifts,
+       and the fade must end in the card color, or a black band shows at the card edge. */
     .stage::after {
         content: "";
         position: absolute;
         z-index: 2;
         inset: 0;
         background:
-            linear-gradient(to right, var(--color-blk) 0%, color-mix(in srgb, var(--color-blk) 85%, transparent) 30%, transparent 62%),
-            linear-gradient(to top, var(--color-blk) 0%, transparent 30%);
+            linear-gradient(to right, var(--color-card-blk) 0%, color-mix(in srgb, var(--color-card-blk) 85%, transparent) 30%, transparent 62%),
+            linear-gradient(to top, var(--color-card-blk) 0%, transparent 30%);
     }
 }
 

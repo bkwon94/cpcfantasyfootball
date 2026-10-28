@@ -109,12 +109,13 @@ function RestList({
               >
                 <span className={open ? "font-bold text-red-lt" : "text-on-dark-muted"}>{SLOTS.length + index + 1}</span>
                 {/* The player name sits next to the headshot, so the image is decorative. */}
+                {/* The fill is the dark rule, so it stays one step off the black card in both themes. Ink-2 turns light grey in the dark theme. */}
                 <img
                   src={sleeperHeadshot(player.player_id)}
                   alt=""
                   loading="lazy"
                   onError={swapToDefault}
-                  className="size-avatar rounded-full bg-ink-2 object-cover object-top"
+                  className="size-avatar rounded-full bg-rule-dark object-cover object-top"
                 />
                 <span className="flex min-w-0 flex-col">
                   <b className="font-extrabold">{player.name}</b>

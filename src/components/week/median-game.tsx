@@ -31,7 +31,7 @@ export function MedianGame({ median, blurb }: { median: Median | null; blurb?: s
         {/* The plot box matches the bar column, so the median line shares the bars' percent scale. */}
         <div className="pointer-events-none absolute inset-y-0 left-0 right-[calc(var(--spacing-val-col)+var(--spacing-sp-2))]">
           <div
-            className="absolute inset-y-0 border-l-2 border-dashed border-blk"
+            className="absolute inset-y-0 border-l-2 border-dashed border-ink"
             style={{ left: `${median.line_pct}%` }}
             title={`Median ${num(median.value)}`}
           />
