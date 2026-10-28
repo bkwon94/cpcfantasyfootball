@@ -6,13 +6,13 @@
 
 **Status:** ready-for-agent
 
-- [ ] From the tablet tier the Tools chapter and the Power Rankings chapter sit in a two-column row with the card gap. On a phone they stack with the chapter rule.
-- [ ] The row is one child of the main, so the main's card gap applies above and below it.
-- [ ] With no rankings file the Tools chapter takes the full width of the row.
-- [ ] The Weekly Reports chapter sits under the row at the full width, one week per row, newest first.
-- [ ] The three labels are level-two headings with the text "Tools", "Power Rankings", and "Weekly Reports".
-- [ ] The rankings lead reads "Top Three".
-- [ ] The reveal steps of the rows are unchanged.
-- [ ] The home page test checks the three level-two headings in order, the "Top Three" lead, the analyzer link before the weeks, and the Tools chapter with no rankings file. Tests that read "Weekly reports" or "Top three" change with the casing.
-- [ ] A browser check at 768 and 1280 shows the row of two cards and the list under it. At 390 the page is unchanged.
-- [ ] `pnpm test`, `pnpm typecheck`, and `pnpm build` pass.
+- [x] From the tablet tier the Tools chapter and the Power Rankings chapter sit in a two-column row with the card gap. On a phone they stack with the chapter rule.
+- [x] The row is one child of the main, so the main's card gap applies above and below it.
+- [x] With no rankings file the Tools chapter takes the full width of the row.
+- [x] The Weekly Reports chapter sits under the row at the full width, one week per row, newest first.
+- [x] The three labels are level-two headings with the text "Tools", "Power Rankings", and "Weekly Reports".
+- [x] The rankings lead reads "Top Three".
+- [x] The reveal steps of the rows are unchanged.
+- [x] The home page test checks the three level-two headings in order, the "Top Three" lead, the analyzer link before the weeks, and the Tools chapter with no rankings file. Tests that read "Weekly reports" or "Top three" change with the casing.
+- [x] A browser check at 768 and 1280 shows the row of two cards and the list under it. At 390 the page is unchanged.
+- [x] `pnpm test`, `pnpm typecheck`, and `pnpm build` pass.
