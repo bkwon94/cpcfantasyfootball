@@ -117,7 +117,8 @@ function DecisionBlock({ decision, team }: { decision: Decision; team?: string }
   const answer = ANSWER_WORD[decision.answer];
   return (
     <div className="border-l-(length:--chap-rule) border-red py-sp-1 pl-sp-4">
-      <Label>Decision for {team ?? "your side"}</Label>
+      {/* Each chapter of the result opens with a level-two heading, and the decision chapter opens with this label. */}
+      <Label heading>Decision for {team ?? "your side"}</Label>
       <motion.p
         className={cn("mt-0 mb-sp-2 text-headline leading-none font-black tracking-grade", answer.color)}
         {...rise(off, { duration: DURATION.decision })}

@@ -56,6 +56,13 @@ describe("AnalyzeResult", () => {
     expect(trade.compareDocumentPosition(side) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
   });
 
+  it("opens the decision chapter with a level-two heading", () => {
+    render(<AnalyzeResult doc={fixture} />);
+    const heading = screen.getByRole("heading", { level: 2, name: "Decision for Pukancun on 3" });
+    const trade = screen.getByRole("heading", { level: 2, name: "The Trade" });
+    expect(heading.compareDocumentPosition(trade) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  });
+
   it("shows no letter grade anywhere in the result", () => {
     for (const answer of ["yes", "no", "not_as_is"] as const) {
       const { container } = render(<AnalyzeResult doc={withAnswer(answer)} />);

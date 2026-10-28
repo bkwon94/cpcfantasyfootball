@@ -7,8 +7,8 @@
 **Status:** ready-for-agent
 
 - [ ] Screenshots with agent-browser at 390 by 844, 768 by 1024, and 1280 by 800, reduced motion on, in both themes, saved under the feature's screenshots folder: the home page, the rankings page, the analyzer form after a passphrase with two teams picked, the result after a grade, and the week page at 1280 with its rail.
-- [ ] No sideways scroll on any page at any of the three widths.
-- [ ] The rankings table shows the longest team name on one row height at 768 and 1280.
+- [x] No sideways scroll on any page at any of the three widths.
+- [x] The rankings table shows the longest team name on one row height at 768 and 1280.
 - [ ] The guidelines pass with the web-design-guidelines skill finds no new issue on the three pages. Issues from the known list are noted, not fixed.
 - [ ] The code review skill runs against `main` with no open finding.
 - [ ] `pnpm test`, `pnpm typecheck`, `pnpm build`, and `pnpm check:export` pass.
