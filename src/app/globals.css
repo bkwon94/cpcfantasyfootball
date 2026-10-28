@@ -352,11 +352,12 @@
 }
 /*---break---
  */
-/* A pressable element scales down a little on tap, so the reader sees the page heard the tap. */
+/* A pressable element scales down a little on tap, so the reader sees the page heard the tap.
+   The scale is small because a wide control, such as a picker, moves each edge by its full width times the scale. */
 @utility press {
     transition: var(--press);
     &:active {
-        transform: scale(0.97);
+        transform: scale(0.985);
     }
     @media (prefers-reduced-motion: reduce) {
         transition: none;
