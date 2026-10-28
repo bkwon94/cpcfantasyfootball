@@ -314,6 +314,14 @@ describe("The week chips", () => {
   });
 });
 
+describe("The chapter", () => {
+  it("is not a black card", () => {
+    const { container } = render(<PowerRankings weeks={rankings.weeks} avatars={week6.avatars} />);
+    // The page has one chapter, so a black card would make the light theme read as dark.
+    expect(container.querySelector("section")?.classList.contains("bg-card-blk")).toBe(false);
+  });
+});
+
 describe("Movement", () => {
   it("shows a dash for no change", () => {
     render(<Movement movement={0} />);
