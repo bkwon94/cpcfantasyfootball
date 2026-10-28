@@ -140,6 +140,17 @@ describe("TradeForm", () => {
     });
   });
 
+  it("counts a grade event on submit", async () => {
+    const count = vi.fn();
+    window.goatcounter = { count };
+    answer(200, fixtureJson);
+    pickTrade();
+    fireEvent.click(submit());
+    await screen.findByText("Not as is");
+    expect(count).toHaveBeenCalledWith({ path: "analyze-grade", event: true });
+    delete window.goatcounter;
+  });
+
   it("shows the loading line while the grade runs", async () => {
     fetchStub.mockReturnValueOnce(new Promise(() => {}));
     pickTrade();

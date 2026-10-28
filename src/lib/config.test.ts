@@ -48,4 +48,14 @@ describe("config", () => {
     vi.stubEnv("NEXT_PUBLIC_WAIVER", "on");
     expect((await import("./config")).waiverOn).toBe(true);
   });
+
+  it("defaults the usage code and lets the env override it, even to empty", async () => {
+    expect((await import("./config")).usageCode).toBe("cpcfantasy");
+    vi.resetModules();
+    vi.stubEnv("NEXT_PUBLIC_USAGE_CODE", "other");
+    expect((await import("./config")).usageCode).toBe("other");
+    vi.resetModules();
+    vi.stubEnv("NEXT_PUBLIC_USAGE_CODE", "");
+    expect((await import("./config")).usageCode).toBe("");
+  });
 });
