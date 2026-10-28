@@ -143,9 +143,17 @@ describe("Theme button", () => {
     expect(mastheadButton(TO_LIGHT)).toBeTruthy();
   });
 
-  it("sits in the desktop row", () => {
+  it("leaves the masthead row to the links, so the masthead has one theme button", () => {
     renderWeekMasthead();
     const row = screen.getByRole("navigation", { name: "Site menu" });
+    expect(within(row).queryByRole("button", { name: TO_DARK })).toBeNull();
+    expect(within(screen.getByRole("banner")).getAllByRole("button", { name: TO_DARK })).toHaveLength(1);
+  });
+
+  it("ends the row of the compact bar", () => {
+    renderWeekMasthead();
+    scrollMastheadOut();
+    const row = screen.getByRole("navigation", { name: "Top bar menu" });
     const button = within(row).getByRole("button", { name: TO_DARK });
     fireEvent.click(button);
     expect(rootIsDark()).toBe(true);
