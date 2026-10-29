@@ -83,3 +83,51 @@ _Avoid_: Trade summary, exchange, ledger
 **Good for both**:
 The page word for the win-win state of the fairness when the trade has two sides. With three or more sides the page word is "Good for all". Use "win_win" in code. The finder shows two-side trades, so it always says "Good for both".
 _Avoid_: win-win on the page
+
+**Manager page**:
+The page for one team of the league, for one season, with its grade, odds, moves, and performers.
+_Avoid_: Team page, owner page, profile
+
+**Managers index**:
+The page that lists the twelve teams of a season and links to each manager page.
+_Avoid_: Roster list, team list, directory
+
+**Hero**:
+The top of a manager page: the avatar, the team name, the owner, the record, and the standing.
+_Avoid_: Header, banner, masthead, title block
+
+**Roster grade**:
+The letter, A+ to D, that says how good a team's roster is now: position strength, depth, and holes.
+_Avoid_: Score, rating, power score
+
+**Playoff odds**:
+The chance, as a percent, that a team makes the playoffs from where the season stands now.
+_Avoid_: Playoff chances, probability, projection
+
+**Bench points**:
+The points a team left on its bench in a week: the best lineup's points minus the lineup it started.
+_Avoid_: Lineup efficiency, optimal lineup gap, points lost
+
+**Points line**:
+The small chart on a manager page with the team's points per week against the league median, a dot per week.
+_Avoid_: Sparkline, trend, graph
+
+**Slot rank**:
+Where a team's starters at one position rank in the league, with one word for depth: deep, fine, or thin.
+_Avoid_: Position grade, position strength, tier
+
+**Moves**:
+A team's adds, drops, bids, and trades, listed by week on its manager page.
+_Avoid_: Transactions, activity, log
+
+**Best adds**:
+The adds that scored the most points for the team after the add, in any number of games.
+_Avoid_: Waiver wins, pickups, steals
+
+**Top performers**:
+The players that scored the most points for the team while they started for it, year to date.
+_Avoid_: Studs, stars, leaders
+
+**Awards shelf**:
+The counts of the weekly report awards a team won in a season.
+_Avoid_: Trophy case, award count, honors
