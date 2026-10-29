@@ -136,7 +136,7 @@ describe("ManagerPage", () => {
     expect(numbersIn(group)[1]).toEqual(["Playoff Odds", "—"]);
   });
 
-  it("shows the five chapters, each with its heading, and an empty line in each chapter with no data yet", async () => {
+  it("shows the five chapters, each with its heading", async () => {
     await renderManager("9", { rankings: rankingsFixture });
     const main = screen.getByRole("main");
     expect(within(main).getAllByRole("heading", { level: 2 }).map((heading) => heading.textContent)).toEqual([
@@ -146,7 +146,6 @@ describe("ManagerPage", () => {
       "Best Adds",
       "Top Performers",
     ]);
-    expect(within(main).getAllByText("Nothing here yet.")).toHaveLength(2);
   });
 
   it("lists the four slot ranks in the Roster chapter, one line each, in the file's order", async () => {
@@ -197,6 +196,15 @@ describe("ManagerPage", () => {
     expect(screen.getByText("Worst in week 4: 13.68 points, Drake Maye sat.")).toBeTruthy();
     const shelf = screen.getByRole("group", { name: "Awards Shelf" });
     expect([...shelf.querySelectorAll("dd")].map((count) => count.textContent)).toEqual(["0", "0", "0", "0"]);
+  });
+
+  it("lists the best adds and the top performers in order", async () => {
+    await renderManager("9", { rankings: rankingsFixture });
+    const names = (id: string) =>
+      [...document.getElementById(id)!.querySelectorAll("li b")].map((name) => name.textContent);
+    expect(names("best-adds")).toEqual(fixture.managers[8].best_adds.map((add) => add.name));
+    expect(names("top-performers")).toEqual(fixture.managers[8].top_performers.map((performer) => performer.name));
+    expect(names("best-adds")).toEqual(["Alvin Kamara", "Kyler Murray", "Emmett Johnson"]);
   });
 
   it("lists the five chapters in the chapter rail", async () => {

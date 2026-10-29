@@ -1,15 +1,16 @@
 /**
  * The five chapters of a manager page under the hero, each with its heading and its id for the chapter rail.
- * A chapter the managers file does not feed yet holds one quiet line.
+ * The rail and the page read one list of ids and labels, so the rail labels match the chapter headings.
  */
 import type { RailChapter } from "@/components/week/chapter-rail";
-import { Chapter, Label } from "@/components/week/parts";
 import type { Manager } from "@/lib/manager-types";
+import { BestAdds } from "./best-adds";
 import { Moves } from "./moves";
 import { Roster } from "./roster";
 import { SeasonSoFar } from "./season-so-far";
+import { TopPerformers } from "./top-performers";
 
-/* The rail and the page read this one list, so the rail labels match the chapter headings. */
+/* Each id matches the Chapter id in that chapter's component, in the order the page renders them. */
 export const MANAGER_CHAPTERS: RailChapter[] = [
   { id: "season", label: "Season So Far" },
   { id: "roster", label: "Roster" },
@@ -17,24 +18,6 @@ export const MANAGER_CHAPTERS: RailChapter[] = [
   { id: "best-adds", label: "Best Adds" },
   { id: "top-performers", label: "Top Performers" },
 ];
-
-/* A chapter with no data yet: its heading and one quiet line. */
-function Placeholder({ id, label }: RailChapter) {
-  return (
-    <Chapter reveal id={id}>
-      <Label heading>{label}</Label>
-      <p className="m-0 text-body text-mute">Nothing here yet.</p>
-    </Chapter>
-  );
-}
-
-function BestAdds(_: { manager: Manager }) {
-  return <Placeholder {...MANAGER_CHAPTERS[3]} />;
-}
-
-function TopPerformers(_: { manager: Manager }) {
-  return <Placeholder {...MANAGER_CHAPTERS[4]} />;
-}
 
 export function ManagerChapters({ manager }: { manager: Manager }) {
   return (
