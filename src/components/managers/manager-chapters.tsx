@@ -1,10 +1,11 @@
 /**
  * The five chapters of a manager page under the hero, each with its heading and its id for the chapter rail.
- * Each chapter holds one quiet line until the managers file carries its data.
+ * A chapter the managers file does not feed yet holds one quiet line.
  */
 import type { RailChapter } from "@/components/week/chapter-rail";
 import { Chapter, Label } from "@/components/week/parts";
 import type { Manager } from "@/lib/manager-types";
+import { Moves } from "./moves";
 import { Roster } from "./roster";
 
 /* The rail and the page read this one list, so the rail labels match the chapter headings. */
@@ -26,10 +27,17 @@ function Placeholder({ id, label }: RailChapter) {
   );
 }
 
-function SeasonSoFar(_: { manager: Manager }) { return <Placeholder {...MANAGER_CHAPTERS[0]} />; }
-function Moves(_: { manager: Manager }) { return <Placeholder {...MANAGER_CHAPTERS[2]} />; }
-function BestAdds(_: { manager: Manager }) { return <Placeholder {...MANAGER_CHAPTERS[3]} />; }
-function TopPerformers(_: { manager: Manager }) { return <Placeholder {...MANAGER_CHAPTERS[4]} />; }
+function SeasonSoFar(_: { manager: Manager }) {
+  return <Placeholder {...MANAGER_CHAPTERS[0]} />;
+}
+
+function BestAdds(_: { manager: Manager }) {
+  return <Placeholder {...MANAGER_CHAPTERS[3]} />;
+}
+
+function TopPerformers(_: { manager: Manager }) {
+  return <Placeholder {...MANAGER_CHAPTERS[4]} />;
+}
 
 export function ManagerChapters({ manager }: { manager: Manager }) {
   return (
