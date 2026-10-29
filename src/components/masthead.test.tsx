@@ -14,9 +14,18 @@ const WEEKS: WeekSummary[] = [
   { number: 5, dates: "Oct 8 – Oct 12, 2026", href: "/2026/week-05/" },
 ];
 
-/* The masthead of the week 7 report, with the waiver flag off. A test overrides a prop to change one value. */
+/* The masthead of the week 7 report, with the waiver flag off and no managers file. A test overrides a prop to change one value. */
 function renderWeekMasthead(props: Partial<Parameters<typeof Masthead>[0]> = {}) {
-  render(<Masthead subtitle="League Weekly" weeks={WEEKS} pageHref="/2026/week-07/" waiverHref={null} {...props} />);
+  render(
+    <Masthead
+      subtitle="League Weekly"
+      weeks={WEEKS}
+      pageHref="/2026/week-07/"
+      waiverHref={null}
+      managersHref={null}
+      {...props}
+    />,
+  );
 }
 
 /* The list of the open sheet. The row shares its name, so the query stays inside the dialog. */
@@ -261,6 +270,19 @@ describe("Masthead menu", () => {
     renderWeekMasthead({ waiverHref: null });
     const menu = await openMenu();
     expect(within(menu).queryByRole("link", { name: "Waiver Wire" })).toBeNull();
+  });
+
+  it("lists the managers index after the power rankings only when the managers file exists", async () => {
+    renderWeekMasthead({ managersHref: "/2026/managers/" });
+    const menu = await openMenu();
+    expect(linksIn(menu).slice(2, 4)).toEqual([
+      ["Power Rankings", "/rankings/"],
+      ["Managers", "/2026/managers/"],
+    ]);
+    cleanup();
+    renderWeekMasthead({ managersHref: null });
+    const bare = await openMenu();
+    expect(within(bare).queryByRole("link", { name: "Managers" })).toBeNull();
   });
 
   it("opens the menu at rest and closes it with motion off", async () => {

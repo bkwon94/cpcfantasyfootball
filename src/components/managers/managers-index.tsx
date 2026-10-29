@@ -1,0 +1,36 @@
+/**
+ * The managers index: one card per team in standings order, with the avatar, the name, the owner, and the record.
+ * A card is one link to the team's manager page. A phone stacks the cards; from the tablet tier up, two go per row.
+ */
+import { Avatar, avatarSrc, Chapter, Label } from "@/components/week/parts";
+import { basePath } from "@/lib/config";
+import type { Managers } from "@/lib/manager-types";
+import type { AvatarMap } from "@/lib/week-types";
+
+export function ManagersIndex({ managers, avatars }: { managers: Managers; avatars: AvatarMap }) {
+  return (
+    <Chapter reveal id="managers">
+      <Label heading>Managers</Label>
+      {/* The grid gap takes the place of the card margin. minmax(0,1fr) lets a long team name wrap in its column. */}
+      <ul className="m-0 flex list-none flex-col gap-sp-2 p-0 tablet:grid tablet:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+        {managers.managers.map((manager) => (
+          <li key={manager.roster_id}>
+            {/* A plain anchor, as the menu links are: each manager page is a static page with no shared state. */}
+            <a
+              href={`${basePath}/${managers.season}/managers/${manager.roster_id}/`}
+              className="press flex min-h-touch items-center gap-sp-3 rounded-card bg-gry p-sp-3 text-inherit no-underline"
+            >
+              <Avatar src={avatarSrc(avatars, manager.roster_id)} />
+              {/* The name is the one emphasis of the card. The owner sits under it in the quiet color. */}
+              <span className="min-w-0 flex-1">
+                <span className="block text-body leading-tight font-extrabold text-ink">{manager.team.name}</span>
+                <span className="mt-sp-0 block text-meta text-mute">{manager.team.owner}</span>
+              </span>
+              <span className="flex-none font-semibold whitespace-nowrap text-mute tabular-nums">{`${manager.wins}-${manager.losses}`}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </Chapter>
+  );
+}

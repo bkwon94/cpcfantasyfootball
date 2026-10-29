@@ -4,16 +4,17 @@
  */
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
-import { basePath } from "@/lib/config";
+// Relative imports, not the @ alias: next.config imports the managers reader, which imports this module.
+import { basePath } from "./config";
 import type { Rankings } from "@/lib/rankings-types";
-import { listWeeks, loadWeek } from "@/lib/week-data";
+import { listWeeks, loadWeek } from "./week-data";
 import type { AvatarMap } from "@/lib/week-types";
 
 /* The rankings file layout version this site reads. It counts apart from the page JSON version. */
 const SCHEMA_VERSION = 1;
 
 /* The latest season is the highest season folder with a week page. */
-function latestSeason(): string | null {
+export function latestSeason(): string | null {
   const seasons = listWeeks().map((ref) => ref.season);
   return seasons.length === 0 ? null : seasons.sort().at(-1)!;
 }

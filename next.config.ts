@@ -4,6 +4,7 @@
  */
 import type { NextConfig } from "next";
 import { basePath } from "./src/lib/config";
+import { managersRouteOn } from "./src/lib/manager-data";
 import { waiverRouteOn } from "./src/lib/waiver-data";
 
 const nextConfig: NextConfig = {
@@ -11,7 +12,15 @@ const nextConfig: NextConfig = {
   trailingSlash: true,
   basePath,
   images: { unoptimized: true },
-  pageExtensions: ["tsx", "ts", "jsx", "js", ...(waiverRouteOn() ? ["waiver.tsx"] : [])],
+  // A static export fails on a dynamic route with no params, so a gated route file counts as a page only when its file exists.
+  pageExtensions: [
+    "tsx",
+    "ts",
+    "jsx",
+    "js",
+    ...(waiverRouteOn() ? ["waiver.tsx"] : []),
+    ...(managersRouteOn() ? ["managers.tsx"] : []),
+  ],
 };
 
 export default nextConfig;
