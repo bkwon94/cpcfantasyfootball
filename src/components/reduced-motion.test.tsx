@@ -1,5 +1,5 @@
 /**
- * Tests for the analyzer, the week page, the home page, the power rankings, and the waiver page with the reduced-motion media query on. The content must show at rest at once.
+ * Tests for the analyzer, the week page, the home page, the power rankings, the waiver page, and the manager page with the reduced-motion media query on. The content must show at rest at once.
  * matchMedia is a stub, and it must exist before Framer Motion first reads it, so the stub runs at the top of the file.
  * jsdom ignores opacity, so this test proves the text is present. The browser capture 12-week-off-390.png proves no motion.
  */
@@ -10,7 +10,12 @@ import HomePage from "@/app/page";
 import WeekPage from "@/app/[season]/[week]/page";
 import type { AnalyzeResponse } from "@/lib/analyze-types";
 import type { Team } from "@/lib/api";
+import type { Manager } from "@/lib/manager-types";
 import AnalyzeResult from "./analyze-result";
+import managersFixture from "./managers/fixture.json";
+import { ManagerHero } from "./managers/manager-hero";
+import { Roster } from "./managers/roster";
+import { SeasonSoFar } from "./managers/season-so-far";
 import { rankings } from "./rankings/fixture";
 import { PowerRankings } from "./rankings/power-rankings";
 import { TradeForm } from "./trade-form";
@@ -181,5 +186,57 @@ describe("Reduced motion on the static pages", () => {
     render(<HomePage />);
     expect(screen.getByRole("link", { name: /Week 6/ })).toBeTruthy();
     expect(screen.getByText("Oct 15 – Oct 19, 2026")).toBeTruthy();
+  });
+});
+
+/* A fixture entry with the joined fields of the loader and playoff odds of 63 percent. */
+function managerWithOdds(): Manager {
+  const entry = managersFixture.managers[0] as Manager;
+  return {
+    ...entry,
+    standing: 1,
+    rank: 2,
+    movement: 0,
+    odds: { playoff: 63, bye: 20, seed: 3, status: "open" },
+    odds_change: 0,
+  };
+}
+
+describe("Reduced motion on the manager page", () => {
+  it("shows the final grade letter and the final playoff percent at once", async () => {
+    render(<ManagerHero manager={managerWithOdds()} avatar="avatars/1.jpg" teams={12} />);
+    const numbers = screen.getByRole("group", { name: "Season Numbers" });
+    const [grade, odds] = [...numbers.querySelectorAll("dt")].map((term) => term.nextElementSibling as HTMLElement);
+    expect(grade.textContent).toBe("D");
+    expect(odds.textContent).toBe("63%");
+    // The instant transition sets the rest state by the next frame. A real motion fails the short wait.
+    await waitFor(() => expectAtRest(within(grade).getByText("D")), { timeout: 50 });
+    // The count never runs with motion off, so the final percent stays after a frame.
+    await new Promise((done) => setTimeout(done, 50));
+    expect(odds.textContent).toBe("63%");
+  });
+
+  it("shows the four slot rank lines at rest at once", async () => {
+    render(<Roster manager={managerWithOdds()} />);
+    const lines = screen.getAllByRole("listitem");
+    expect(lines.map((line) => line.textContent)).toEqual([
+      "QB · 12th of 12 · fine",
+      "RB · 9th of 12 · deep",
+      "WR · 2nd of 12 · thin",
+      "TE · 4th of 12 · deep",
+    ]);
+    await waitFor(() => lines.forEach((line) => expectAtRest(line)), { timeout: 50 });
+  });
+
+  it("shows the points line whole, with no draw in progress", async () => {
+    render(<SeasonSoFar manager={managerWithOdds()} />);
+    const line = screen.getByRole("img", { name: "Points per week against the league median" });
+    const team = line.querySelector("[data-draw]")!;
+    // A drawn path shows its full length: the first dash of the dash array is the whole normalized length.
+    await waitFor(() => expect(team.getAttribute("stroke-dasharray")).toMatch(/^1(px)? /), { timeout: 50 });
+    await waitFor(
+      () => line.querySelectorAll("[data-result]").forEach((dot) => expect((dot as HTMLElement).style.opacity).not.toBe("0")),
+      { timeout: 50 },
+    );
   });
 });

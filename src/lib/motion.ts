@@ -53,6 +53,8 @@ export const DURATION = {
   reveal: 0.4,
   // A part of the game changer hero enters. It is the slowest reveal, because the hero is the top story of the week page.
   hero: 0.5,
+  // A dot of the points line fades in as the drawn line reaches it. It is short, so each dot lands close behind the line.
+  dot: 0.16,
 } as const;
 
 /* The gap between two cards that enter together, in seconds. It is short, so a fast scroll never waits on motion. */

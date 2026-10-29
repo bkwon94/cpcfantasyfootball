@@ -2,18 +2,22 @@
  * The Roster chapter of a manager page: the four slot ranks of the roster grade, one line each, in the file's order.
  * Each line reads as "RB · 2nd of 12 · deep". A roster with no grade shows one quiet line.
  */
+import { Reveal } from "@/components/reveal";
 import { Chapter, Label } from "@/components/week/parts";
 import { ordinal } from "@/lib/format";
+import { stagger } from "@/lib/motion";
 import type { Manager, SlotRank } from "@/lib/manager-types";
 
 /* A slot rank ranks the twelve teams of the league, 1 to 12, so the line reads out of twelve. */
 const LEAGUE_TEAMS = 12;
 
 /* One line: the position as the quiet label, the rank as the one emphasis, and the depth word in the quiet color.
-   The separators sit in the quiet color, so the rank stays the one thing in ink. */
-function SlotLine({ slot }: { slot: SlotRank }) {
+   The separators sit in the quiet color, so the rank stays the one thing in ink.
+   The line enters at its place in the stagger when the chapter reveals, with the reveal timing. */
+function SlotLine({ slot, index }: { slot: SlotRank; index: number }) {
   return (
-    <li className="flex items-baseline gap-sp-2 tabular-nums">
+    <li>
+      <Reveal delay={stagger(index)} className="flex items-baseline gap-sp-2 tabular-nums">
       <span className="w-sp-6 flex-none text-label font-semibold tracking-caps text-mute uppercase">{slot.position}</span>
       <span className="text-meta text-mute">{" · "}</span>
       <span>
@@ -22,6 +26,7 @@ function SlotLine({ slot }: { slot: SlotRank }) {
       </span>
       <span className="text-meta text-mute">{" · "}</span>
       <span className="text-meta text-mute">{slot.depth}</span>
+      </Reveal>
     </li>
   );
 }
@@ -35,8 +40,8 @@ export function Roster({ manager }: { manager: Manager }) {
       {manager.grade ? (
         // The gap gives each line air, so the four ranks read as four groups.
         <ol className="m-0 flex list-none flex-col gap-sp-3 p-0">
-          {manager.grade.slots.map((slot) => (
-            <SlotLine key={slot.position} slot={slot} />
+          {manager.grade.slots.map((slot, i) => (
+            <SlotLine key={slot.position} slot={slot} index={i} />
           ))}
         </ol>
       ) : (

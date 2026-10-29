@@ -9,7 +9,7 @@ import { useEffect, type ReactNode } from "react";
 import { DURATION, EASE_OUT, INSTANT, RISE, useMotionOff } from "@/lib/motion";
 
 /* The content reveals a little after its top edge enters the screen, so the reader sees the motion and not only its end. */
-const VIEW_MARGIN = "0% 0% -8% 0%";
+export const VIEW_MARGIN = "0% 0% -8% 0%";
 
 const HIDDEN = { opacity: 0, y: RISE };
 const SHOWN = { opacity: 1, y: 0 };

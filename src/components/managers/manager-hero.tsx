@@ -3,9 +3,12 @@
  * Under it sit the three numbers, the grade, the playoff odds, and the power rank, each with one quiet line of context.
  */
 import type { ReactNode } from "react";
+import { Reveal } from "@/components/reveal";
 import { Chapter } from "@/components/week/parts";
 import { ordinal } from "@/lib/format";
+import { DURATION, REVEAL_STAGGER } from "@/lib/motion";
 import type { Manager, ManagerGrade } from "@/lib/manager-types";
+import { OddsCount } from "./odds-count";
 
 /* A change in words. Positive is up, so the odds change and the rank movement read the same way. */
 function changeWords(change: number): string {
@@ -19,7 +22,7 @@ function depthWords(grade: ManagerGrade): string {
 }
 
 /* One number: one quiet label over it, the number as the one emphasis, and at most one quiet line under it. */
-function SeasonNumber({ label, children, context }: { label: string; children: ReactNode; context?: string | null }) {
+function SeasonNumber({ label, children, context }: { label: string; children: ReactNode; context?: ReactNode }) {
   return (
     <div className="min-w-0">
       <dt className="text-label leading-tight font-semibold tracking-caps text-mute uppercase">{label}</dt>
@@ -62,11 +65,28 @@ export function ManagerHero({ manager, avatar, teams }: { manager: Manager; avat
       {/* The rule and the space above it set the numbers apart from the team, so the hero reads as two groups. */}
       <dl role="group" aria-label="Season Numbers" className="m-0 mt-sp-5 grid grid-cols-3 gap-sp-4 border-t border-rule pt-sp-5">
         {/* The letter stays one plain element in one place, so a later grade motion can target it. */}
-        <SeasonNumber label="Grade" context={grade ? depthWords(grade) : null}>
-          {grade ? grade.letter : "—"}
+        {/* On load the letter fades and rises into place with the hero timing, and the depth line follows one stagger later.
+            The rise is the quieter choice over a scale, because the large letter would grow at every edge. */}
+        <SeasonNumber
+          label="Grade"
+          context={
+            grade ? (
+              <Reveal trigger="mount" delay={REVEAL_STAGGER} duration={DURATION.hero}>
+                {depthWords(grade)}
+              </Reveal>
+            ) : null
+          }
+        >
+          {grade ? (
+            <Reveal trigger="mount" duration={DURATION.hero}>
+              {grade.letter}
+            </Reveal>
+          ) : (
+            "—"
+          )}
         </SeasonNumber>
         <SeasonNumber label="Playoff Odds" context={odds && manager.odds_change !== null ? changeWords(manager.odds_change) : null}>
-          {odds ? `${odds.playoff}%` : "—"}
+          {odds ? <OddsCount value={odds.playoff} /> : "—"}
         </SeasonNumber>
         <SeasonNumber label="Power Rank" context={rank !== null && manager.movement !== null ? changeWords(manager.movement) : null}>
           {rank !== null ? <Place place={rank} of={teams} /> : "—"}
