@@ -7,6 +7,7 @@ import { Chapter, Label } from "@/components/week/parts";
 import type { Manager } from "@/lib/manager-types";
 import { Moves } from "./moves";
 import { Roster } from "./roster";
+import { SeasonSoFar } from "./season-so-far";
 
 /* The rail and the page read this one list, so the rail labels match the chapter headings. */
 export const MANAGER_CHAPTERS: RailChapter[] = [
@@ -25,10 +26,6 @@ function Placeholder({ id, label }: RailChapter) {
       <p className="m-0 text-body text-mute">Nothing here yet.</p>
     </Chapter>
   );
-}
-
-function SeasonSoFar(_: { manager: Manager }) {
-  return <Placeholder {...MANAGER_CHAPTERS[0]} />;
 }
 
 function BestAdds(_: { manager: Manager }) {

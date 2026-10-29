@@ -1,6 +1,6 @@
 /**
  * Tests for the manager page route. Each test builds a temp public/ folder with a week page, the managers file, and the rankings file.
- * They read the static params and what a reader sees: the hero, the three numbers with their context lines, and the chapters.
+ * They read the static params and what a reader sees: the hero, the three numbers with their context lines, the season so far, and the chapters.
  * The Roster chapter reads the slot ranks of the grade, one line each.
  */
 import { cleanup, render, screen, within } from "@testing-library/react";
@@ -146,7 +146,7 @@ describe("ManagerPage", () => {
       "Best Adds",
       "Top Performers",
     ]);
-    expect(within(main).getAllByText("Nothing here yet.")).toHaveLength(3);
+    expect(within(main).getAllByText("Nothing here yet.")).toHaveLength(2);
   });
 
   it("lists the four slot ranks in the Roster chapter, one line each, in the file's order", async () => {
@@ -186,6 +186,17 @@ describe("ManagerPage", () => {
     ]);
     expect(within(weeks[0]).getByText("No moves.")).toBeTruthy();
     expect(within(moves).getAllByText("No moves.")).toHaveLength(4);
+  });
+
+  it("shows the season so far: the dots, the bench line, and the four counts", async () => {
+    // Maye d'force B with U won weeks 1, 2, 5, and 6.
+    await renderManager("9", { rankings: rankingsFixture });
+    const line = screen.getByRole("img", { name: "Points per week against the league median" });
+    expect(line.querySelectorAll("[data-result]")).toHaveLength(6);
+    expect(line.querySelectorAll('[data-result="win"]')).toHaveLength(4);
+    expect(screen.getByText("Worst in week 4: 13.68 points, Drake Maye sat.")).toBeTruthy();
+    const shelf = screen.getByRole("group", { name: "Awards Shelf" });
+    expect([...shelf.querySelectorAll("dd")].map((count) => count.textContent)).toEqual(["0", "0", "0", "0"]);
   });
 
   it("lists the five chapters in the chapter rail", async () => {
