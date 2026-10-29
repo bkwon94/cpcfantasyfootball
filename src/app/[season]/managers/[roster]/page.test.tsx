@@ -144,7 +144,26 @@ describe("ManagerPage", () => {
       "Best Adds",
       "Top Performers",
     ]);
-    expect(within(main).getAllByText("Nothing here yet.")).toHaveLength(5);
+    expect(within(main).getAllByText("Nothing here yet.")).toHaveLength(4);
+  });
+
+  it("shows the moves totals and the weeks newest first, with one line for an empty week", async () => {
+    // London Cooking made two adds, one drop, and one trade, and no move in weeks 6, 5, 3, and 1.
+    await renderManager("5", { rankings: rankingsFixture });
+    const moves = screen.getByRole("heading", { name: "Moves" }).closest("section")!;
+    const totals = within(moves).getByRole("group", { name: "Move Totals" });
+    expect([...totals.querySelectorAll("dd")].map((count) => count.textContent)).toEqual(["2", "1", "1"]);
+    const weeks = within(moves).getAllByRole("group", { name: /^Week / });
+    expect(weeks.map((group) => group.getAttribute("aria-label"))).toEqual([
+      "Week 6",
+      "Week 5",
+      "Week 4",
+      "Week 3",
+      "Week 2",
+      "Week 1",
+    ]);
+    expect(within(weeks[0]).getByText("No moves.")).toBeTruthy();
+    expect(within(moves).getAllByText("No moves.")).toHaveLength(4);
   });
 
   it("lists the five chapters in the chapter rail", async () => {
