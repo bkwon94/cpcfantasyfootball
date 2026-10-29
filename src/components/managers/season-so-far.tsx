@@ -48,11 +48,11 @@ function AwardsShelf({ awards }: { awards: AwardCounts }) {
     { label: "Underperformer", count: awards.underperformer },
   ];
   return (
-    <dl role="group" aria-label="Awards Shelf" className="m-0 grid grid-cols-4 gap-sp-2">
+    // A phone fits two labels per row whole. Four per row breaks "Underperformer" mid-word, which reads as a defect.
+    <dl role="group" aria-label="Awards Shelf" className="m-0 grid grid-cols-2 gap-x-sp-2 gap-y-sp-4 tablet:grid-cols-4">
       {shelf.map(({ label, count }, i) => (
         <div key={i} className="min-w-0">
-          {/* The hyphens let a long label break on a narrow phone column. */}
-          <dt className={cn(QUIET_LABEL, "hyphens-auto")}>{label}</dt>
+          <dt className={QUIET_LABEL}>{label}</dt>
           <dd
             className={cn(
               "m-0 mt-sp-2 text-score leading-none font-extrabold tabular-nums",
