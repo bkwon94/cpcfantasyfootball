@@ -1,6 +1,6 @@
 /**
  * Tests for the managers index route. Each test builds a temp public/ folder with a week page, the managers file, and the rankings file.
- * They read the static params, the title, and the twelve cards a reader sees, in standings order.
+ * They read the static params, the title, and the twelve cards a reader sees, in standings order, each with its grade letter.
  */
 import { cleanup, render, screen, within } from "@testing-library/react";
 import { mkdtempSync, mkdirSync, writeFileSync } from "node:fs";
@@ -58,6 +58,16 @@ describe("ManagersIndex", () => {
     expect(maye.textContent).toContain("Maye d'force B with U");
     expect(maye.textContent).toContain(fixture.managers[8].team.owner);
     expect(maye.textContent).toContain("7-5");
+  });
+
+  it("shows the grade letter on each card, and a dash with no grade", async () => {
+    const managers = fixture.managers.map((entry) => (entry.roster_id === 5 ? { ...entry, grade: null } : entry));
+    const { default: ManagersPage } = await routeOver({ ...fixture, managers });
+    render(await ManagersPage({ params: Promise.resolve({ season: "2026" }) }));
+    const links = within(screen.getByRole("main")).getAllByRole("link");
+    // Maye d'force B with U holds a B. London Cooking has no grade in this file.
+    expect(within(links[3]).getByText("B")).toBeTruthy();
+    expect(within(links[1]).getByText("—")).toBeTruthy();
   });
 
   it("marks the managers entry of the menu as the open page", async () => {

@@ -1,6 +1,7 @@
 /**
  * Tests for the manager page route. Each test builds a temp public/ folder with a week page, the managers file, and the rankings file.
  * They read the static params and what a reader sees: the hero, the three numbers with their context lines, and the chapters.
+ * The Roster chapter reads the slot ranks of the grade, one line each.
  */
 import { cleanup, render, screen, within } from "@testing-library/react";
 import { mkdtempSync, mkdirSync, writeFileSync } from "node:fs";
@@ -23,15 +24,16 @@ function rankingsWithWeek5(shift: (rosterId: number) => number) {
   return { ...rankingsFixture, weeks: [rankingsFixture.weeks[0], { ...last, week: 5, rows }, last] };
 }
 
-/* A temp public/ folder with the week 6 page, the managers file unless managers is false, and the rankings file when given. */
-async function routeOver({ managers = true, rankings }: { managers?: boolean; rankings?: unknown } = {}) {
+/* A temp public/ folder with the week 6 page, the managers file unless managers is false, and the rankings file when given.
+   Managers is the fixture when true, or the given file when it is an object. */
+async function routeOver({ managers = true, rankings }: { managers?: boolean | object; rankings?: unknown } = {}) {
   const root = mkdtempSync(join(tmpdir(), "manager-page-"));
   mkdirSync(join(root, "public", "2026", "week-06"), { recursive: true });
   writeFileSync(
     join(root, "public", "2026", "week-06", "page.json"),
     JSON.stringify({ schema_version: 2, avatars: { "9": "avatars/9.jpg" } }),
   );
-  if (managers) writeFileSync(join(root, "public", "2026", "managers.json"), JSON.stringify(fixture));
+  if (managers) writeFileSync(join(root, "public", "2026", "managers.json"), JSON.stringify(managers === true ? fixture : managers));
   if (rankings !== undefined) writeFileSync(join(root, "public", "2026", "rankings.json"), JSON.stringify(rankings));
   vi.spyOn(process, "cwd").mockReturnValue(root);
   // The readers read the working folder when they load, so reset them.
@@ -96,7 +98,7 @@ describe("ManagerPage", () => {
     // Week 5 sits 9 points under week 6 for this team, so the odds went up 9.
     const group = await renderManager("9", { rankings: rankingsWithWeek5(() => 9) });
     expect(numbersIn(group)).toEqual([
-      ["Grade", "—"],
+      ["Grade", "B", "QB fine · RB thin · WR fine · TE fine"],
       ["Playoff Odds", "71%", "up 9"],
       ["Power Rank", "4th of 12", "down 2"],
     ]);
@@ -134,7 +136,7 @@ describe("ManagerPage", () => {
     expect(numbersIn(group)[1]).toEqual(["Playoff Odds", "—"]);
   });
 
-  it("shows the five chapters, each with its heading and an empty line", async () => {
+  it("shows the five chapters, each with its heading, and an empty line in each chapter with no data yet", async () => {
     await renderManager("9", { rankings: rankingsFixture });
     const main = screen.getByRole("main");
     expect(within(main).getAllByRole("heading", { level: 2 }).map((heading) => heading.textContent)).toEqual([
@@ -144,7 +146,27 @@ describe("ManagerPage", () => {
       "Best Adds",
       "Top Performers",
     ]);
-    expect(within(main).getAllByText("Nothing here yet.")).toHaveLength(5);
+    expect(within(main).getAllByText("Nothing here yet.")).toHaveLength(4);
+  });
+
+  it("lists the four slot ranks in the Roster chapter, one line each, in the file's order", async () => {
+    await renderManager("9", { rankings: rankingsFixture });
+    const roster = screen.getByRole("heading", { level: 2, name: "Roster" }).closest("section")!;
+    expect(within(roster).getAllByRole("listitem").map((line) => line.textContent)).toEqual([
+      "QB · 1st of 12 · fine",
+      "RB · 2nd of 12 · thin",
+      "WR · 12th of 12 · fine",
+      "TE · 3rd of 12 · fine",
+    ]);
+  });
+
+  it("shows a dash with no line in the hero and one quiet line in the Roster chapter with no grade", async () => {
+    const managers = fixture.managers.map((entry) => (entry.roster_id === 9 ? { ...entry, grade: null } : entry));
+    const group = await renderManager("9", { managers: { ...fixture, managers }, rankings: rankingsFixture });
+    expect(numbersIn(group)[0]).toEqual(["Grade", "—"]);
+    const roster = screen.getByRole("heading", { level: 2, name: "Roster" }).closest("section")!;
+    expect(within(roster).queryAllByRole("listitem")).toHaveLength(0);
+    expect(within(roster).getByText("No grade yet.")).toBeTruthy();
   });
 
   it("lists the five chapters in the chapter rail", async () => {

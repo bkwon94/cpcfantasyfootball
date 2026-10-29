@@ -4,6 +4,8 @@
  */
 import type { RailChapter } from "@/components/week/chapter-rail";
 import { Chapter, Label } from "@/components/week/parts";
+import type { Manager } from "@/lib/manager-types";
+import { Roster } from "./roster";
 
 /* The rail and the page read this one list, so the rail labels match the chapter headings. */
 export const MANAGER_CHAPTERS: RailChapter[] = [
@@ -14,15 +16,29 @@ export const MANAGER_CHAPTERS: RailChapter[] = [
   { id: "top-performers", label: "Top Performers" },
 ];
 
-export function ManagerChapters() {
+/* A chapter with no data yet: its heading and one quiet line. */
+function Placeholder({ id, label }: RailChapter) {
+  return (
+    <Chapter reveal id={id}>
+      <Label heading>{label}</Label>
+      <p className="m-0 text-body text-mute">Nothing here yet.</p>
+    </Chapter>
+  );
+}
+
+function SeasonSoFar(_: { manager: Manager }) { return <Placeholder {...MANAGER_CHAPTERS[0]} />; }
+function Moves(_: { manager: Manager }) { return <Placeholder {...MANAGER_CHAPTERS[2]} />; }
+function BestAdds(_: { manager: Manager }) { return <Placeholder {...MANAGER_CHAPTERS[3]} />; }
+function TopPerformers(_: { manager: Manager }) { return <Placeholder {...MANAGER_CHAPTERS[4]} />; }
+
+export function ManagerChapters({ manager }: { manager: Manager }) {
   return (
     <>
-      {MANAGER_CHAPTERS.map(({ id, label }) => (
-        <Chapter key={id} reveal id={id}>
-          <Label heading>{label}</Label>
-          <p className="m-0 text-body text-mute">Nothing here yet.</p>
-        </Chapter>
-      ))}
+      <SeasonSoFar manager={manager} />
+      <Roster manager={manager} />
+      <Moves manager={manager} />
+      <BestAdds manager={manager} />
+      <TopPerformers manager={manager} />
     </>
   );
 }
