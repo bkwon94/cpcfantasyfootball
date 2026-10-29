@@ -9,7 +9,7 @@
 import { motion } from "framer-motion";
 import { useId, useState, type ReactNode } from "react";
 import { Reveal } from "@/components/reveal";
-import { avatarSrc, Blurb, Chapter, Label, Who } from "@/components/week/parts";
+import { avatarSrc, Blurb, Chapter, Label, managerHref, Who } from "@/components/week/parts";
 import { DURATION, EASE_OUT, INSTANT, stagger, useMotionOff } from "@/lib/motion";
 import type { Components, Odds, RankingsRow, RankingsWeek } from "@/lib/rankings-types";
 import { cn } from "@/lib/utils";
@@ -109,7 +109,17 @@ function ComponentCells({ cells }: { cells: { name: string; value: ReactNode }[]
 
 /* One team. The row control opens the bye line and the blurb, and on a phone the component ranks above them.
    A row with no blurb and no odds has nothing to open from the page width up, so its control shows on a phone only. */
-function Row({ row, avatars, index }: { row: RankingsRow; avatars: AvatarMap; index: number }) {
+function Row({
+  row,
+  avatars,
+  index,
+  managersHref,
+}: {
+  row: RankingsRow;
+  avatars: AvatarMap;
+  index: number;
+  managersHref: string | null;
+}) {
   const [open, setOpen] = useState(false);
   const off = useMotionOff();
   const panelId = useId();
@@ -122,7 +132,7 @@ function Row({ row, avatars, index }: { row: RankingsRow; avatars: AvatarMap; in
       <div className={cn(GRID, "relative min-h-touch border-b-0 py-sp-1")}>
         <span>{row.rank}</span>
         <Movement movement={row.movement} />
-        <Who src={avatarSrc(avatars, row.roster_id)} name={row.name} />
+        <Who src={avatarSrc(avatars, row.roster_id)} name={row.name} href={managerHref(managersHref, row.roster_id)} />
         <span className="text-right">{`${row.wins}-${row.losses}`}</span>
         <span className="text-right">{playoffCell(row)}</span>
         {/* The header names these columns, so the cells hold only the rank. On a phone they move into the open row. */}
@@ -214,8 +224,17 @@ function WeekChips({ weeks, chosen, choose }: { weeks: RankingsWeek[]; chosen: n
 }
 
 /* The table reads the shared choice of the page when a provider holds one, so the masthead week line follows the chips.
-   Outside a provider it keeps a choice of its own. Both hooks run on every render, as the rules of hooks ask. */
-export function PowerRankings({ weeks, avatars }: { weeks: RankingsWeek[]; avatars: AvatarMap }) {
+   Outside a provider it keeps a choice of its own. Both hooks run on every render, as the rules of hooks ask.
+   The managers href is the managers index of the season. With null the team names render as plain text. */
+export function PowerRankings({
+  weeks,
+  avatars,
+  managersHref = null,
+}: {
+  weeks: RankingsWeek[];
+  avatars: AvatarMap;
+  managersHref?: string | null;
+}) {
   const shared = useSharedWeekChoice();
   const own = useWeekChoice(weeks);
   const { week, choose } = shared ?? own;
@@ -254,7 +273,7 @@ export function PowerRankings({ weeks, avatars }: { weeks: RankingsWeek[]; avata
       <ol key={week.week} className="m-0 list-none p-0">
         {week.rows.map((row, index) => (
           <li key={row.roster_id}>
-            <Row row={row} avatars={avatars} index={index} />
+            <Row row={row} avatars={avatars} index={index} managersHref={managersHref} />
           </li>
         ))}
       </ol>

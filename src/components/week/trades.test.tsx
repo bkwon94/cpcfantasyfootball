@@ -57,4 +57,11 @@ describe("Trades", () => {
     expect(container.innerHTML).toBe("");
     expect(screen.queryByText("Trades")).toBeNull();
   });
+
+  it("links a side's team name to its manager page only when the season has the managers file", () => {
+    const { rerender } = render(<Trades trades={week6.trades} avatars={week6.avatars} managersHref="/2026/managers/" />);
+    expect(screen.getAllByRole("link", { name: "Pukancun on 3" })[0].getAttribute("href")).toBe("/2026/managers/4/");
+    rerender(<Trades trades={week6.trades} avatars={week6.avatars} />);
+    expect(screen.queryByRole("link", { name: "Pukancun on 3" })).toBeNull();
+  });
 });

@@ -9,6 +9,7 @@ import { PowerRankings } from "@/components/rankings/power-rankings";
 import { ChosenWeekLine, WeekChoiceProvider } from "@/components/rankings/week-choice";
 import { Blurb, Chapter, Label } from "@/components/week/parts";
 import { basePath } from "@/lib/config";
+import { seasonManagersHref } from "@/lib/manager-data";
 import { latestAvatars, loadRankings } from "@/lib/rankings-data";
 
 export const metadata: Metadata = {
@@ -26,7 +27,11 @@ export default function RankingsPage() {
             <ChosenWeekLine />
           </Masthead>
           <PageColumn>
-            <PowerRankings weeks={rankings.weeks} avatars={latestAvatars(rankings.season)} />
+            <PowerRankings
+              weeks={rankings.weeks}
+              avatars={latestAvatars(rankings.season)}
+              managersHref={seasonManagersHref(String(rankings.season))}
+            />
           </PageColumn>
         </WeekChoiceProvider>
       ) : (

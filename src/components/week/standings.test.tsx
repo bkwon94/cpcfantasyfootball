@@ -59,4 +59,11 @@ describe("Standings", () => {
     renderStandings();
     expect(screen.getByText(/Records include the weekly median game/)).toBeTruthy();
   });
+
+  it("links a team name to its manager page only when the season has the managers file", () => {
+    const { rerender } = render(<Standings table={week6.table} avatars={week6.avatars} managersHref="/2026/managers/" />);
+    expect(screen.getByRole("link", { name: "Lil Fridge" }).getAttribute("href")).toBe("/2026/managers/3/");
+    rerender(<Standings table={week6.table} avatars={week6.avatars} />);
+    expect(screen.queryByRole("link", { name: "Lil Fridge" })).toBeNull();
+  });
 });

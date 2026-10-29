@@ -8,16 +8,18 @@ import { Reveal } from "@/components/reveal";
 import { stagger } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 import type { AvatarMap, Trade, TradeSide } from "@/lib/week-types";
-import { Avatar, avatarSrc, Chapter, Label } from "./parts";
+import { Avatar, avatarSrc, Chapter, Label, managerHref, TeamName } from "./parts";
 
 /* Each column spans three rows of the card grid: the team, the Gets label, and the chips.
    A long team name grows its row in both columns, so the chips start on one line. */
-function Side({ side, avatars }: { side: TradeSide; avatars: AvatarMap }) {
+function Side({ side, avatars, managersHref }: { side: TradeSide; avatars: AvatarMap; managersHref: string | null }) {
   return (
     <div className="row-span-3 grid min-w-0 grid-rows-subgrid gap-y-0">
       <div className="flex flex-col items-center gap-sp-1 text-center text-meta leading-tight font-extrabold hyphens-auto">
         <Avatar src={avatarSrc(avatars, side.team.roster_id)} />
-        <span>{side.team.name}</span>
+        <span>
+          <TeamName name={side.team.name} href={managerHref(managersHref, side.team.roster_id)} />
+        </span>
       </div>
       <span className="mt-sp-2 mb-sp-1 justify-self-center text-label font-bold tracking-wide text-mute uppercase">
         Gets
@@ -61,7 +63,17 @@ function For() {
   );
 }
 
-function TradeCard({ trade, avatars, index }: { trade: Trade; avatars: AvatarMap; index: number }) {
+function TradeCard({
+  trade,
+  avatars,
+  index,
+  managersHref,
+}: {
+  trade: Trade;
+  avatars: AvatarMap;
+  index: number;
+  managersHref: string | null;
+}) {
   // Three or four sides have no single other side, so only a pair gets the For tag.
   const pair = trade.sides.length === 2;
   return (
@@ -76,7 +88,7 @@ function TradeCard({ trade, avatars, index }: { trade: Trade; avatars: AvatarMap
         {trade.sides.map((side, i) => (
           <Fragment key={side.team.roster_id}>
             {pair && i === 1 && <For />}
-            <Side side={side} avatars={avatars} />
+            <Side side={side} avatars={avatars} managersHref={managersHref} />
           </Fragment>
         ))}
       </div>
@@ -85,8 +97,17 @@ function TradeCard({ trade, avatars, index }: { trade: Trade; avatars: AvatarMap
 }
 
 /* A week with no trades has no trades chapter, as the old page did.
-   The label and the cards stagger in one by one, so the chapter itself has no reveal. */
-export function Trades({ trades, avatars }: { trades: Trade[]; avatars: AvatarMap }) {
+   The label and the cards stagger in one by one, so the chapter itself has no reveal.
+   The managers href is the managers index of the season. With null the team names render as plain text. */
+export function Trades({
+  trades,
+  avatars,
+  managersHref = null,
+}: {
+  trades: Trade[];
+  avatars: AvatarMap;
+  managersHref?: string | null;
+}) {
   if (trades.length === 0) return null;
   return (
     <Chapter id="trades">
@@ -97,7 +118,7 @@ export function Trades({ trades, avatars }: { trades: Trade[]; avatars: AvatarMa
           so the stagger index still reveals each row left to right. A lone last card keeps its column width. */}
       <div className="tablet:grid tablet:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] tablet:gap-sp-2">
         {trades.map((trade, i) => (
-          <TradeCard key={i} trade={trade} avatars={avatars} index={i} />
+          <TradeCard key={i} trade={trade} avatars={avatars} index={i} managersHref={managersHref} />
         ))}
       </div>
     </Chapter>

@@ -17,6 +17,7 @@ import { Standings } from "@/components/week/standings";
 import { Trades } from "@/components/week/trades";
 import { WeekFooter } from "@/components/week/week-footer";
 import { basePath } from "@/lib/config";
+import { seasonManagersHref } from "@/lib/manager-data";
 import { listWeekSummaries, listWeeks, loadWeek, type WeekRef } from "@/lib/week-data";
 
 type Props = { params: Promise<WeekRef> };
@@ -42,6 +43,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function WeekPage({ params }: Props) {
   const { season, week } = await params;
   const page = loadWeek(season, week);
+  // The page reads the managers file once, and the team names of its chapters link from the one href.
+  const managersHref = seasonManagersHref(season);
   // The rail lists the chapters the page renders, in the same order, with the ids the chapters set.
   // The labels use the words of each chapter's own label.
   // Each id matches the Chapter id in that chapter's component.
@@ -81,10 +84,10 @@ export default async function WeekPage({ params }: Props) {
         {page.leaders.length > 0 && (
           <PositionLeaders leaders={page.leaders} headshots={page.headshots} blurb={page.blurbs.position_leaders} />
         )}
-        <Trades trades={page.trades} avatars={page.avatars} />
-        <AllMatchups matchups={page.matchups} avatars={page.avatars} />
+        <Trades trades={page.trades} avatars={page.avatars} managersHref={managersHref} />
+        <AllMatchups matchups={page.matchups} avatars={page.avatars} managersHref={managersHref} />
         <MedianGame median={page.median} blurb={page.blurbs.median} />
-        <Standings table={page.table} avatars={page.avatars} />
+        <Standings table={page.table} avatars={page.avatars} managersHref={managersHref} />
         <NextWeek week={page.week} games={page.next} avatars={page.avatars} blurb={page.blurbs.next_week} />
         <WeekFooter prior={prior} next={next} />
       </PageColumn>

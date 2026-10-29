@@ -65,6 +65,12 @@ export function currentManagersHref(): string | null {
   return file !== null && existsSync(file) ? `${basePath}/${latestSeason()}/managers/` : null;
 }
 
+/* The managers index of the season a page shows, for the links from its team names.
+   Only the latest season builds the managers routes, so a page of an older season gets null and plain names. */
+export function seasonManagersHref(season: string): string | null {
+  return season === latestSeason() ? currentManagersHref() : null;
+}
+
 /* Whether the build has the managers routes. A static export fails on a dynamic route with no params,
    so the route files only count as pages when the latest season has a managers file. */
 export function managersRouteOn(): boolean {
