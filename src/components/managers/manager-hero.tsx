@@ -5,12 +5,17 @@
 import type { ReactNode } from "react";
 import { Chapter } from "@/components/week/parts";
 import { ordinal } from "@/lib/format";
-import type { Manager } from "@/lib/manager-types";
+import type { Manager, ManagerGrade } from "@/lib/manager-types";
 
 /* A change in words. Positive is up, so the odds change and the rank movement read the same way. */
 function changeWords(change: number): string {
   if (change === 0) return "no change";
   return change > 0 ? `up ${change}` : `down ${Math.abs(change)}`;
+}
+
+/* The depth words in short form, one per slot rank in the file's order, such as "QB fine · RB deep · WR thin · TE deep". */
+function depthWords(grade: ManagerGrade): string {
+  return grade.slots.map((slot) => `${slot.position} ${slot.depth}`).join(" · ");
 }
 
 /* One number: one quiet label over it, the number as the one emphasis, and at most one quiet line under it. */
@@ -35,7 +40,7 @@ function Place({ place, of }: { place: number; of: number }) {
 }
 
 export function ManagerHero({ manager, avatar, teams }: { manager: Manager; avatar: string; teams: number }) {
-  const { odds, rank } = manager;
+  const { grade, odds, rank } = manager;
   return (
     // The hero shows at once with the masthead, so it takes no reveal.
     <Chapter>
@@ -56,7 +61,10 @@ export function ManagerHero({ manager, avatar, teams }: { manager: Manager; avat
       </div>
       {/* The rule and the space above it set the numbers apart from the team, so the hero reads as two groups. */}
       <dl role="group" aria-label="Season Numbers" className="m-0 mt-sp-5 grid grid-cols-3 gap-sp-4 border-t border-rule pt-sp-5">
-        <SeasonNumber label="Grade">—</SeasonNumber>
+        {/* The letter stays one plain element in one place, so a later grade motion can target it. */}
+        <SeasonNumber label="Grade" context={grade ? depthWords(grade) : null}>
+          {grade ? grade.letter : "—"}
+        </SeasonNumber>
         <SeasonNumber label="Playoff Odds" context={odds && manager.odds_change !== null ? changeWords(manager.odds_change) : null}>
           {odds ? `${odds.playoff}%` : "—"}
         </SeasonNumber>

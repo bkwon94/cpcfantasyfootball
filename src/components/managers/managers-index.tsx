@@ -1,5 +1,5 @@
 /**
- * The managers index: one card per team in standings order, with the avatar, the name, the owner, and the record.
+ * The managers index: one card per team in standings order, with the avatar, the name, the owner, the record, and the grade letter.
  * A card is one link to the team's manager page. A phone stacks the cards; from the tablet tier up, two go per row.
  */
 import { Avatar, avatarSrc, Chapter, Label } from "@/components/week/parts";
@@ -27,6 +27,8 @@ export function ManagersIndex({ managers, avatars }: { managers: Managers; avata
                 <span className="mt-sp-0 block text-meta text-mute">{manager.team.owner}</span>
               </span>
               <span className="flex-none font-semibold whitespace-nowrap text-mute tabular-nums">{`${manager.wins}-${manager.losses}`}</span>
+              {/* The grade letter is the one quiet number at the right end, after the record. A roster with no grade shows a dash. */}
+              <span className="w-sp-6 flex-none text-center font-extrabold text-mute">{manager.grade ? manager.grade.letter : "—"}</span>
             </a>
           </li>
         ))}
