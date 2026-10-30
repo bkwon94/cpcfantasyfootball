@@ -14,9 +14,9 @@ import { TopPerformers } from "./top-performers";
 export const MANAGER_CHAPTERS: RailChapter[] = [
   { id: "season", label: "Season So Far" },
   { id: "roster", label: "Roster" },
-  { id: "moves", label: "Moves" },
   { id: "best-adds", label: "Best Adds" },
   { id: "top-performers", label: "Top Performers" },
+  { id: "moves", label: "Moves" },
 ];
 
 export function ManagerChapters({
@@ -32,9 +32,9 @@ export function ManagerChapters({
     <>
       <SeasonSoFar manager={manager} />
       <Roster manager={manager} teams={managers.length} />
-      <Moves manager={manager} managers={managers} managersHref={managersHref} />
       <BestAdds manager={manager} />
       <TopPerformers manager={manager} />
+      <Moves manager={manager} managers={managers} managersHref={managersHref} />
     </>
   );
 }
