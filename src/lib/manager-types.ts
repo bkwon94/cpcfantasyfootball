@@ -43,8 +43,12 @@ export type AwardCounts = { top_scorer: number; mvb: number; game_changer: numbe
 /* One slot rank: the team's rank at the position, 1 to 12, and one depth word. */
 export type SlotRank = { position: "QB" | "RB" | "WR" | "TE"; rank: number; depth: "stacked" | "deep" | "fine" | "thin" };
 
-/* The roster grade: the letter and the slot ranks in the order QB, RB, WR, TE. The file never carries the score. */
-export type ManagerGrade = { letter: string; slots: SlotRank[] };
+/* One part of the grade: the roster's rank on the part, 1 to 12. */
+export type GradePart = { key: "projection" | "production" | "trade_value" | "depth"; rank: number };
+
+/* The roster grade: the letter, the slot ranks in the order QB, RB, WR, TE, and the four parts in the order projection,
+   production, trade value, depth. The file never carries the score. */
+export type ManagerGrade = { letter: string; slots: SlotRank[]; parts: GradePart[] };
 
 /* One roster of the season, with the record through the last saved week.
    The bench is null when the build had no roster slots. The grade is null when the build had no snapshot. */

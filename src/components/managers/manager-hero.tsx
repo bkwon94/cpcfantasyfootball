@@ -8,6 +8,7 @@ import { Chapter } from "@/components/week/parts";
 import { ordinal } from "@/lib/format";
 import { DURATION, REVEAL_STAGGER } from "@/lib/motion";
 import type { Manager, ManagerGrade } from "@/lib/manager-types";
+import { GradeMark, GradePopover } from "./grade-popover";
 import { OddsCount } from "./odds-count";
 
 /* A change in words. Positive is up, so the odds change and the rank movement read the same way. */
@@ -21,11 +22,25 @@ function depthWords(grade: ManagerGrade): string {
   return grade.slots.map((slot) => `${slot.position} ${slot.depth}`).join(" · ");
 }
 
-/* One number: one quiet label over it, the number as the one emphasis, and at most one quiet line under it. */
-function SeasonNumber({ label, children, context }: { label: string; children: ReactNode; context?: ReactNode }) {
+/* One number: one quiet label over it, the number as the one emphasis, and at most one quiet line under it.
+   The mark, when given, sits beside the label. */
+function SeasonNumber({
+  label,
+  mark,
+  children,
+  context,
+}: {
+  label: string;
+  mark?: ReactNode;
+  children: ReactNode;
+  context?: ReactNode;
+}) {
   return (
     <div className="min-w-0">
-      <dt className="text-label leading-tight font-semibold tracking-caps text-mute uppercase">{label}</dt>
+      <dt className="text-label leading-tight font-semibold tracking-caps text-mute uppercase">
+        {label}
+        {mark}
+      </dt>
       <dd className="m-0 mt-sp-2 text-score leading-none font-extrabold text-ink tabular-nums">{children}</dd>
       {context && <dd className="m-0 mt-sp-1 text-meta text-mute">{context}</dd>}
     </div>
@@ -73,8 +88,10 @@ export function ManagerHero({ manager, avatar, teams }: { manager: Manager; avat
         {/* The letter stays one plain element in one place, so a later grade motion can target it. */}
         {/* On load the letter fades and rises into place with the hero timing, and the depth line follows one stagger later.
             The rise is the quieter choice over a scale, because the large letter would grow at every edge. */}
+        {/* The letter opens the grade popover, and the mark beside the label says so. With no grade the dash stays plain. */}
         <SeasonNumber
           label="Grade"
+          mark={grade ? <GradeMark /> : null}
           context={
             grade ? (
               <Reveal trigger="mount" delay={REVEAL_STAGGER} duration={DURATION.hero}>
@@ -85,7 +102,7 @@ export function ManagerHero({ manager, avatar, teams }: { manager: Manager; avat
         >
           {grade ? (
             <Reveal trigger="mount" duration={DURATION.hero}>
-              {grade.letter}
+              <GradePopover grade={grade} teams={teams} />
             </Reveal>
           ) : (
             "—"
