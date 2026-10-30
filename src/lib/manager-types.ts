@@ -48,7 +48,7 @@ export type GradePart = { key: "projection" | "production" | "trade_value" | "de
 
 /* The roster grade: the letter, the slot ranks in the order QB, RB, WR, TE, and the four parts in the order projection,
    production, trade value, depth. The file never carries the score. */
-export type ManagerGrade = { letter: string; slots: SlotRank[]; parts: GradePart[] };
+export type ManagerGrade = { letter: string; slots: SlotRank[]; parts: GradePart[]; read: string };
 
 /* One roster of the season, with the record through the last saved week.
    The bench is null when the build had no roster slots. The grade is null when the build had no snapshot. */

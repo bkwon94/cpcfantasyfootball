@@ -1,6 +1,6 @@
 /**
  * Tests for the grade popover of the manager hero. A click on the grade letter opens it.
- * They read the name of the trigger, the four part lines in order, the closing sentence, the close on Escape, and no trigger with no grade.
+ * They read the name of the trigger, the four part lines in order, the lead sentence, the close on Escape, and no trigger with no grade.
  */
 import { cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { afterEach, describe, expect, it } from "vitest";
@@ -41,9 +41,10 @@ describe("Grade popover", () => {
     ]);
   });
 
-  it("ends with one sentence on how the letter and the ranks read", async () => {
+  it("leads with the grade in words, before the part lines", async () => {
     const popover = await openPopover();
-    expect(within(popover).getByText("The letter weighs the four parts. The ranks read the roster today.")).toBeTruthy();
+    const read = within(popover).getByText("Strong at QB and TE. Soft at WR. Thin at RB.");
+    expect(read.compareDocumentPosition(within(popover).getByRole("list"))).toBe(Node.DOCUMENT_POSITION_FOLLOWING);
   });
 
   it("closes on Escape and returns focus to the letter", async () => {

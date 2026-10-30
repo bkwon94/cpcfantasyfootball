@@ -451,7 +451,8 @@
             "key": "depth",
             "rank": 10
           }
-        ]
+        ],
+        "read": "Deep at RB and TE. Soft at QB. Thin at WR."
       }
     },
     {
@@ -853,7 +854,8 @@
             "key": "depth",
             "rank": 11
           }
-        ]
+        ],
+        "read": "Strong at QB and TE. Deep at RB. Soft at RB."
       }
     },
     {
@@ -1253,7 +1255,8 @@
             "key": "depth",
             "rank": 12
           }
-        ]
+        ],
+        "read": "Deep at QB and WR. Soft at QB. Thin at TE."
       }
     },
     {
@@ -1889,7 +1892,8 @@
             "key": "depth",
             "rank": 1
           }
-        ]
+        ],
+        "read": "Deep at TE. Soft at QB. Thin at RB and WR."
       }
     },
     {
@@ -2123,7 +2127,8 @@
             "key": "depth",
             "rank": 2
           }
-        ]
+        ],
+        "read": "Strong at QB and RB. Deep at QB, RB, and TE. Thin at WR."
       }
     },
     {
@@ -2815,7 +2820,8 @@
             "key": "depth",
             "rank": 3
           }
-        ]
+        ],
+        "read": "Thin at QB."
       }
     },
     {
@@ -3557,7 +3563,8 @@
             "key": "depth",
             "rank": 4
           }
-        ]
+        ],
+        "read": "Thin at RB and WR."
       }
     },
     {
@@ -4137,7 +4144,8 @@
             "key": "depth",
             "rank": 5
           }
-        ]
+        ],
+        "read": "Strong at TE. Soft at WR. Thin at RB."
       }
     },
     {
@@ -4707,7 +4715,8 @@
             "key": "depth",
             "rank": 6
           }
-        ]
+        ],
+        "read": "Strong at QB and TE. Soft at WR. Thin at RB."
       }
     },
     {
@@ -5205,7 +5214,8 @@
             "key": "depth",
             "rank": 7
           }
-        ]
+        ],
+        "read": "Deep at QB. Soft at TE. Thin at RB and WR."
       }
     },
     {
@@ -5713,7 +5723,8 @@
             "key": "depth",
             "rank": 8
           }
-        ]
+        ],
+        "read": "Strong at RB. Deep at QB. Soft at WR. Thin at TE."
       }
     },
     {
@@ -6199,7 +6210,8 @@
             "key": "depth",
             "rank": 9
           }
-        ]
+        ],
+        "read": "Deep at WR."
       }
     }
   ]

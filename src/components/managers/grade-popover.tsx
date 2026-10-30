@@ -1,5 +1,5 @@
 /**
- * The grade letter of the manager hero as a button, and the popover it opens with the rank of the roster on each part of the grade.
+ * The grade letter of the manager hero as a button, and the popover it opens with the grade in words and the rank on each part.
  * A click, a tap, or the keyboard opens it, never a hover alone, so it works the same on a phone and on a desktop.
  */
 "use client";
@@ -81,6 +81,8 @@ export function GradePopover({ grade, teams }: { grade: ManagerGrade; teams: num
             <PopoverTitle className="m-0 text-label leading-tight font-semibold tracking-caps text-mute uppercase">
               How The Grade Reads
             </PopoverTitle>
+            {/* The read comes first: the grade in words, from the pipeline, so a reader gets the gist before the ranks. */}
+            <p className="m-0 text-body text-ink">{grade.read}</p>
             {/* One line per part. The rank is the one emphasis, so the part name and "of 12" stay quiet. */}
             <ul className="m-0 flex list-none flex-col gap-sp-2 p-0 text-body text-ink-2 tabular-nums">
               {grade.parts.map((part) => (
@@ -91,7 +93,6 @@ export function GradePopover({ grade, teams }: { grade: ManagerGrade; teams: num
                 </li>
               ))}
             </ul>
-            <p className="m-0 text-meta text-mute">The letter weighs the four parts. The ranks read the roster today.</p>
             {/* Base UI asks for a close control in a popover that traps focus, so a touch screen reader can leave it.
                 A keyboard closes the popover with Escape, so Tab skips the control, and it shows to no one. */}
             <PopoverClose tabIndex={-1} className="sr-only">
