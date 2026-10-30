@@ -59,14 +59,14 @@ function Stat({ label, children, context }: { label: string; children: ReactNode
 }
 
 /* The four season stats from the points per week. A week above the median is a win against it, and any other week a loss. */
-function SeasonStats({ weeks }: { weeks: SeasonWeek[] }) {
+function SeasonNumbers({ weeks }: { weeks: SeasonWeek[] }) {
   if (weeks.length === 0) return null;
   const high = peakOf(weeks, (a, b) => a > b);
   const low = peakOf(weeks, (a, b) => a < b);
   const above = weeks.filter((week) => week.points > week.median).length;
   return (
     // A phone fits two stats per row whole. Four per row breaks the long labels mid-word, which reads as a defect.
-    <dl role="group" aria-label="Season Stats" className="m-0 grid grid-cols-2 gap-x-sp-2 gap-y-sp-4 tablet:grid-cols-4">
+    <dl role="group" aria-label="Season Numbers" className="m-0 grid grid-cols-2 gap-x-sp-2 gap-y-sp-4 tablet:grid-cols-4">
       <Stat label="Season High" context={`week ${high.week}`}>
         {num(high.points)}
       </Stat>
@@ -91,7 +91,7 @@ export function SeasonSoFar({ manager }: { manager: Manager }) {
         <BenchPoints bench={manager.bench} />
       </div>
       <div className="mt-sp-6">
-        <SeasonStats weeks={manager.weeks} />
+        <SeasonNumbers weeks={manager.weeks} />
       </div>
     </Chapter>
   );

@@ -205,7 +205,7 @@ function managerWithOdds(): Manager {
 describe("Reduced motion on the manager page", () => {
   it("shows the final grade letter and the final playoff percent at once", async () => {
     render(<ManagerHero manager={managerWithOdds()} avatar="avatars/1.jpg" teams={12} />);
-    const numbers = screen.getByRole("group", { name: "Season Numbers" });
+    const numbers = screen.getByRole("group", { name: "Hero Numbers" });
     const [grade, odds] = [...numbers.querySelectorAll("dt")].map((term) => term.nextElementSibling as HTMLElement);
     expect(grade.textContent).toBe("D");
     expect(odds.textContent).toBe("63%");

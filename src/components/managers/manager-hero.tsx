@@ -82,10 +82,10 @@ export function ManagerHero({ manager, avatar, teams }: { manager: Manager; avat
           A third of the column is 219px there, and the depth line is about 238px. On a phone the depth line may wrap. */}
       <dl
         role="group"
-        aria-label="Season Numbers"
+        aria-label="Hero Numbers"
         className="m-0 mt-sp-5 grid grid-cols-3 gap-sp-4 border-t border-rule pt-sp-5 desktop:grid-cols-[max-content_1fr_1fr]"
       >
-        {/* The letter stays one plain element in one place, so a later grade motion can target it. */}
+        {/* The letter stays one plain element in one place, so the grade motion targets it. */}
         {/* On load the letter fades and rises into place with the hero timing, and the depth line follows one stagger later.
             The rise is the quieter choice over a scale, because the large letter would grow at every edge. */}
         {/* The letter opens the grade popover, and the mark beside the label says so. With no grade the dash stays plain. */}

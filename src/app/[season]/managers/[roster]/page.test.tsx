@@ -45,7 +45,7 @@ async function routeOver({ managers = true, rankings }: { managers?: boolean | o
 async function renderManager(roster: string, options: Parameters<typeof routeOver>[0] = {}) {
   const { default: ManagerPage } = await routeOver(options);
   render(await ManagerPage({ params: Promise.resolve({ season: "2026", roster }) }));
-  return screen.getByRole("group", { name: "Season Numbers" });
+  return screen.getByRole("group", { name: "Hero Numbers" });
 }
 
 /* The label, the number, and the context line of each number, as a reader reads them. */
@@ -194,7 +194,7 @@ describe("ManagerPage", () => {
     expect(line.querySelectorAll("[data-result]")).toHaveLength(6);
     expect(line.querySelectorAll('[data-result="win"]')).toHaveLength(4);
     expect(screen.getByText(/Worst in week 4: 13\.68 points, Drake Maye sat\.$/)).toBeTruthy();
-    const stats = screen.getByRole("group", { name: "Season Stats" });
+    const stats = screen.getByRole("group", { name: "Season Numbers" });
     const numbers = [...stats.querySelectorAll("dt")].map((term) => term.nextElementSibling?.textContent);
     expect(numbers).toEqual(["158.96", "87.93", "W2", "3-3"]);
   });

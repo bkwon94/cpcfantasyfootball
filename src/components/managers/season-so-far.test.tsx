@@ -26,7 +26,7 @@ function dots(result?: string) {
 
 /* The label, the number, and the quiet line of each season stat, as a reader reads them. */
 function stats() {
-  const group = screen.getByRole("group", { name: "Season Stats" });
+  const group = screen.getByRole("group", { name: "Season Numbers" });
   return [...group.querySelectorAll("dt")].map((term) => [
     term.textContent,
     term.nextElementSibling?.textContent,

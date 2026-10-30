@@ -73,7 +73,7 @@ describe("Grade popover", () => {
 
   it("shows a plain dash and no button with no grade", () => {
     render(<ManagerHero manager={manager({ grade: null })} avatar="avatars/9.jpg" teams={12} />);
-    const group = screen.getByRole("group", { name: "Season Numbers" });
+    const group = screen.getByRole("group", { name: "Hero Numbers" });
     expect(within(group).queryByRole("button")).toBeNull();
     expect(group.querySelector("dd")!.textContent).toBe("—");
   });

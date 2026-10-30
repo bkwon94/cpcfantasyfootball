@@ -17,9 +17,9 @@ function managerOf(odds: Manager["odds"]): Manager {
   return { ...entry, standing: 1, rank: 2, movement: 0, odds, odds_change: odds ? 0 : null };
 }
 
-/* The number under each label of the Season Numbers group, in order: the grade, the odds, and the power rank. */
+/* The number under each label of the Hero Numbers group, in order: the grade, the odds, and the power rank. */
 function numbers(): HTMLElement[] {
-  const group = screen.getByRole("group", { name: "Season Numbers" });
+  const group = screen.getByRole("group", { name: "Hero Numbers" });
   return [...group.querySelectorAll("dt")].map((term) => term.nextElementSibling as HTMLElement);
 }
 

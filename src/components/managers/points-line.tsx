@@ -36,7 +36,7 @@ function summary(weeks: SeasonWeek[]): string {
   );
 }
 
-/* The path through the points. One path with a stable d, so a later draw motion can animate its length. */
+/* The path through the points. One path with a stable d, so the draw motion animates its length. */
 function pathOf(points: [number, number][]): string {
   return points.map(([x, y], i) => `${i === 0 ? "M" : "L"}${x.toFixed(1)} ${y.toFixed(1)}`).join(" ");
 }
