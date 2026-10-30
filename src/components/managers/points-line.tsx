@@ -50,8 +50,8 @@ function drawOf(off: boolean): Variants {
 }
 
 /* A dot fades in as the line reaches it. The delays spread the dots across the span of the draw, in week order. */
-function dotOf(off: boolean, i: number, count: number): Variants {
-  const delay = count === 1 ? 0 : (i * DURATION.reveal) / (count - 1);
+function dotOf(off: boolean, i: number, total: number): Variants {
+  const delay = total === 1 ? 0 : (i * DURATION.reveal) / (total - 1);
   return {
     start: { opacity: 0 },
     drawn: { opacity: 1, transition: off ? INSTANT : { duration: DURATION.dot, ease: EASE_OUT, delay } },

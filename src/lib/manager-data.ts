@@ -5,6 +5,7 @@
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 // Relative imports, not the @ alias: next.config imports this module, and its loader does not resolve the alias.
+// Type imports keep the alias, because TypeScript erases them before the loader runs.
 import { basePath } from "./config";
 import type { Manager, ManagerEntry, Managers, ManagersFile } from "@/lib/manager-types";
 import { latestSeason, loadRankings } from "./rankings-data";
