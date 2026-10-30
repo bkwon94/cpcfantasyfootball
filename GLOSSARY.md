@@ -128,6 +128,6 @@ _Avoid_: Waiver wins, pickups, steals
 The players that scored the most points for the team while they started for it, year to date.
 _Avoid_: Studs, stars, leaders
 
-**Awards shelf**:
-The counts of the weekly report awards a team won in a season.
-_Avoid_: Trophy case, award count, honors
+**Season numbers**:
+The four numbers under the points line: the season high, the season low, the streak, and the record against the median.
+_Avoid_: Stats row, shelf, summary
