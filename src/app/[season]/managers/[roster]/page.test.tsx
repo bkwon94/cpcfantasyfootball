@@ -142,9 +142,9 @@ describe("ManagerPage", () => {
     expect(within(main).getAllByRole("heading", { level: 2 }).map((heading) => heading.textContent)).toEqual([
       "Season So Far",
       "Roster",
-      "Moves",
       "Best Adds",
       "Top Performers",
+      "Moves",
     ]);
   });
 
@@ -214,9 +214,9 @@ describe("ManagerPage", () => {
     expect(within(rail).getAllByRole("link").map((link) => [link.textContent, link.getAttribute("href")])).toEqual([
       ["Season So Far", "#season"],
       ["Roster", "#roster"],
-      ["Moves", "#moves"],
       ["Best Adds", "#best-adds"],
       ["Top Performers", "#top-performers"],
+      ["Moves", "#moves"],
     ]);
   });
 });
