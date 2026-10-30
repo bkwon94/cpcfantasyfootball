@@ -85,6 +85,8 @@ describe("Moves", () => {
     expect(within(got).getByText("Rashee Rice")).toBeTruthy();
     expect(within(got).getByText("Bucky Irving")).toBeTruthy();
     expect(gave.querySelector("img")?.getAttribute("src")).toBe(sleeperHeadshot("2449"));
+    // A traded player's quiet line is his position alone, never the position twice.
+    expect(within(gave).getAllByText("WR")).toHaveLength(1);
   });
 
   it("names a trade with two other rosters by their count", () => {

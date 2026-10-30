@@ -10,9 +10,10 @@ import { MoveHeadshot } from "./move-headshot";
 /* The quiet label of a group: small, uppercase, and mute, as the Gets label of the week page trade card. */
 const QUIET_LABEL = "text-label leading-tight font-bold tracking-wide text-mute uppercase";
 
-/* The position, then the detail. The players file can lack a player, so a null position drops out of the line. */
+/* The position, then the detail. The players file can lack a player, so a null position drops out of the line.
+   A trade row has no detail past the position, so an empty detail drops out too. */
 function metaLine(position: string | null, detail: string) {
-  return position ? `${position} · ${detail}` : detail;
+  return [position, detail].filter(Boolean).join(" · ");
 }
 
 /* A free agent pickup has no bid. A waiver claim with no saved bid reads as a plain waiver claim. */
@@ -41,7 +42,7 @@ function TradeSide({ label, players }: { label: string; players: ManagerPlayer[]
       <div className={cn(QUIET_LABEL, "mb-sp-2")}>{label}</div>
       <ul aria-label={label} className="m-0 flex list-none flex-col gap-sp-2 p-0">
         {players.map((player) => (
-          <PlayerRow key={player.player_id} player={player} detail={player.position ?? ""} />
+          <PlayerRow key={player.player_id} player={player} detail="" />
         ))}
       </ul>
     </div>
