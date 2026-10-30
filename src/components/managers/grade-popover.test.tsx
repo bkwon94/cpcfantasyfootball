@@ -34,10 +34,10 @@ describe("Grade popover", () => {
   it("lists the four parts in order, each with its rank of the league, after a click", async () => {
     const popover = await openPopover();
     expect(within(popover).getAllByRole("listitem").map((line) => line.textContent)).toEqual([
-      "Projection ahead · 9th of 12",
-      "Season production · 12th of 12",
-      "Trade value · 3rd of 12",
-      "Depth and holes · 6th of 12",
+      "Projection Ahead · 9th of 12",
+      "Season Production · 12th of 12",
+      "Trade Value · 3rd of 12",
+      "Depth And Holes · 6th of 12",
     ]);
   });
 
