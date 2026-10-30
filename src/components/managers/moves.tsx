@@ -5,7 +5,7 @@
 import { Chapter, Label } from "@/components/week/parts";
 import type { Manager, ManagerPlayer, MoveAdd, MoveTrade, MoveWeek } from "@/lib/manager-types";
 import { cn } from "@/lib/utils";
-import { MoveHeadshot } from "./move-headshot";
+import { PlayerHeadshot } from "./player-headshot";
 
 /* The quiet label of a group: small, uppercase, and mute, as the Gets label of the week page trade card. */
 const QUIET_LABEL = "text-label leading-tight font-bold tracking-wide text-mute uppercase";
@@ -26,7 +26,7 @@ function addDetail(add: MoveAdd) {
 function PlayerRow({ player, detail }: { player: ManagerPlayer; detail: string }) {
   return (
     <li className="flex items-center gap-sp-2">
-      <MoveHeadshot playerId={player.player_id} />
+      <PlayerHeadshot playerId={player.player_id} />
       <span className="flex min-w-0 flex-col">
         <b className="text-row leading-tight font-extrabold tracking-snug">{player.name}</b>
         <span className="text-meta text-mute">{metaLine(player.position, detail)}</span>
