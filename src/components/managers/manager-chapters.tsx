@@ -19,11 +19,11 @@ export const MANAGER_CHAPTERS: RailChapter[] = [
   { id: "top-performers", label: "Top Performers" },
 ];
 
-export function ManagerChapters({ manager }: { manager: Manager }) {
+export function ManagerChapters({ manager, teams }: { manager: Manager; teams: number }) {
   return (
     <>
       <SeasonSoFar manager={manager} />
-      <Roster manager={manager} />
+      <Roster manager={manager} teams={teams} />
       <Moves manager={manager} />
       <BestAdds manager={manager} />
       <TopPerformers manager={manager} />

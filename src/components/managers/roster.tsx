@@ -8,13 +8,10 @@ import { ordinal } from "@/lib/format";
 import { stagger } from "@/lib/motion";
 import type { Manager, SlotRank } from "@/lib/manager-types";
 
-/* A slot rank ranks the twelve teams of the league, 1 to 12, so the line reads out of twelve. */
-const LEAGUE_TEAMS = 12;
-
 /* One line: the position as the quiet label, the rank as the one emphasis, and the depth word in the quiet color.
    The separators sit in the quiet color, so the rank stays the one thing in ink.
    The line enters at its place in the stagger when the chapter reveals, with the reveal timing. */
-function SlotLine({ slot, index }: { slot: SlotRank; index: number }) {
+function SlotLine({ slot, index, teams }: { slot: SlotRank; index: number; teams: number }) {
   return (
     <li>
       <Reveal delay={stagger(index)} className="flex items-baseline gap-sp-2 tabular-nums">
@@ -22,7 +19,7 @@ function SlotLine({ slot, index }: { slot: SlotRank; index: number }) {
       <span className="text-meta text-mute">{" · "}</span>
       <span>
         <span className="text-body font-extrabold text-ink">{ordinal(slot.rank)}</span>
-        <span className="text-meta font-semibold text-mute">{` of ${LEAGUE_TEAMS}`}</span>
+        <span className="text-meta font-semibold text-mute">{` of ${teams}`}</span>
       </span>
       <span className="text-meta text-mute">{" · "}</span>
       <span className="text-meta text-mute">{slot.depth}</span>
@@ -31,7 +28,8 @@ function SlotLine({ slot, index }: { slot: SlotRank; index: number }) {
   );
 }
 
-export function Roster({ manager }: { manager: Manager }) {
+/* A slot rank ranks the teams of the league, so each line reads out of the count of teams. */
+export function Roster({ manager, teams }: { manager: Manager; teams: number }) {
   return (
     // The id and the heading match the roster entry of MANAGER_CHAPTERS. This file does not import the list,
     // because manager-chapters imports this file and the two must not form a loop.
@@ -41,7 +39,7 @@ export function Roster({ manager }: { manager: Manager }) {
         // The gap gives each line air, so the four ranks read as four groups.
         <ol className="m-0 flex list-none flex-col gap-sp-3 p-0">
           {manager.grade.slots.map((slot, i) => (
-            <SlotLine key={slot.position} slot={slot} index={i} />
+            <SlotLine key={slot.position} slot={slot} index={i} teams={teams} />
           ))}
         </ol>
       ) : (

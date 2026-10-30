@@ -54,7 +54,7 @@ export default async function ManagerPage({ params }: Props) {
           avatar={avatarSrc(latestAvatars(managers.season), manager.roster_id)}
           teams={managers.managers.length}
         />
-        <ManagerChapters manager={manager} />
+        <ManagerChapters manager={manager} teams={managers.managers.length} />
       </PageColumn>
     </>
   );

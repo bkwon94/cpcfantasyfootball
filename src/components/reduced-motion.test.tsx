@@ -217,7 +217,7 @@ describe("Reduced motion on the manager page", () => {
   });
 
   it("shows the four slot rank lines at rest at once", async () => {
-    render(<Roster manager={managerWithOdds()} />);
+    render(<Roster manager={managerWithOdds()} teams={12} />);
     const lines = screen.getAllByRole("listitem");
     expect(lines.map((line) => line.textContent)).toEqual([
       "QB · 12th of 12 · fine",

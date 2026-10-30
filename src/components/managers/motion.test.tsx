@@ -49,7 +49,7 @@ describe("Manager page motion", () => {
   });
 
   it("enters the four slot rank lines, each in its own reveal", async () => {
-    render(<Roster manager={managerOf(null)} />);
+    render(<Roster manager={managerOf(null)} teams={12} />);
     const lines = screen.getAllByRole("listitem");
     expect(lines).toHaveLength(4);
     for (const line of lines) expect(line.querySelector("[data-reveal]")).not.toBeNull();
