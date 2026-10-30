@@ -41,7 +41,7 @@ export type Bench = { total: number; worst: BenchWorst | null };
 export type AwardCounts = { top_scorer: number; mvb: number; game_changer: number; underperformer: number };
 
 /* One slot rank: the team's rank at the position, 1 to 12, and one depth word. */
-export type SlotRank = { position: "QB" | "RB" | "WR" | "TE"; rank: number; depth: "deep" | "fine" | "thin" };
+export type SlotRank = { position: "QB" | "RB" | "WR" | "TE"; rank: number; depth: "stacked" | "deep" | "fine" | "thin" };
 
 /* The roster grade: the letter and the slot ranks in the order QB, RB, WR, TE. The file never carries the score. */
 export type ManagerGrade = { letter: string; slots: SlotRank[] };
