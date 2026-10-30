@@ -2,8 +2,9 @@
  * The Moves chapter of a manager page: the season totals of adds, drops, and trades, then the moves of each week.
  * The weeks come newest first, in the order of the managers file. A week with no moves reads one quiet line.
  */
-import { Chapter, Label } from "@/components/week/parts";
-import type { Manager, ManagerPlayer, MoveAdd, MoveTrade, MoveWeek } from "@/lib/manager-types";
+import { Fragment } from "react";
+import { Chapter, Label, managerHref, TeamName } from "@/components/week/parts";
+import type { Manager, ManagerEntry, ManagerPlayer, MoveAdd, MoveTrade, MoveWeek } from "@/lib/manager-types";
 import { cn } from "@/lib/utils";
 import { PlayerHeadshot } from "./player-headshot";
 
@@ -50,13 +51,23 @@ function TradeSide({ label, players }: { label: string; players: ManagerPlayer[]
 }
 
 /* A trade as a grey card with both sides, as the week page trade card sets it.
-   The file carries the roster ids of the other sides and not their names, so the card counts the teams. */
-function TradeRow({ trade }: { trade: MoveTrade }) {
-  const label = `Trade with ${trade.with.length} ${trade.with.length === 1 ? "team" : "teams"}`;
+   The file carries the roster ids of the other sides, so the card looks each id up in the managers of the season.
+   It names each team and links the name to its manager page. The group label is the same text as the visible one. */
+function TradeRow({ trade, managers, managersHref }: { trade: MoveTrade; managers: ManagerEntry[]; managersHref: string | null }) {
+  const others = trade.with.flatMap((id) => managers.find((entry) => entry.roster_id === id) ?? []);
+  const label = `Trade With ${others.map((entry) => entry.team.name).join(" And ")}`;
   return (
     <li>
       <div role="group" aria-label={label} className="rounded-card bg-gry p-sp-3">
-        <div className={cn(QUIET_LABEL, "mb-sp-3")}>{label}</div>
+        <div className={cn(QUIET_LABEL, "mb-sp-3")}>
+          Trade With{" "}
+          {others.map((entry, i) => (
+            <Fragment key={entry.roster_id}>
+              {i > 0 && " And "}
+              <TeamName name={entry.team.name} href={managerHref(managersHref, entry.roster_id)} />
+            </Fragment>
+          ))}
+        </div>
         <div className="grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)] gap-x-sp-3">
           <TradeSide label="Gave" players={trade.gave} />
           <TradeSide label="Got" players={trade.got} />
@@ -67,7 +78,7 @@ function TradeRow({ trade }: { trade: MoveTrade }) {
 }
 
 /* One week: the quiet label, then the adds, the drops, and the trades in that order. */
-function Week({ week, first }: { week: MoveWeek; first: boolean }) {
+function Week({ week, first, managers, managersHref }: { week: MoveWeek; first: boolean; managers: ManagerEntry[]; managersHref: string | null }) {
   const label = `Week ${week.week}`;
   const empty = week.adds.length + week.drops.length + week.trades.length === 0;
   return (
@@ -84,7 +95,7 @@ function Week({ week, first }: { week: MoveWeek; first: boolean }) {
             <PlayerRow key={`drop-${drop.player_id}`} player={drop} detail="Dropped" />
           ))}
           {week.trades.map((trade, i) => (
-            <TradeRow key={`trade-${i}`} trade={trade} />
+            <TradeRow key={`trade-${i}`} trade={trade} managers={managers} managersHref={managersHref} />
           ))}
         </ul>
       )}
@@ -114,14 +125,14 @@ function Totals({ adds, drops, trades }: { adds: number; drops: number; trades: 
 }
 
 /* The chapter stays whole, so a long season lists every week with no collapse. */
-export function Moves({ manager }: { manager: Manager }) {
+export function Moves({ manager, managers, managersHref }: { manager: Manager; managers: ManagerEntry[]; managersHref: string | null }) {
   const { moves } = manager;
   return (
     <Chapter reveal id="moves">
       <Label heading>Moves</Label>
       <Totals adds={moves.adds} drops={moves.drops} trades={moves.trades} />
       {moves.weeks.map((week, i) => (
-        <Week key={week.week} week={week} first={i === 0} />
+        <Week key={week.week} week={week} first={i === 0} managers={managers} managersHref={managersHref} />
       ))}
     </Chapter>
   );

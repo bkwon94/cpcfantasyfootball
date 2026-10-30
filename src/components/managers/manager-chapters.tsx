@@ -3,7 +3,7 @@
  * The rail and the page read one list of ids and labels, so the rail labels match the chapter headings.
  */
 import type { RailChapter } from "@/components/week/chapter-rail";
-import type { Manager } from "@/lib/manager-types";
+import type { Manager, ManagerEntry } from "@/lib/manager-types";
 import { BestAdds } from "./best-adds";
 import { Moves } from "./moves";
 import { Roster } from "./roster";
@@ -19,12 +19,20 @@ export const MANAGER_CHAPTERS: RailChapter[] = [
   { id: "top-performers", label: "Top Performers" },
 ];
 
-export function ManagerChapters({ manager, teams }: { manager: Manager; teams: number }) {
+export function ManagerChapters({
+  manager,
+  managers,
+  managersHref,
+}: {
+  manager: Manager;
+  managers: ManagerEntry[];
+  managersHref: string | null;
+}) {
   return (
     <>
       <SeasonSoFar manager={manager} />
-      <Roster manager={manager} teams={teams} />
-      <Moves manager={manager} />
+      <Roster manager={manager} teams={managers.length} />
+      <Moves manager={manager} managers={managers} managersHref={managersHref} />
       <BestAdds manager={manager} />
       <TopPerformers manager={manager} />
     </>

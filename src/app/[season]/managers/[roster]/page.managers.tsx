@@ -11,7 +11,7 @@ import { PageColumn } from "@/components/page-column";
 import { ChapterRail } from "@/components/week/chapter-rail";
 import { avatarSrc } from "@/components/week/parts";
 import { basePath } from "@/lib/config";
-import { loadManagers } from "@/lib/manager-data";
+import { loadManagers, seasonManagersHref } from "@/lib/manager-data";
 import { latestAvatars } from "@/lib/rankings-data";
 
 type Params = { season: string; roster: string };
@@ -54,7 +54,7 @@ export default async function ManagerPage({ params }: Props) {
           avatar={avatarSrc(latestAvatars(managers.season), manager.roster_id)}
           teams={managers.managers.length}
         />
-        <ManagerChapters manager={manager} teams={managers.managers.length} />
+        <ManagerChapters manager={manager} managers={managers.managers} managersHref={seasonManagersHref(season)} />
       </PageColumn>
     </>
   );
