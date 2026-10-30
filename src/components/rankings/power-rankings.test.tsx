@@ -133,6 +133,15 @@ describe("PowerRankings", () => {
       expect(copy.textContent).not.toMatch(/\d\.\d|%|\//);
     }
   });
+
+  it("links a team name to its manager page only when the season has the managers file", () => {
+    const { rerender } = render(
+      <PowerRankings weeks={rankings.weeks} avatars={week6.avatars} managersHref="/2026/managers/" />,
+    );
+    expect(screen.getByRole("link", { name: "London Cooking" }).getAttribute("href")).toBe("/2026/managers/5/");
+    rerender(<PowerRankings weeks={rankings.weeks} avatars={week6.avatars} />);
+    expect(screen.queryByRole("link", { name: "London Cooking" })).toBeNull();
+  });
 });
 
 describe("The row control", () => {

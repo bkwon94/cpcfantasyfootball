@@ -6,6 +6,7 @@ import type { ReactNode } from "react";
 import { currentPage } from "@/components/current-page";
 import { Menu, type Destinations } from "@/components/menu";
 import { basePath } from "@/lib/config";
+import { currentManagersHref } from "@/lib/manager-data";
 import { currentWaiverHref } from "@/lib/waiver-data";
 import { listWeekSummaries, type WeekSummary } from "@/lib/week-data";
 
@@ -22,6 +23,9 @@ type MastheadProps = {
   // The waiver page link of the menu. Left out, the masthead reads the current week from public/, and a build with the flag off gets null.
   // A test passes a value to set the link without a temp public/ folder.
   waiverHref?: string | null;
+  // The managers index link of the menu. Left out, the masthead reads public/, and a season with no managers file gets null.
+  // A test passes a value to set the link without a temp public/ folder.
+  managersHref?: string | null;
   // The published weeks, newest first. Left out, the masthead reads them from public/ at build time.
   // A test passes a list to set the menu without a temp public/ folder.
   weeks?: WeekSummary[];
@@ -30,7 +34,7 @@ type MastheadProps = {
 };
 
 /* The one list of destinations of the menu. The newest week is the current week, and the rest are the past weeks. */
-function destinationsOf(weeks: WeekSummary[], waiverHref: string | null): Destinations {
+function destinationsOf(weeks: WeekSummary[], waiverHref: string | null, managersHref: string | null): Destinations {
   const [current, ...past] = weeks;
   const week = (summary: WeekSummary) => ({ label: `Week ${summary.number}`, href: `${basePath}${summary.href}` });
   return {
@@ -38,6 +42,7 @@ function destinationsOf(weeks: WeekSummary[], waiverHref: string | null): Destin
       { label: "Home", href: `${basePath}/` },
       ...(current ? [week(current)] : []),
       { label: "Power Rankings", href: `${basePath}/rankings/` },
+      ...(managersHref ? [{ label: "Managers", href: managersHref }] : []),
       { label: "Trade Analyzer", href: `${basePath}/analyze/` },
       ...(waiverHref ? [{ label: "Waiver Wire", href: waiverHref }] : []),
     ],
@@ -50,10 +55,11 @@ export function Masthead({
   subtitle,
   children,
   waiverHref = currentWaiverHref(),
+  managersHref = currentManagersHref(),
   weeks = listWeekSummaries(),
   pageHref,
 }: MastheadProps) {
-  const destinations = destinationsOf(weeks, waiverHref);
+  const destinations = destinationsOf(weeks, waiverHref, managersHref);
   return (
     // The black band spans the viewport at every tier. The inner box takes the page column, so the content lines up with the page below.
     <header className="bg-blk text-on-dark">

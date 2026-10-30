@@ -97,7 +97,8 @@ The top of a manager page: the avatar, the team name, the owner, the record, and
 _Avoid_: Header, banner, masthead, title block
 
 **Roster grade**:
-The letter, A+ to D, that says how good a team's roster is now: position strength, depth, and holes.
+The letter, A to D, that says how good a roster is now, from a 0 to 100 score of four parts.
+The parts are the projection ahead, the season production, the trade value, and the depth and holes.
 _Avoid_: Score, rating, power score
 
 **Playoff odds**:
@@ -113,7 +114,8 @@ The small chart on a manager page with the team's points per week against the le
 _Avoid_: Sparkline, trend, graph
 
 **Slot rank**:
-Where a team's starters at one position rank in the league, with one word for depth: deep, fine, or thin.
+Where a team's starters at one position rank in the league, with one word for depth.
+The depth words are stacked, deep, fine, and thin. A spare counts only inside the league's starter count.
 _Avoid_: Position grade, position strength, tier
 
 **Moves**:
@@ -128,6 +130,6 @@ _Avoid_: Waiver wins, pickups, steals
 The players that scored the most points for the team while they started for it, year to date.
 _Avoid_: Studs, stars, leaders
 
-**Awards shelf**:
-The counts of the weekly report awards a team won in a season.
-_Avoid_: Trophy case, award count, honors
+**Season numbers**:
+The four numbers under the points line: the season high, the season low, the streak, and the record against the median.
+_Avoid_: Stats row, shelf, summary

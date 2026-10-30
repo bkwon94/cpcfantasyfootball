@@ -11,7 +11,7 @@ import { num, shortName } from "@/lib/format";
 import { DURATION, EASE_OUT, INSTANT, stagger, useMotionOff } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 import type { AvatarMap, Matchup, MatchupSide } from "@/lib/week-types";
-import { Avatar, avatarSrc, Blurb, Chapter, Label } from "./parts";
+import { Avatar, avatarSrc, Blurb, Chapter, Label, managerHref, TeamName } from "./parts";
 
 /* The top scorer of one side, or a dash when the side started no one. */
 function Star({ side }: { side: MatchupSide }) {
@@ -48,7 +48,17 @@ function Panel({ matchup }: { matchup: Matchup }) {
   );
 }
 
-function Row({ matchup, avatars, index }: { matchup: Matchup; avatars: AvatarMap; index: number }) {
+function Row({
+  matchup,
+  avatars,
+  index,
+  managersHref,
+}: {
+  matchup: Matchup;
+  avatars: AvatarMap;
+  index: number;
+  managersHref: string | null;
+}) {
   const first = index === 0;
   const [open, setOpen] = useState(false);
   const off = useMotionOff();
@@ -56,6 +66,7 @@ function Row({ matchup, avatars, index }: { matchup: Matchup; avatars: AvatarMap
   // The JSON puts the winner first. A tie has no winner, so neither side is bold.
   const [winner, loser] = matchup.sides;
   const bold = cn(winner.winner && "font-extrabold text-red-ink");
+  const loserHref = managerHref(managersHref, loser.team.roster_id);
   // The panel stays in the DOM when closed, so find-in-page still finds the recap text.
   // Height 0 hides it from sight. aria-hidden and inert hide it from assistive tech and the tab order.
   const panel = (
@@ -90,12 +101,23 @@ function Row({ matchup, avatars, index }: { matchup: Matchup; avatars: AvatarMap
         <div className="flex min-w-0 items-center gap-sp-2 text-row leading-tight font-semibold hyphens-auto">
           <Avatar src={avatarSrc(avatars, winner.team.roster_id)} />
           <span className="min-w-0 tablet:truncate">
-            <span className={bold}>{winner.team.name}</span> <span className={bold}>{num(winner.score)}</span>
+            <span className={bold}>
+              <TeamName name={winner.team.name} href={managerHref(managersHref, winner.team.roster_id)} />
+            </span> <span className={bold}>{num(winner.score)}</span>
           </span>
         </div>
         <div className="flex min-w-0 items-center justify-end gap-sp-2 text-right text-row leading-tight font-semibold hyphens-auto">
-          {/* One string, so React writes one text node, as the old page did. */}
-          <span className="min-w-0 tablet:truncate">{`${num(loser.score)} ${loser.team.name}`}</span>
+          {/* One string, so React writes one text node, as the old page did. A link splits the score from the name. */}
+          <span className="min-w-0 tablet:truncate">
+            {loserHref === null ? (
+              `${num(loser.score)} ${loser.team.name}`
+            ) : (
+              <>
+                {`${num(loser.score)} `}
+                <TeamName name={loser.team.name} href={loserHref} />
+              </>
+            )}
+          </span>
           <Avatar src={avatarSrc(avatars, loser.team.roster_id)} />
         </div>
       </div>
@@ -127,15 +149,25 @@ function Row({ matchup, avatars, index }: { matchup: Matchup; avatars: AvatarMap
   );
 }
 
-/* The label and the rows stagger in one by one, so the chapter itself has no reveal. */
-export function AllMatchups({ matchups, avatars }: { matchups: Matchup[]; avatars: AvatarMap }) {
+/* The label and the rows stagger in one by one, so the chapter itself has no reveal.
+   The managers href is the managers index of the season. With null the team names render as plain text.
+   The small Top label of the recap panel stays plain text: the winner and the loser names carry the links. */
+export function AllMatchups({
+  matchups,
+  avatars,
+  managersHref = null,
+}: {
+  matchups: Matchup[];
+  avatars: AvatarMap;
+  managersHref?: string | null;
+}) {
   return (
     <Chapter id="matchups">
       <Reveal delay={stagger(0)}>
         <Label heading>All Matchups</Label>
       </Reveal>
       {matchups.map((matchup, i) => (
-        <Row key={matchup.id} matchup={matchup} avatars={avatars} index={i} />
+        <Row key={matchup.id} matchup={matchup} avatars={avatars} index={i} managersHref={managersHref} />
       ))}
     </Chapter>
   );

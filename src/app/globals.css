@@ -467,12 +467,20 @@
         opacity: 1 !important;
         transform: none !important;
     }
+    /* A line that draws by its path length shows whole. The CSS value wins over the dash attributes of Framer Motion. */
+    [data-draw] {
+        stroke-dasharray: none !important;
+    }
 }
 
 /* The safety net for a script that fails to load: the static HTML holds every reveal box at no opacity,
    so without this rule the page under the masthead stays blank. Reveal sets data-hydrated on mount. */
 html:not([data-hydrated]) [data-reveal] {
     animation: reveal-safety 1ms var(--delay-safety) forwards;
+}
+/* A line that draws shows whole until the script hydrates. Its chapter is a reveal, so the line stays hidden until the chapter shows. */
+html:not([data-hydrated]) [data-draw] {
+    stroke-dasharray: none;
 }
 @keyframes reveal-safety {
     to {

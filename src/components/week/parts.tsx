@@ -100,13 +100,34 @@ export function Avatar({ src }: { src: string }) {
   return <img src={src} alt="" className="size-avatar flex-none rounded-full bg-gry object-cover" />;
 }
 
+/* The manager page of one team, from the managers index href of the season. A season with no managers file has no href. */
+export function managerHref(managersHref: string | null, rosterId: number): string | null {
+  return managersHref === null ? null : `${managersHref}${rosterId}/`;
+}
+
+/* A team name, as a link to the manager page when the season has one, else as plain text.
+   The link inherits the color, the weight, the size, and the wrap of the name, so the name does not shift.
+   Only the hover underline marks it, as on the given player links. It sits on a positioned layer,
+   so a row control stretched over the row does not cover it. A plain anchor carries the base path in the href. */
+export function TeamName({ name, href }: { name: string; href: string | null }) {
+  if (href === null) return name;
+  return (
+    <a href={href} className="relative z-1 text-inherit no-underline underline-offset-2 hover-fine:underline">
+      {name}
+    </a>
+  );
+}
+
 /* The avatar and the team name as one group, as the .who rule of the stylesheet sets it.
-   Fill makes the group take the free width of a row and lets a long name wrap inside it. */
-export function Who({ src, name, fill }: { src: string; name: string; fill?: boolean }) {
+   Fill makes the group take the free width of a row and lets a long name wrap inside it.
+   An href makes the name a link to the manager page. With no href the name is plain text. */
+export function Who({ src, name, fill, href = null }: { src: string; name: string; fill?: boolean; href?: string | null }) {
   return (
     <span className={cn("items-center gap-sp-2 align-middle", fill ? "flex min-w-0 flex-1" : "inline-flex")}>
       <Avatar src={src} />
-      <span className={cn(fill && "min-w-0")}>{name}</span>
+      <span className={cn(fill && "min-w-0")}>
+        <TeamName name={name} href={href} />
+      </span>
     </span>
   );
 }

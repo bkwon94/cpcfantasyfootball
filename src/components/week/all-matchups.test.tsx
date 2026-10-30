@@ -74,4 +74,15 @@ describe("AllMatchups", () => {
     fireEvent.click(screen.getByRole("button", { name: "Read Recap" }));
     expect(screen.getByText("—")).toBeTruthy();
   });
+
+  it("links the winner and the loser names to their manager pages only when the season has the managers file", () => {
+    const { rerender } = render(
+      <AllMatchups matchups={week6.matchups} avatars={week6.avatars} managersHref="/2026/managers/" />,
+    );
+    expect(
+      ["Lil Fridge", "Brock ‘N’ Roll"].map((name) => screen.getByRole("link", { name }).getAttribute("href")),
+    ).toEqual(["/2026/managers/3/", "/2026/managers/1/"]);
+    rerender(<AllMatchups matchups={week6.matchups} avatars={week6.avatars} />);
+    expect(screen.queryByRole("link", { name: "Lil Fridge" })).toBeNull();
+  });
 });

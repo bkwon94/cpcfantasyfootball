@@ -82,8 +82,8 @@ describe("HomePage", () => {
   });
 });
 
-/* A temp public/ folder with the week 5 and week 6 pages, and the rankings file when one is given. */
-async function homeOver(rankings?: unknown) {
+/* A temp public/ folder with the week 5 and week 6 pages, the rankings file when one is given, and the managers file when asked. */
+async function homeOver(rankings?: unknown, managers = false) {
   const root = mkdtempSync(join(tmpdir(), "home-page-"));
   roots.push(root);
   for (const week of [5, 6]) {
@@ -93,6 +93,10 @@ async function homeOver(rankings?: unknown) {
   }
   if (rankings !== undefined) {
     writeFileSync(join(root, "public", "2026", "rankings.json"), JSON.stringify(rankings));
+  }
+  if (managers) {
+    // The card only reads that the file exists, so an empty season is enough.
+    writeFileSync(join(root, "public", "2026", "managers.json"), JSON.stringify({ schema_version: 1, season: 2026, through: 6, managers: [] }));
   }
   vi.spyOn(process, "cwd").mockReturnValue(root);
   // The readers read the working folder when they load, so reset them to pick up the temp folder.
@@ -146,4 +150,14 @@ describe("HomePage power rankings", () => {
     expect(within(screen.getByRole("main")).getByRole("link", { name: /Week 6/ })).toBeTruthy();
   });
 
+  it("links the managers index from the tools only when the managers file exists", async () => {
+    const With = await homeOver(fixture, true);
+    render(<With />);
+    const card = within(screen.getByRole("main")).getByRole("link", { name: /Managers/ });
+    expect(card.getAttribute("href")).toBe("/2026/managers/");
+    cleanup();
+    const Without = await homeOver(fixture);
+    render(<Without />);
+    expect(within(screen.getByRole("main")).queryByRole("link", { name: /Managers/ })).toBeNull();
+  });
 });

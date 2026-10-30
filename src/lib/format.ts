@@ -24,3 +24,11 @@ export function shortName(name: string): string {
 export function thousands(x: number): string {
   return x.toLocaleString("en-US");
 }
+
+/* A place in words: 1st, 2nd, 3rd, 4th, and 11th to 13th with "th". */
+export function ordinal(place: number): string {
+  const tens = place % 100;
+  if (tens >= 11 && tens <= 13) return `${place}th`;
+  const suffix = { 1: "st", 2: "nd", 3: "rd" }[place % 10] ?? "th";
+  return `${place}${suffix}`;
+}

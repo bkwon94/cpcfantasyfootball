@@ -5,7 +5,7 @@
 import { Fragment, type ReactNode } from "react";
 import { cn } from "@/lib/utils";
 import type { AvatarMap, TableRow } from "@/lib/week-types";
-import { avatarSrc, Blurb, Chapter, Label, Who } from "./parts";
+import { avatarSrc, Blurb, Chapter, Label, managerHref, Who } from "./parts";
 
 /* Six teams make the playoffs, so the dashed cut line sits under the sixth row. */
 const PLAYOFF_SPOTS = 6;
@@ -41,7 +41,16 @@ function Line({
   );
 }
 
-export function Standings({ table, avatars }: { table: TableRow[]; avatars: AvatarMap }) {
+/* The managers href is the managers index of the season. With null the team names render as plain text. */
+export function Standings({
+  table,
+  avatars,
+  managersHref = null,
+}: {
+  table: TableRow[];
+  avatars: AvatarMap;
+  managersHref?: string | null;
+}) {
   return (
     <Chapter dark reveal id="standings">
       <Label dark heading>Standings</Label>
@@ -59,7 +68,12 @@ export function Standings({ table, avatars }: { table: TableRow[]; avatars: Avat
               className="py-sp-1"
               cells={[
                 row.standing.rank,
-                <Who key="team" src={avatarSrc(avatars, row.team.roster_id)} name={row.team.name} />,
+                <Who
+                  key="team"
+                  src={avatarSrc(avatars, row.team.roster_id)}
+                  name={row.team.name}
+                  href={managerHref(managersHref, row.team.roster_id)}
+                />,
                 `${row.standing.wins}-${row.standing.losses}`,
                 row.standing.points_for.toFixed(2),
               ]}
