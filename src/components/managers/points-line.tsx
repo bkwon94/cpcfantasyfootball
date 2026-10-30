@@ -1,11 +1,11 @@
 /**
- * The points line of a manager page: the team's points per week against the league median, with one dot per week.
+ * The points line of a manager page: the team's points per week against the league median, one dot per week, and a legend.
  * It is an inline SVG on a fixed viewBox, so it scales to the column width at each tier and paints in the theme tokens.
  */
 "use client";
 
 import { motion, type Variants } from "framer-motion";
-import { useId } from "react";
+import { type ReactNode, useId } from "react";
 import { VIEW_MARGIN } from "@/components/reveal";
 import { DURATION, EASE_OUT, INSTANT, useMotionOff } from "@/lib/motion";
 import { cn } from "@/lib/utils";
@@ -56,6 +56,42 @@ function dotOf(off: boolean, i: number, count: number): Variants {
     start: { opacity: 0 },
     drawn: { opacity: 1, transition: off ? INSTANT : { duration: DURATION.dot, ease: EASE_OUT, delay } },
   };
+}
+
+/* One sample of the legend: a tiny inline SVG in the classes of the chart, so it paints the same in both themes.
+   The samples are decorative, because the word next to each one names it. */
+function Sample({ children }: { children: ReactNode }) {
+  return (
+    <svg aria-hidden viewBox="0 0 16 10" className="block h-sp-3 w-sp-5 flex-none overflow-visible">
+      {children}
+    </svg>
+  );
+}
+
+/* The legend under the chart: one quiet row that wraps on a phone. Each key is a sample of the mark and its word. */
+function Legend() {
+  const keys = [
+    {
+      label: "Points",
+      sample: <line x1={0} y1={5} x2={16} y2={5} strokeWidth={1.5} className="stroke-ink" />,
+    },
+    {
+      label: "League Median",
+      sample: <line x1={0} y1={5} x2={16} y2={5} strokeWidth={1} strokeDasharray="4 3" className="stroke-mute" />,
+    },
+    { label: "Win", sample: <circle cx={8} cy={5} r={4} strokeWidth={1.5} className="fill-ink stroke-ink" /> },
+    { label: "Loss", sample: <circle cx={8} cy={5} r={4} strokeWidth={1.5} className="fill-wht stroke-ink" /> },
+  ];
+  return (
+    <ul aria-label="Legend" className="m-0 mt-sp-2 flex list-none flex-wrap gap-x-sp-4 gap-y-sp-1 p-0 text-meta text-mute">
+      {keys.map(({ label, sample }) => (
+        <li key={label} className="flex items-center gap-sp-1">
+          <Sample>{sample}</Sample>
+          {label}
+        </li>
+      ))}
+    </ul>
+  );
 }
 
 export function PointsLine({ weeks }: { weeks: SeasonWeek[] }) {
@@ -149,6 +185,7 @@ export function PointsLine({ weeks }: { weeks: SeasonWeek[] }) {
         <span>{`Week ${first}`}</span>
         {last !== first && <span>{`Week ${last}`}</span>}
       </div>
+      <Legend />
     </div>
   );
 }

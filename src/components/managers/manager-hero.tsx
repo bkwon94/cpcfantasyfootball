@@ -62,8 +62,14 @@ export function ManagerHero({ manager, avatar, teams }: { manager: Manager; avat
           </div>
         </div>
       </div>
-      {/* The rule and the space above it set the numbers apart from the team, so the hero reads as two groups. */}
-      <dl role="group" aria-label="Season Numbers" className="m-0 mt-sp-5 grid grid-cols-3 gap-sp-4 border-t border-rule pt-sp-5">
+      {/* The rule and the space above it set the numbers apart from the team, so the hero reads as two groups.
+          At the desktop tier the grade column takes the width of its depth line, so the four positions fit one line.
+          A third of the column is 219px there, and the depth line is about 238px. On a phone the depth line may wrap. */}
+      <dl
+        role="group"
+        aria-label="Season Numbers"
+        className="m-0 mt-sp-5 grid grid-cols-3 gap-sp-4 border-t border-rule pt-sp-5 desktop:grid-cols-[max-content_1fr_1fr]"
+      >
         {/* The letter stays one plain element in one place, so a later grade motion can target it. */}
         {/* On load the letter fades and rises into place with the hero timing, and the depth line follows one stagger later.
             The rise is the quieter choice over a scale, because the large letter would grow at every edge. */}

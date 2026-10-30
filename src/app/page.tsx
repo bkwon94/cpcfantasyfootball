@@ -11,6 +11,7 @@ import { Reveal } from "@/components/reveal";
 import { TeamsPrefetch } from "@/components/teams-prefetch";
 import { Blurb, Chapter, Label } from "@/components/week/parts";
 import { basePath, season } from "@/lib/config";
+import { currentManagersHref } from "@/lib/manager-data";
 import { stagger } from "@/lib/motion";
 import { biggestMover } from "@/lib/rankings";
 import { loadRankings } from "@/lib/rankings-data";
@@ -41,6 +42,8 @@ export default function HomePage() {
   const weeks = listWeekSummaries();
   const rankings = loadRankings()?.weeks.at(-1);
   const mover = rankings ? biggestMover(rankings) : null;
+  // A missing managers file hides the card, as the menu hides its entry, so the page ships before the pipeline writes the file.
+  const managersHref = currentManagersHref();
   // The week rows start the stagger one step after the rankings chapter, or after the tools row when the chapter is hidden.
   const firstWeekStep = rankings ? 2 : 1;
   return (
@@ -51,7 +54,8 @@ export default function HomePage() {
         <WeekLine label="SEASON" number={season} />
       </Masthead>
       <PageColumn>
-        {/* The Tools chapter and the Power Rankings chapter each hold one row, so side by side they fill the column.
+        {/* The Tools chapter holds the analyzer row and the managers row, and the Power Rankings chapter holds one tall row,
+            so side by side they fill the column.
             The row is one child of the main, so the main's card gap sits above and below it. On a phone the row is a plain
             block, so the chapters stack with the chapter rule. With no rankings file the grid has one column, so the Tools
             chapter takes the full width and the row has no empty half. */}
@@ -67,6 +71,14 @@ export default function HomePage() {
                 <span className="block text-meta text-mute">League passphrase needed.</span>
               </HomeRow>
             </Reveal>
+            {managersHref && (
+              <Reveal delay={stagger(0)}>
+                <HomeRow href={managersHref}>
+                  <b className="mb-sp-1 block text-lead leading-tight group-hover:text-red-ink">Managers</b>
+                  <span className="block text-meta text-mute">One page per team: grade, odds, moves, and performers.</span>
+                </HomeRow>
+              </Reveal>
+            )}
           </Chapter>
           {/* A missing season file hides the chapter, so the page ships before the pipeline writes the file. */}
           {rankings && (

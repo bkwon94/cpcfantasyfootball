@@ -187,15 +187,16 @@ describe("ManagerPage", () => {
     expect(within(moves).getAllByText("No moves.")).toHaveLength(4);
   });
 
-  it("shows the season so far: the dots, the bench line, and the four counts", async () => {
-    // Maye d'force B with U won weeks 1, 2, 5, and 6.
+  it("shows the season so far: the dots, the bench line, and the four season stats", async () => {
+    // Maye d'force B with U won weeks 1, 2, 5, and 6, and beat the median in weeks 1, 5, and 6.
     await renderManager("9", { rankings: rankingsFixture });
     const line = screen.getByRole("img", { name: "Points per week against the league median" });
     expect(line.querySelectorAll("[data-result]")).toHaveLength(6);
     expect(line.querySelectorAll('[data-result="win"]')).toHaveLength(4);
-    expect(screen.getByText("Worst in week 4: 13.68 points, Drake Maye sat.")).toBeTruthy();
-    const shelf = screen.getByRole("group", { name: "Awards Shelf" });
-    expect([...shelf.querySelectorAll("dd")].map((count) => count.textContent)).toEqual(["0", "0", "0", "0"]);
+    expect(screen.getByText(/Worst in week 4: 13\.68 points, Drake Maye sat\.$/)).toBeTruthy();
+    const stats = screen.getByRole("group", { name: "Season Stats" });
+    const numbers = [...stats.querySelectorAll("dt")].map((term) => term.nextElementSibling?.textContent);
+    expect(numbers).toEqual(["158.96", "87.93", "W2", "3-3"]);
   });
 
   it("lists the best adds and the top performers in order", async () => {
